@@ -1,0 +1,1202 @@
+#include "igyba_thorlabs_wxMain.h"
+#include <wx/msgdlg.h>
+
+//(*InternalHeaders(igyba_thorlabs_wxFrame)
+#include <wx/bitmap.h>
+#include <wx/icon.h>
+#include <wx/intl.h>
+#include <wx/image.h>
+#include <wx/string.h>
+//*)
+
+static igyba_thorlabs_wxFrame *itw1ptr = nullptr;
+
+//(*IdInit(igyba_thorlabs_wxFrame)
+const long igyba_thorlabs_wxFrame::ID_BUTTON_SAVE_IMG_RGB = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_SAVE_IMG_WORK = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_SAVE_IMG_FP = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_SAVE_DATA_RGB = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_SAVE_DATA_WORK = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_SAVE_DATA_FP = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_GNUPLOT = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_PANEL_OUTPUT = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_TOGGLEBUTTON_VIEWER = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_STATICLINE1 = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_MINIME = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_PANEL_THREADS = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_RESIZE_CAM_WIN = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_STATICTEXT_AOI = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_TOGGLEBUTTON_AOI = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_PANEL_AOI_WIN = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_NOTEBOOK_MAIN = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_TOGGLEBUTTON_FRAMEGRAB = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_STATICLINE2 = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_START = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_LED_MAIN = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_QUIT = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_PANEL_MAIN = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_TOGGLEBUTTON_BACKGROUND = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_STATICTEXT_EXP_TIME_DISP = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_DEC_EXP_TIME = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_SLIDER_EXP_TIME = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_INC_EXP_TIME = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_PANEL_CAMERA = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_TOGGLEBUTTON_SMOOTHING = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_STATICTEXT_KERNEL_SIZE = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_DEC_KERNEL_SIZE = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_SLIDER_KERNEL_SIZE = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_INC_KERNEL_SIZE = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_STATICTEXT_STD_DEV = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_DEC_STD_DEV = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_SLIDER_STD_DEV = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_INC_STD_DEV = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_STATICTEXT_GROUNDLIFT = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_DEC_GROUNDLIFT = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_SLIDER_GROUNDLIFT = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_INC_GROUNDLIFT = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_PANEL_IMG_MANIP = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_NOTEBOOK_CAM_IMG = wxNewId();
+const long igyba_thorlabs_wxFrame::idMenuQuit = wxNewId();
+const long igyba_thorlabs_wxFrame::idMenuAbout = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_STATUSBAR_MAIN = wxNewId();
+//*)
+
+BEGIN_EVENT_TABLE(igyba_thorlabs_wxFrame, wxFrame)
+	//(*EventTable(igyba_thorlabs_wxFrame)
+	//*)
+	EVT_COMMAND_SCROLL(ID_SLIDER_EXP_TIME, igyba_thorlabs_wxFrame::OnSliderExpTimeCmdScroll)
+	EVT_COMMAND_SCROLL(ID_SLIDER_GROUNDLIFT, igyba_thorlabs_wxFrame::OnSliderGroundliftCmdScroll)
+	EVT_COMMAND_SCROLL(ID_SLIDER_KERNEL_SIZE, igyba_thorlabs_wxFrame::OnSliderKernelSizeCmdScroll)
+	EVT_COMMAND_SCROLL(ID_SLIDER_STD_DEV, igyba_thorlabs_wxFrame::OnSliderStdDevCmdScroll)
+END_EVENT_TABLE()
+
+igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
+											wxWindow *parent, wxWindowID id)
+{
+	/* global pointer */
+	itw1ptr = static_cast<igyba_thorlabs_wxFrame *>(this);
+	/* int */
+	m_argc = argc; /* 1 */
+	/* char ** */
+	mb_argv = (char **)calloc(m_argc, sizeof(char *));
+	for(int i = 0; i < m_argc; i++)
+	{
+		mb_argv[i] = (char *)calloc(wcslen(argv[i]) + 1, sizeof(char));
+		wcstombs(mb_argv[i], argv[i], wcslen(argv[i]));
+	}
+	/* atomic<bool> */
+	select_roi.store(false, std::memory_order_relaxed);
+	close_cam_thread.store(false, std::memory_order_relaxed); /* 2 */
+	/* atomic<uint32_t> */
+	btn_state.store(NONE_BTN, std::memory_order_relaxed); /* 1 */
+
+	//(*Initialize(igyba_thorlabs_wxFrame)
+	wxStaticBoxSizer* StaticBoxSizerSaveData;
+	wxMenuItem* MenuItemAbout;
+	wxFlexGridSizer* FlexGridSizerStart;
+	wxStaticBoxSizer* StaticBoxSizerStdDev;
+	wxStaticBoxSizer* StaticBoxSizerCamera;
+	wxStaticBoxSizer* StaticBoxSizerGroundlift;
+	wxStaticBoxSizer* StaticBoxSizerControlsMain;
+	wxStaticBoxSizer* StaticBoxSizerSaveImg;
+	wxMenu* Menu1;
+	wxGridBagSizer* GridBagSizerExpTime;
+	wxGridBagSizer* GridBagSizerStdDev;
+	wxBoxSizer* BoxSizerMain;
+	wxBoxSizer* BoxSizerInnerMain;
+	wxStaticBoxSizer* StaticBoxSizerAOIWin;
+	wxGridBagSizer* GridBagSizerGroundlift;
+	wxMenuItem* MenuItemQuit;
+	wxStaticBoxSizer* StaticBoxSizerKernelSize;
+	wxStaticBoxSizer* StaticBoxSizerImgManip;
+	wxStaticBoxSizer* StaticBoxSizerExpTime;
+	wxMenuBar* MenuBarMain;
+	wxGridBagSizer* GridBagSizerKernelSize;
+	wxStaticBoxSizer* StaticBoxSizerAOI;
+	wxMenu* Menu2;
+	wxStaticBoxSizer* StaticBoxSizerOutput;
+	wxStaticBoxSizer* StaticBoxSizerThreads;
+
+	Create(parent, wxID_ANY, _("igyba 4 fingers"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
+	{
+	wxIcon FrameIcon;
+	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("icon.ico"))));
+	SetIcon(FrameIcon);
+	}
+	BoxSizerMain = new wxBoxSizer(wxHORIZONTAL);
+	PanelMain = new wxPanel(this, ID_PANEL_MAIN, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_MAIN"));
+	BoxSizerInnerMain = new wxBoxSizer(wxVERTICAL);
+	NotebookMain = new wxNotebook(PanelMain, ID_NOTEBOOK_MAIN, wxDefaultPosition, wxDefaultSize, 0, _T("ID_NOTEBOOK_MAIN"));
+	PanelOutput = new wxPanel(NotebookMain, ID_PANEL_OUTPUT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_OUTPUT"));
+	StaticBoxSizerOutput = new wxStaticBoxSizer(wxVERTICAL, PanelOutput, _("Controls"));
+	StaticBoxSizerSaveImg = new wxStaticBoxSizer(wxHORIZONTAL, PanelOutput, _("Save image"));
+	ButtonSaveImgRGB = new wxButton(PanelOutput, ID_BUTTON_SAVE_IMG_RGB, _("Display"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_IMG_RGB"));
+	ButtonSaveImgRGB->SetToolTip(_("Save the displayed image"));
+	StaticBoxSizerSaveImg->Add(ButtonSaveImgRGB, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ButtonSaveImgWork = new wxButton(PanelOutput, ID_BUTTON_SAVE_IMG_WORK, _("Work"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_IMG_WORK"));
+	ButtonSaveImgWork->SetToolTip(_("Save the working image"));
+	StaticBoxSizerSaveImg->Add(ButtonSaveImgWork, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ButtonSaveImgFP = new wxButton(PanelOutput, ID_BUTTON_SAVE_IMG_FP, _("Raw FP"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_IMG_FP"));
+	ButtonSaveImgFP->SetToolTip(_("Save the raw, floating point, single channel image"));
+	StaticBoxSizerSaveImg->Add(ButtonSaveImgFP, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerOutput->Add(StaticBoxSizerSaveImg, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerSaveData = new wxStaticBoxSizer(wxHORIZONTAL, PanelOutput, _("Save data"));
+	ButtonSaveDataRGB = new wxButton(PanelOutput, ID_BUTTON_SAVE_DATA_RGB, _("Raw 3C"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_DATA_RGB"));
+	ButtonSaveDataRGB->SetToolTip(_("Save the raw 3 channel image data"));
+	StaticBoxSizerSaveData->Add(ButtonSaveDataRGB, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ButtonSaveDataWork = new wxButton(PanelOutput, ID_BUTTON_SAVE_DATA_WORK, _("Work"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_DATA_WORK"));
+	ButtonSaveDataWork->SetToolTip(_("Save the working image data"));
+	StaticBoxSizerSaveData->Add(ButtonSaveDataWork, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ButtonSaveDataFP = new wxButton(PanelOutput, ID_BUTTON_SAVE_DATA_FP, _("Raw 1C"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_DATA_FP"));
+	ButtonSaveDataFP->SetToolTip(_("Save the raw 1 channel image data"));
+	StaticBoxSizerSaveData->Add(ButtonSaveDataFP, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerOutput->Add(StaticBoxSizerSaveData, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ButtonGnuplot = new wxButton(PanelOutput, ID_BUTTON_GNUPLOT, _("Make gnuplot"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_GNUPLOT"));
+	ButtonGnuplot->SetToolTip(_("Plot current processed image data"));
+	StaticBoxSizerOutput->Add(ButtonGnuplot, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	PanelOutput->SetSizer(StaticBoxSizerOutput);
+	StaticBoxSizerOutput->Fit(PanelOutput);
+	StaticBoxSizerOutput->SetSizeHints(PanelOutput);
+	PanelThreads = new wxPanel(NotebookMain, ID_PANEL_THREADS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_THREADS"));
+	StaticBoxSizerThreads = new wxStaticBoxSizer(wxVERTICAL, PanelThreads, _("Controls"));
+	ToggleButtonViewer = new wxToggleButton(PanelThreads, ID_TOGGLEBUTTON_VIEWER, _("Launch viewer"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_VIEWER"));
+	ToggleButtonViewer->SetToolTip(_("Toggle 3D live plot for the current AOI"));
+	StaticBoxSizerThreads->Add(ToggleButtonViewer, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticLine1 = new wxStaticLine(PanelThreads, ID_STATICLINE1, wxDefaultPosition, wxSize(10,-1), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
+	StaticBoxSizerThreads->Add(StaticLine1, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ButtonMinime = new wxButton(PanelThreads, ID_BUTTON_MINIME, _("Launch minime"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_MINIME"));
+	ButtonMinime->SetToolTip(_("Start a fitting routine for the current AOI"));
+	StaticBoxSizerThreads->Add(ButtonMinime, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	PanelThreads->SetSizer(StaticBoxSizerThreads);
+	StaticBoxSizerThreads->Fit(PanelThreads);
+	StaticBoxSizerThreads->SetSizeHints(PanelThreads);
+	PanelAOIWin = new wxPanel(NotebookMain, ID_PANEL_AOI_WIN, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_AOI_WIN"));
+	StaticBoxSizerAOIWin = new wxStaticBoxSizer(wxVERTICAL, PanelAOIWin, _("Controls"));
+	ButtonResizeCamWin = new wxButton(PanelAOIWin, ID_BUTTON_RESIZE_CAM_WIN, _("Resize window"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_RESIZE_CAM_WIN"));
+	ButtonResizeCamWin->SetToolTip(_("Resizes the camera display window"));
+	StaticBoxSizerAOIWin->Add(ButtonResizeCamWin, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerAOI = new wxStaticBoxSizer(wxVERTICAL, PanelAOIWin, _("AOI of interest"));
+	StaticTextAOI = new wxStaticText(PanelAOIWin, ID_STATICTEXT_AOI, _("Label"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_AOI"));
+	StaticBoxSizerAOI->Add(StaticTextAOI, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ToggleButtonAOI = new wxToggleButton(PanelAOIWin, ID_TOGGLEBUTTON_AOI, _("Draw rectangle"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_AOI"));
+	ToggleButtonAOI->SetToolTip(_("Click and drag a rectangle in the camera window"));
+	StaticBoxSizerAOI->Add(ToggleButtonAOI, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerAOIWin->Add(StaticBoxSizerAOI, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	PanelAOIWin->SetSizer(StaticBoxSizerAOIWin);
+	StaticBoxSizerAOIWin->Fit(PanelAOIWin);
+	StaticBoxSizerAOIWin->SetSizeHints(PanelAOIWin);
+	NotebookMain->AddPage(PanelOutput, _("Output"), true);
+	NotebookMain->AddPage(PanelThreads, _("Threads"), false);
+	NotebookMain->AddPage(PanelAOIWin, _("AOI && Window"), false);
+	BoxSizerInnerMain->Add(NotebookMain, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	StaticBoxSizerControlsMain = new wxStaticBoxSizer(wxVERTICAL, PanelMain, _("Main controls"));
+	ToggleButtonFrameGrab = new wxToggleButton(PanelMain, ID_TOGGLEBUTTON_FRAMEGRAB, _("Idle frame grab"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_FRAMEGRAB"));
+	ToggleButtonFrameGrab->SetToolTip(_("Toggle frame grabbing"));
+	StaticBoxSizerControlsMain->Add(ToggleButtonFrameGrab, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticLine2 = new wxStaticLine(PanelMain, ID_STATICLINE2, wxDefaultPosition, wxSize(10,-1), wxLI_HORIZONTAL, _T("ID_STATICLINE2"));
+	StaticBoxSizerControlsMain->Add(StaticLine2, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizerStart = new wxFlexGridSizer(1, 3, 0, 0);
+	ButtonStart = new wxButton(PanelMain, ID_BUTTON_START, _("Start"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_START"));
+	FlexGridSizerStart->Add(ButtonStart, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	LedMain = new wxLed(PanelMain,ID_LED_MAIN,wxColour(128,128,128),wxColour(0,255,0),wxColour(255,0,0),wxDefaultPosition,wxDefaultSize);
+	LedMain->Disable();
+	LedMain->SwitchOff();
+	FlexGridSizerStart->Add(LedMain, 0, wxALL|wxSHAPED|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ButtonQuit = new wxButton(PanelMain, ID_BUTTON_QUIT, _("Quit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_QUIT"));
+	ButtonQuit->Disable();
+	ButtonQuit->SetToolTip(_("Quit the application"));
+	FlexGridSizerStart->Add(ButtonQuit, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerControlsMain->Add(FlexGridSizerStart, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizerInnerMain->Add(StaticBoxSizerControlsMain, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	PanelMain->SetSizer(BoxSizerInnerMain);
+	BoxSizerInnerMain->Fit(PanelMain);
+	BoxSizerInnerMain->SetSizeHints(PanelMain);
+	BoxSizerMain->Add(PanelMain, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	NotebookCamImg = new wxNotebook(this, ID_NOTEBOOK_CAM_IMG, wxDefaultPosition, wxDefaultSize, 0, _T("ID_NOTEBOOK_CAM_IMG"));
+	PanelCamera = new wxPanel(NotebookCamImg, ID_PANEL_CAMERA, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_CAMERA"));
+	StaticBoxSizerCamera = new wxStaticBoxSizer(wxVERTICAL, PanelCamera, _("Controls"));
+	ToggleButtonBackground = new wxToggleButton(PanelCamera, ID_TOGGLEBUTTON_BACKGROUND, _("Acquire background"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_BACKGROUND"));
+	ToggleButtonBackground->SetToolTip(_("Toggle background subtraction"));
+	StaticBoxSizerCamera->Add(ToggleButtonBackground, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerExpTime = new wxStaticBoxSizer(wxVERTICAL, PanelCamera, _("Exposure time"));
+	StaticTextExpTimeDisp = new wxStaticText(PanelCamera, ID_STATICTEXT_EXP_TIME_DISP, _("Time / ms"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_EXP_TIME_DISP"));
+	StaticBoxSizerExpTime->Add(StaticTextExpTimeDisp, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	GridBagSizerExpTime = new wxGridBagSizer(0, 0);
+	ButtonDecExpTime = new wxButton(PanelCamera, ID_BUTTON_DEC_EXP_TIME, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_EXP_TIME"));
+	GridBagSizerExpTime->Add(ButtonDecExpTime, wxGBPosition(0, 0), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	SliderExpTime = new wxSlider(PanelCamera, ID_SLIDER_EXP_TIME, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_EXP_TIME"));
+	SliderExpTime->SetToolTip(_("Changes the exposure time of the camera"));
+	GridBagSizerExpTime->Add(SliderExpTime, wxGBPosition(0, 1), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ButtonIncExpTime = new wxButton(PanelCamera, ID_BUTTON_INC_EXP_TIME, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_EXP_TIME"));
+	GridBagSizerExpTime->Add(ButtonIncExpTime, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerExpTime->Add(GridBagSizerExpTime, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerCamera->Add(StaticBoxSizerExpTime, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	PanelCamera->SetSizer(StaticBoxSizerCamera);
+	StaticBoxSizerCamera->Fit(PanelCamera);
+	StaticBoxSizerCamera->SetSizeHints(PanelCamera);
+	PanelImgManip = new wxPanel(NotebookCamImg, ID_PANEL_IMG_MANIP, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_IMG_MANIP"));
+	StaticBoxSizerImgManip = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Controls"));
+	ToggleButtonSmoothing = new wxToggleButton(PanelImgManip, ID_TOGGLEBUTTON_SMOOTHING, _("Enable manipulation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_SMOOTHING"));
+	ToggleButtonSmoothing->SetToolTip(_("Toggle smoothing and groundlift"));
+	StaticBoxSizerImgManip->Add(ToggleButtonSmoothing, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerKernelSize = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Kernel size"));
+	StaticTextKernelSize = new wxStaticText(PanelImgManip, ID_STATICTEXT_KERNEL_SIZE, _("Size / pixel"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_KERNEL_SIZE"));
+	StaticBoxSizerKernelSize->Add(StaticTextKernelSize, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	GridBagSizerKernelSize = new wxGridBagSizer(0, 0);
+	ButtonDecKernelSize = new wxButton(PanelImgManip, ID_BUTTON_DEC_KERNEL_SIZE, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_KERNEL_SIZE"));
+	ButtonDecKernelSize->Disable();
+	GridBagSizerKernelSize->Add(ButtonDecKernelSize, wxGBPosition(0, 0), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	SliderKernelSize = new wxSlider(PanelImgManip, ID_SLIDER_KERNEL_SIZE, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_KERNEL_SIZE"));
+	SliderKernelSize->Disable();
+	GridBagSizerKernelSize->Add(SliderKernelSize, wxGBPosition(0, 1), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ButtonIncKernelSize = new wxButton(PanelImgManip, ID_BUTTON_INC_KERNEL_SIZE, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_KERNEL_SIZE"));
+	ButtonIncKernelSize->Disable();
+	GridBagSizerKernelSize->Add(ButtonIncKernelSize, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerKernelSize->Add(GridBagSizerKernelSize, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerImgManip->Add(StaticBoxSizerKernelSize, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerStdDev = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Standard deviation"));
+	StaticTextStdDev = new wxStaticText(PanelImgManip, ID_STATICTEXT_STD_DEV, _("Width / pixel"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_STD_DEV"));
+	StaticBoxSizerStdDev->Add(StaticTextStdDev, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	GridBagSizerStdDev = new wxGridBagSizer(0, 0);
+	ButtonDecStdDev = new wxButton(PanelImgManip, ID_BUTTON_DEC_STD_DEV, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_STD_DEV"));
+	ButtonDecStdDev->Disable();
+	GridBagSizerStdDev->Add(ButtonDecStdDev, wxGBPosition(0, 0), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	SliderStdDev = new wxSlider(PanelImgManip, ID_SLIDER_STD_DEV, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_STD_DEV"));
+	SliderStdDev->Disable();
+	GridBagSizerStdDev->Add(SliderStdDev, wxGBPosition(0, 1), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ButtonIncStdDev = new wxButton(PanelImgManip, ID_BUTTON_INC_STD_DEV, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_STD_DEV"));
+	ButtonIncStdDev->Disable();
+	GridBagSizerStdDev->Add(ButtonIncStdDev, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerStdDev->Add(GridBagSizerStdDev, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerImgManip->Add(StaticBoxSizerStdDev, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerGroundlift = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Groundlift"));
+	StaticTextGroundlift = new wxStaticText(PanelImgManip, ID_STATICTEXT_GROUNDLIFT, _("Lift / counts"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_GROUNDLIFT"));
+	StaticBoxSizerGroundlift->Add(StaticTextGroundlift, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	GridBagSizerGroundlift = new wxGridBagSizer(0, 0);
+	ButtonDecGroundlift = new wxButton(PanelImgManip, ID_BUTTON_DEC_GROUNDLIFT, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_GROUNDLIFT"));
+	ButtonDecGroundlift->Disable();
+	GridBagSizerGroundlift->Add(ButtonDecGroundlift, wxGBPosition(0, 0), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	SliderGroundlift = new wxSlider(PanelImgManip, ID_SLIDER_GROUNDLIFT, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_GROUNDLIFT"));
+	SliderGroundlift->Disable();
+	GridBagSizerGroundlift->Add(SliderGroundlift, wxGBPosition(0, 1), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ButtonIncGroundlift = new wxButton(PanelImgManip, ID_BUTTON_INC_GROUNDLIFT, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_GROUNDLIFT"));
+	ButtonIncGroundlift->Disable();
+	GridBagSizerGroundlift->Add(ButtonIncGroundlift, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerGroundlift->Add(GridBagSizerGroundlift, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerImgManip->Add(StaticBoxSizerGroundlift, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	PanelImgManip->SetSizer(StaticBoxSizerImgManip);
+	StaticBoxSizerImgManip->Fit(PanelImgManip);
+	StaticBoxSizerImgManip->SetSizeHints(PanelImgManip);
+	NotebookCamImg->AddPage(PanelCamera, _("Camera"), true);
+	NotebookCamImg->AddPage(PanelImgManip, _("Image manipulation"), false);
+	BoxSizerMain->Add(NotebookCamImg, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	SetSizer(BoxSizerMain);
+	MenuBarMain = new wxMenuBar();
+	Menu1 = new wxMenu();
+	MenuItemQuit = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
+	Menu1->Append(MenuItemQuit);
+	MenuBarMain->Append(Menu1, _("&File"));
+	Menu2 = new wxMenu();
+	MenuItemAbout = new wxMenuItem(Menu2, idMenuAbout, _("About\tF1"), _("Show info about this application"), wxITEM_NORMAL);
+	Menu2->Append(MenuItemAbout);
+	MenuBarMain->Append(Menu2, _("H&elp"));
+	SetMenuBar(MenuBarMain);
+	StatusBarMain = new wxStatusBar(this, ID_STATUSBAR_MAIN, 0, _T("ID_STATUSBAR_MAIN"));
+	int __wxStatusBarWidths_1[1] = { -1 };
+	int __wxStatusBarStyles_1[1] = { wxSB_NORMAL };
+	StatusBarMain->SetFieldsCount(1,__wxStatusBarWidths_1);
+	StatusBarMain->SetStatusStyles(1,__wxStatusBarStyles_1);
+	SetStatusBar(StatusBarMain);
+	BoxSizerMain->Fit(this);
+	BoxSizerMain->SetSizeHints(this);
+
+	Connect(ID_BUTTON_SAVE_IMG_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonSaveImgRGBClick);
+	Connect(ID_BUTTON_SAVE_IMG_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonSaveImgWorkClick);
+	Connect(ID_BUTTON_SAVE_IMG_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonSaveImgFPClick);
+	Connect(ID_BUTTON_SAVE_DATA_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonSaveDataRGBClick);
+	Connect(ID_BUTTON_SAVE_DATA_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonSaveDataWorkClick);
+	Connect(ID_BUTTON_SAVE_DATA_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonSaveDataFPClick);
+	Connect(ID_BUTTON_GNUPLOT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonGnuplotClick);
+	Connect(ID_TOGGLEBUTTON_VIEWER,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnToggleButtonViewerToggle);
+	Connect(ID_BUTTON_MINIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonMinimeClick);
+	Connect(ID_BUTTON_RESIZE_CAM_WIN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonResizeCamWinClick);
+	Connect(ID_TOGGLEBUTTON_AOI,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnToggleButtonAOIToggle);
+	Connect(ID_TOGGLEBUTTON_FRAMEGRAB,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnToggleButtonFrameGrabToggle);
+	Connect(ID_BUTTON_START,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonStartClick);
+	Connect(ID_BUTTON_QUIT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonQuitClick);
+	Connect(ID_TOGGLEBUTTON_BACKGROUND,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnToggleButtonBackgroundToggle);
+	Connect(ID_BUTTON_DEC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonDecExpTimeClick);
+	Connect(ID_BUTTON_INC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonIncExpTimeClick);
+	Connect(ID_TOGGLEBUTTON_SMOOTHING,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnToggleButtonSmoothingToggle);
+	Connect(ID_BUTTON_DEC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonDecKernelSizeClick);
+	Connect(ID_BUTTON_INC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonIncKernelSizeClick);
+	Connect(ID_BUTTON_DEC_STD_DEV,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonDecStdDevClick);
+	Connect(ID_BUTTON_INC_STD_DEV,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonIncStdDevClick);
+	Connect(ID_BUTTON_DEC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonDecGroundliftClick);
+	Connect(ID_BUTTON_INC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonIncGroundliftClick);
+	Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnQuit);
+	Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnAbout);
+	Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnCloseMainFrame);
+	//*)
+	ToggleButtonAOI->SetLabel(_T("Select AOI"));
+	thread_Cam = std::thread(igyba_thorlabs_wxFrame::schedule_CamThread,
+							m_argc, mb_argv);
+	event_Cam.signal();
+	LedMain->Enable();
+}
+
+igyba_thorlabs_wxFrame::~igyba_thorlabs_wxFrame(void)
+{
+	//(*Destroy(igyba_thorlabs_wxFrame)
+	//*)
+	for(int i = 0; i < m_argc; i++)
+		free(mb_argv[i]);
+	free(mb_argv);
+	#ifndef IGYBA_NDEBUG
+	iprint(stdout, "'%s': memory released\n", __func__);
+	#endif
+}
+
+void igyba_thorlabs_wxFrame::update_TextExpTime(const double val)
+{
+	static double tmin, tmax, tinc;
+	double time = val;
+	static bool once = false;
+	if(!once || val == -1.)
+	{
+		once = true;
+		t_cam.get_ExposureTimes(&time, &tmin, &tmax, &tinc);
+	}
+	wxString out;
+	out << "Time " << time << " ms";
+	StaticTextExpTimeDisp->SetLabel(out);
+}
+
+void igyba_thorlabs_wxFrame::update_TextGroundlift(const double val)
+{
+	static double gl_max;
+	double gl = val;
+	static bool once = false;
+	if(!once || val == -1.)
+	{
+		once = true;
+		t_cam.get_GroundliftRange(&gl, &gl_max);
+	}
+	wxString out;
+	out << "Lift " << gl << " counts";
+	StaticTextGroundlift->SetLabel(out);
+}
+
+void igyba_thorlabs_wxFrame::update_TextStdDev(const double val)
+{
+	static double gb_min, gb_max;
+	double gb = val;
+	static bool once = false;
+	if(!once || val == -1.)
+	{
+		once = true;
+		gb = t_cam.get_GaussBlurRange(&gb_min, &gb_max);
+	}
+	wxString out;
+	out << "Width " << gb << " pixel";
+	StaticTextStdDev->SetLabel(out);
+}
+
+void igyba_thorlabs_wxFrame::update_TextKernelSize(const uint val)
+{
+	static uint sze_min, sze_max;
+	uint sze = val;
+	static bool once = false;
+	if(!once || !val)
+	{
+		once = true;
+		sze = t_cam.get_KernelSize(&sze_min, &sze_max);
+	}
+	wxString out;
+	out << "Width " << sze << " pixel";
+	StaticTextKernelSize->SetLabel(out);
+}
+
+int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
+{
+	static const std::string main_win_title = "igyba - Thorlabs cameras";
+	const double wavelen_um = 1.064;
+
+	iprint(stdout, "%s read:\n", PROJECT_NAME.c_str());
+		for(int i = 0; i < argc; ++i)
+			iprint(stdout, "  argv[%i] = '%s'\n%c", i, argv[i],
+					(i == argc - 1) ? '\n' : ' ');
+
+	(*itw1ptr).t_cam.init_Camera();
+
+	(*itw1ptr).t_cam.show_Intro();
+
+	(*itw1ptr).t_cam.set_ColourMode();
+	(*itw1ptr).t_cam.set_ExitMode();
+	(*itw1ptr).t_cam.set_Display();
+	(*itw1ptr).t_cam.alloc_ImageMem();
+	(*itw1ptr).t_cam.set_ImageMem();
+	(*itw1ptr).t_cam.set_ImageSize();
+	(*itw1ptr).t_cam.inquire_ImageMem((int *)NULL, (int *)NULL,
+							(int *)NULL, (int *)NULL);
+
+	if((*itw1ptr).t_cam.caught_Error())
+	{
+		error_msg("error(s) in the camera initialisation detected. " \
+					"messages sent to 'stderr'.\n" \
+					"is the camera connected?\nexiting.",
+					ERR_ARG);
+		return EXIT_FAILURE;
+	}
+	else if(!(*itw1ptr).t_cam.get_Image())
+	{
+		error_msg("can't get an image from thorlabs_cam instance. good bye.",
+					ERR_ARG);
+		return EXIT_FAILURE;
+	}
+
+	update_TextExpTime();
+	update_TextGroundlift();
+	update_TextKernelSize();
+	update_TextStdDev();
+
+	(*itw1ptr).t_cam.get_Image((*itw1ptr).t_cam.in);
+	(*itw1ptr).t_cam.set_Pix2UmScale((*itw1ptr).t_cam.get_PixelPitch());
+	(*itw1ptr).t_cam.update_Mats_RgbAndFp();
+	(*itw1ptr).t_cam.set_MainWindowName(main_win_title);
+	/* track bar setup */
+	namedWindow((*itw1ptr).t_cam.get_TrackbarWindowName(), CV_WINDOW_AUTOSIZE);
+	(*itw1ptr).t_cam.show_Trackbars();
+	namedWindow((*itw1ptr).t_cam.get_CameraInfoWindowName(), CV_WINDOW_AUTOSIZE);
+	(*itw1ptr).t_cam.show_CameraTrackbars();
+	/* main window setup */
+	namedWindow((*itw1ptr).t_cam.get_MainWindowName(), CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO);
+
+	setMouseCallback((*itw1ptr).t_cam.get_MainWindowName(),
+					(*itw1ptr).cast_static_set_MouseEvent,
+					itw1ptr);
+
+	/* camera track bars */
+	(*itw1ptr).init_SliderExpTime();
+	/* image processing track bars */
+	(*itw1ptr).init_SliderStdDev();
+	(*itw1ptr).init_SliderKernelSize();
+	(*itw1ptr).init_SliderGroundlift();
+
+	(*itw1ptr).t_cam.show_Im_RGB();
+
+	std::thread thread_Viewer(grabber::schedule_Viewer, argc, argv);
+	std::thread thread_Copy(grabber::copy_DataToViewer);
+	std::thread thread_Minime(grabber::schedule_Minime, wavelen_um,
+							(*itw1ptr).t_cam.get_PixelPitch());
+
+	LedMain->SwitchOn();
+	ButtonQuit->Enable();
+
+	uint32_t kctrl = 0,
+	         c_btn_state = NONE_BTN;
+	for(;;)
+	{
+		if((*itw1ptr).t_cam.is_Grabbing())
+		{
+			if(!(*itw1ptr).t_cam.get_Image((*itw1ptr).t_cam.in))
+			{
+				error_msg("can't get an image from thorlabs_cam instance",
+							ERR_ARG);
+				break;
+			}
+			(*itw1ptr).t_cam.increment_Frames();
+		}
+		c_btn_state = btn_state.exchange(
+										NONE_BTN,
+										std::memory_order_acq_rel);
+		switch(c_btn_state)
+		{
+			case ACQ_SET_BACKGROUND:
+				(*itw1ptr).t_cam.set_Background();
+				break;
+			case UNSET_BACKGROUND:
+				(*itw1ptr).t_cam.unset_Background();
+				break;
+			case SAVE_RGB_BTN:
+				(*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.RGB);
+				break;
+			case SAVE_WORK_BTN:
+				(*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.WORK);
+				break;
+			case SAVE_FP_BTN:
+				(*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.FP_IN);
+				break;
+			case STORE_RGB_BTN:
+				(*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.RGB);
+				break;
+			case STORE_WORK_BTN:
+				(*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.WORK);
+				break;
+			case STORE_FP_BTN:
+				(*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.FP_IN);
+				break;
+			case SHOW_HELP:
+				(*itw1ptr).t_cam.show_Help();
+				break;
+			case RESIZE_CAM_WINDOW:
+				resizeWindow((*itw1ptr).t_cam.get_MainWindowName(),
+								(*itw1ptr).t_cam.get_Width(), (*itw1ptr).t_cam.get_Height());
+				break;
+			case TOGGLE_SMOOTHING:
+				(*itw1ptr).t_cam.toggle_Smoothing();
+				break;
+			case TOGGLE_VIEWER:
+				(*itw1ptr).t_cam.signal_ViewerThreadIfWait();
+				break;
+			case START_MINIME:
+				(*itw1ptr).t_cam.signal_MinimeThreadIfWait();
+				break;
+			case TOGGLE_IDLING:
+				(*itw1ptr).t_cam.toggle_Grabbing();
+				break;
+			case MAKE_GNUPLOT:
+				(*itw1ptr).t_cam.gnuplot_Image((*itw1ptr).t_cam.WORK);
+				break;
+			default:
+				(*itw1ptr).t_cam.update_Mats_RgbAndFp();
+				(*itw1ptr).t_cam.get_Moments();
+				(*itw1ptr).t_cam.signal_CopyThreadIfWait();
+
+				(*itw1ptr).t_cam.draw_Moments(false);
+				(*itw1ptr).t_cam.draw_Info();
+				(*itw1ptr).t_cam.draw_CameraInfo();
+				(*itw1ptr).t_cam.show_Im_RGB();
+				(*itw1ptr).t_cam.show_CameraTrackbars();
+				(*itw1ptr).t_cam.show_Trackbars();
+		}
+
+		#if SHOW_WAIT_KEY
+		iprint(stdout, "kctrl: %u\n", kctrl);
+		#endif
+
+		kctrl = waitKey(20);
+		if(c_btn_state == CLOSE_CAM_WINDOW ||
+			kctrl == 27 ||
+			kctrl == 1048603)
+			break;
+
+		HWND *hwnd =
+		static_cast<HWND *>(cvGetWindowHandle(main_win_title.c_str()));
+		if(hwnd == nullptr)
+			break;
+	}
+
+	destroyWindow((*itw1ptr).t_cam.get_TrackbarWindowName());
+	destroyWindow((*itw1ptr).t_cam.get_CameraInfoWindowName());
+	destroyWindow((*itw1ptr).t_cam.get_MainWindowName());
+
+	if(c_btn_state != CLOSE_CAM_WINDOW)
+		LedMain->SwitchOff();
+
+	iprint(stdout, "i made %lu turns\n", (*itw1ptr).t_cam.get_Frames());
+
+	/* first stop minime */
+	(*itw1ptr).t_cam.close_MinimeThread();
+	thread_Minime.join();
+
+	/* next stop reloading data into the viewer */
+	(*itw1ptr).t_cam.close_CopyThread();
+	thread_Copy.join();
+
+	/* then close, if necessary, the display */
+	if((*itw1ptr).t_cam.is_ViewerWindowRunning())
+		(*itw1ptr).t_cam.close_ViewerWindow();
+
+	/* finally close the actual thread */
+	(*itw1ptr).t_cam.close_ViewerThread();
+	thread_Viewer.join();
+
+	/* wait for second to rest - and maybe to flush memory */
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+	return EXIT_SUCCESS;
+}
+
+void igyba_thorlabs_wxFrame::schedule_CamThread(int argc, char **argv)
+{
+	while(true)
+	{
+		/* wait for the main loop to start the thread: */
+		(*itw1ptr).event_Cam.wait();
+		/* in case we want to leave: */
+		if((*itw1ptr).close_cam_thread.load())
+		{
+			(*itw1ptr).event_Cam.reset();
+			break;
+		}
+		/* fire up the thread: */
+		(*itw1ptr).launch_Cam(argc, argv);
+		/* go back and be ready to wait for the next round */
+		(*itw1ptr).event_Cam.reset();
+	}
+}
+
+void igyba_thorlabs_wxFrame::close_CamThread(void)
+{
+	close_cam_thread.store(true);
+	iprint(stdout, "waiting for cam to close .");
+	while(true)
+	{
+		if(signal_CamThreadIfWait())
+			break;
+		std::this_thread::sleep_for(std::chrono::milliseconds(80));
+		iprint(stdout, ".");
+		fflush(stdout);
+	}
+	iprint(stdout, " done\n");
+}
+
+bool igyba_thorlabs_wxFrame::signal_CamThreadIfWait(void)
+{
+	if(event_Cam.check())
+	{
+		event_Cam.signal();
+		return true;
+	}
+	else
+		return false;
+}
+
+void igyba_thorlabs_wxFrame::cast_static_set_MouseEvent(const int event,
+														const int x,
+														const int y,
+														const int flags,
+														void *udata)
+{
+	igyba_thorlabs_wxFrame *ptr = static_cast<igyba_thorlabs_wxFrame *>(udata);
+	(*ptr).set_MouseEvent(event, x, y, flags);
+}
+
+void igyba_thorlabs_wxFrame::set_MouseEvent(const int event,
+											const int x, const int y,
+											const int flags)
+{
+	if(flags & EVENT_FLAG_SHIFTKEY ||
+		select_roi.load(std::memory_order_consume))
+	{
+		if(event == EVENT_LBUTTONDOWN && !t_cam.get_MouseDrag())
+		{
+			/* AOI selection begins */
+			t_cam.set_RoiActive(false);
+			t_cam.set_EndRoi(Point_<int>(x, y));
+			t_cam.set_StartRoi(Point_<int>(x, y));
+			t_cam.set_MouseDrag(true);
+		}
+		else if(event == EVENT_MOUSEMOVE && t_cam.get_MouseDrag())
+		{
+			/* AOI being selected */
+			t_cam.set_EndRoi(Point_<int>(x, y));
+		}
+		else if(event == EVENT_LBUTTONUP && t_cam.get_MouseDrag())
+		{
+			t_cam.set_EndRoi(Point_<int>(x, y));
+			int sx, sy;
+			t_cam.get_StartRoi(&sx, &sy);
+			const int sw = x - sx,
+			          sh = y - sy;
+			t_cam.set_RectRoi(Rect_<int>(sx, sy, sw, sh));
+			t_cam.set_MouseDrag(false);
+			if(sw <= 25 || sh <= 25 ||
+				sx + abs(sw) >= (int)t_cam.get_nCols() ||
+				sy + abs(sh) >= (int)t_cam.get_nRows())
+			{
+				t_cam.set_RoiActive(false);
+				ToggleButtonAOI->SetValue(false);
+				select_roi.store(false, std::memory_order_release);
+			}
+			else
+			{
+				t_cam.set_RoiActive(true);
+				ToggleButtonAOI->SetValue(false);
+				select_roi.store(false, std::memory_order_release);
+			}
+		}
+	}
+    else if(event == EVENT_MOUSEMOVE || event == EVENT_LBUTTONDOWN)
+    {
+    	t_cam.set_MouseDrag(false);
+		t_cam.set_PixelValue(t_cam.get_PixelValueWork(x, y));
+		t_cam.copy_MousePosition(x, y);
+	}
+	else if(event == EVENT_RBUTTONDOWN ||
+			event == EVENT_MBUTTONDOWN)
+	{
+		t_cam.set_PixelValue(0xDEADDEAD);
+	}
+    else
+	{
+		t_cam.copy_MousePosition(0, 0);
+		t_cam.set_PixelValue(0xDEADDEAD);
+	}
+}
+
+wxString igyba_thorlabs_wxFrame::get_wxBuildInfo(void)
+{
+	wxString wxbuild(wxVERSION_STRING);
+	#if defined(__WXMSW__)
+	wxbuild << _T("-Windows");
+	#elif defined(__UNIX__)
+	wxbuild << _T("-Linux");
+	#endif
+	#if wxUSE_UNICODE
+	wxbuild << _T("-Unicode");
+	#else
+	wxbuild << _T("-ANSI");
+	#endif
+	return wxbuild;
+}
+
+/* buttons etc. */
+
+void igyba_thorlabs_wxFrame::OnToggleButtonBackgroundToggle(wxCommandEvent& event)
+{
+	if(ToggleButtonBackground->GetValue())
+	{
+		ToggleButtonBackground->SetLabel(_T("Unload background"));
+		btn_state.store(ACQ_SET_BACKGROUND, std::memory_order_release);
+	}
+	else
+	{
+		ToggleButtonBackground->SetLabel(_T("Acquire background"));
+		btn_state.store(UNSET_BACKGROUND, std::memory_order_release);
+	}
+}
+
+void igyba_thorlabs_wxFrame::OnButtonDecExpTimeClick(wxCommandEvent& event)
+{
+	static double tmin, tmax, tinc;
+	static bool once = false;
+	const double out_min = SliderExpTime->GetMin(),
+	             out_max = SliderExpTime->GetMax();
+	if(!once)
+	{
+		once = true;
+		double time;
+		t_cam.get_ExposureTimes(&time, &tmin, &tmax, &tinc);
+	}
+	const int curval = SliderExpTime->GetValue();
+	if(curval > SliderExpTime->GetMin())
+	{
+		SliderExpTime->SetValue(curval - 1);
+		const double res = map_Linear((double)(curval - 1),
+							out_min, out_max,
+							tmin, tmax);
+		t_cam.set_ExposureTime(res);
+		update_TextExpTime(res);
+	}
+}
+
+void igyba_thorlabs_wxFrame::OnButtonSaveImgRGBClick(wxCommandEvent& event)
+{
+	btn_state.store(SAVE_RGB_BTN, std::memory_order_release);
+}
+
+void igyba_thorlabs_wxFrame::OnButtonSaveImgWorkClick(wxCommandEvent& event)
+{
+	btn_state.store(SAVE_WORK_BTN, std::memory_order_release);
+}
+
+void igyba_thorlabs_wxFrame::OnButtonSaveImgFPClick(wxCommandEvent& event)
+{
+	btn_state.store(SAVE_FP_BTN, std::memory_order_release);
+}
+
+void igyba_thorlabs_wxFrame::OnButtonSaveDataRGBClick(wxCommandEvent& event)
+{
+	btn_state.store(STORE_RGB_BTN, std::memory_order_release);
+}
+
+void igyba_thorlabs_wxFrame::OnButtonSaveDataWorkClick(wxCommandEvent& event)
+{
+	btn_state.store(STORE_WORK_BTN, std::memory_order_release);
+}
+
+void igyba_thorlabs_wxFrame::OnButtonSaveDataFPClick(wxCommandEvent& event)
+{
+	btn_state.store(STORE_FP_BTN, std::memory_order_release);
+}
+
+void igyba_thorlabs_wxFrame::OnToggleButtonSmoothingToggle(wxCommandEvent& event)
+{
+	btn_state.store(TOGGLE_SMOOTHING, std::memory_order_release);
+	if(ToggleButtonSmoothing->GetValue())
+	{
+		ToggleButtonSmoothing->SetLabel(_T("Disable manipulation"));
+		SliderKernelSize->Enable();
+		SliderStdDev->Enable();
+		SliderGroundlift->Enable();
+		ButtonDecKernelSize->Enable();
+		ButtonDecStdDev->Enable();
+		ButtonDecGroundlift->Enable();
+		ButtonIncKernelSize->Enable();
+		ButtonIncStdDev->Enable();
+		ButtonIncGroundlift->Enable();
+	}
+	else
+	{
+		ToggleButtonSmoothing->SetLabel(_T("Enable manipulation"));
+		SliderKernelSize->Disable();
+		SliderStdDev->Disable();
+		SliderGroundlift->Disable();
+		ButtonDecKernelSize->Disable();
+		ButtonDecStdDev->Disable();
+		ButtonDecGroundlift->Disable();
+		ButtonIncKernelSize->Disable();
+		ButtonIncStdDev->Disable();
+		ButtonIncGroundlift->Disable();
+	}
+}
+
+void igyba_thorlabs_wxFrame::OnQuit(wxCommandEvent &event)
+{
+	Close();
+}
+
+void igyba_thorlabs_wxFrame::OnAbout(wxCommandEvent &event)
+{
+	btn_state.store(SHOW_HELP, std::memory_order_release);
+
+	wxString msg;
+	msg << "Called " + PROJECT_NAME + " " +
+ 	PROJECT_MAJ_VERSION + "." + PROJECT_MIN_VERSION + "\n" +
+ 	"Build with tons of key strokes. And with\n" +
+ 	"- OpenCV " <<
+ 	CV_MAJOR_VERSION << "." <<
+ 	CV_MINOR_VERSION << "." <<
+ 	CV_SUBMINOR_VERSION <<
+ 	"\n- freeglut " \
+ 	"2.0." << FREEGLUT_VERSION_2_0 <<
+ 	"\n- OpenMP" \
+ 	"\n- gcc " <<
+ 	__GNUC__ << "." <<
+ 	__GNUC_MINOR__ << "." <<
+ 	__GNUC_PATCHLEVEL__ <<
+ 	"\n- " + get_wxBuildInfo() +
+ 	"\nclesch@fysik.dtu.dk";
+	wxMessageBox(msg, _T("Nice to see you here!"));
+}
+
+void igyba_thorlabs_wxFrame::OnButtonIncExpTimeClick(wxCommandEvent& event)
+{
+	static double tmin, tmax, tinc;
+	static bool once = false;
+	const double out_min = SliderExpTime->GetMin(),
+	             out_max = SliderExpTime->GetMax();
+	if(!once)
+	{
+		once = true;
+		double time;
+		t_cam.get_ExposureTimes(&time, &tmin, &tmax, &tinc);
+	}
+	const int curval = SliderExpTime->GetValue();
+	if(curval < SliderExpTime->GetMax())
+	{
+		SliderExpTime->SetValue(curval + 1);
+		const double res = map_Linear((double)(curval + 1),
+							out_min, out_max,
+							tmin, tmax);
+		t_cam.set_ExposureTime(res);
+		update_TextExpTime(res);
+	}
+}
+
+void igyba_thorlabs_wxFrame::OnSliderKernelSizeCmdScroll(wxScrollEvent& event)
+{
+	uint res = ((uint)SliderKernelSize->GetValue() << 1) + 1;
+	assert(res & 1);
+	t_cam.set_KernelSize(res);
+	update_TextKernelSize(res);
+}
+
+void igyba_thorlabs_wxFrame::OnToggleButtonFrameGrabToggle(wxCommandEvent& event)
+{
+	btn_state.store(TOGGLE_IDLING, std::memory_order_release);
+	if(ToggleButtonFrameGrab->GetValue())
+	{
+		ToggleButtonFrameGrab->SetLabel(_T("Continue frame grab"));
+	}
+	else
+		ToggleButtonFrameGrab->SetLabel(_T("Idle frame grab"));
+}
+
+void igyba_thorlabs_wxFrame::OnToggleButtonViewerToggle(wxCommandEvent& event)
+{
+	btn_state.store(TOGGLE_VIEWER, std::memory_order_release);
+	if(ToggleButtonViewer->GetValue())
+		ToggleButtonViewer->SetLabel(_T("Close viewer"));
+	else
+		ToggleButtonViewer->SetLabel(_T("Launch viewer"));
+}
+
+void igyba_thorlabs_wxFrame::OnButtonStartClick(wxCommandEvent& event)
+{
+
+}
+
+void igyba_thorlabs_wxFrame::OnCloseMainFrame(wxCloseEvent& event)
+{
+	btn_state.store(CLOSE_CAM_WINDOW);
+	close_CamThread();
+	thread_Cam.join();
+	Destroy();
+}
+
+void igyba_thorlabs_wxFrame::OnButtonGnuplotClick(wxCommandEvent& event)
+{
+	btn_state.store(MAKE_GNUPLOT, std::memory_order_release);
+}
+
+void igyba_thorlabs_wxFrame::OnButtonResizeCamWinClick(wxCommandEvent& event)
+{
+	btn_state.store(RESIZE_CAM_WINDOW, std::memory_order_release);
+}
+
+void igyba_thorlabs_wxFrame::OnButtonQuitClick(wxCommandEvent& event)
+{
+	Close();
+}
+
+void igyba_thorlabs_wxFrame::OnSliderExpTimeCmdScroll(wxScrollEvent& event)
+{
+	const double out_min = SliderExpTime->GetMin(),
+	             out_max = SliderExpTime->GetMax();
+	static double tmin, tmax;
+	static bool once = false;
+	if(!once)
+	{
+		once = true;
+		double time, tinc;
+		t_cam.get_ExposureTimes(&time, &tmin, &tmax, &tinc);
+	}
+	const double res = map_Linear((double)SliderExpTime->GetValue(),
+								out_min, out_max,
+								tmin, tmax);
+	t_cam.set_ExposureTime(res);
+	update_TextExpTime(res);
+}
+
+void igyba_thorlabs_wxFrame::init_SliderExpTime(void)
+{
+	const double out_min = 0.,
+	             out_max = 99.;
+	double time, tmax, tmin, tinc;
+	t_cam.get_ExposureTimes(&time, &tmin, &tmax, &tinc);
+	const double res = map_Linear(time, tmin, tmax, out_min, out_max);
+	static int setting = res;
+	assert(setting < 100);
+	SliderExpTime->SetRange((int)out_min, (int)out_max);
+	SliderExpTime->SetValue(setting);
+}
+
+void igyba_thorlabs_wxFrame::OnSliderGroundliftCmdScroll(wxScrollEvent& event)
+{
+	const double out_min = SliderGroundlift->GetMin(),
+	             out_max = SliderGroundlift->GetMax();
+	static double gl, gl_max;
+	static bool once = false;
+	if(!once)
+	{
+		once = true;
+		t_cam.get_GroundliftRange(&gl, &gl_max);
+	}
+	double res = map_Linear((double)SliderGroundlift->GetValue(),
+							out_min, out_max,
+							0., gl_max);
+	t_cam.set_Groundlift(res);
+	update_TextGroundlift(res);
+}
+
+void igyba_thorlabs_wxFrame::init_SliderStdDev(void)
+{
+	const double out_min = 0.,
+	             out_max = 99.;
+	double std_min, std_max, cur_val;
+	cur_val = t_cam.get_GaussBlurRange(&std_min, &std_max);
+	double res = map_Linear(cur_val, std_min, std_max, out_min, out_max);
+	static int setting = res;
+	assert(setting < 100);
+	SliderStdDev->SetRange((int)out_min, (int)out_max);
+	SliderStdDev->SetValue(setting);
+}
+
+void igyba_thorlabs_wxFrame::init_SliderKernelSize(void)
+{
+	const uint out_min = 1;
+	uint sze_min, sze_max, cur_val,
+	     out_max;
+	cur_val = t_cam.get_KernelSize(&sze_min, &sze_max);
+	out_max = (sze_max - 1) >> 1;
+	SliderKernelSize->SetRange(out_min, out_max);
+	SliderKernelSize->SetValue((cur_val - 1) >> 1);
+}
+
+
+void igyba_thorlabs_wxFrame::init_SliderGroundlift(void)
+{
+	const double out_min = 0.,
+	             out_max = 99.;
+	double gl, gl_max;
+	t_cam.get_GroundliftRange(&gl, &gl_max);
+	double res = map_Linear(gl, 0., gl_max, out_min, out_max);
+	static int setting = res;
+	assert(setting < 100);
+	SliderGroundlift->SetRange((int)out_min, (int)out_max);
+	SliderGroundlift->SetValue(setting);
+}
+
+void igyba_thorlabs_wxFrame::OnButtonDecGroundliftClick(wxCommandEvent& event)
+{
+	static double gl_max;
+	static bool once = false;
+	const double out_min = SliderGroundlift->GetMin(),
+	             out_max = SliderGroundlift->GetMax();
+	if(!once)
+	{
+		once = true;
+		double gl;
+		t_cam.get_GroundliftRange(&gl, &gl_max);
+	}
+	const int curval = SliderGroundlift->GetValue();
+	if(curval > SliderGroundlift->GetMin())
+	{
+		SliderGroundlift->SetValue(curval - 1);
+		const double res = map_Linear((double)(curval - 1),
+							out_min, out_max,
+							0., gl_max);
+		t_cam.set_Groundlift(res);
+		update_TextGroundlift(res);
+	}
+}
+
+void igyba_thorlabs_wxFrame::OnButtonIncGroundliftClick(wxCommandEvent& event)
+{
+	static double gl_max;
+	static bool once = false;
+	const double out_min = SliderGroundlift->GetMin(),
+	             out_max = SliderGroundlift->GetMax();
+	if(!once)
+	{
+		once = true;
+		double gl;
+		t_cam.get_GroundliftRange(&gl, &gl_max);
+	}
+	const int curval = SliderGroundlift->GetValue();
+	if(curval < SliderGroundlift->GetMax())
+	{
+		SliderGroundlift->SetValue(curval + 1);
+		const double res = map_Linear((double)(curval + 1),
+							out_min, out_max,
+							0., gl_max);
+		t_cam.set_Groundlift(res);
+		update_TextGroundlift(res);
+	}
+}
+
+void igyba_thorlabs_wxFrame::OnSliderStdDevCmdScroll(wxScrollEvent& event)
+{
+	const double out_min = SliderStdDev->GetMin(),
+			 out_max = SliderStdDev->GetMax();
+	static double gb_min, gb_max;
+	static bool once = false;
+	if(!once)
+	{
+		once = true;
+		t_cam.get_GaussBlurRange(&gb_min, &gb_max);
+	}
+	double res = map_Linear((double)SliderStdDev->GetValue(),
+							out_min, out_max,
+							gb_min, gb_max);
+	t_cam.set_GaussBlur(res);
+	update_TextStdDev(res);
+}
+
+void igyba_thorlabs_wxFrame::OnButtonDecStdDevClick(wxCommandEvent& event)
+{
+	static double gb_min, gb_max;
+	static bool once = false;
+	const double out_min = SliderStdDev->GetMin(),
+	             out_max = SliderStdDev->GetMax();
+	if(!once)
+	{
+		once = true;
+		t_cam.get_GaussBlurRange(&gb_min, &gb_max);
+	}
+	const int curval = SliderStdDev->GetValue();
+	if(curval > SliderStdDev->GetMin())
+	{
+		SliderStdDev->SetValue(curval - 1);
+		const double res = map_Linear((double)(curval - 1),
+							out_min, out_max,
+							gb_min, gb_max);
+		t_cam.set_GaussBlur(res);
+		update_TextStdDev(res);
+	}
+}
+
+void igyba_thorlabs_wxFrame::OnButtonIncStdDevClick(wxCommandEvent& event)
+{
+	static double gb_min, gb_max;
+	static bool once = false;
+	const double out_min = SliderStdDev->GetMin(),
+	             out_max = SliderStdDev->GetMax();
+	if(!once)
+	{
+		once = true;
+		t_cam.get_GaussBlurRange(&gb_min, &gb_max);
+	}
+	const int curval = SliderStdDev->GetValue();
+	if(curval < SliderStdDev->GetMax())
+	{
+		SliderStdDev->SetValue(curval + 1);
+		const double res = map_Linear((double)(curval + 1),
+							out_min, out_max,
+							gb_min, gb_max);
+		t_cam.set_GaussBlur(res);
+		update_TextStdDev(res);
+	}
+}
+
+void igyba_thorlabs_wxFrame::OnButtonDecKernelSizeClick(wxCommandEvent& event)
+{
+	int curval = SliderKernelSize->GetValue();
+	if(curval > SliderKernelSize->GetMin())
+	{
+		SliderKernelSize->SetValue(curval - 1);
+		curval = (curval << 1) + 1;
+		t_cam.set_KernelSize(curval - 2);
+		update_TextKernelSize(curval - 2);
+	}
+}
+
+void igyba_thorlabs_wxFrame::OnButtonIncKernelSizeClick(wxCommandEvent& event)
+{
+	int curval = SliderKernelSize->GetValue();
+	if(curval < SliderKernelSize->GetMax())
+	{
+		SliderKernelSize->SetValue(curval + 1);
+		curval = (curval << 1) + 1;
+		t_cam.set_KernelSize(curval + 2);
+		update_TextKernelSize(curval + 2);
+	}
+}
+
+void igyba_thorlabs_wxFrame::OnButtonMinimeClick(wxCommandEvent& event)
+{
+	if(wxMessageBox("Start fit routine?", "Please confirm",
+					wxICON_QUESTION | wxYES_NO) != wxYES)
+		return;
+	else
+		btn_state.store(START_MINIME, std::memory_order_release);
+}
+
+void igyba_thorlabs_wxFrame::OnToggleButtonAOIToggle(wxCommandEvent& event)
+{
+	if(ToggleButtonAOI->GetValue())
+		select_roi.store(true, std::memory_order_release);
+}

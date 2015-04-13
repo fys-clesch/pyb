@@ -1,0 +1,973 @@
+# depslib dependency file v1.0
+1428679158 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
+	"grabber_class.h"
+	<assert.h>
+	"curses.h"
+
+1424455974 
+
+1428679181 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
+	<opencv2/imgproc/imgproc.hpp>
+	"../../src/header.hpp"
+	"../../viewer_pp/src/viewer_class.h"
+	"../../minime_pp/src/minime_class.h"
+	"../../src/threadhand_class.h"
+
+1424862610 /threadhand_class.h"
+
+1419751505 c:\mingw\mingw64\opencv\include\opencv2\core\core.hpp
+	"opencv2/core/types_c.h"
+	"opencv2/core/version.hpp"
+	<limits.h>
+	<algorithm>
+	<cmath>
+	<cstddef>
+	<complex>
+	<map>
+	<new>
+	<string>
+	<vector>
+	<sstream>
+	"opencv2/core/operations.hpp"
+	"opencv2/core/mat.hpp"
+
+1407673389 ore/mat.hpp"
+
+1404644518 c:\mingw\mingw64\opencv\include\opencv2\core\types_c.h
+	<assert.h>
+	<stdlib.h>
+	<string.h>
+	<float.h>
+	<stdint.h>
+	<intrin.h>
+	<emmintrin.h>
+	<fastmath.h>
+	<math.h>
+	<ipl.h>
+	<ipl/ipl.h>
+	"tegra_round.hpp"
+	"emmintrin.h"
+
+1404640918 .h"
+
+1424588935 c:\mingw\mingw64\opencv\include\opencv2\core\version.hpp
+
+1419751505 c:\mingw\mingw64\opencv\include\opencv2\core\operations.hpp
+	<string.h>
+	<limits.h>
+	<ext/atomicity.h>
+	<bits/atomicity.h>
+	<limits>
+
+1407676989 c:\mingw\mingw64\opencv\include\opencv2\core\mat.hpp
+	<limits.h>
+	<string.h>
+
+1384339462 c:\mingw\mingw64\opencv\include\opencv2\highgui\highgui.hpp
+	"opencv2/core/core.hpp"
+	"opencv2/highgui/highgui_c.h"
+
+1384335862 ighgui/highgui_c.h"
+
+1419145791 c:\mingw\mingw64\opencv\include\opencv2\highgui\highgui_c.h
+	"opencv2/core/core_c.h"
+
+1384335862 ore/core_c.h"
+
+1407676989 c:\mingw\mingw64\opencv\include\opencv2\core\core_c.h
+	"opencv2/core/types_c.h"
+
+1407673389 ore/types_c.h"
+
+1407676989 c:\mingw\mingw64\opencv\include\opencv2\imgproc\imgproc.hpp
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/types_c.h"
+
+1407673389 mgproc/types_c.h"
+
+1384339462 c:\mingw\mingw64\opencv\include\opencv2\imgproc\types_c.h
+	"opencv2/core/core_c.h"
+
+1428343147 c:\users\clesch\dropbox\dtu\progs\igyba\src\header.hpp
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+
+1428652728 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.h
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	<float.h>
+	<ctype.h>
+	<chrono>
+	<thread>
+	<atomic>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	"../../src/header.hpp"
+	"../../src/threadhand_class.h"
+
+1424899072 /mingw.thread.h"
+
+1424629440 c:\users\clesch\dropbox\dtu\progs\igyba\src\mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1424625840 >
+
+1428652390 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+
+1424858101 s.h"
+
+1425375110 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.h
+	<string.h>
+	<stdlib.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+
+1424794949 h>
+
+1424968601 c:\users\clesch\dropbox\dtu\progs\igyba\src\threadhand_class.h
+	<thread>
+	<condition_variable>
+	<mutex>
+	<atomic>
+	"header.hpp"
+	"mingw.thread.h"
+	"mingw.mutex.h"
+	"mingw.condition_variable.h"
+
+1424859981 dition_variable.h"
+
+1424211762 c:\users\clesch\dropbox\dtu\progs\igyba\src\mingw.mutex.h
+
+1424211762 c:\users\clesch\dropbox\dtu\progs\igyba\src\mingw.condition_variable.h
+	<atomic>
+	<assert.h>
+	<condition_variable>
+
+1424208162 _variable>
+
+1423508403 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\helper.h
+
+1423666484 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\helper.cpp
+	<iomanip>
+	<sstream>
+	"helper.h"
+
+1426358429 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\test.cpp
+	"grabber_class.h"
+	"test.h"
+
+1426348211 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\test.h
+
+1425646204 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.cpp
+	"fifo_class.h"
+
+1428652306 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1424960866 _s.h"
+
+1425150083 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\funcs.h
+
+1424987605 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.h
+
+1425150133 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\funcs.cpp
+	"minime_class.h"
+	"funcs.h"
+
+1425203744 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\gabe_class.cpp
+	"gabe_class.h"
+	"funcs.h"
+
+1425052377 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\gabe_class.h
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+
+1428669178 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.cpp
+	"minime_class.h"
+
+1424987389 ass.h"
+
+1425475514 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.cpp
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+
+1424952968 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\random.h
+
+1424952968 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\random.cpp
+	<time.h>
+	"random.h"
+
+1428659684 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\auxf.cpp
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+
+1424901020 p"
+
+1428658135 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\threadhand_class.cpp
+	"threadhand_class.h"
+
+1424965001 d_class.h"
+
+1428675472 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.cpp
+	"thorlabs_cam.h"
+	<assert.h>
+
+1424795026 r/src/helper.h"
+
+1428675472 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.h
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
+	"../src/header.hpp"
+	"../grabber/src/grabber_class.h"
+	"ueye.h"
+	"uc480.h"
+
+1402996861 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\ueye.h
+	<unistd.h>
+	<stdint.h>
+	<windows.h>
+
+1402997330 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\uc480.h
+	<unistd.h>
+	<stdint.h>
+	<windows.h>
+
+1424856722 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\control.cpp
+	"viewer_class.h"
+	"draw.h"
+
+1424772856 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\draw.h
+
+1424969217 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\draw.cpp
+	"viewer_class.h"
+
+1424286144 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\funcs.cpp
+
+1428670809 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.cpp
+	"viewer_class.h"
+
+1424794022 "
+
+1424286265 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\control.h
+
+1428655982 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs\main.cpp
+	"../src/header.hpp"
+	"../thorlabs_cam/thorlabs_cam.h"
+	"../grabber/src/test.h"
+
+1424987727 r/src/test.h"
+
+1425046344 source:/home/clesch/Dropbox/DTU/progs/igyba/grabber/src/grabber_class.cpp
+	"grabber_class.h"
+	"helper.h"
+	"curses.h"
+	"grabber_class.h"
+	"helper.h"
+	<assert.h>
+	"curses.h"
+
+1425031946 /home/clesch/Dropbox/DTU/progs/igyba/grabber/src/grabber_class.h
+	<sys/time.h>
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
+	<opencv2/imgproc/imgproc.hpp>
+	"../../src/header.hpp"
+	"../../viewer_pp/src/viewer_class.h"
+	"../../minime_pp/src/minime_class.h"
+	"../../src/threadhand_class.h"
+	<sys/time.h>
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
+	<opencv2/imgproc/imgproc.hpp>
+	"../../src/header.hpp"
+	"../../viewer_pp/src/viewer_class.h"
+	"../../minime_pp/src/minime_class.h"
+	"../../src/threadhand_class.h"
+
+1425045227 /home/clesch/Dropbox/DTU/progs/igyba/src/header.hpp
+	<stdio.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdarg.h>
+	<string>
+
+1425027826 /home/clesch/Dropbox/DTU/progs/igyba/viewer_pp/src/viewer_class.h
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	<float.h>
+	<ctype.h>
+	<assert.h>
+	<chrono>
+	<thread>
+	<atomic>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	"../../src/header.hpp"
+	"../../src/threadhand_class.h"
+	"../../src/mingw.thread.h"
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	<float.h>
+	<ctype.h>
+	<chrono>
+	<thread>
+	<atomic>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	"../../src/header.hpp"
+	"../../src/threadhand_class.h"
+	"../../src/mingw.thread.h"
+
+1424965001 /home/clesch/Dropbox/DTU/progs/igyba/src/threadhand_class.h
+	<thread>
+	<condition_variable>
+	<mutex>
+	"header.hpp"
+	"mingw.thread.h"
+	"mingw.mutex.h"
+	"mingw.condition_variable.h"
+	<thread>
+	<condition_variable>
+	<mutex>
+	<atomic>
+	"header.hpp"
+	"mingw.thread.h"
+	"mingw.mutex.h"
+	"mingw.condition_variable.h"
+
+1424625840 /home/clesch/Dropbox/DTU/progs/igyba/src/mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1424208162 /home/clesch/Dropbox/DTU/progs/igyba/src/mingw.mutex.h
+
+1424208162 /home/clesch/Dropbox/DTU/progs/igyba/src/mingw.condition_variable.h
+	<atomic>
+	<assert.h>
+	<condition_variable>
+	<atomic>
+	<assert.h>
+	<condition_variable>
+
+1424986164 /home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/minime_class.h
+	<stdlib.h>
+	<math.h>
+	<assert.h>
+	<float.h>
+	<math.h>
+	<time.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<time.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+
+1424986557 /home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/fifo_class.h
+	<string.h>
+	<stdlib.h>
+	<time.h>
+	<string>
+	<cstdio>
+	<chrono>
+	<thread>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+	<string.h>
+	<stdlib.h>
+	<sys/time.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+
+1423508403 /home/clesch/Dropbox/DTU/progs/igyba/grabber/src/helper.h
+
+1423666484 source:/home/clesch/Dropbox/DTU/progs/igyba/grabber/src/helper.cpp
+	<iomanip>
+	<sstream>
+	"helper.h"
+	<iomanip>
+	<sstream>
+	"helper.h"
+
+1424959172 source:/home/clesch/Dropbox/DTU/progs/igyba/grabber/src/test.cpp
+	"grabber_class.h"
+	"helper.h"
+	"test.h"
+	"grabber_class.h"
+	"helper.h"
+	"test.h"
+
+1423499920 /home/clesch/Dropbox/DTU/progs/igyba/grabber/src/test.h
+
+1424986625 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/fifo_class.cpp
+	"fifo_class.h"
+	"fifo_class.h"
+
+1424960866 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/fit_fun.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1424954377 /home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/funcs.h
+	<string>
+
+1424984005 /home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/minimizer_s.h
+
+1424949036 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/funcs.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minime_class.h"
+	"funcs.h"
+
+1424949129 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/gabe_class.cpp
+	"gabe_class.h"
+	"funcs.h"
+	"gabe_class.h"
+	"funcs.h"
+
+1424965001 /home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/gabe_class.h
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+
+1425022312 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/minime_class.cpp
+	"minime_class.h"
+	"minime_class.h"
+
+1425021928 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/minimizer_s.cpp
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+
+1424949368 /home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/random.h
+
+1424949368 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/random.cpp
+	<time.h>
+	"random.h"
+	<time.h>
+	"random.h"
+
+1424901020 source:/home/clesch/Dropbox/DTU/progs/igyba/src/auxf.cpp
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+
+1424965001 source:/home/clesch/Dropbox/DTU/progs/igyba/src/threadhand_class.cpp
+	"threadhand_class.h"
+	"threadhand_class.h"
+
+1424984864 source:/home/clesch/Dropbox/DTU/progs/igyba/thorlabs_cam/thorlabs_cam.cpp
+	"thorlabs_cam.h"
+	"../grabber/src/helper.h"
+	"thorlabs_cam.h"
+	"../grabber/src/helper.h"
+	<assert.h>
+
+1424728171 /home/clesch/Dropbox/DTU/progs/igyba/thorlabs_cam/thorlabs_cam.h
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
+	"../src/header.hpp"
+	"../grabber/src/grabber_class.h"
+	"ueye.h"
+	"uc480.h"
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
+	"../src/header.hpp"
+	"../grabber/src/grabber_class.h"
+	"ueye.h"
+	"uc480.h"
+
+1402996861 /home/clesch/Dropbox/DTU/progs/igyba/thorlabs_cam/ueye.h
+	<unistd.h>
+	<stdint.h>
+	<windows.h>
+	<unistd.h>
+	<stdint.h>
+	<windows.h>
+
+1402997330 /home/clesch/Dropbox/DTU/progs/igyba/thorlabs_cam/uc480.h
+	<unistd.h>
+	<stdint.h>
+	<windows.h>
+	<unistd.h>
+	<stdint.h>
+	<windows.h>
+
+1424726633 source:/home/clesch/Dropbox/DTU/progs/igyba/viewer_pp/src/control.cpp
+	"viewer_class.h"
+	"draw.h"
+
+1424772856 /home/clesch/Dropbox/DTU/progs/igyba/viewer_pp/src/draw.h
+
+1424965617 source:/home/clesch/Dropbox/DTU/progs/igyba/viewer_pp/src/draw.cpp
+	"viewer_class.h"
+	"viewer_class.h"
+
+1424286144 source:/home/clesch/Dropbox/DTU/progs/igyba/viewer_pp/src/funcs.cpp
+
+1425043401 source:/home/clesch/Dropbox/DTU/progs/igyba/viewer_pp/src/viewer_class.cpp
+	"viewer_class.h"
+	"draw.h"
+	"control.h"
+	"viewer_class.h"
+
+1424286265 /home/clesch/Dropbox/DTU/progs/igyba/viewer_pp/src/control.h
+
+1425046900 source:/home/clesch/Dropbox/DTU/progs/igyba/thorlabs/main.cpp
+	"../src/header.hpp"
+	"../thorlabs_cam/thorlabs_cam.h"
+	"../grabber/src/test.h"
+	"../src/header.hpp"
+	"../thorlabs_cam/thorlabs_cam.h"
+	"../grabber/src/test.h"
+
+1425669459 source:c:\users\cs\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
+	"grabber_class.h"
+	<assert.h>
+	"curses.h"
+
+1425680976 c:\users\cs\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
+	<opencv2/imgproc/imgproc.hpp>
+	"../../src/header.hpp"
+	"../../viewer_pp/src/viewer_class.h"
+	"../../minime_pp/src/minime_class.h"
+	"../../src/threadhand_class.h"
+
+1425663598 c:\users\cs\dropbox\dtu\progs\igyba\src\header.hpp
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+
+1425204049 c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.h
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	<float.h>
+	<ctype.h>
+	<chrono>
+	<thread>
+	<atomic>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	"../../src/header.hpp"
+	"../../src/threadhand_class.h"
+	"../../src/mingw.thread.h"
+
+1424965001 c:\users\cs\dropbox\dtu\progs\igyba\src\threadhand_class.h
+	<thread>
+	<condition_variable>
+	<mutex>
+	<atomic>
+	"header.hpp"
+	"mingw.thread.h"
+	"mingw.mutex.h"
+	"mingw.condition_variable.h"
+
+1424625840 c:\users\cs\dropbox\dtu\progs\igyba\src\mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1424208162 c:\users\cs\dropbox\dtu\progs\igyba\src\mingw.mutex.h
+
+1424208162 c:\users\cs\dropbox\dtu\progs\igyba\src\mingw.condition_variable.h
+	<atomic>
+	<assert.h>
+	<condition_variable>
+
+1425200254 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+
+1425371510 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.h
+	<string.h>
+	<stdlib.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+
+1423508403 c:\users\cs\dropbox\dtu\progs\igyba\grabber\src\helper.h
+
+1423666484 source:c:\users\cs\dropbox\dtu\progs\igyba\grabber\src\helper.cpp
+	<iomanip>
+	<sstream>
+	"helper.h"
+
+1425147371 source:c:\users\cs\dropbox\dtu\progs\igyba\grabber\src\test.cpp
+	"grabber_class.h"
+	"test.h"
+
+1423499920 c:\users\cs\dropbox\dtu\progs\igyba\grabber\src\test.h
+
+1425642604 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.cpp
+	"fifo_class.h"
+
+1425374171 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1425146483 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\funcs.h
+
+1424984005 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.h
+
+1425146533 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\funcs.cpp
+	"minime_class.h"
+	"funcs.h"
+
+1425200144 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\gabe_class.cpp
+	"gabe_class.h"
+	"funcs.h"
+
+1425048777 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\gabe_class.h
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+
+1425219205 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.cpp
+	"minime_class.h"
+
+1425471914 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.cpp
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+
+1424949368 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\random.h
+
+1424949368 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\random.cpp
+	<time.h>
+	"random.h"
+
+1425663598 source:c:\users\cs\dropbox\dtu\progs\igyba\src\auxf.cpp
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+
+1424965001 source:c:\users\cs\dropbox\dtu\progs\igyba\src\threadhand_class.cpp
+	"threadhand_class.h"
+
+1425642482 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.cpp
+	"thorlabs_cam.h"
+	<assert.h>
+
+1425554758 c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.h
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
+	"../src/header.hpp"
+	"../grabber/src/grabber_class.h"
+	"ueye.h"
+	"uc480.h"
+
+1402993261 c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_cam\ueye.h
+	<unistd.h>
+	<stdint.h>
+	<windows.h>
+
+1402993730 c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_cam\uc480.h
+	<unistd.h>
+	<stdint.h>
+	<windows.h>
+
+1424947964 source:c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\control.cpp
+	"viewer_class.h"
+
+1424772856 c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\draw.h
+
+1424965617 source:c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\draw.cpp
+	"viewer_class.h"
+
+1425627781 source:c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.cpp
+	"viewer_class.h"
+
+1424286265 c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\control.h
+
+1425559620 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs\main.cpp
+	"../src/header.hpp"
+	"../thorlabs_cam/thorlabs_cam.h"
+	"../grabber/src/test.h"
+
+1424898886 source:/home/cs/Dropbox/DTU/progs/igyba/grabber/src/grabber_class.cpp
+	"grabber_class.h"
+	"helper.h"
+	"curses.h"
+
+1424862610 /home/cs/Dropbox/DTU/progs/igyba/grabber/src/grabber_class.h
+	<sys/time.h>
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
+	<opencv2/imgproc/imgproc.hpp>
+	"../../src/header.hpp"
+	"../../viewer_pp/src/viewer_class.h"
+	"../../minime_pp/src/minime_class.h"
+	"../../src/threadhand_class.h"
+
+1424901098 /home/cs/Dropbox/DTU/progs/igyba/src/header.hpp
+	<stdio.h>
+	<stdarg.h>
+
+1424899072 /home/cs/Dropbox/DTU/progs/igyba/viewer_pp/src/viewer_class.h
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	<float.h>
+	<ctype.h>
+	<assert.h>
+	<chrono>
+	<thread>
+	<atomic>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	"../../src/header.hpp"
+	"../../src/threadhand_class.h"
+	"../../src/mingw.thread.h"
+
+1424859981 /home/cs/Dropbox/DTU/progs/igyba/src/threadhand_class.h
+	<thread>
+	<condition_variable>
+	<mutex>
+	<atomic>
+	"header.hpp"
+	"mingw.thread.h"
+	"mingw.mutex.h"
+	"mingw.condition_variable.h"
+
+1424625840 /home/cs/Dropbox/DTU/progs/igyba/src/mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1424208162 /home/cs/Dropbox/DTU/progs/igyba/src/mingw.mutex.h
+
+1424208162 /home/cs/Dropbox/DTU/progs/igyba/src/mingw.condition_variable.h
+	<atomic>
+	<assert.h>
+	<condition_variable>
+
+1424858101 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/minime_class.h
+	<stdlib.h>
+	<math.h>
+	<assert.h>
+	<float.h>
+	<math.h>
+	<time.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+
+1424794949 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/fifo_class.h
+	<string.h>
+	<stdlib.h>
+	<time.h>
+	<string>
+	<cstdio>
+	<chrono>
+	<thread>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+
+1423508403 /home/cs/Dropbox/DTU/progs/igyba/grabber/src/helper.h
+
+1423666484 source:/home/cs/Dropbox/DTU/progs/igyba/grabber/src/helper.cpp
+	<iomanip>
+	<sstream>
+	"helper.h"
+
+1424455974 source:/home/cs/Dropbox/DTU/progs/igyba/grabber/src/test.cpp
+	"grabber_class.h"
+	"helper.h"
+	"test.h"
+
+1423499920 /home/cs/Dropbox/DTU/progs/igyba/grabber/src/test.h
+
+1425217909 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs\igyba_thorlabs.rc
+
+1419751505 c:\mingw\mingw64\opencv_static\include\opencv2\core\core.hpp
+	"opencv2/core/types_c.h"
+	"opencv2/core/version.hpp"
+	<limits.h>
+	<algorithm>
+	<cmath>
+	<cstddef>
+	<complex>
+	<map>
+	<new>
+	<string>
+	<vector>
+	<sstream>
+	"opencv2/core/operations.hpp"
+	"opencv2/core/mat.hpp"
+
+1404644518 c:\mingw\mingw64\opencv_static\include\opencv2\core\types_c.h
+	<assert.h>
+	<stdlib.h>
+	<string.h>
+	<float.h>
+	<stdint.h>
+	<intrin.h>
+	<emmintrin.h>
+	<fastmath.h>
+	<math.h>
+	<ipl.h>
+	<ipl/ipl.h>
+	"tegra_round.hpp"
+	"emmintrin.h"
+
+1424588935 c:\mingw\mingw64\opencv_static\include\opencv2\core\version.hpp
+
+1419751505 c:\mingw\mingw64\opencv_static\include\opencv2\core\operations.hpp
+	<string.h>
+	<limits.h>
+	<ext/atomicity.h>
+	<bits/atomicity.h>
+	<limits>
+
+1407676989 c:\mingw\mingw64\opencv_static\include\opencv2\core\mat.hpp
+	<limits.h>
+	<string.h>
+
+1384339462 c:\mingw\mingw64\opencv_static\include\opencv2\highgui\highgui.hpp
+	"opencv2/core/core.hpp"
+	"opencv2/highgui/highgui_c.h"
+
+1419145791 c:\mingw\mingw64\opencv_static\include\opencv2\highgui\highgui_c.h
+	"opencv2/core/core_c.h"
+
+1407676989 c:\mingw\mingw64\opencv_static\include\opencv2\core\core_c.h
+	"opencv2/core/types_c.h"
+
+1407676989 c:\mingw\mingw64\opencv_static\include\opencv2\imgproc\imgproc.hpp
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/types_c.h"
+
+1384339462 c:\mingw\mingw64\opencv_static\include\opencv2\imgproc\types_c.h
+	"opencv2/core/core_c.h"
+
+1425221509 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs\igyba_thorlabs.rc
+

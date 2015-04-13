@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release_Static" />
+	<File name="..\src\auxf.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3401" topLine="131" />
+		</Cursor>
+	</File>
+	<File name="..\src\threadhand_class.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="163" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\thorlabs_cam\thorlabs_cam.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="14503" topLine="557" />
+		</Cursor>
+	</File>
+	<File name="..\thorlabs_cam\thorlabs_cam.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3348" topLine="85" />
+		</Cursor>
+	</File>
+	<File name="..\thorlabs_cam\uc480.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="14542" topLine="281" />
+		</Cursor>
+	</File>
+	<File name="..\thorlabs_cam\ueye.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="92778" topLine="2019" />
+		</Cursor>
+	</File>
+	<File name="..\viewer_pp\src\viewer_class.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="27057" topLine="1051" />
+		</Cursor>
+	</File>
+	<File name="..\minime_pp\src\minime_class.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1372" topLine="48" />
+		</Cursor>
+	</File>
+	<File name="..\viewer_pp\src\viewer_class.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6115" topLine="168" />
+		</Cursor>
+	</File>
+	<File name="..\minime_pp\src\minime_class.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="292" topLine="68" />
+		</Cursor>
+	</File>
+	<File name="igyba_thorlabs_wxApp.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="110" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="igyba_thorlabs_wxApp.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="446" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="igyba_thorlabs_wxMain.cpp" open="1" top="0" tabpos="1" split="2" active="1" splitpos="787" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5206" topLine="92" />
+			<Cursor2 position="43819" topLine="1515" />
+		</Cursor>
+	</File>
+	<File name="igyba_thorlabs_wxMain.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1260" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="resource.rc" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="9" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\grabber\src\grabber_class.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="46686" topLine="1710" />
+		</Cursor>
+	</File>
+	<File name="src\led.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2562" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\grabber\src\grabber_class.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3444" topLine="121" />
+		</Cursor>
+	</File>
+	<File name="wxsmith\igyba_thorlabs_wxframe.wxs" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="11177" topLine="194" />
+		</Cursor>
+	</File>
+</CodeBlocks_layout_file>

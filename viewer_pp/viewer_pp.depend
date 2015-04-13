@@ -1,0 +1,451 @@
+# depslib dependency file v1.0
+1425727530 source:c:\users\cs\dropbox\dtu\progs\igyba\src\auxf.cpp
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+
+1424901020 p"
+
+1425727569 c:\users\cs\dropbox\dtu\progs\igyba\src\header.hpp
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+
+1424726633 
+
+1424890017 source:c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\control.cpp
+	"viewer_class.h"
+
+1424902542 ass.h"
+
+1425828212 c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.h
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	<float.h>
+	<ctype.h>
+	<chrono>
+	<thread>
+	<atomic>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	"../../src/header.hpp"
+	"../../src/threadhand_class.h"
+	"../../src/mingw.thread.h"
+
+1424899072 /mingw.thread.h"
+
+1424626116 /header.hpp"
+
+1424889282 c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\draw.h
+
+1424965617 source:c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\draw.cpp
+	"viewer_class.h"
+
+1425828097 source:c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\main.cpp
+	"viewer_class.h"
+
+1424854763 "
+
+1424889466 c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\control.h
+
+1425846760 source:c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.cpp
+	"viewer_class.h"
+
+1424625840 c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1424625840 >
+
+1424454520 source:/home/clesch/Dropbox/DTU/progs/igyba/src/auxf.cpp
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+
+1424454495 /home/clesch/Dropbox/DTU/progs/igyba/src/header.hpp
+	<stdio.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdarg.h>
+
+1424625840 c:\users\cs\dropbox\dtu\progs\igyba\src\mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1428659684 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\auxf.cpp
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+
+1428343147 c:\users\clesch\dropbox\dtu\progs\igyba\src\header.hpp
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+
+1424854736 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\control.cpp
+	"viewer_class.h"
+	"draw.h"
+
+1428933191 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.h
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	<float.h>
+	<ctype.h>
+	<chrono>
+	<thread>
+	<atomic>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	"../../src/header.hpp"
+	"../../src/threadhand_class.h"
+
+1424629440 c:\users\clesch\dropbox\dtu\progs\igyba\src\mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1424772856 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\draw.h
+
+1424969217 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\draw.cpp
+	"viewer_class.h"
+
+1425831697 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\main.cpp
+	"viewer_class.h"
+
+1424286265 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\control.h
+
+1428934166 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.cpp
+	"viewer_class.h"
+
+1424726633 source:/home/clesch/Dropbox/DTU/progs/igyba/viewer_pp/src/control.cpp
+	"viewer_class.h"
+	"draw.h"
+
+1424793985 /home/clesch/Dropbox/DTU/progs/igyba/viewer_pp/src/viewer_class.h
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	<float.h>
+	<ctype.h>
+	<assert.h>
+	<chrono>
+	<thread>
+	<atomic>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	"../../src/header.hpp"
+	"../../src/threadhand_class.h"
+	"../../src/mingw.thread.h"
+
+1424795395 /home/clesch/Dropbox/DTU/progs/igyba/src/threadhand_class.h
+	<thread>
+	<condition_variable>
+	<mutex>
+	"header.hpp"
+	"mingw.thread.h"
+	"mingw.mutex.h"
+	"mingw.condition_variable.h"
+
+1424859981 dition_variable.h"
+
+1424625840 /home/clesch/Dropbox/DTU/progs/igyba/src/mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1424208162 /home/clesch/Dropbox/DTU/progs/igyba/src/mingw.mutex.h
+
+1424208162 /home/clesch/Dropbox/DTU/progs/igyba/src/mingw.condition_variable.h
+	<atomic>
+	<assert.h>
+	<condition_variable>
+
+1424208162 _variable>
+
+1424772856 /home/clesch/Dropbox/DTU/progs/igyba/viewer_pp/src/draw.h
+
+1424783354 source:/home/clesch/Dropbox/DTU/progs/igyba/viewer_pp/src/draw.cpp
+	"viewer_class.h"
+
+1428930771 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\threadhand_class.cpp
+	"threadhand_class.h"
+
+1424800866 d_class.h"
+
+1424968601 c:\users\clesch\dropbox\dtu\progs\igyba\src\threadhand_class.h
+	<thread>
+	<condition_variable>
+	<mutex>
+	<atomic>
+	"header.hpp"
+	"mingw.thread.h"
+	"mingw.mutex.h"
+	"mingw.condition_variable.h"
+
+1424211762 c:\users\clesch\dropbox\dtu\progs\igyba\src\mingw.mutex.h
+
+1424211762 c:\users\clesch\dropbox\dtu\progs\igyba\src\mingw.condition_variable.h
+	<atomic>
+	<assert.h>
+	<condition_variable>
+
+1424901020 source:/home/cs/Dropbox/DTU/progs/igyba/src/auxf.cpp
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+
+1424901098 /home/cs/Dropbox/DTU/progs/igyba/src/header.hpp
+	<stdio.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdarg.h>
+
+1424800866 source:/home/cs/Dropbox/DTU/progs/igyba/src/threadhand_class.cpp
+	"threadhand_class.h"
+	"threadhand_class.h"
+	"threadhand_class.h"
+
+1424859981 /home/cs/Dropbox/DTU/progs/igyba/src/threadhand_class.h
+	<thread>
+	<condition_variable>
+	<mutex>
+	<atomic>
+	"header.hpp"
+	"mingw.thread.h"
+	"mingw.mutex.h"
+	"mingw.condition_variable.h"
+	<thread>
+	<condition_variable>
+	<mutex>
+	<atomic>
+	"header.hpp"
+	"mingw.thread.h"
+	"mingw.mutex.h"
+	"mingw.condition_variable.h"
+	<thread>
+	<condition_variable>
+	<mutex>
+	<atomic>
+	"header.hpp"
+	"mingw.thread.h"
+	"mingw.mutex.h"
+	"mingw.condition_variable.h"
+
+1424625840 /home/cs/Dropbox/DTU/progs/igyba/src/mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1424208162 /home/cs/Dropbox/DTU/progs/igyba/src/mingw.mutex.h
+
+1424208162 /home/cs/Dropbox/DTU/progs/igyba/src/mingw.condition_variable.h
+	<atomic>
+	<assert.h>
+	<condition_variable>
+	<atomic>
+	<assert.h>
+	<condition_variable>
+	<atomic>
+	<assert.h>
+	<condition_variable>
+
+1424947964 source:/home/cs/Dropbox/DTU/progs/igyba/viewer_pp/src/control.cpp
+	"viewer_class.h"
+	"draw.h"
+	"viewer_class.h"
+	"viewer_class.h"
+
+1424949988 /home/cs/Dropbox/DTU/progs/igyba/viewer_pp/src/viewer_class.h
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	<float.h>
+	<ctype.h>
+	<assert.h>
+	<chrono>
+	<thread>
+	<atomic>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	"../../src/header.hpp"
+	"../../src/threadhand_class.h"
+	"../../src/mingw.thread.h"
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	<float.h>
+	<ctype.h>
+	<assert.h>
+	<chrono>
+	<thread>
+	<atomic>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	"../../src/header.hpp"
+	"../../src/threadhand_class.h"
+	"../../src/mingw.thread.h"
+	<stdlib.h>
+	<math.h>
+	<string.h>
+	<float.h>
+	<ctype.h>
+	<assert.h>
+	<chrono>
+	<thread>
+	<atomic>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	"../../src/header.hpp"
+	"../../src/threadhand_class.h"
+	"../../src/mingw.thread.h"
+
+1424772856 /home/cs/Dropbox/DTU/progs/igyba/viewer_pp/src/draw.h
+
+1424945668 source:/home/cs/Dropbox/DTU/progs/igyba/viewer_pp/src/draw.cpp
+	"viewer_class.h"
+	"viewer_class.h"
+	"viewer_class.h"
+
+1424953011 source:/home/cs/Dropbox/DTU/progs/igyba/viewer_pp/src/main.cpp
+	"viewer_class.h"
+	"draw.h"
+	"control.h"
+	"viewer_class.h"
+	"viewer_class.h"
+
+1424286265 /home/cs/Dropbox/DTU/progs/igyba/viewer_pp/src/control.h
+
+1424950092 source:/home/cs/Dropbox/DTU/progs/igyba/viewer_pp/src/viewer_class.cpp
+	"viewer_class.h"
+	"draw.h"
+	"control.h"
+	"viewer_class.h"
+	"viewer_class.h"
+
+1424965001 source:c:\users\cs\dropbox\dtu\progs\igyba\src\threadhand_class.cpp
+	"threadhand_class.h"
+
+1424965001 c:\users\cs\dropbox\dtu\progs\igyba\src\threadhand_class.h
+	<thread>
+	<condition_variable>
+	<mutex>
+	<atomic>
+	"header.hpp"
+	"mingw.thread.h"
+	"mingw.mutex.h"
+	"mingw.condition_variable.h"
+
+1424208162 c:\users\cs\dropbox\dtu\progs\igyba\src\mingw.mutex.h
+
+1424208162 c:\users\cs\dropbox\dtu\progs\igyba\src\mingw.condition_variable.h
+	<atomic>
+	<assert.h>
+	<condition_variable>
+

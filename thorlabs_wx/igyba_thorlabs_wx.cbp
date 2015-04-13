@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="igyba_thorlabs_wx" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option platforms="Windows;" />
+				<Option output="bin/igyba_thorlabs" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="test test" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add option="-pipe" />
+					<Add option="-mthreads" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-DWXUSINGDLL" />
+					<Add option="-DwxUSE_UNICODE" />
+					<Add directory="C:/wxWidgets-3.0.2/lib/gcc_dll/mswu" />
+					<Add directory="C:/MinGW/mingw64/opencv/x64/mingw/bin" />
+					<Add directory="C:/MinGW/mingw64/opencv/include" />
+					<Add directory="C:/wxWidgets-3.0.2/include" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="C:/wxWidgets-3.0.2/lib/gcc_dll/mswu" />
+					<Add directory="C:/wxWidgets-3.0.2/include" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add option="-mthreads" />
+					<Add library="wxmsw30u_richtext" />
+					<Add library="wxmsw30u_xrc" />
+					<Add library="wxmsw30u_aui" />
+					<Add library="wxmsw30u_media" />
+					<Add library="wxbase30u_net" />
+					<Add library="wxmsw30u_gl" />
+					<Add library="wxbase30u_xml" />
+					<Add library="wxmsw30u_adv" />
+					<Add library="wxmsw30u_html" />
+					<Add library="wxmsw30u_core" />
+					<Add library="wxbase30u" />
+					<Add library="wxpng" />
+					<Add library="wxjpeg" />
+					<Add library="wxtiff" />
+					<Add library="wxzlib" />
+					<Add library="wxregexu" />
+					<Add library="wxexpat" />
+					<Add library="opencv_highgui2411" />
+					<Add library="opencv_imgproc2411" />
+					<Add library="opencv_core2411" />
+					<Add library="freeglut" />
+					<Add library="glu32" />
+					<Add library="opengl32" />
+					<Add library="uc480_64" />
+					<Add directory="C:/wxWidgets-3.0.2/lib/gcc_dll" />
+					<Add directory="C:/MinGW/mingw64/opencv/x64/mingw/lib" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/igyba_thorlabs" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="test test" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-pipe" />
+					<Add option="-mthreads" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-DWXUSINGDLL" />
+					<Add option="-DwxUSE_UNICODE" />
+					<Add option="-DIGYBA_NDEBUG" />
+					<Add option="-DNDEBUG" />
+					<Add directory="C:/wxWidgets-3.0.2/lib/gcc_dll/mswu" />
+					<Add directory="C:/MinGW/mingw64/opencv/x64/mingw/bin" />
+					<Add directory="C:/MinGW/mingw64/opencv/include" />
+					<Add directory="C:/wxWidgets-3.0.2/include" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="C:/wxWidgets-3.0.2/lib/gcc_dll/mswu" />
+					<Add directory="C:/wxWidgets-3.0.2/include" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-mthreads" />
+					<Add library="wxmsw30u_richtext" />
+					<Add library="wxmsw30u_xrc" />
+					<Add library="wxmsw30u_aui" />
+					<Add library="wxmsw30u_media" />
+					<Add library="wxbase30u_net" />
+					<Add library="wxmsw30u_gl" />
+					<Add library="wxbase30u_xml" />
+					<Add library="wxmsw30u_adv" />
+					<Add library="wxmsw30u_html" />
+					<Add library="wxmsw30u_core" />
+					<Add library="wxbase30u" />
+					<Add library="wxpng" />
+					<Add library="wxjpeg" />
+					<Add library="wxtiff" />
+					<Add library="wxzlib" />
+					<Add library="wxregexu" />
+					<Add library="wxexpat" />
+					<Add library="opencv_highgui2411" />
+					<Add library="opencv_imgproc2411" />
+					<Add library="opencv_core2411" />
+					<Add library="freeglut" />
+					<Add library="glu32" />
+					<Add library="opengl32" />
+					<Add library="uc480_64" />
+					<Add directory="C:/wxWidgets-3.0.2/lib/gcc_dll" />
+					<Add directory="C:/MinGW/mingw64/opencv/x64/mingw/lib" />
+				</Linker>
+			</Target>
+			<Target title="Release_Static">
+				<Option output="bin/igyba_thorlabs" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="tes test" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-DwxUSE_UNICODE" />
+					<Add option="-DIGYBA_NDEBUG" />
+					<Add option="-DNDEBUG" />
+					<Add option="-DFREEGLUT_STATIC" />
+					<Add directory="C:/wxWidgets-3.0.2/lib/gcc_lib/mswu" />
+					<Add directory="C:/MinGW/mingw64/opencv_static_wo_exr/x64/mingw/bin" />
+					<Add directory="C:/MinGW/mingw64/opencv_static_wo_exr/include" />
+					<Add directory="C:/wxWidgets-3.0.2/include" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="C:/wxWidgets-3.0.2/lib/gcc_lib/mswu" />
+					<Add directory="C:/wxWidgets-3.0.2/include" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-static-libgcc" />
+					<Add option="-static-libstdc++" />
+					<Add library="wxmsw30u_richtext" />
+					<Add library="wxmsw30u_core" />
+					<Add library="wxbase30u" />
+					<Add library="wxpng" />
+					<Add library="wxjpeg" />
+					<Add library="wxtiff" />
+					<Add library="wxzlib" />
+					<Add library="uc480_64" />
+					<Add library="opencv_highgui2411" />
+					<Add library="opencv_imgproc2411" />
+					<Add library="opencv_core2411" />
+					<Add library="liblibpng" />
+					<Add library="liblibjasper" />
+					<Add library="liblibjpeg" />
+					<Add library="liblibtiff" />
+					<Add library="zlib" />
+					<Add library="freeglut_static" />
+					<Add library="comctl32" />
+					<Add library="gdi32" />
+					<Add library="glu32" />
+					<Add library="opengl32" />
+					<Add library="vfw32" />
+					<Add library="winspool" />
+					<Add library="comdlg32" />
+					<Add library="oleaut32" />
+					<Add library="ole32" />
+					<Add library="uuid" />
+					<Add library="winmm" />
+					<Add library="gomp" />
+					<Add library="winpthread" />
+					<Add directory="C:/wxWidgets-3.0.2/lib/gcc_lib" />
+					<Add directory="C:/MinGW/mingw64/opencv_static_wo_exr/x64/mingw/staticlib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-pedantic" />
+			<Add option="-Wextra" />
+			<Add option="-Wall" />
+			<Add option="-fopenmp" />
+			<Add option="-std=gnu++11" />
+			<Add option="-DUSING_WX" />
+		</Compiler>
+		<Linker>
+			<Add option="-fopenmp" />
+		</Linker>
+		<Unit filename="../grabber/src/grabber_class.cpp" />
+		<Unit filename="../grabber/src/grabber_class.h" />
+		<Unit filename="../grabber/src/test.cpp" />
+		<Unit filename="../grabber/src/test.h" />
+		<Unit filename="../minime_pp/src/fifo_class.cpp" />
+		<Unit filename="../minime_pp/src/fifo_class.h" />
+		<Unit filename="../minime_pp/src/fit_fun.cpp" />
+		<Unit filename="../minime_pp/src/funcs.cpp" />
+		<Unit filename="../minime_pp/src/funcs.h" />
+		<Unit filename="../minime_pp/src/gabe_class.cpp" />
+		<Unit filename="../minime_pp/src/gabe_class.h" />
+		<Unit filename="../minime_pp/src/minime_class.cpp" />
+		<Unit filename="../minime_pp/src/minime_class.h" />
+		<Unit filename="../minime_pp/src/minimizer_s.cpp" />
+		<Unit filename="../minime_pp/src/minimizer_s.h" />
+		<Unit filename="../minime_pp/src/random.cpp" />
+		<Unit filename="../minime_pp/src/random.h" />
+		<Unit filename="../src/auxf.cpp" />
+		<Unit filename="../src/header.hpp" />
+		<Unit filename="../src/threadhand_class.cpp" />
+		<Unit filename="../src/threadhand_class.h" />
+		<Unit filename="../thorlabs_cam/thorlabs_cam.cpp" />
+		<Unit filename="../thorlabs_cam/thorlabs_cam.h" />
+		<Unit filename="../thorlabs_cam/uc480.h" />
+		<Unit filename="../thorlabs_cam/ueye.h" />
+		<Unit filename="../viewer_pp/src/draw.cpp" />
+		<Unit filename="../viewer_pp/src/viewer_class.cpp" />
+		<Unit filename="../viewer_pp/src/viewer_class.h" />
+		<Unit filename="igyba_thorlabs_wxApp.cpp" />
+		<Unit filename="igyba_thorlabs_wxApp.h" />
+		<Unit filename="igyba_thorlabs_wxMain.cpp" />
+		<Unit filename="igyba_thorlabs_wxMain.h" />
+		<Unit filename="resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="src/led.cpp" />
+		<Unit filename="wxsmith/igyba_thorlabs_wxframe.wxs" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<wxsmith version="1">
+				<gui name="wxWidgets" src="igyba_thorlabs_wxApp.cpp" main="igyba_thorlabs_wxFrame" init_handlers="necessary" language="CPP" />
+				<resources>
+					<wxFrame wxs="wxsmith/igyba_thorlabs_wxframe.wxs" src="igyba_thorlabs_wxMain.cpp" hdr="igyba_thorlabs_wxMain.h" fwddecl="0" i18n="1" name="igyba_thorlabs_wxFrame" language="CPP" />
+				</resources>
+			</wxsmith>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,13 @@
+
+http://kevinhughes.ca/tutorials/opencv-install-on-windows-with-codeblocks-and-mingw/
+
+Windows:
+In short (assuming you have a compiler like mingw64):
+- Download OpenCV and CMake
+- Add CMake to your path
+- Configure OpenCV with CMake for MinGW make
+- Generate the build
+- use mingw32-make in the folder where the binaries are to be build
+- invoke mingw32-make install
+- collect all the stuff from the install folder
+- if you like, call mingw32-make clean

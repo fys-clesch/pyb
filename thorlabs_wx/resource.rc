@@ -1,0 +1,28 @@
+wxICON_AA ICON "icon.ico"
+1 VERSIONINFO
+FILEVERSION     1,2,0,0
+PRODUCTVERSION  1,2,0,0
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "080904E4"
+    BEGIN
+      VALUE "CompanyName", "One"
+      VALUE "FileDescription", "An open source beam profiler"
+      VALUE "FileVersion", "1.2"
+      VALUE "InternalName", "igyba_thorlabs"
+      VALUE "LegalCopyright", "Clemens Schaefermeier"
+      VALUE "OriginalFilename", "igyba_thorlabs.exe"
+      VALUE "ProductName", "igyba"
+      VALUE "ProductVersion", "1.2"
+    END
+  END
+
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x809, 1252
+  END
+END
+
+/* this provides the look of the application */
+#include "wx/msw/wx.rc"

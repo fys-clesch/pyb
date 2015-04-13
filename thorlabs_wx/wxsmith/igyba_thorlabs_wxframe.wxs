@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxFrame" name="igyba_thorlabs_wxFrame">
+		<title>igyba 4 fingers</title>
+		<icon>icon.ico</icon>
+		<id_arg>0</id_arg>
+		<handler function="OnCloseMainFrame" entry="EVT_CLOSE" />
+		<object class="wxBoxSizer" variable="BoxSizerMain" member="no">
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_MAIN" variable="PanelMain" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerInnerMain" member="no">
+						<orient>wxVERTICAL</orient>
+						<object class="sizeritem">
+							<object class="wxNotebook" name="ID_NOTEBOOK_MAIN" variable="NotebookMain" member="yes">
+								<object class="notebookpage">
+									<object class="wxPanel" name="ID_PANEL_OUTPUT" variable="PanelOutput" member="yes">
+										<object class="wxStaticBoxSizer" variable="StaticBoxSizerOutput" member="no">
+											<label>Controls</label>
+											<orient>wxVERTICAL</orient>
+											<object class="sizeritem">
+												<object class="wxStaticBoxSizer" variable="StaticBoxSizerSaveImg" member="no">
+													<label>Save image</label>
+													<object class="sizeritem">
+														<object class="wxButton" name="ID_BUTTON_SAVE_IMG_RGB" variable="ButtonSaveImgRGB" member="yes">
+															<label>Display</label>
+															<tooltip>Save the displayed image</tooltip>
+															<handler function="OnButtonSaveImgRGBClick" entry="EVT_BUTTON" />
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxButton" name="ID_BUTTON_SAVE_IMG_WORK" variable="ButtonSaveImgWork" member="yes">
+															<label>Work</label>
+															<tooltip>Save the working image</tooltip>
+															<handler function="OnButtonSaveImgWorkClick" entry="EVT_BUTTON" />
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxButton" name="ID_BUTTON_SAVE_IMG_FP" variable="ButtonSaveImgFP" member="yes">
+															<label>Raw FP</label>
+															<tooltip>Save the raw, floating point, single channel image</tooltip>
+															<handler function="OnButtonSaveImgFPClick" entry="EVT_BUTTON" />
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+												</object>
+												<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxStaticBoxSizer" variable="StaticBoxSizerSaveData" member="no">
+													<label>Save data</label>
+													<object class="sizeritem">
+														<object class="wxButton" name="ID_BUTTON_SAVE_DATA_RGB" variable="ButtonSaveDataRGB" member="yes">
+															<label>Raw 3C</label>
+															<tooltip>Save the raw 3 channel image data</tooltip>
+															<handler function="OnButtonSaveDataRGBClick" entry="EVT_BUTTON" />
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxButton" name="ID_BUTTON_SAVE_DATA_WORK" variable="ButtonSaveDataWork" member="yes">
+															<label>Work</label>
+															<tooltip>Save the working image data</tooltip>
+															<handler function="OnButtonSaveDataWorkClick" entry="EVT_BUTTON" />
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxButton" name="ID_BUTTON_SAVE_DATA_FP" variable="ButtonSaveDataFP" member="yes">
+															<label>Raw 1C</label>
+															<tooltip>Save the raw 1 channel image data</tooltip>
+															<handler function="OnButtonSaveDataFPClick" entry="EVT_BUTTON" />
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+												</object>
+												<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxButton" name="ID_BUTTON_GNUPLOT" variable="ButtonGnuplot" member="yes">
+													<label>Make gnuplot</label>
+													<tooltip>Plot current processed image data</tooltip>
+													<handler function="OnButtonGnuplotClick" entry="EVT_BUTTON" />
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+										</object>
+									</object>
+									<label>Output</label>
+									<selected>1</selected>
+								</object>
+								<object class="notebookpage">
+									<object class="wxPanel" name="ID_PANEL_THREADS" variable="PanelThreads" member="yes">
+										<object class="wxBoxSizer" variable="BoxSizerThreads" member="no">
+											<orient>wxVERTICAL</orient>
+											<object class="sizeritem">
+												<object class="wxNotebook" name="ID_NOTEBOOK_THREADS" variable="NotebookThreads" member="yes">
+													<object class="notebookpage">
+														<object class="wxPanel" name="ID_PANEL_VIEWER" variable="PanelViewer" member="yes">
+															<object class="wxStaticBoxSizer" variable="StaticBoxSizerViewer" member="no">
+																<label>Controls</label>
+																<orient>wxVERTICAL</orient>
+																<object class="sizeritem">
+																	<object class="wxToggleButton" name="ID_TOGGLEBUTTON_VIEWER" variable="ToggleButtonViewer" member="yes">
+																		<label>Launch viewer</label>
+																		<tooltip>Toggle 3D live plot for the current AOI</tooltip>
+																		<handler function="OnToggleButtonViewerToggle" entry="EVT_TOGGLEBUTTON" />
+																	</object>
+																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																	<border>5</border>
+																</object>
+																<object class="sizeritem">
+																	<object class="wxStaticBoxSizer" variable="StaticBoxSizerViewerDispSet" member="no">
+																		<label>Display settings</label>
+																		<orient>wxVERTICAL</orient>
+																		<object class="sizeritem">
+																			<object class="wxToggleButton" name="ID_TOGGLEBUTTON_VIEWER_ANIMATION" variable="ToggleButtonViewerAnimation" member="yes">
+																				<label>Stop animation</label>
+																				<enabled>0</enabled>
+																				<tooltip>Toggle animation on/off</tooltip>
+																				<handler function="OnToggleButtonViewerAnimationToggle" entry="EVT_TOGGLEBUTTON" />
+																			</object>
+																			<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																			<border>5</border>
+																		</object>
+																		<object class="sizeritem">
+																			<object class="wxToggleButton" name="ID_TOGGLEBUTTON_MAP_VIEWER" variable="ToggleButtonMapViewer" member="yes">
+																				<label>Show 2D map</label>
+																				<enabled>0</enabled>
+																				<tooltip>Toggle 3D/2D mode</tooltip>
+																				<handler function="OnToggleButtonMapViewerToggle" entry="EVT_TOGGLEBUTTON" />
+																			</object>
+																			<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																			<border>5</border>
+																		</object>
+																		<object class="sizeritem">
+																			<object class="wxToggleButton" name="ID_TOGGLEBUTTON_VIEWER_ROTATION" variable="ToggleButtonViewerRotation" member="yes">
+																				<label>Start rotation</label>
+																				<enabled>0</enabled>
+																				<tooltip>Toggle rotation in 3D mode</tooltip>
+																				<handler function="OnToggleButtonViewerRotationToggle" entry="EVT_TOGGLEBUTTON" />
+																			</object>
+																			<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																			<border>5</border>
+																		</object>
+																	</object>
+																	<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																	<border>5</border>
+																</object>
+															</object>
+														</object>
+														<label>Viewer</label>
+														<selected>1</selected>
+													</object>
+													<object class="notebookpage">
+														<object class="wxPanel" name="ID_PANEL_MINIME" variable="PanelMinime" member="yes">
+															<object class="wxStaticBoxSizer" variable="StaticBoxSizerMinime" member="no">
+																<label>Controls</label>
+																<orient>wxVERTICAL</orient>
+																<object class="sizeritem">
+																	<object class="wxButton" name="ID_BUTTON_MINIME" variable="ButtonMinime" member="yes">
+																		<label>Launch minime</label>
+																		<tooltip>Start a fitting routine for the current AOI</tooltip>
+																		<handler function="OnButtonMinimeClick" entry="EVT_BUTTON" />
+																	</object>
+																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																	<border>5</border>
+																</object>
+															</object>
+														</object>
+														<label>Minime</label>
+													</object>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<option>1</option>
+											</object>
+										</object>
+									</object>
+									<label>Threads</label>
+								</object>
+								<object class="notebookpage">
+									<object class="wxPanel" name="ID_PANEL_AOI_WIN" variable="PanelAOIWin" member="yes">
+										<object class="wxStaticBoxSizer" variable="StaticBoxSizerAOIWin" member="no">
+											<label>Controls</label>
+											<orient>wxVERTICAL</orient>
+											<object class="sizeritem">
+												<object class="wxButton" name="ID_BUTTON_RESIZE_CAM_WIN" variable="ButtonResizeCamWin" member="yes">
+													<label>Resize window</label>
+													<tooltip>Resizes the camera display window</tooltip>
+													<handler function="OnButtonResizeCamWinClick" entry="EVT_BUTTON" />
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxStaticBoxSizer" variable="StaticBoxSizerAOI" member="no">
+													<label>AOI of interest</label>
+													<orient>wxVERTICAL</orient>
+													<object class="sizeritem">
+														<object class="wxTextCtrl" name="ID_TEXTCTRL_AOI" variable="TextCtrlAOI" member="yes">
+															<value>No AOI selected</value>
+															<maxlength>256</maxlength>
+															<size>-1,50</size>
+															<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH</style>
+														</object>
+														<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxToggleButton" name="ID_TOGGLEBUTTON_AOI" variable="ToggleButtonAOI" member="yes">
+															<label>Draw rectangle</label>
+															<tooltip>Click and draw a rectangle in the camera window</tooltip>
+															<handler function="OnToggleButtonAOIToggle" entry="EVT_TOGGLEBUTTON" />
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+										</object>
+									</object>
+									<label>AOI &amp;&amp; Window</label>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxStaticBoxSizer" variable="StaticBoxSizerControlsMain" member="no">
+								<label>Main controls</label>
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxToggleButton" name="ID_TOGGLEBUTTON_FRAMEGRAB" variable="ToggleButtonFrameGrab" member="yes">
+										<label>Idle frame grab</label>
+										<tooltip>Toggle frame grabbing</tooltip>
+										<handler function="OnToggleButtonFrameGrabToggle" entry="EVT_TOGGLEBUTTON" />
+									</object>
+									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticLine" name="ID_STATICLINE2" variable="StaticLine2" member="yes">
+										<size>10,-1</size>
+									</object>
+									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxFlexGridSizer" variable="FlexGridSizerStart" member="no">
+										<cols>3</cols>
+										<rows>1</rows>
+										<object class="sizeritem">
+											<object class="wxButton" name="ID_BUTTON_START" variable="ButtonStart" member="yes">
+												<label>Start</label>
+												<enabled>0</enabled>
+												<handler function="OnButtonStartClick" entry="EVT_BUTTON" />
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+										</object>
+										<object class="sizeritem">
+											<object class="wxLed" name="ID_LED_MAIN" variable="LedMain" member="yes">
+												<disable_colour>#808080</disable_colour>
+												<on_colour>#00FF00</on_colour>
+												<off_colour>#FF0000</off_colour>
+												<on_or_off>0</on_or_off>
+												<enabled>0</enabled>
+											</object>
+											<flag>wxALL|wxSHAPED|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+										</object>
+										<object class="sizeritem">
+											<object class="wxButton" name="ID_BUTTON_QUIT" variable="ButtonQuit" member="yes">
+												<label>Quit</label>
+												<enabled>0</enabled>
+												<tooltip>Quit the application</tooltip>
+												<handler function="OnButtonQuitClick" entry="EVT_BUTTON" />
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+										</object>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+			</object>
+			<object class="sizeritem">
+				<object class="wxNotebook" name="ID_NOTEBOOK_CAM_IMG" variable="NotebookCamImg" member="yes">
+					<object class="notebookpage">
+						<object class="wxPanel" name="ID_PANEL_CAMERA" variable="PanelCamera" member="yes">
+							<object class="wxStaticBoxSizer" variable="StaticBoxSizerCamera" member="no">
+								<label>Controls</label>
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxToggleButton" name="ID_TOGGLEBUTTON_BACKGROUND" variable="ToggleButtonBackground" member="yes">
+										<label>Acquire background</label>
+										<tooltip>Toggle background subtraction</tooltip>
+										<handler function="OnToggleButtonBackgroundToggle" entry="EVT_TOGGLEBUTTON" />
+									</object>
+									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticBoxSizer" variable="StaticBoxSizerExpTime" member="no">
+										<label>Exposure time</label>
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<object class="wxStaticText" name="ID_STATICTEXT_EXP_TIME_DISP" variable="StaticTextExpTimeDisp" member="yes">
+												<label>Time / ms</label>
+											</object>
+											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxGridBagSizer" variable="GridBagSizerExpTime" member="no">
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON_DEC_EXP_TIME" variable="ButtonDecExpTime" member="yes">
+														<label>-</label>
+														<size>20,-1</size>
+														<handler function="OnButtonDecExpTimeClick" entry="EVT_BUTTON" />
+													</object>
+													<col>0</col>
+													<row>0</row>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxSlider" name="ID_SLIDER_EXP_TIME" variable="SliderExpTime" member="yes">
+														<size>150,-1</size>
+														<tooltip>Changes the exposure time of the camera</tooltip>
+													</object>
+													<col>1</col>
+													<row>0</row>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON_INC_EXP_TIME" variable="ButtonIncExpTime" member="yes">
+														<label>+</label>
+														<size>20,-1</size>
+														<handler function="OnButtonIncExpTimeClick" entry="EVT_BUTTON" />
+													</object>
+													<col>2</col>
+													<row>0</row>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+							</object>
+						</object>
+						<label>Camera</label>
+						<selected>1</selected>
+					</object>
+					<object class="notebookpage">
+						<object class="wxPanel" name="ID_PANEL_IMG_MANIP" variable="PanelImgManip" member="yes">
+							<object class="wxStaticBoxSizer" variable="StaticBoxSizerImgManip" member="no">
+								<label>Controls</label>
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxToggleButton" name="ID_TOGGLEBUTTON_SMOOTHING" variable="ToggleButtonSmoothing" member="yes">
+										<label>Enable manipulation</label>
+										<tooltip>Toggle smoothing and groundlift</tooltip>
+										<handler function="OnToggleButtonSmoothingToggle" entry="EVT_TOGGLEBUTTON" />
+									</object>
+									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticBoxSizer" variable="StaticBoxSizerKernelSize" member="no">
+										<label>Kernel size</label>
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<object class="wxStaticText" name="ID_STATICTEXT_KERNEL_SIZE" variable="StaticTextKernelSize" member="yes">
+												<label>Size / pixel</label>
+											</object>
+											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxGridBagSizer" variable="GridBagSizerKernelSize" member="no">
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON_DEC_KERNEL_SIZE" variable="ButtonDecKernelSize" member="yes">
+														<label>-</label>
+														<size>20,-1</size>
+														<enabled>0</enabled>
+														<handler function="OnButtonDecKernelSizeClick" entry="EVT_BUTTON" />
+													</object>
+													<col>0</col>
+													<row>0</row>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxSlider" name="ID_SLIDER_KERNEL_SIZE" variable="SliderKernelSize" member="yes">
+														<size>150,-1</size>
+														<enabled>0</enabled>
+													</object>
+													<col>1</col>
+													<row>0</row>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON_INC_KERNEL_SIZE" variable="ButtonIncKernelSize" member="yes">
+														<label>+</label>
+														<size>20,-1</size>
+														<enabled>0</enabled>
+														<handler function="OnButtonIncKernelSizeClick" entry="EVT_BUTTON" />
+													</object>
+													<col>2</col>
+													<row>0</row>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticBoxSizer" variable="StaticBoxSizerStdDev" member="no">
+										<label>Standard deviation</label>
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<object class="wxStaticText" name="ID_STATICTEXT_STD_DEV" variable="StaticTextStdDev" member="yes">
+												<label>Width / pixel</label>
+											</object>
+											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxGridBagSizer" variable="GridBagSizerStdDev" member="no">
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON_DEC_STD_DEV" variable="ButtonDecStdDev" member="yes">
+														<label>-</label>
+														<size>20,-1</size>
+														<enabled>0</enabled>
+														<handler function="OnButtonDecStdDevClick" entry="EVT_BUTTON" />
+													</object>
+													<col>0</col>
+													<row>0</row>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxSlider" name="ID_SLIDER_STD_DEV" variable="SliderStdDev" member="yes">
+														<size>150,-1</size>
+														<enabled>0</enabled>
+													</object>
+													<col>1</col>
+													<row>0</row>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON_INC_STD_DEV" variable="ButtonIncStdDev" member="yes">
+														<label>+</label>
+														<size>20,-1</size>
+														<enabled>0</enabled>
+														<handler function="OnButtonIncStdDevClick" entry="EVT_BUTTON" />
+													</object>
+													<col>2</col>
+													<row>0</row>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticBoxSizer" variable="StaticBoxSizerGroundlift" member="no">
+										<label>Groundlift</label>
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<object class="wxStaticText" name="ID_STATICTEXT_GROUNDLIFT" variable="StaticTextGroundlift" member="yes">
+												<label>Lift / counts</label>
+											</object>
+											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxGridBagSizer" variable="GridBagSizerGroundlift" member="no">
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON_DEC_GROUNDLIFT" variable="ButtonDecGroundlift" member="yes">
+														<label>-</label>
+														<size>20,-1</size>
+														<enabled>0</enabled>
+														<handler function="OnButtonDecGroundliftClick" entry="EVT_BUTTON" />
+													</object>
+													<col>0</col>
+													<row>0</row>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxSlider" name="ID_SLIDER_GROUNDLIFT" variable="SliderGroundlift" member="yes">
+														<size>150,-1</size>
+														<enabled>0</enabled>
+													</object>
+													<col>1</col>
+													<row>0</row>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON_INC_GROUNDLIFT" variable="ButtonIncGroundlift" member="yes">
+														<label>+</label>
+														<size>20,-1</size>
+														<enabled>0</enabled>
+														<handler function="OnButtonIncGroundliftClick" entry="EVT_BUTTON" />
+													</object>
+													<col>2</col>
+													<row>0</row>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+							</object>
+						</object>
+						<label>Image manipulation</label>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<option>1</option>
+			</object>
+		</object>
+		<object class="wxMenuBar" variable="MenuBarMain" member="no">
+			<object class="wxMenu" variable="Menu1" member="no">
+				<label>&amp;File</label>
+				<object class="wxMenuItem" name="idMenuQuit" variable="MenuItemQuit" member="no">
+					<label>Quit</label>
+					<accel>Alt-F4</accel>
+					<help>Quit the application</help>
+					<handler function="OnQuit" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="Menu2" member="no">
+				<label>H&amp;elp</label>
+				<object class="wxMenuItem" name="idMenuAbout" variable="MenuItemAbout" member="no">
+					<label>About</label>
+					<accel>F1</accel>
+					<help>Show info about this application</help>
+					<handler function="OnAbout" entry="EVT_MENU" />
+				</object>
+			</object>
+		</object>
+		<object class="wxStatusBar" name="ID_STATUSBAR_MAIN" variable="StatusBarMain" member="yes">
+			<fields>1</fields>
+			<widths>-1</widths>
+			<styles>wxSB_NORMAL</styles>
+		</object>
+	</object>
+</wxsmith>

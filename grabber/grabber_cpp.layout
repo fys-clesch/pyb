@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug_Win" />
+	<File name="src\main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="145" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\test.cpp" open="0" top="0" tabpos="4" split="2" active="1" splitpos="735" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5934" topLine="247" />
+			<Cursor2 position="1469" topLine="38" />
+		</Cursor>
+	</File>
+	<File name="src\test.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="15" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\minime_pp\src\fifo_class.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="225" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\minime_pp\src\fifo_class.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="12335" topLine="455" />
+		</Cursor>
+	</File>
+	<File name="README" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="467" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Makefile" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1659" topLine="51" />
+		</Cursor>
+	</File>
+	<File name="..\viewer_pp\src\viewer_class.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1602" topLine="54" />
+		</Cursor>
+	</File>
+	<File name="..\viewer_pp\src\viewer_class.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="18572" topLine="737" />
+		</Cursor>
+	</File>
+	<File name="..\viewer_pp\src\draw.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1456" topLine="51" />
+		</Cursor>
+	</File>
+	<File name="..\src\threadhand_class.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="236" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\src\header.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="371" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\src\auxf.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="14309" topLine="593" />
+		</Cursor>
+	</File>
+	<File name="..\minime_pp\src\minime_class.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6959" topLine="260" />
+		</Cursor>
+	</File>
+	<File name="..\minime_pp\src\funcs.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\minime_pp\src\fit_fun.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5397" topLine="189" />
+		</Cursor>
+	</File>
+	<File name="src\grabber_class.cpp" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2402" topLine="39" />
+		</Cursor>
+	</File>
+	<File name="src\grabber_class.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6861" topLine="195" />
+		</Cursor>
+	</File>
+</CodeBlocks_layout_file>
