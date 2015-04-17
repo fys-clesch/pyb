@@ -108,40 +108,40 @@ void minime::fit_GaussEllip(void)
 {
 	fit_par[0].name = "x waist(z)";
 	fit_par[0].unit =  "pixel";
-	fit_par[0].min = 2.;
-	fit_par[0].max = mnm_rows * .5;
+	fit_par[0].minv = 2.;
+	fit_par[0].maxv = mnm_rows * .5;
 	fit_par[0].fit = true;
 	fit_par[0].init = 0.;
 	fit_par[0].log = false;
 
 	fit_par[1].name = "y waist(z)";
 	fit_par[1].unit = "pixel";
-	fit_par[1].min = 2.;
-	fit_par[1].max = mnm_cols * .5;
+	fit_par[1].minv = 2.;
+	fit_par[1].maxv = mnm_cols * .5;
 	fit_par[1].fit = true;
 	fit_par[1].init = 0.;
 	fit_par[1].log = false;
 
 	fit_par[2].name = "x offset";
 	fit_par[2].unit = "pixel";
-	fit_par[2].min = 0.;
-	fit_par[2].max = 1. * mnm_rows;
+	fit_par[2].minv = 0.;
+	fit_par[2].maxv = 1. * mnm_rows;
 	fit_par[2].fit = true;
 	fit_par[2].init = 0.;
 	fit_par[2].log = false;
 
 	fit_par[3].name = "y offset";
 	fit_par[3].unit = "pixel";
-	fit_par[3].min = 0.;
-	fit_par[3].max = 1. * mnm_cols;
+	fit_par[3].minv = 0.;
+	fit_par[3].maxv = 1. * mnm_cols;
 	fit_par[3].fit = true;
 	fit_par[3].init = 0.;
 	fit_par[3].log = false;
 
 	fit_par[4].name = "correlation";
 	fit_par[4].unit = "1";
-	fit_par[4].min = -1. + 2. * DBL_EPSILON;
-	fit_par[4].max = 1. - 2. * DBL_EPSILON;
+	fit_par[4].minv = -1. + 2. * DBL_EPSILON;
+	fit_par[4].maxv = 1. - 2. * DBL_EPSILON;
 	fit_par[4].fit = true;
 	fit_par[4].init = 0.;
 	fit_par[4].log = false;

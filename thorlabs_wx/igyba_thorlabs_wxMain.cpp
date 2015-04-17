@@ -581,22 +581,22 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 				(*itw1ptr).t_cam.unset_Background();
 				break;
 			case SAVE_RGB_BTN:
-				(*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.RGB);
+				(*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.save_Im_type::RGB);
 				break;
 			case SAVE_WORK_BTN:
-				(*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.WORK);
+				(*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.save_Im_type::WORK);
 				break;
 			case SAVE_FP_BTN:
-				(*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.FP_IN);
+				(*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.save_Im_type::FP_IN);
 				break;
 			case STORE_RGB_BTN:
-				(*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.RGB);
+				(*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.save_Im_type::RGB);
 				break;
 			case STORE_WORK_BTN:
-				(*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.WORK);
+				(*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.save_Im_type::WORK);
 				break;
 			case STORE_FP_BTN:
-				(*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.FP_IN);
+				(*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.save_Im_type::FP_IN);
 				break;
 			case SHOW_HELP:
 				(*itw1ptr).t_cam.show_Help();
@@ -618,7 +618,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 				(*itw1ptr).t_cam.toggle_Grabbing();
 				break;
 			case MAKE_GNUPLOT:
-				(*itw1ptr).t_cam.gnuplot_Image((*itw1ptr).t_cam.WORK);
+				(*itw1ptr).t_cam.gnuplot_Image((*itw1ptr).t_cam.save_Im_type::WORK);
 				break;
 			default:
 				(*itw1ptr).t_cam.update_Mats_RgbAndFp();
@@ -637,9 +637,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 		#endif
 
 		kctrl = waitKey(20);
-		if(c_btn_state == CLOSE_CAM_WINDOW ||
-			kctrl == 27 ||
-			kctrl == 1048603)
+		if(c_btn_state == CLOSE_CAM_WINDOW)
 			break;
 
 		HWND *hwnd =

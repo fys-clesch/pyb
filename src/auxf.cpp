@@ -140,18 +140,18 @@ double *realloc_3mat(double *m, const uint row, const uint col)
 	return m;
 }
 
-/** \brief compute the sine and cosine of an angle alpha in one step
+/** \brief Compute the sine and cosine of an angle alpha in one step.
  *
- * \param alpha const double the angle in radian
- * \param cosd double *res_pt the cosine of alpha
- * \param sind double *res_pt the sine of alpha
+ * \param alpha const double The angle in radian.
+ * \param cosd double *res_pt The cosine of alpha.
+ * \param sind double *res_pt The sine of alpha.
  * \return void
  *
- * if available, uses assembler code to compute the sine and cosine in one step
+ * If available, uses assembler code to compute the sine and cosine in one step.
  */
 void sincosd(const double alpha, double *res_pt cosd, double *res_pt sind)
 {
-	#if defined(__i386__)&&!defined(NO_ASM)
+	#if defined(__i386__) && !defined(NO_ASM)
 	 #if defined __GNUC__
 	  #define ASM_SINCOS
 	  __asm__ __volatile__ ("fsincos" : "=t" (*cosd), "=u" (*sind) : "0" (alpha));
@@ -170,14 +170,14 @@ void sincosd(const double alpha, double *res_pt cosd, double *res_pt sind)
 	#endif
 }
 
-/** \brief fall-back function for sincosd
+/** \brief Fall-back function for sincosd.
  *
- * \param alpha double the angle in radians
- * \param cosd double *res_pt the cosine of alpha
- * \param sind double *res_pt the sine of alpha
+ * \param alpha double The angle in radians.
+ * \param cosd double *res_pt The cosine of alpha.
+ * \param sind double *res_pt The sine of alpha.
  * \return void
  *
- * safes about 25 percent compared to a standard call of cos and sin
+ * Safes about 25 percent compared to a standard call of cos and sin.
  */
 void sincos_sqrt(double alpha, double *res_pt cosd, double *res_pt sind)
 {

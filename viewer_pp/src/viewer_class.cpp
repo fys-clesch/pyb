@@ -11,7 +11,7 @@ viewer::cblue[4] = {.01, .1, 1., 1.};
 const float viewer::light_amb[4] = {0., 0., 0., .8}, /**< rgba */
 viewer::light_diff[4] = {.8, .8, .8, .8}, /**< rgba */
 viewer::light_spec[4] = {.8, .8, .8, .8}, /**< rgba */
-viewer::light_pos[4] = {1., -0., 2., 0.}, /**< source at inf */
+viewer::light_pos[4] = {1., -0., 2., 0.}, /**< Source at infinity. */
 viewer::mat_amb[4] = {.7, .7, .7, .8},
 viewer::mat_diff[4] = {.8, .8, .8, .8},
 viewer::mat_spec[4] = {1., 1., 1., .8},
@@ -99,10 +99,11 @@ viewer::~viewer(void)
 void viewer::reset_MemberVariables(const bool make_free)
 {
 	/* atomic<bool> */
-	update_animate.store(true, std::memory_order_relaxed); /**< this makes sure that the next run is displayed immediately */
+	store_UpdateAnimate(true); /**< This makes sure	that the next run is
+	displayed immediately */
 	store_MapMode(false);
 	store_NewDataAvailable(true);
-	esc_down.store(false, std::memory_order_relaxed);
+	store_PressedEsc(false);
 	store_RotateBox(false);
 	store_ConstantAnimation(true);
 	store_IsRunning(false); /* 7 */
@@ -150,7 +151,7 @@ void viewer::reset_DrawingControls(void)
 	mov_y = 0.;
 	mov_lvl = .5;
 	zoom = zoom_std;
-	update_animate.store(true, std::memory_order_relaxed);
+	store_UpdateAnimate(true);
 	row_slice =
 	col_slice = 0;
 }
@@ -243,21 +244,21 @@ void viewer::display_3dView(const bool init)
 	else
 		glLineWidth(3);
 
-	/* frame */
+	/* Frame */
 	glColor3dv(viewer::cwhite);
-	glBegin(GL_LINE_LOOP); /* back */
+	glBegin(GL_LINE_LOOP); /* Back */
 	glVertex3d(-1., -1., -1.); glVertex3d(-1., 1., -1.);
 	glVertex3d(1., 1., -1.); glVertex3d(1., -1., -1.);
 	glEnd();
-	glBegin(GL_LINE_LOOP); /* left */
+	glBegin(GL_LINE_LOOP); /* Left */
 	glVertex3d(-1., -1., -1.); glVertex3d(-1., 1., -1.);
 	glVertex3d(-1., 1., 1.); glVertex3d(-1., -1., 1.);
 	glEnd();
-	glBegin(GL_LINE_LOOP); /* front */
+	glBegin(GL_LINE_LOOP); /* Front */
 	glVertex3d(-1., 1., 1.); glVertex3d(-1., -1., 1.);
 	glVertex3d(1., -1., 1.); glVertex3d(1., 1., 1.);
 	glEnd();
-	glBegin(GL_LINE_LOOP); /* right */
+	glBegin(GL_LINE_LOOP); /* Right */
 	glVertex3d(1., -1., 1.); glVertex3d(1., -1., -1.);
 	glVertex3d(1., 1., -1.); glVertex3d(1., 1., 1.);
 	glEnd();
@@ -271,7 +272,7 @@ void viewer::display_3dView(const bool init)
 	glRasterPos3d(-1., -1., 1.05);
 	glutBitmapCharacter(GLUT_BITMAP_8_BY_13, 'z');
 
-	/* points */
+	/* Points */
 	glBegin(GL_POINTS);
 	for(uint x = 0; x < glrows; x++)
 		for(uint y = 0; y < glcols; y++)
@@ -282,7 +283,7 @@ void viewer::display_3dView(const bool init)
 		}
 	glEnd();
 
-	/* surface */
+	/* Surface */
 	glEnable(GL_LIGHTING);
 	for(uint x = 0; x < (glrows - 1); x++)
 	{
@@ -301,7 +302,7 @@ void viewer::display_3dView(const bool init)
 	}
 	glDisable(GL_LIGHTING);
 
-	/* ground */
+	/* Ground */
 	for(uint x = 0; x < (glrows - 1); x++)
 	{
 		glBegin(GL_TRIANGLE_STRIP);
@@ -318,7 +319,7 @@ void viewer::display_3dView(const bool init)
 		glEnd();
 	}
 
-	/* transparent level */
+	/* Transparent level */
 	glPushMatrix();
 	if(mov_lvl < min_norm)
 		mov_lvl = min_norm;
@@ -338,13 +339,13 @@ void viewer::display_3dView(const bool init)
 
 	glPopMatrix();
 
-	/* overview and and colorbox */
+	/* Overview and colour box */
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
 	glOrtho(0., 1., 0., 1., -2., 2.);
-	glTranslated(0., 0., 1.); /**< the colorbox should be always in front of the drawing */
-
+	glTranslated(0., 0., 1.); /**< The colour box should be always in front of
+	the drawing */
 	draw_CoordinateOverview();
 	draw_Colorbox();
 
@@ -367,20 +368,21 @@ void viewer::display_MapView(const bool init)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
+	double scly = 1.,
+	       sclx = 1.;
 	glLoadIdentity();
 	{
-		double ry = 1., rx = 1.;
 		if(glcols > glrows)
-			rx = glrows / (double)glcols;
+			sclx = glrows / (double)glcols;
 		else
-			ry = glcols / (double)glrows;
+			scly = glcols / (double)glrows;
 
-		glScaled(.5 * rx, .5 * ry, 1.);
+		glScaled(.5 * sclx, .5 * scly, 1.);
 	}
 
 	glLineWidth(2);
 
-	/* frame */
+	/* Frame */
 	glColor3dv(cwhite);
 	glBegin(GL_LINE_LOOP);
 	glVertex2d(-1., -1.);
@@ -389,13 +391,13 @@ void viewer::display_MapView(const bool init)
 	glVertex2d(1., -1.);
 	glEnd();
 
-	/* axis */
+	/* Axis */
 	glRasterPos2d(1.05, -1.);
 	glutBitmapCharacter(GLUT_BITMAP_8_BY_13, 'x');
 	glRasterPos2d(-1., 1.05);
 	glutBitmapCharacter(GLUT_BITMAP_8_BY_13, 'y');
 
-	/* ground */
+	/* Ground */
 	for(uint x = 0; x < (glrows - 1); x++)
 	{
 		glBegin(GL_TRIANGLE_STRIP);
@@ -412,7 +414,7 @@ void viewer::display_MapView(const bool init)
 		glEnd();
 	}
 
-	/* side-projector */
+	/* Side-projector */
 	glPushMatrix();
 	glTranslated(0., 0., .5);
 	glColor3dv(cwhite);
@@ -420,7 +422,8 @@ void viewer::display_MapView(const bool init)
 	static double wc_ox = 0xDEADDEAD,
 	              wc_oy = 0xDEADDEAD;
 	if((wc_ox != wc[0] || wc_oy != wc[1]) &&
-		(fabs(wc[0]) <= 1. && fabs(wc[1]) <= 1.)) /**< we're taking the mouse click position instead */
+		(fabs(wc[0]) <= 1. && fabs(wc[1]) <= 1.)) /**< We're taking the mouse
+		click position instead. */
 	{
 		row_slice = (uint)rint((wc[0] + 1.) / 2. * glrows);
 		col_slice = (uint)rint((wc[1] + 1.) / 2. * glcols);
@@ -430,23 +433,29 @@ void viewer::display_MapView(const bool init)
 	row_slice %= glrows;
 	col_slice %= glcols;
 
+	/* This is the horizontal hair. */
+	glBegin(GL_LINES);
+	glVertex2d(data[row_slice * glcols * 3 + 0 * 3], 1.);
+	glVertex2d(data[row_slice * glcols * 3 + 0 * 3], -1.);
+	glEnd();
+	/* This is the vertical hair. */
+	glBegin(GL_LINES);
+	glVertex2d(1., data[0 * glcols * 3 + col_slice * 3 + 1]);
+	glVertex2d(-1., data[0 * glcols * 3 + col_slice * 3 + 1]);
+	glEnd();
+
 	const double tf_lin_a = 1. / (max_norm - min_norm),
 	             tf_lin_b = min_norm / (min_norm - max_norm);
 	char c[32];
-	/* right */
-	const double off_x = .2,
-	             width_x = .5;
+	/* Left bounding box */
+	const double off_x = .2 / sclx,
+	             width_x = .5 / sclx;
 	glLineWidth(2);
 	glBegin(GL_LINE_LOOP);
 	glVertex2d(-1. - off_x, -1.);
 	glVertex2d(-1. - off_x, 1.);
 	glVertex2d(-1. - (off_x + width_x), 1.);
 	glVertex2d(-1. - (off_x + width_x), -1.);
-	glEnd();
-	/* this is the horizontal hair */
-	glBegin(GL_LINES);
-	glVertex2d(data[row_slice * glcols * 3 + 0 * 3], 1.);
-	glVertex2d(data[row_slice * glcols * 3 + 0 * 3], -1.);
 	glEnd();
 
 	glLineWidth(1);
@@ -455,20 +464,18 @@ void viewer::display_MapView(const bool init)
 	{
 		double yy = y / (double)glcols * 2. - 1.,
 		       xx = data[row_slice * glcols * 3 + y * 3 + 2];
-		xx = (tf_lin_a * xx + tf_lin_b) * width_x; /**< normalize span to unity and rescale span to the box height */
+		xx = (tf_lin_a * xx + tf_lin_b) * width_x; /**< Normalize span to unity
+		and rescale span to the box height. */
 		xx -= 1. + off_x + width_x;
 		glVertex2d(xx, yy);
 	}
 	glEnd();
+	/* End of the left box */
 
-	snprintf(c, 32, "slice %u", row_slice);
-	glRasterPos2d(1.05, 0.);
-	print_String(c);
-
-	/* bottom */
-	const double off_y = .2,
-	             height_y = .5;
-	/* the box first */
+	/* Bottom */
+	const double off_y = .2 / scly,
+	             height_y = .5 / scly;
+	/* The bounding box first */
 	glLineWidth(2);
 	glBegin(GL_LINE_LOOP);
 	glVertex2d(-1., -1. - off_y);
@@ -476,18 +483,15 @@ void viewer::display_MapView(const bool init)
 	glVertex2d(1., -1. - (off_y + height_y));
 	glVertex2d(-1., -1. - (off_y + height_y));
 	glEnd();
+
 	snprintf(c, 32, "%g", min_val);
 	glRasterPos2d(1.05, -1. - (off_y + height_y));
 	print_String(c);
 	snprintf(c, 32, "%g", max_val);
 	glRasterPos2d(1.05, -1. - off_y);
 	print_String(c);
-	/* this is the vertical hair */
-	glBegin(GL_LINES);
-	glVertex2d(1., data[0 * glcols * 3 + col_slice * 3 + 1]);
-	glVertex2d(-1., data[0 * glcols * 3 + col_slice * 3 + 1]);
-	glEnd();
 
+	/* This is data in the box. */
 	glLineWidth(1);
 	glBegin(GL_LINE_STRIP);
 	for(uint x = 0; x < glrows; x++)
@@ -499,9 +503,14 @@ void viewer::display_MapView(const bool init)
 		glVertex2d(xx, yy);
 	}
 	glEnd();
+	/* End of the bottom box. */
 
 	snprintf(c, 32, "slice %u", col_slice);
 	glRasterPos2d(0., 1.05);
+	print_String(c);
+
+	snprintf(c, 32, "slice %u", row_slice);
+	glRasterPos2d(1.05, 0.);
 	print_String(c);
 
 	mov_lvl = data[row_slice * glcols * 3 + col_slice * 3 + 2];
@@ -511,7 +520,7 @@ void viewer::display_MapView(const bool init)
 
 	glPopMatrix();
 
-	/* colorbox */
+	/* Colour box */
 	glColor4dv(cwhite);
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
@@ -535,7 +544,7 @@ void viewer::draw_Colorbox(void)
 	glLoadIdentity();
 	glTranslated(.84, .75, 0.);
 	glScaled(1., 1., 1.);
-	/* outer box */
+	/* Outer box */
 	glBegin(GL_LINE_LOOP);
 	glVertex2d(0., 0.);
 	glVertex2d(width, 0.);
@@ -550,7 +559,7 @@ void viewer::draw_Colorbox(void)
 		glVertex2d(0., cb[i] * height);
 		glVertex2d(width, cb[i] * height);
 	}
-	if(nstrps % 4) /* add 2 vertices to finish quad strip */
+	if(nstrps % 4) /* Add 2 vertices to finish quad strip. */
 	{
 		glVertex2d(0., cb[nstrps - 1] * height);
 		glVertex2d(width, cb[nstrps - 1] * height);
@@ -677,7 +686,7 @@ void viewer::fill_DrawingData(const double *res_pt const m_in, const bool noisy)
 
 	constexpr double def_col[3] = {1., 0., 0.};
 
-	/* check if the coordinate system has changed */
+	/* Check if the coordinate system has changed. */
 	const double testx = data[(glcols + 1) * 3],
 	             testy = data[(glcols + 1) * 3 + 1],
 	             mapx = -1. + 2. * 1. / (glrows - 1),
@@ -691,7 +700,7 @@ void viewer::fill_DrawingData(const double *res_pt const m_in, const bool noisy)
 				data[idx + 0] = -1. + 2. * x / (glrows - 1);
 				data[idx + 1] = -1. + 2. * y / (glcols - 1);
 			}
-	/* check if the data is normal... */
+	/* Check if the data is normal... */
 	if(max_val == -DBL_MAX || min_val == DBL_MAX ||
 		!isfinite(max_val) || !isfinite(min_val))
 	{
@@ -708,7 +717,7 @@ void viewer::fill_DrawingData(const double *res_pt const m_in, const bool noisy)
 
 		return;
 	}
-	/* ...otherwise, continue as usual */
+	/* ...otherwise, continue as usual. */
 	const double diff = max_val - min_val;
 	double norm;
 
@@ -724,7 +733,7 @@ void viewer::fill_DrawingData(const double *res_pt const m_in, const bool noisy)
 	{
 		double temp = m_in[i];
 		const uint idx = i * 3;
-		/* z holds the data */
+		/* z holds the data. */
 		data[idx + 2] = temp / norm;
 		temp = (temp - min_val) / diff;
 		if(temp < .5)
@@ -764,7 +773,7 @@ void viewer::calc_DrawingData(const double *res_pt const m_in, const bool noisy,
 
 	constexpr double def_col[3] = {1., 0., 0.};
 
-	/* check if the coordinate system has changed */
+	/* Check if the coordinate system has changed. */
 	const double testx = data_out[(col_in + 1) * 3],
 	             testy = data_out[(col_in + 1) * 3 + 1],
 	             mapx = -1. + 2. * 1. / (row_in - 1),
@@ -778,7 +787,7 @@ void viewer::calc_DrawingData(const double *res_pt const m_in, const bool noisy,
 				data_out[idx + 0] = -1. + 2. * x / (row_in - 1);
 				data_out[idx + 1] = -1. + 2. * y / (col_in - 1);
 			}
-	/* check if the data is normal... */
+	/* Check if the data is normal... */
 	if(*max_val_out == -DBL_MAX || *min_val_out == DBL_MAX ||
 		!isfinite(*max_val_out) || !isfinite(*min_val_out))
 	{
@@ -812,7 +821,7 @@ void viewer::calc_DrawingData(const double *res_pt const m_in, const bool noisy,
 		}
 		return;
 	}
-	/* ...then continue as normal */
+	/* ...then continue as normal. */
 	bool scl_err = false;
 	for(uint i = 0; i < col_in * row_in; i++)
 	{
@@ -893,7 +902,8 @@ void viewer::alloc_DataFromFile(const std::string &fname)
 		rgb = alloc_3mat(glrows, glcols);
 		rgbcb = alloc_3mat(1, nstrps);
 		cb = alloc_vec(nstrps);
-		data = alloc_3matrix(glrows, glcols, 0.); /**< important to prevent an uninitialized read */
+		data = alloc_3matrix(glrows, glcols, 0.); /**< Important to prevent an
+		uninitialized read. */
 		store_AllocatedMemoryRelease(true);
 	}
 	else if(load_AllocatedMemory() &&
@@ -908,25 +918,30 @@ void viewer::alloc_DataFromFile(const std::string &fname)
 	}
 }
 
+/** \brief This function is called by the copy thread.
+ *
+ * \param nrows const uint
+ * \param ncols const uint
+ * \return void
+ *
+ */
 void viewer::alloc_DataFromMemory(const uint nrows, const uint ncols)
 {
-	if(!load_AllocatedMemoryAcquire())
+	if(!load_AllocatedMemoryAcquire()) /**< Only true in the first instance. */
 	{
-		atmc_glrows.store(nrows, std::memory_order_relaxed);
+		store_GlRows(nrows);
 		glrows = nrows;
-		atmc_glcols.store(ncols, std::memory_order_relaxed);
+		store_GlCols(ncols);
 		glcols = ncols;
-
 		rgb = alloc_3mat(glrows, glcols);
 		rgbcb = alloc_3mat(1, nstrps);
 		cb = alloc_vec(nstrps);
 		data = alloc_3matrix(glrows, glcols, 0.);
 		store_AllocatedMemoryRelease(true);
 	}
-	else if((nrows != atmc_glrows.load(std::memory_order_relaxed)) ||
-			(ncols != atmc_glcols.load(std::memory_order_relaxed)))
+	else if(nrows != load_GlRows() || ncols != load_GlCols())
 	{
-		/* viewer is alive... */
+		/* Viewer is alive... */
 		if(load_IsRunning())
 		{
 			/* ...then tell it about the news... */
@@ -934,13 +949,13 @@ void viewer::alloc_DataFromMemory(const uint nrows, const uint ncols)
 			/* ...and waiting: */
 			wait_UntilViewerPause("reallocation takes place.");
 		}
-		/* then the reallocation can take place safely.
-		 * the check in the 'else if' clause has to be atomic, though.
+		/* Then the reallocation can take place safely.
+		 * The check in the 'else if' clause has to be atomic, though.
 		 */
-		atmc_glrows.store(nrows, std::memory_order_relaxed);
 		glrows = nrows;
-		atmc_glcols.store(ncols, std::memory_order_relaxed);
+		store_GlRows(nrows);
 		glcols = ncols;
+		store_GlCols(ncols);
 		col_slice =
 		row_slice = 0;
 		rgb = realloc_3mat(rgb, glrows, glcols);
@@ -964,6 +979,20 @@ void viewer::fill_DataFromFile(const std::string &fname)
 	store_FilledMemory(true);
 }
 
+/** \brief This function serves to set the allocated memory which is normed
+for the viewer thread.
+ *
+ * \param max_val_out const double*res_pt
+ * \param min_val_out const double*res_pt
+ * \param max_norm_out const double*res_pt
+ * \param min_norm_out const double*res_pt
+ * \param data_out const double*res_pt
+ * \param rgb_out const double*res_pt
+ * \return void
+ *
+ * The function is called in the copy thread, so the viewer thread has to stop
+ * to prevent data races.
+ */
 void viewer::set_DrawingData(const double *res_pt max_val_out,
 							const double *res_pt min_val_out,
 							const double *res_pt max_norm_out,
@@ -1052,7 +1081,7 @@ void viewer::KeyboardHandler(const uchar key, const int x, const int y)
 	switch(key)
 	{
 		case 27:
-			(*dv1p).esc_down.store(true);
+			(*dv1p).store_PressedEsc(true);
 			close_All();
 			break;
 		case 'm':
@@ -1066,7 +1095,7 @@ void viewer::KeyboardHandler(const uchar key, const int x, const int y)
 			(*dv1p).reset_DrawingControls();
 			break;
 		case 'p':
-			(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+			(*dv1p).store_UpdateAnimate(true);
 			(*dv1p).toggle_Map3DMode();
 			break;
 		default:
@@ -1097,7 +1126,7 @@ void viewer::ArrowKeysHandler(const int a_keys, const int x, const int y)
 			{
 				if((*dv1p).row_slice)
 				{
-					(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+					(*dv1p).store_UpdateAnimate(true);
 					(*dv1p).row_slice--;
 				}
 			}
@@ -1105,7 +1134,7 @@ void viewer::ArrowKeysHandler(const int a_keys, const int x, const int y)
 		case GLUT_KEY_RIGHT:
 			if((*dv1p).load_MapMode())
 			{
-				(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+				(*dv1p).store_UpdateAnimate(true);
 				(*dv1p).row_slice++;
 			}
 			break;
@@ -1114,7 +1143,7 @@ void viewer::ArrowKeysHandler(const int a_keys, const int x, const int y)
 			{
 				if((*dv1p).mov_lvl + .1 <= 1.)
 				{
-					(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+					(*dv1p).store_UpdateAnimate(true);
 
 					if((*dv1p).zoom <= (*dv1p).zoom_std)
 						(*dv1p).mov_lvl += .1;
@@ -1128,7 +1157,7 @@ void viewer::ArrowKeysHandler(const int a_keys, const int x, const int y)
 			}
 			else
 			{
-				(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+				(*dv1p).store_UpdateAnimate(true);
 				(*dv1p).col_slice++;
 			}
 			break;
@@ -1137,7 +1166,7 @@ void viewer::ArrowKeysHandler(const int a_keys, const int x, const int y)
 			{
 				if((*dv1p).mov_lvl - .1 >= (*dv1p).min_norm)
 				{
-					(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+					(*dv1p).store_UpdateAnimate(true);
 
 					if((*dv1p).zoom <= (*dv1p).zoom_std)
 						(*dv1p).mov_lvl -= .1;
@@ -1155,7 +1184,7 @@ void viewer::ArrowKeysHandler(const int a_keys, const int x, const int y)
 			{
 				if((*dv1p).col_slice)
 				{
-					(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+					(*dv1p).store_UpdateAnimate(true);
 					(*dv1p).col_slice--;
 				}
 			}
@@ -1191,7 +1220,7 @@ void viewer::TrackballHandler(const int mode, const int button, const int state,
 				iprint(stdout, "wx: %g, wy: %g, wz: %g\n",
 						(*dv1p).wc[0], (*dv1p).wc[1], (*dv1p).wc[2]);
 				#endif
-				(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+				(*dv1p).store_UpdateAnimate(true);
 			}
 			if(!(*dv1p).load_MapMode())
 			{
@@ -1234,8 +1263,6 @@ void viewer::TrackballHandler(const int mode, const int button, const int state,
 				else if((*dv1p).rmb_down && !(*dv1p).lmb_down) /* zoom */
 				{
 					double temp, scl = (1. + (y - startMY) / (*dv1p).zoom_std);
-					const double zoom_max = (*dv1p).zoom_std * (1. + 1.5),
-					             zoom_min = (*dv1p).zoom_std * .2;
 					if((*dv1p).zoom > zoom_max)
 						temp = zoom_max;
 					else if((*dv1p).zoom == zoom_max && scl > 1.)
@@ -1278,9 +1305,9 @@ void viewer::MouseHandler(const int button, const int state, const int x, const 
 
 void viewer::set_DisplayMainThread(void)
 {
-	if((*dv1p).load_NewDataAvailable()) /**< check for news. has to be true in the first run! */
+	if((*dv1p).load_NewDataAvailable()) /**< Check for news. */
 	{
-		/* now we can wait for the data to be swapped over */
+		/* Now we can wait for the data to be swapped over... */
 		(*dv1p).event_SwapDataToViewer.wait();
 		/* ...and we are ready to be stopped again! */
 		(*dv1p).event_SwapDataToViewer.reset();
@@ -1292,7 +1319,7 @@ void viewer::set_DisplayMainThread(void)
 	{
 		if(prev || prev == 0xFF)
 		{
-			(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+			(*dv1p).store_UpdateAnimate(true);
 			(*dv1p).display_3dView(true);
 		}
 		else
@@ -1302,7 +1329,7 @@ void viewer::set_DisplayMainThread(void)
 	{
 		if(!prev || prev == 0xFF)
 		{
-			(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+			(*dv1p).store_UpdateAnimate(true);
 			(*dv1p).display_MapView(true);
 		}
 		else
@@ -1314,16 +1341,16 @@ void viewer::set_DisplayMainThread(void)
 void viewer::animate_View(void)
 {
 	static uint avgtime = 0;
-	if((*dv1p).update_animate.load(std::memory_order_relaxed) ||
+	if((*dv1p).load_UpdateAnimate() ||
 		(*dv1p).lmb_down ||
 		(*dv1p).rmb_down ||
 		(*dv1p).load_RotateBox())
 	{
 		if(!(*dv1p).load_ConstantAnimation())
-			(*dv1p).update_animate.store(false, std::memory_order_relaxed);
+			(*dv1p).store_UpdateAnimate(false);
 		constexpr uint avg = 20;
 		static uint frams = 0;
-		if(frams++ < avg) /**< collect enough averaging before displaying the fps */
+		if(frams++ < avg) /**< Collect enough data before displaying the fps. */
 			avgtime = glutGet(GLUT_ELAPSED_TIME);
 		else
 		{
@@ -1361,7 +1388,7 @@ void viewer::set_DisplayMain(void)
 	{
 		if(prev || prev == 0xFF)
 		{
-			(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+			(*dv1p).store_UpdateAnimate(true);
 			(*dv1p).display_3dView(true);
 		}
 		else
@@ -1371,7 +1398,7 @@ void viewer::set_DisplayMain(void)
 	{
 		if(!prev || prev == 0xFF)
 		{
-			(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+			(*dv1p).store_UpdateAnimate(true);
 			(*dv1p).display_MapView(true);
 		}
 		else
@@ -1399,10 +1426,8 @@ void viewer::set_SubDisplay(void)
 	glVertex2d(1., 1.);
 	glVertex2d(1., 0.);
 	glEnd();
-
-	(*dv1p).print_BlockString2d("these keys may have the one or the other effect: "
-								"F1, F11, F12, Esc, R, m, p, Mouse Buttons. "
-								"this list might be incomplete.",
+	(*dv1p).print_BlockString2d("Unused OpenGL subdisplay. Use the GUI " \
+								"to control the viewer.",
 								23,
 								.02, .9,
 								0., -.08);
@@ -1431,13 +1456,20 @@ void viewer::reshape_View(const int width, const int height)
 		gluOrtho2D(-1., 1, -1., 1);
 }
 
+/** \brief This static function can be used by other threads to close the
+viewer application.
+ *
+ * \param void
+ * \return void
+ *
+ */
 void viewer::close_All(void)
 {
 	static bool escaped = false;
 
-	if(glutGetWindow() && (*dv1p).esc_down.load(std::memory_order_relaxed))
+	if(glutGetWindow() && (*dv1p).load_PressedEsc())
 	{
-		(*dv1p).esc_down.store(false, std::memory_order_relaxed);
+		(*dv1p).store_PressedEsc(false);
 		escaped = true;
 		glutIdleFunc(NULL);
 		iprint(stdout,
@@ -1449,7 +1481,7 @@ void viewer::close_All(void)
 		glutLeaveMainLoop();
 	}
 	else if(glutGetWindow() &&
-			!(*dv1p).esc_down.load(std::memory_order_relaxed) &&
+			!(*dv1p).load_PressedEsc() &&
 			!escaped)
 	{
 		iprint(stdout,
@@ -1461,8 +1493,8 @@ void viewer::close_All(void)
 		glutLeaveMainLoop(); /**< calling this guy twice is OK */
 	}
 	else if(glutGetWindow() &&
-			!(*dv1p).esc_down.load(std::memory_order_relaxed) &&
-			escaped) /**< happens when closing the window by 'Esc' */
+			!(*dv1p).load_PressedEsc() && escaped) /**< Happens when closing
+			the window by 'Esc'. */
 	{
 		iprint(stdout, "'%s': I've been here before\n", __func__);
 		escaped = false;
@@ -1490,7 +1522,7 @@ void viewer::toggle_Idling(void)
 	constant_animate.store(!constant_animate.load(std::memory_order_acquire),
 							std::memory_order_release);
 	if((*dv1p).load_ConstantAnimation())
-		(*dv1p).update_animate.store(true, std::memory_order_relaxed);
+		(*dv1p).store_UpdateAnimate(true);
 }
 
 void viewer::toggle_Map3DMode(void)
@@ -1554,12 +1586,12 @@ bool viewer::load_AllocatedMemoryAcquire(void)
 
 void viewer::store_FilledMemory(const bool b)
 {
-	filled.store(b);
+	filled.store(b, std::memory_order_relaxed);
 }
 
 bool viewer::load_FilledMemory(void)
 {
-	return filled.load();
+	return filled.load(std::memory_order_relaxed);
 }
 
 void viewer::store_NewDataAvailable(const bool b)
@@ -1594,20 +1626,54 @@ bool viewer::load_IsRunning(void)
 
 void viewer::store_GlRows(const uint n)
 {
-	atmc_glrows.store(n);
+	atmc_glrows.store(n, std::memory_order_relaxed);
 }
 
 uint viewer::load_GlRows(void)
 {
-	return atmc_glrows.load();
+	return atmc_glrows.load(std::memory_order_relaxed);
 }
 
 void viewer::store_GlCols(const uint n)
 {
-	atmc_glcols.store(n);
+	atmc_glcols.store(n, std::memory_order_relaxed);
 }
 
 uint viewer::load_GlCols(void)
 {
-	return atmc_glcols.load();
+	return atmc_glcols.load(std::memory_order_relaxed);
+}
+
+/** \brief Tells whether the Esc button has been pressed.
+ *
+ * \param void
+ * \return bool
+ *
+ * The relaxed atomic load won't syncing or ordering any operation.
+ */
+bool viewer::load_PressedEsc(void)
+{
+	return esc_down.load(std::memory_order_relaxed);
+}
+
+/** \brief Stores a hit on the Esc button.
+ *
+ * \param void
+ * \return bool
+ *
+ * The relaxed atomic store won't syncing or ordering any operation.
+ */
+void viewer::store_PressedEsc(const bool b)
+{
+	esc_down.store(b, std::memory_order_relaxed);
+}
+
+void viewer::store_UpdateAnimate(const bool b)
+{
+	update_animate.store(b, std::memory_order_relaxed);
+}
+
+bool viewer::load_UpdateAnimate(void)
+{
+	return update_animate.load(std::memory_order_relaxed);
 }

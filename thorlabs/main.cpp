@@ -116,19 +116,19 @@ int main(int argc, char **argv)
 				t_cam.unset_Background();
 				break;
 			case 's': // 1048691
-				t_cam.save_Image(t_cam.RGB);
+				t_cam.save_Image(t_cam.save_Im_type::RGB);
 				break;
 			case 'S': // 1114195
-				t_cam.save_Image(t_cam.WORK);
+				t_cam.save_Image(t_cam.save_Im_type::WORK);
 				break;
 			case '1': // 1048625
-				t_cam.store_Image(t_cam.RGB);
+				t_cam.store_Image(t_cam.save_Im_type::RGB);
 				break;
 			case '2': // 1048626
-				t_cam.store_Image(t_cam.WORK);
+				t_cam.store_Image(t_cam.save_Im_type::WORK);
 				break;
 			case '3': // 1048627
-				t_cam.store_Image(t_cam.FP_IN);
+				t_cam.store_Image(t_cam.save_Im_type::FP_IN);
 				break;
 			case 7340032: /**< F1 or 1114046 */
 				t_cam.show_Help();
@@ -150,7 +150,7 @@ int main(int argc, char **argv)
 				t_cam.toggle_Grabbing();
 				break;
 			case 'P':
-				t_cam.gnuplot_Image(t_cam.WORK);
+				t_cam.gnuplot_Image(t_cam.save_Im_type::WORK);
 				break;
 			default:
 				t_cam.update_Mats_RgbAndFp();
@@ -163,7 +163,7 @@ int main(int argc, char **argv)
 				t_cam.show_Im_RGB();
 				t_cam.show_CameraTrackbars();
 				t_cam.show_Trackbars();
-				Mat im_mom_o;
+//				Mat im_mom_o;
 //				get_Moments_own(t_cam.get_Mat_private(t_cam.WORK),
 //									im_mom_o, t_cam.get_PixelPitch(), false);
 //				get_Moments(t_cam.get_Mat_private(t_cam.WORK),
@@ -191,23 +191,23 @@ int main(int argc, char **argv)
 
 	iprint(stdout, "i made %lu turns\n", t_cam.get_Frames());
 
-	/* first stop minime */
+	/* First stop minime. */
 	t_cam.close_MinimeThread();
 	thread_Minime.join();
 
-	/* next stop reloading data into the viewer */
+	/* Next stop reloading data into the viewer. */
 	t_cam.close_CopyThread();
 	thread_Copy.join();
 
-	/* then close, if necessary, the display */
+	/* Then close, if necessary, the display. */
 	if(t_cam.is_ViewerWindowRunning())
 		t_cam.close_ViewerWindow();
 
-	/* finally close the actual thread */
+	/* Finally close the actual thread. */
 	t_cam.close_ViewerThread();
 	thread_Viewer.join();
 
-	/* wait for second to rest - and maybe to flush memory */
+	/* Wait for a second to rest - and maybe to flush memory. */
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 	return EXIT_SUCCESS;

@@ -13,8 +13,8 @@ parameter *minime::alloc_Parameter(const uint n)
 		m[i].name = "";
 		m[i].unit = "";
 		m[i].init =
-		m[i].min =
-		m[i].max =
+		m[i].minv =
+		m[i].maxv =
 		m[i].val = 0.;
 		m[i].log =
 		m[i].fit = 0;
@@ -34,7 +34,7 @@ void minime::print_Parameter(const parameter *pp)
 				"log: %u\n" \
 				"fit: %u\n",
 				(*pp).name.c_str(), (*pp).unit.c_str(),
-				(*pp).init, (*pp).min, (*pp).max, (*pp).val,
+				(*pp).init, (*pp).minv, (*pp).maxv, (*pp).val,
 				(*pp).log, (*pp).fit);
 	else
 		iprint(stdout,
@@ -47,7 +47,7 @@ void minime::print_Parameter(const parameter *pp)
 				"fit: %u\n",
 				(*pp).name.c_str(), "um",
 				(*pp).init * scl,
-				(*pp).min * scl, (*pp).max * scl, (*pp).val * scl,
+				(*pp).minv * scl, (*pp).maxv * scl, (*pp).val * scl,
 				(*pp).log, (*pp).fit);
 }
 
@@ -209,10 +209,8 @@ void minime::fill_DataFromMemory(const double *res_pt data_in,
 	if(load_AllocatedMemory())
 	{
 		memcpy(data, data_in, mnm_ntot * sizeof(double));
-
 		if(bad_in != nullptr)
 			memcpy(bad, bad_in, mnm_ntot * sizeof(uchar));
-
 		store_FilledMemory(true);
 	}
 }

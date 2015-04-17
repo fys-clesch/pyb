@@ -42,6 +42,11 @@ private:
 	            ax_z_title,
 	            plot_title;
 
+	void write_Data_g(const std::string &fname,
+					const uchar format,
+					const double *res_pt data,
+					const uint x_co = 0, const uint y_co = 0);
+
 public:
 
 	fifo(void);
@@ -73,12 +78,6 @@ public:
 	void write_MatToFile(const cv::Mat &mat,
 						const std::string &fname = "");
 	#endif
-
-	void write_Data_g(const std::string &fname,
-					const uchar format,
-					const double *res_pt data,
-					const uint x_co = 0, const uint y_co = 0);
-
 	void write_Bin_float(const std::string &fname, const float *res_pt data,
 						const uint nrowscols = 0);
 	void write_Bin_double(const std::string &fname, const double *res_pt data,

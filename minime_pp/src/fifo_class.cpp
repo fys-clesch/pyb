@@ -374,6 +374,10 @@ void fifo::plot_Data(const double *res_pt data,
 /* plots a histogram from a file */
 void fifo::plot_Histogram(const std::string &fname, const uint steps)
 {
+	/** @todo Finish this. */
+//	std::string fname_tmp = std::tmpnam(nullptr);
+//	std::cout << "temporary file name: " << fname_tmp << '\n';
+
 	const std::string cmdtmp = "temp/igyba_pltcmd";
 	mkdir("plot" DIRMOD;
 	mkdir("temp" DIRMOD;

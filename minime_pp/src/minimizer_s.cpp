@@ -19,7 +19,8 @@ constexpr static double SIM_TOLMIN = 10e-9,
                         MAR_LAMMIN = -18.,
                         MAR_LAMMAX = 12.,
                         MAR_BRENTTOL = 1e-2,
-                        MAR_DERIV_H = 1e-4, /**< decreasing this might cause trouble when computing the Hessian */
+                        MAR_DERIV_H = 1e-4, /**< decreasing this might cause
+                        trouble when computing the Hessian */
                         SQRT_EPSILON = 1e-8;
 
 struct pset
@@ -35,12 +36,15 @@ static void swap_pset(pset *p1, pset *p2);
 static double get_span(const pset *p);
 static int check_equal(double x1, double x2);
 static int ptcompare(const void *p1, const void *p2);
-static void status(const pset *res_pt ptp, const char *res_pt meth, const char *res_pt text);
+static void status(const pset *res_pt ptp, const char *res_pt meth,
+				const char *res_pt text);
 static void rndperm(int *p, const uint n);
-static void startvectors(const uint n, pset x[MAXPARAM + 1], const uint irandom);
+static void startvectors(const uint n, pset x[MAXPARAM + 1],
+						const uint irandom);
 static int gaussj(double *res_pt a, const uint n, double *res_pt b);
 static double ssq(pset *pp);
-static double amotry(pset p[MAXPARAM], pset *psump, const uint ihi, const double fac);
+static double amotry(pset p[MAXPARAM], pset *psump, const uint ihi,
+					const double fac);
 static void amoeba(pset p[MAXPARAM], const double ftol, const bool noisy);
 static void simplex(pset *p0, double startlen, double tol, const bool noisy);
 static double fminbr(double a, double b, double (*f) (double x), double tol);
@@ -48,36 +52,33 @@ static double fmarq(double loglam);
 static void marq(pset *p, const bool noisy);
 static void manymarquardt(pset *ptp, const bool noisy);
 static double hessian(pset *p);
+static void covar(pset *p, void *extra);
 
-/* global but static definitions */
+/* Global but static definitions. */
 struct lmar
 {
 	double a[MAXPARAM * MAXPARAM], /* Hessian for mar */
-		   b[MAXPARAM]; /* right hand side for mar */
-
+		   b[MAXPARAM]; /* Right hand side for mar */
 	pset p0,
 		 ptry;
 };
 
-struct min
+struct mini_struct
 {
 	unsigned long nfunc;
-
 	double paralpha[MAXPARAM],
 		   logmin[MAXPARAM],
 		   logmax[MAXPARAM];
-
 	uint nparm_tot,
 		 nparm,
 		 pindex[MAXPARAM],
 		 funcp_nout;
-
 	parameter *pa_io;
-
-	void (*funcp)(double *, double *); /* 1. parameter is input, 2. one is output per reference */
+	void (*funcp)(double *, double *); /* 1. parameter is input, 2. one is
+	output per reference. */
 };
 
-static min min_s;
+static mini_struct min_s;
 static lmar lmar_c;
 
 #pragma omp threadprivate(min_s, lmar_c)
@@ -615,21 +616,22 @@ void manymarquardt(pset *ptp, const bool noisy)
 	}
 }
 
-/**
- * compute Hessian matrix
- * diagonal elements and gradient
+/** \brief Computes thee Hessian matrix
+ *
+ * \param p pset*
+ * \return double
+ *
  */
 double hessian(pset *p)
 {
 	constexpr double h = MAR_DERIV_H;
 	const double sq0 = ssq(p);
-	double sq1;
 	memcpy(&lmar_c.p0, p, sizeof(pset));
-	for(uint i = 0; i < min_s.nparm; i++)
+	for(uint i = 0; i < min_s.nparm; ++i)
 	{
 		const double p_i = p->parm[i];
 		p->parm[i] = p_i + h;
-		sq1 = ssq(p) - sq0;
+		const double sq1 = ssq(p) - sq0;
 		p->parm[i] = p_i - h;
 		const double sq2 = ssq(p) - sq0;
 		p->parm[i] = p_i;
@@ -637,14 +639,14 @@ double hessian(pset *p)
 		lmar_c.b[i] = (sq1 - sq2) / (-4. * h); /* beta = deriv/(-2) */
 	}
 	/* off-diagonal elements */
-	for(uint i = 0; i < min_s.nparm; i++)
-		for(uint j = 0; j < i; j++)
+	for(uint i = 0; i < min_s.nparm; ++i)
+		for(uint j = 0; j < i; ++j)
 		{
 			const double p_i = p->parm[i],
 			             p_j = p->parm[j];
 			p->parm[i] = p_i + h;
 			p->parm[j] = p_j + h;
-			sq1 = ssq(p);
+			double sq1 = ssq(p);
 			p->parm[i] = p_i - h;
 			p->parm[j] = p_j + h;
 			sq1 -= ssq(p);
@@ -681,23 +683,23 @@ double minimizer(void (*f)(double *, double *), const uint np, parameter *ppa,
 		{
 			if(min_s.pa_io[i].log)
 			{
-				if(exp(min_s.pa_io[i].max) / exp(min_s.pa_io[i].min) > 2.)
+				if(exp(min_s.pa_io[i].maxv) / exp(min_s.pa_io[i].minv) > 2.)
 					min_s.paralpha[min_s.nparm] = 1.57 / PUNISH_BETA;
 				else
 					min_s.paralpha[min_s.nparm] =
 					    1.57 / (PUNISH_BETA *
-					    (exp(min_s.pa_io[i].max) / exp(min_s.pa_io[i].min) - 1.));
+					    (exp(min_s.pa_io[i].maxv) / exp(min_s.pa_io[i].minv) - 1.));
 				p.parm[min_s.nparm] = log(min_s.pa_io[i].init);
-				min_s.logmin[min_s.nparm] = log(min_s.pa_io[i].min);
-				min_s.logmax[min_s.nparm] = log(min_s.pa_io[i].max);
+				min_s.logmin[min_s.nparm] = log(min_s.pa_io[i].minv);
+				min_s.logmax[min_s.nparm] = log(min_s.pa_io[i].maxv);
 			}
 			else
 			{
 				min_s.paralpha[min_s.nparm] =
-				    1.57 / ((min_s.pa_io[i].max - min_s.pa_io[i].min) * PUNISH_BETA);
+				    1.57 / ((min_s.pa_io[i].maxv - min_s.pa_io[i].minv) * PUNISH_BETA);
 				p.parm[min_s.nparm] = min_s.pa_io[i].init;
-				min_s.logmin[min_s.nparm] = min_s.pa_io[i].min;
-				min_s.logmax[min_s.nparm] = min_s.pa_io[i].max;
+				min_s.logmin[min_s.nparm] = min_s.pa_io[i].minv;
+				min_s.logmax[min_s.nparm] = min_s.pa_io[i].maxv;
 			}
 			min_s.pindex[min_s.nparm] = i;
 			++min_s.nparm;
@@ -767,8 +769,8 @@ double minimizer(void (*f)(double *, double *), const uint np, parameter *ppa,
 					min_s.pa_io[i].name.c_str(),
 					min_s.pa_io[i].unit.c_str(),
 					min_s.pa_io[i].val,
-					min_s.pa_io[i].min,
-					min_s.pa_io[i].max,
+					min_s.pa_io[i].minv,
+					min_s.pa_io[i].maxv,
 					min_s.pa_io[i].log,
 					min_s.pa_io[i].fit);
 		fclose(fp);
@@ -780,4 +782,81 @@ void v_banane(double *res_pt x, double *res_pt y)
 {
 	y[0] = (100. * POW2(x[1] - POW2(x[0])) + POW2(1. - x[0]));
 	y[1] = -1.; /**< just a test */
+}
+
+void covar(pset *p, void *extra)
+{
+	mini_struct fitd = min_s;
+	FILE *logfp = fopen("minime_output_covar.txt", "a");
+	double *ainv = (double *)malloc(fitd.nparm * fitd.nparm * sizeof(double)),
+	       *delta = (double *)malloc(fitd.nparm * sizeof(double));
+	char msg[256];
+
+	hessian(p);
+	memcpy(ainv, lmar_c.a, fitd.nparm * fitd.nparm * sizeof (double));
+	for(uint i = 0; i < fitd.nparm; i++)
+		delta[i] = 0;
+	if(gaussj(ainv, fitd.nparm, delta))
+	{
+		snprintf(msg, 255, "Hessian is singular. Skipped evaluation of covar.");
+		status(p, "", msg);
+		free(ainv);
+		free(delta);
+		fclose(logfp);
+		return;
+	}
+	fprintf(logfp, "\nCorrelation matrix:\n         ");
+	for(uint i = 0; i < fitd.nparm; i++)
+		fprintf(logfp, "%s ", fitd.pa_io[fitd.pindex[i]].name.c_str());
+	fprintf(logfp, "\n");
+	for(uint i = 0; i < fitd.nparm; i++)
+	{
+		fprintf(logfp, "%s ", fitd.pa_io[fitd.pindex[i]].name.c_str());
+		for(uint j = 0; j <= i; j++)
+		{
+			double temp = ainv[i * fitd.nparm + i] * ainv[j * fitd.nparm + j];
+			if(temp > 0.)
+			{
+				double corr = ainv[i * fitd.nparm + j] / sqrt (temp);
+				fprintf(logfp, "%g ", corr);
+			}
+			else
+				fprintf(logfp, " ******* ");
+		}
+		putc('\n', logfp);
+	}
+	double cfact = p->eval / (50. - fitd.nparm); // ghh
+	fprintf(logfp, "\nBest parameter estimates:\n");
+	for(uint i = 0; i < fitd.nparm; i++)
+	{
+		double ep, rvar;
+		if(ainv[i * fitd.nparm + i] < 0.)
+			status(p, "", "newcovar[i, i] < 0.");
+		if(fitd.pa_io[fitd.pindex[i]].log)
+		{
+			ep = exp(p->parm[i]);
+			rvar = (exp(sqrt(cfact * (fabs(ainv[i * fitd.nparm + i])))) - 1.);
+		}
+		else
+		{
+			ep = p->parm[i];
+			rvar = (sqrt(cfact * (fabs(ainv[i * fitd.nparm + i])))) / ep;
+		}
+		if(rvar < .5)
+			fprintf(logfp, "%s = %30.20g +- %g (%.3g%%) ",
+					fitd.pa_io[fitd.pindex[i]].name.c_str(), ep,
+					rvar * ep, 100. * rvar);
+		else
+			fprintf(logfp, "%s = %g */ %g ",
+					fitd.pa_io[fitd.pindex[i]].name.c_str(), ep, rvar + 1.);
+		if(ep < fitd.pa_io[fitd.pindex[i]].minv)
+			fprintf(logfp, "< MIN!\n");
+		else if(ep > fitd.pa_io[fitd.pindex[i]].maxv)
+			fprintf(logfp, "> MAX!\n");
+		else
+			fprintf(logfp, "\n");
+	}
+	free(ainv);
+	free(delta);
+	fclose(logfp);
 }

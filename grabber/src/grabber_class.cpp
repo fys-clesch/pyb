@@ -155,38 +155,34 @@ void grabber::init_Mats(void)
 
 	in_rows = in.rows;
 	in_cols = in.cols;
-	work_roi_rows.store(in_rows, std::memory_order_relaxed);
-	work_roi_cols.store(in_cols, std::memory_order_relaxed);
+	store_WorkRoiRows(in_rows);
+	store_WorkRoiCols(in_cols);
 	detct_settings = true;
 
 	fp_in.create(in_rows, in_cols, mat_typ);
 	work.create(in_rows, in_cols, mat_typ);
-	work_roi.create(work_roi_rows.load(std::memory_order_relaxed),
-					work_roi_cols.load(std::memory_order_relaxed),
+	work_roi.create(load_WorkRoiRows(),
+					load_WorkRoiCols(),
 					mat_typ);
-	work_roi_tflip.create(work_roi_rows.load(std::memory_order_relaxed),
-						work_roi_cols.load(std::memory_order_relaxed),
+	work_roi_tflip.create(load_WorkRoiCols(),
+						load_WorkRoiRows(),
 						mat_typ);
 	bground.create(in_rows, in_cols, mat_typ);
 	rgb.create(in_rows, in_cols, CV_8UC3);
 	temp_CV_32FC3.create(in_rows, in_cols, CV_32FC3);
 	temp_CV_32FC1.create(in_rows, in_cols, CV_32FC1);
 	temp_CV_16UC3.create(in_rows, in_cols, CV_16UC3);
-	work_roi_arr = alloc_matrix(
-								work_roi_rows.load(std::memory_order_relaxed),
-								work_roi_cols.load(std::memory_order_relaxed),
+	work_roi_arr = alloc_matrix(load_WorkRoiRows(),
+								load_WorkRoiCols(),
 								0xDEADBEAF);
-	work_roi_arr_buf = alloc_matrix(
-									work_roi_rows.load(std::memory_order_relaxed),
-									work_roi_cols.load(std::memory_order_relaxed),
+	work_roi_arr_buf = alloc_matrix(load_WorkRoiRows(),
+									load_WorkRoiCols(),
 									0xDEADBEAF);
-	work_roi_arr_tflip_buf = alloc_matrix(
-										work_roi_cols.load(std::memory_order_relaxed),
-										work_roi_rows.load(std::memory_order_relaxed),
+	work_roi_arr_tflip_buf = alloc_matrix(load_WorkRoiCols(),
+										load_WorkRoiRows(),
 										0xDEADBEAF);
-	gldata_buf = alloc_3matrix(
-								work_roi_rows.load(std::memory_order_relaxed),
-								work_roi_cols.load(std::memory_order_relaxed),
+	gldata_buf = alloc_3matrix(load_WorkRoiRows(),
+								load_WorkRoiCols(),
 								0xDEADBEAF);
 }
 
@@ -224,26 +220,25 @@ void grabber::update_Mats_RgbAndFp(void)
 {
 	if(!detct_settings)
 		init_Mats();
-
 	if(in_chn == 3)
 	{
 		in.convertTo(rgb, CV_8UC3);
-
 		in.convertTo(temp_CV_32FC3, CV_32FC3);
 		cvtColor(temp_CV_32FC3, temp_CV_32FC1, CV_BGR2GRAY, 1);
 		if(temp_CV_32FC1.type() != CV_32FC1)
 			error_msg("Mat should be CV_32FC1. performance issues.", ERR_ARG);
-		temp_CV_32FC1.convertTo(fp_in, mat_typ); /**< can be removed if the line above is fine */
+		temp_CV_32FC1.convertTo(fp_in, mat_typ); /** @todo Can be removed if
+		the line above is fine. Test first with RGB camera. */
 	}
 	else if(in_chn == 1)
 	{
 		in.convertTo(fp_in, mat_typ);
-
 		double minv, maxv;
 		minMaxLoc(in, &minv, &maxv);
 		if(in.type() == CV_32F || in.type() == CV_64F)
 		{
-			in = in * 255. / maxv - minv; /**< this should not be done on integer-type Mat */
+			in = in * 255. / maxv - minv; /**< This should not be done on
+			integer-type Mat. */
 			cvtColor(in, temp_CV_32FC3, CV_GRAY2BGR, 3);
 			temp_CV_32FC3.convertTo(rgb, CV_8UC3);
 		}
@@ -256,7 +251,8 @@ void grabber::update_Mats_RgbAndFp(void)
 		{
 			cvtColor(in, rgb, CV_GRAY2BGR, 3);
 			if(rgb.type() != CV_8UC3)
-				error_msg("Mat should be CV_8UC3. performance issues.", ERR_ARG);
+				error_msg("Mat should be CV_8UC3. performance issues.",
+							ERR_ARG);
 		}
 		else
 		{
@@ -264,10 +260,8 @@ void grabber::update_Mats_RgbAndFp(void)
 			exit(EXIT_FAILURE);
 		}
 	}
-
 	if(fp_in.type() != mat_typ || rgb.type() != CV_8UC3)
 		error_msg("wrong Mat type detected", ERR_ARG);
-
 	produce_Mat_Work();
 }
 
@@ -287,8 +281,10 @@ void grabber::produce_Mat_Work(void)
 		fp_in.copyTo(work);
 		bground_appl = false;
 	}
-	uint unx = in_rows,
-	     uny = in_cols;
+	uint unxm = in_rows,
+	     unym = in_cols,
+	     unx = unxm,
+	     uny = unym;
 	if(work.isContinuous())
 	{
 		uny *= unx;
@@ -301,50 +297,63 @@ void grabber::produce_Mat_Work(void)
 					gaussblur_sigma_x,
 					gaussblur_sigma_x);
 		if(groundlift_sub != 0.)
-			for(uint i = 0; i < unx; i++)
+			for(uint i = 0; i < unx; ++i)
 			{
 				float *const m = work.ptr<float>(i);
-				for(uint j = 0; j < uny; j++)
+				for(uint j = 0; j < uny; ++j)
 					(m[j] <= groundlift_sub) ? m[j] = 0. :
 						                       m[j] -= groundlift_sub;
 			}
 	}
-	/* process the ROI version of 'work' */
+	/* Process the ROI version of 'work'. */
 	if(roi_on)
 	{
-		std::atomic_exchange(&work_roi_rows, (uint)roi_rect.width);
-		std::atomic_exchange(&work_roi_cols, (uint)roi_rect.height);
+		/* Attention here! */
+		store_WorkRoiRows(roi_rect.height);
+		store_WorkRoiCols(roi_rect.width);
 		work_roi = work(roi_rect).clone();
 	}
 	else
 	{
-		work_roi_rows.store(in_rows, std::memory_order_relaxed);
-		work_roi_cols.store(in_cols, std::memory_order_relaxed);
+		store_WorkRoiRows(in_rows);
+		store_WorkRoiCols(in_cols);
 		work.copyTo(work_roi);
 	}
-
+	/* The flipping takes place. */
 	flip(work_roi.t(), work_roi_tflip, 1);
-
-	unx = work_roi_rows.load(std::memory_order_relaxed);
-	uny = work_roi_cols.load(std::memory_order_relaxed);
-	if(work_roi.isContinuous() && work_roi_tflip.isContinuous())
+	unxm = load_WorkRoiRows();
+	unym = load_WorkRoiCols();
+	#ifndef IGYBA_NDEBUG
+	if(roi_on) /**< Attention in the next line. */
+		assert((int)unxm == roi_rect.height && (int)unym == roi_rect.width);
+	assert((int)unxm == work_roi.rows && (int)unym == work_roi.cols);
+	assert((int)unym == work_roi_tflip.rows && (int)unxm == work_roi_tflip.cols);
+	#endif
+	/** @todo If there's a bottleneck here, a parallelization can be introduced.
+	 * One processor runs the normal matrix, the other one the flipped one.
+	 */
+	if(work_roi.isContinuous())
 	{
-		uny *= unx;
+		uny = unxm * unym;
 		unx = 1;
 	}
-	/** @todo if there's a bottleneck here, a parallelization can be introduced.
-	 * one processor runs the normal matrix, the other one the flipped one.
-	 */
-	for(uint i = 0 ; i < unx; i++)
+	for(uint i = 0; i < unx; ++i)
 	{
-		const float *const m = work_roi.ptr<float>(i),
-		            *const m_tf = work_roi_tflip.ptr<float>(i);
-		for(uint j = 0; j < uny; j++)
-		{
+		const float *const m = work_roi.ptr<float>(i);
+		for(uint j = 0; j < uny; ++j)
 			work_roi_arr_buf[i * uny + j] =
 			work_roi_arr[i * uny + j] = (double)m[j];
-			work_roi_arr_tflip_buf[i * uny + j] = (double)m_tf[j];
-		}
+	}
+	if(work_roi_tflip.isContinuous())
+	{
+		uny = 1;
+		unx = unxm * unym;
+	}
+	for(uint i = 0; i < uny; ++i)
+	{
+		const float *const m_tf = work_roi_tflip.ptr<float>(i);
+		for(uint j = 0; j < unx; ++j)
+			work_roi_arr_tflip_buf[i * unx + j] = (double)m_tf[j];
 	}
 }
 
@@ -360,10 +369,12 @@ void grabber::get_Moments_own(void)
 {
 	double cen[2] = {0., 0.},
 	       norm = 0.;
-	for(uint i = 0; i < work_roi_rows.load(std::memory_order_relaxed); i++)
+	const uint imax = load_WorkRoiRows(),
+	           jmax = load_WorkRoiCols();
+	for(uint i = 0; i < imax; i++)
 	{
 		const float *const m = work_roi.ptr<float>(i);
-		for(uint j = 0; j < work_roi_cols.load(std::memory_order_relaxed); j++)
+		for(uint j = 0; j < jmax; j++)
 		{
 			const double f = m[j];
 			cen[0] += f * i;
@@ -385,10 +396,10 @@ void grabber::get_Moments_own(void)
 		cen[0] /= norm;
 		cen[1] /= norm;
 		double rxx = 0., ryy = 0., rxy = 0.;
-		for(uint i = 0; i < work_roi_rows.load(std::memory_order_relaxed); i++)
+		for(uint i = 0; i < imax; i++)
 		{
 			const float *const m = work_roi.ptr<float>(i);
-			for(uint j = 0; j < work_roi_cols.load(std::memory_order_relaxed); j++)
+			for(uint j = 0; j < jmax; j++)
 			{
 				const double f = m[j],
 							 x = i - cen[0],
@@ -416,12 +427,10 @@ void grabber::get_Moments_own(void)
 			rxx = ryy;
 			ryy = temp;
 		}
-
 		centroid = Point2d(cen[0], cen[1]);
 		covar = (Mat_<double>(2, 2) << rxx, rxy, rxy, ryy);
-
-		/* the eigenvalues of the covariance matrix give
-		 * the variance along the main axis
+		/* The eigenvalues of the covariance matrix give the variance along
+		 * the main axis.
 		 */
 		double eig[2],
 			   temp = covar.at<double>(0, 0) - covar.at<double>(1, 1);
@@ -429,7 +438,8 @@ void grabber::get_Moments_own(void)
 		if(fabs(temp) >= DBL_EPSILON)
 			ell_theta = .5 * atan2(2. * rxy, temp) * 180. / M_PI;
 
-		eig[0] = eig[1] = .5 * (covar.at<double>(0, 0) + covar.at<double>(1, 1));
+		eig[0] = eig[1] =
+		.5 * (covar.at<double>(0, 0) + covar.at<double>(1, 1));
 		temp = .5 * sqrt(4. * POW2(covar.at<double>(0, 1)) + POW2(temp));
 		eig[0] += temp;
 		eig[1] -= temp;
@@ -474,7 +484,8 @@ void grabber::get_Moments(void)
 	temp = covar.at<double>(0, 0) - covar.at<double>(1, 1);
 
 	if(!std::isfinite(temp) ||
-		!std::isfinite(centroid.x) || !std::isfinite(centroid.y))
+		!std::isfinite(centroid.x) ||
+		!std::isfinite(centroid.y))
 		finite_moments = false;
 	else
 		finite_moments = true;
@@ -525,9 +536,9 @@ void grabber::draw_Moments(const bool chatty)
 	sqrt(eigenv, scl_sqrt_eigenv);
 	const Size_<double> minmaj_ax = Size_<double>(scl_sqrt_eigenv.at<double>(0),
 												scl_sqrt_eigenv.at<double>(1));
-	/* the square root of the eigenvalues, multiplied by the pixel to
+	/* The square root of the eigenvalues, multiplied by the pixel to
 	 * micro meter factor, gives the measure of the major and minor axis of
-	 * the shown ellipse. however, this measure does not match the beam radius
+	 * the shown ellipse. However, this measure does not match the beam radius
 	 * definition, which has an additional scaling factor of 2.
 	 */
 	scl_sqrt_eigenv *= pix2um_scale * 2.;
@@ -669,9 +680,9 @@ void grabber::draw_Moments(const bool chatty)
  */
 void grabber::draw_Info(void)
 {
-	/* clear the trackbar window first */
+	/* Clear the trackbar window first. */
 	tbar_win_mat.setTo(0);
-	/* some definitions first */
+	/* Some definitions. */
 	const uint16_t lw = 1;
 	double fscl = .45;
 	const int font = FONT_HERSHEY_SIMPLEX;
@@ -680,7 +691,7 @@ void grabber::draw_Info(void)
 	#define putText_ARGS Point2d(sx, sy), font, fscl, clr_txt, lw, CV_AA
 	double sx = 1. / 128. * in_cols,
 	       sy = in_rows - 10.;
-	/* print the value under the mouse pointer */
+	/* Print the value under the mouse pointer. */
 	if(pval != 0xDEADDEAD)
 	{
 		infos = "(" + convert_Int2Str(px_mouse) + ", " +
@@ -691,7 +702,7 @@ void grabber::draw_Info(void)
 	else
 		putText(rgb, "out of focus", putText_ARGS);
 	draw_RoiRectangle();
-	/* information regarding too high pixel values */
+	/* Information regarding too high pixel values. */
 	const double minval = max_pval, maxval = max_pval;
 	static Mat mmmat(in_rows, in_cols, CV_8UC1);
 	inRange(fp_in, minval, maxval, mmmat);
@@ -710,7 +721,7 @@ void grabber::draw_Info(void)
 	iprint(stdout, "# pixels at %g: %u\n",
 			       max_pval, count_nz);
 	#endif
-	/* information regarding the blurring */
+	/* Information regarding the blurring. */
 	if(blur_appl)
 	{
 		static std::string blur_info(128, '\0'),
@@ -734,7 +745,7 @@ void grabber::draw_Info(void)
 		sy = tbar_win_mat.rows - 10;
 		putText(tbar_win_mat, "no blurring", putText_ARGS);
 	}
-	/* information regarding the background correction */
+	/* Information regarding the background correction. */
 	sy = tbar_win_mat.rows - 10. - 2. * 20.;
 	if(bground_appl)
 		putText(tbar_win_mat, "background correction applied", putText_ARGS);
@@ -742,7 +753,7 @@ void grabber::draw_Info(void)
 		putText(tbar_win_mat, "background loaded, not applied", putText_ARGS);
 	else
 		putText(tbar_win_mat, "no background correction", putText_ARGS);
-	/* information regarding the ROI */
+	/* Information regarding the ROI. */
 	sy = tbar_win_mat.rows - 10. - 3. * 20.;
 	if(!roi_on && !mouse_drag)
 		putText(tbar_win_mat, "no ROI selected", putText_ARGS);
@@ -779,14 +790,14 @@ void grabber::set_MouseEvent(const int event,
 	{
 		if(event == EVENT_LBUTTONDOWN && !mouse_drag)
 		{
-			/* AOI selection begins */
+			/* AOI selection begins. */
 			roi_on = false;
 			end_roi = start_roi = Point_<int>(x, y);
 			mouse_drag = true;
 		}
 		else if(event == EVENT_MOUSEMOVE && mouse_drag)
 		{
-			/* AOI being selected */
+			/* AOI being selected. */
 			end_roi = Point_<int>(x, y);
 		}
 		else if(event == EVENT_LBUTTONUP && mouse_drag)
@@ -860,13 +871,13 @@ void grabber::show_Trackbars(void)
 	imshow(tbar_win_name, tbar_win_mat);
 }
 
-Mat grabber::get_Mat_private(const enum save_Im_type mtype)
+Mat grabber::get_Mat_private(const save_Im_type mtype)
 {
-	if(mtype == RGB)
+	if(mtype == save_Im_type::RGB)
 		return rgb;
-	else if(mtype == WORK)
+	else if(mtype == save_Im_type::WORK)
 		return work;
-	else if(mtype == FP_IN)
+	else if(mtype == save_Im_type::FP_IN)
 		return fp_in;
 	else
 	{
@@ -875,7 +886,7 @@ Mat grabber::get_Mat_private(const enum save_Im_type mtype)
 	}
 }
 
-void grabber::save_Image(const enum save_Im_type mtype,
+void grabber::save_Image(const save_Im_type mtype,
 						const std::string &win_title,
 						const std::string &fmt)
 {
@@ -888,11 +899,11 @@ void grabber::save_Image(const enum save_Im_type mtype,
 	str += "." + fmt;
 	iprint(stdout, "storing to '%s' . ", str.c_str());
 	fflush(stdout);
-	if(mtype == RGB)
+	if(mtype == save_Im_type::RGB)
 		imwrite(str, rgb);
-	else if(mtype == WORK)
+	else if(mtype == save_Im_type::WORK)
 		imwrite(str, work);
-	else if(mtype == FP_IN)
+	else if(mtype == save_Im_type::FP_IN)
 		imwrite(str, fp_in);
 	else
 		error_msg("wrong enumerator", ERR_ARG);
@@ -902,18 +913,18 @@ void grabber::save_Image(const enum save_Im_type mtype,
 	iprint(stdout, "done\n");
 }
 
-void grabber::store_Image(const enum save_Im_type mtype,
+void grabber::store_Image(const save_Im_type mtype,
 						const std::string &fname)
 {
 	std::string str;
 	if(fname.empty())
 	{
 		get_DateAndTime(str);
-		if(mtype == RGB)
+		if(mtype == save_Im_type::RGB)
 			str += "_rgb";
-		else if(mtype == WORK)
+		else if(mtype == save_Im_type::WORK)
 			str += "_work";
-		else if(mtype == FP_IN)
+		else if(mtype == save_Im_type::FP_IN)
 			str += "_fp";
 		else
 			error_msg("wrong enumerator", ERR_ARG);
@@ -930,7 +941,7 @@ void grabber::store_Image(const enum save_Im_type mtype,
 		exit(EXIT_FAILURE);
 	}
 
-	if(mtype == RGB)
+	if(mtype == save_Im_type::RGB)
 		for(uint i = 0; i < (uint)rgb.rows; i++)
 			for(uint j = 0; j < (uint)rgb.cols; j++)
 			{
@@ -940,7 +951,7 @@ void grabber::store_Image(const enum save_Im_type mtype,
 							i, j, m[0], m[1], m[2],
 							j < (uint)rgb.cols - 1 ? "\n" : "\n\n");
 			}
-	else if(mtype == WORK)
+	else if(mtype == save_Im_type::WORK)
 		for(uint i = 0; i < (uint)work.rows; i++)
 		{
 			const float *const m = work.ptr<float>(i);
@@ -950,7 +961,7 @@ void grabber::store_Image(const enum save_Im_type mtype,
 							m[j],
 							j < (uint)work.cols - 1 ? ' ' : '\n');
 		}
-	else if(mtype == FP_IN)
+	else if(mtype == save_Im_type::FP_IN)
 		for(uint i = 0; i < (uint)fp_in.rows; i++)
 		{
 			const float *const m = fp_in.ptr<float>(i);
@@ -990,8 +1001,7 @@ void grabber::show_Help(void)
 
 		int baseline = 0;
 		Size textSize = getTextSize(text, font, fscl, lw, &baseline);
-
-		/* centre the text */
+		/* Centre the text. */
 		Point textOrg((img.cols - textSize.width) >> 1,
 						(img.rows + textSize.height) >> 1);
 
@@ -1067,7 +1077,7 @@ void grabber::show_Help(void)
 	TO_NEXT_KEY
 	putText(img, " 'F1':", putText_ARGS);
 	sx = sxstart3;
-	putText(img, "display this beautiful help text. press 'Esc' if it's enough.", putText_ARGS);
+	putText(img, "display this beautiful help text. press 'F1' if it's enough.", putText_ARGS);
 	TO_NEXT_KEY
 	putText(img, " 'Esc':", putText_ARGS);
 	sx = sxstart3;
@@ -1086,7 +1096,8 @@ void grabber::show_Help(void)
 	while(true)
 	{
 		uint32_t kctrl = waitKey(0);
-		if(kctrl == 27 || kctrl == 1048603) /**< the latter happens on Ubuntu */
+		if(kctrl == 7340032 || kctrl == 1114046) /**< The latter happens on some
+			builds of OpenCV. */
 			break;
 	}
 	destroyWindow(win_title);
@@ -1110,8 +1121,7 @@ void grabber::show_Intro(void)
 
 		int baseline = 0;
 		Size textSize = getTextSize(text, font, fscl, lw, &baseline);
-
-		/* centre the text */
+		/* Centre the text. */
 		Point textOrg((img.cols - textSize.width) >> 1, (img.rows + textSize.height) >> 1);
 
 		sx = textOrg.x;
@@ -1328,12 +1338,21 @@ uint32_t grabber::get_nColsROI(void)
 	return work_roi_cols.load();
 }
 
+/** \brief This function serves to fill the allocated memory with data. It is
+called by the copy thread.
+ *
+ * \param nrows const uint
+ * \param ncols const uint
+ * \return void
+ *
+ * Watch out that there is no data race, as the thread is not blocking the
+ * viewer.
+ *
+ */
 void grabber::fill_DataForViewer(const uint nrows, const uint ncols)
 {
-	/* this has to be done only when initialising the viewer colour box,
-	 * i.e. at the start:
-	 */
-	if(!beau.load_FilledMemory())
+	if(!beau.load_FilledMemory()) /**< This has to be done only when
+		 i.e. after the memory is allocated and filled. */
 		beau.init_Colorbox();
 
 	double max_v,
@@ -1348,48 +1367,55 @@ void grabber::fill_DataForViewer(const uint nrows, const uint ncols)
 							&max_norm, &min_norm,
 							nrows, ncols,
 							data_buf, rgb_buf);
-	/* tell the the viewer that it can wait for new data */
+	/* Tell the viewer that it can wait for new data. */
 	beau.store_NewDataAvailable(true);
-	/* check if the viewer is alive... */
+	/* Check if the viewer is alive... */
 	if(is_ViewerWindowRunning())
 		/* ...and waiting: */
 		if(beau.event_SwapDataToViewer.check())
 		{
-			/* then set the fresh data over */
+			/* Then set the fresh data over. */
 			beau.set_DrawingData(&max_v, &min_v, &max_norm, &min_norm,
 									data_buf, rgb_buf);
 			beau.store_FilledMemory(true);
 			beau.store_NewDataAvailable(false);
-			/* let the viewer run again */
+			/* Let the viewer run again. */
 			beau.event_SwapDataToViewer.signal();
 		}
 	free(rgb_buf);
 }
 
+/** \brief The thread launched before starting the main loop to copy the data
+constantly to the viewer memory.
+ *
+ * \param void
+ * \return void
+ *
+ */
 void grabber::copy_DataToViewer(void)
 {
-	uint nrows,
+	uint nrows, /**< The variables have to be outside of the inner scope. */
 	     ncols;
 	while(true)
 	{
-		/* wait for the main loop to have data ready: */
+		/* Wait for the main loop to have data ready: */
 		(*g1ptr).event_CopyToViewer.wait();
-		/* in case we want to leave the whole application: */
+		/* In case we want to leave the whole application: */
 		if((*g1ptr).close_copy_thread.load(std::memory_order_relaxed))
 		{
 			(*g1ptr).event_CopyToViewer.reset();
 			break;
 		}
-		/* watch out, the cv matrix is transposed! */
-		nrows = (*g1ptr).work_roi_cols.load(std::memory_order_relaxed);
-		ncols = (*g1ptr).work_roi_rows.load(std::memory_order_relaxed);
-		/* first check if the viewer memory is allocated
+		/* Watch out, the cv matrix is transposed! */
+		nrows = (*g1ptr).load_WorkRoiCols();
+		ncols = (*g1ptr).load_WorkRoiRows();
+		/* First check if the viewer memory is allocated
 		 * and set to right dimension:
 		 */
 		(*g1ptr).beau.alloc_DataFromMemory(nrows, ncols);
-		/* then fill the memory. */
+		/* Then fill the memory. */
 		(*g1ptr).fill_DataForViewer(nrows, ncols);
-		/* go back and be ready to wait. */
+		/* Go back and be ready to wait. */
 		(*g1ptr).event_CopyToViewer.reset();
 	}
 }
@@ -1398,17 +1424,17 @@ void grabber::schedule_Viewer(int argc, char **argv)
 {
 	while(true)
 	{
-		/* wait for the main loop to start the viewer: */
+		/* Wait for the main loop to start the viewer: */
 		(*g1ptr).event_LaunchViewer.wait();
-		/* in case we want to leave: */
+		/* In case we want to leave: */
 		if((*g1ptr).close_viewer_thread.load(std::memory_order_relaxed))
 		{
 			(*g1ptr).event_LaunchViewer.reset();
 			break;
 		}
-		/* fire up the viewer: */
+		/* Fire up the viewer: */
 		(*g1ptr).beau.launch_Freeglut(argc, argv, true);
-		/* go back and be ready to wait for the next round */
+		/* Go back and be ready to wait for the next round. */
 		(*g1ptr).event_LaunchViewer.reset();
 	}
 }
@@ -1546,8 +1572,7 @@ void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
 	mime.set_Wavelength(wavelengthUm);
 	mime.set_PixelToUm(pix2um);
 	mime.set_Plotting(true);
-	mime.alloc_DataFromMemory(work_roi_rows.load(std::memory_order_relaxed),
-							work_roi_cols.load(std::memory_order_relaxed));
+	mime.alloc_DataFromMemory(load_WorkRoiRows(), load_WorkRoiCols());
 
 	if(work_roi_arr == nullptr)
 	{
@@ -1555,18 +1580,16 @@ void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
 		return;
 	}
 
-	if(is_Grabbing())
-		toggle_Grabbing();
-
-	double *cpy = alloc_mat(work_roi_rows.load(std::memory_order_relaxed),
-							work_roi_cols.load(std::memory_order_relaxed));
+	double *cpy = alloc_mat(load_WorkRoiRows(),
+							load_WorkRoiCols());
 	memcpy(cpy, work_roi_arr_buf,
-			work_roi_rows.load(std::memory_order_relaxed) *
-			work_roi_cols.load(std::memory_order_relaxed) * sizeof(double));
+			load_WorkRoiRows() * load_WorkRoiCols() * sizeof(double));
 	mime.fill_DataFromMemory(cpy);
 	free(cpy);
 
 	mime.fit_GaussEllip();
+
+	iprint(stdout, "fit is finished\n");
 }
 
 void grabber::schedule_Minime(const double wavelengthUm, const double pix2um)
@@ -1575,17 +1598,17 @@ void grabber::schedule_Minime(const double wavelengthUm, const double pix2um)
 	                    scl = pix2um;
 	while(true)
 	{
-		/* wait for the main loop to start minime: */
+		/* Wait for the main loop to start minime: */
 		(*g1ptr).event_LaunchMinime.wait();
-		/* in case we want to leave: */
+		/* In case we want to leave: */
 		if((*g1ptr).close_minime_thread.load(std::memory_order_relaxed))
 		{
 			(*g1ptr).event_LaunchMinime.reset();
 			break;
 		}
-		/* fire up minime: */
+		/* Fire up minime: */
 		(*g1ptr).launch_Minime(wlen, scl);
-		/* go back and be ready to wait for the next round */
+		/* Go back and be ready to wait for the next round. */
 		(*g1ptr).event_LaunchMinime.reset();
 	}
 }
@@ -1688,7 +1711,7 @@ uint64_t grabber::get_Frames(void)
 	return frms;
 }
 
-void grabber::gnuplot_Image(const enum save_Im_type mtype,
+void grabber::gnuplot_Image(const save_Im_type mtype,
 							const std::string &win_title)
 {
 	std::string str;
@@ -1696,11 +1719,11 @@ void grabber::gnuplot_Image(const enum save_Im_type mtype,
 		get_DateAndTime(str, true);
 	else
 		str = win_title;
-	if(mtype == RGB)
+	if(mtype == save_Im_type::RGB)
 		str += " rgb";
-	else if(mtype == WORK)
+	else if(mtype == save_Im_type::WORK)
 		str += " work";
-	else if(mtype == FP_IN)
+	else if(mtype == save_Im_type::FP_IN)
 		str += " fp";
 	else
 	{
@@ -1713,13 +1736,13 @@ void grabber::gnuplot_Image(const enum save_Im_type mtype,
 
 	switch(mtype)
 	{
-		case RGB:
+		case save_Im_type::RGB:
 			ffc.plot_Data(rgb);
 			break;
-		case WORK:
+		case save_Im_type::WORK:
 			ffc.plot_Data(work);
 			break;
-		case FP_IN:
+		case save_Im_type::FP_IN:
 			ffc.plot_Data(fp_in);
 			break;
 	}
@@ -1737,7 +1760,7 @@ void grabber::close_ViewerWindow(void)
 
 void grabber::calculate_BeamRadius(void)
 {
-	/* don't forget the factor of 2. for the Gaussian beam formalism */
+	/* Don't forget the factor of 2. for the Gaussian beam formalism. */
 	beam_parameter.at<double>(0) = 2. * sqrt(covar.at<double>(0, 0));
 	beam_parameter.at<double>(1) = 2. * sqrt(covar.at<double>(1, 1));
 	beam_parameter.at<double>(2) =
@@ -1830,4 +1853,24 @@ void grabber::exchange_Atomics(void)
 	groundlift_sub = groundlift_sub_atm.load(std::memory_order_relaxed);
 	gaussblur_sze.width = gaussblur_sze_atm.load(std::memory_order_relaxed);
 	gaussblur_sze.height = gaussblur_sze.width;
+}
+
+void grabber::store_WorkRoiRows(const uint n)
+{
+	work_roi_rows.store(n, std::memory_order_relaxed);
+}
+
+uint grabber::load_WorkRoiRows(void)
+{
+	return work_roi_rows.load(std::memory_order_relaxed);
+}
+
+void grabber::store_WorkRoiCols(const uint n)
+{
+	work_roi_cols.store(n, std::memory_order_relaxed);
+}
+
+uint grabber::load_WorkRoiCols(void)
+{
+	return work_roi_cols.load(std::memory_order_relaxed);
 }

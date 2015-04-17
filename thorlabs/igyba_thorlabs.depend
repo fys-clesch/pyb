@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1428679158 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
+1429211849 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
 	"grabber_class.h"
 	<assert.h>
 	"curses.h"
 
 1424455974 
 
-1428679181 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
+1429200632 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/imgproc/imgproc.hpp>
@@ -98,7 +98,7 @@
 	<iomanip>
 	<sstream>
 
-1428652728 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.h
+1429176689 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.h
 	<stdlib.h>
 	<math.h>
 	<string.h>
@@ -125,7 +125,7 @@
 
 1424625840 >
 
-1428652390 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
+1429180980 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
 	<stdlib.h>
 	<math.h>
 	<float.h>
@@ -137,7 +137,7 @@
 
 1424858101 s.h"
 
-1425375110 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.h
+1429108491 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.h
 	<string.h>
 	<stdlib.h>
 	<cstdio>
@@ -188,7 +188,7 @@
 1425646204 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.cpp
 	"fifo_class.h"
 
-1428652306 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun.cpp
+1429181008 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun.cpp
 	"minime_class.h"
 	"funcs.h"
 	"minimizer_s.h"
@@ -197,7 +197,7 @@
 
 1425150083 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\funcs.h
 
-1424987605 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.h
+1429108491 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.h
 
 1425150133 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\funcs.cpp
 	"minime_class.h"
@@ -212,12 +212,12 @@
 	<math.h>
 	<float.h>
 
-1428669178 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.cpp
+1429181031 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.cpp
 	"minime_class.h"
 
 1424987389 ass.h"
 
-1425475514 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.cpp
+1429181716 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.cpp
 	"minime_class.h"
 	"minimizer_s.h"
 	"random.h"
@@ -229,7 +229,7 @@
 	<time.h>
 	"random.h"
 
-1428659684 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\auxf.cpp
+1429118300 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\auxf.cpp
 	<math.h>
 	<float.h>
 	<assert.h>
@@ -242,18 +242,18 @@
 
 1424901020 p"
 
-1428658135 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\threadhand_class.cpp
+1428930771 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\threadhand_class.cpp
 	"threadhand_class.h"
 
 1424965001 d_class.h"
 
-1428675472 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.cpp
+1428937535 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.cpp
 	"thorlabs_cam.h"
 	<assert.h>
 
 1424795026 r/src/helper.h"
 
-1428675472 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.h
+1429026526 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	"../src/header.hpp"
@@ -282,14 +282,14 @@
 
 1424286144 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\funcs.cpp
 
-1428670809 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.cpp
+1429176694 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.cpp
 	"viewer_class.h"
 
 1424794022 "
 
 1424286265 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\control.h
 
-1428655982 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs\main.cpp
+1429178049 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs\main.cpp
 	"../src/header.hpp"
 	"../thorlabs_cam/thorlabs_cam.h"
 	"../grabber/src/test.h"

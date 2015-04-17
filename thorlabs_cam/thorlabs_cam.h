@@ -81,9 +81,28 @@ private:
 	                  trck_name_aoi_sh = "start height",
 	                  trck_name_aoi_wh = "AOI height";
 
+	bool get_Image(IplImage *ipl_im);
+	Mat get_Mat(void);
+	void show_Image(const char *win_name);
+	void get_PixelClock(void);
+	void get_Fps(void);
+	void get_ExposureTime(void);
+	void set_ExposureTime(double time);
+	void set_ErrorReport(void);
+	void get_CameraStatus(void);
+	void get_GainBoost(void);
+	void identify_CameraAOISettings(void);
+	static void cast_static_SetTrackbarHandlerExposure(int i, void *ptr);
+	void TrackbarHandlerExposure(int i);
+	void set_CameraInfoWindowName(const std::string &name);
+	void TrackbarHandlerStartAOIWidth(int i);
+	static void cast_static_SetTrackbarHandlerStartAOIWidth(int i, void *ptr);
+	void create_TrackbarStartAOIWidth(void);
+	void set_MouseEvent(const int event, const int x, const int y,
+						const int flags);
+
 public:
 
-	bool caught_Error(void);
 	thorlabs_cam(void);
 	~thorlabs_cam(void);
 	void init_Camera(void);
@@ -93,51 +112,30 @@ public:
 	void alloc_ImageMem(void);
 	void set_ImageMem(void);
 	void set_ImageSize(void);
-	bool get_Image(IplImage *ipl_im);
-	bool get_Image(Mat &im);
-	bool get_Image(void);
-	Mat get_Mat(void);
-	int get_Width(void);
-	int get_Height(void);
-	double get_PixelPitch(void);
-	void show_Image(const char *win_name);
 	void inquire_ImageMem(int *res_pt nx, int *res_pt ny,
-					int *res_pt bits_p_pix,
-					int *res_pt pixel_bit_pitch);
-	void get_PixelClock(void);
-	void get_Fps(void);
-	void get_ExposureTime(void);
-	void set_ExposureTime(double time);
-	void set_ExposureTimeAtomic(double time);
-	void exchange_ExposureTimeAtomic(void);
-	void get_ExposureTimesAtomic(double *res_pt time,
-								double *res_pt min_time,
-								double *res_pt max_time,
-								double *res_pt inc_time);
-	void set_ErrorReport(void);
-	void get_CameraStatus(void);
-	void get_GainBoost(void);
-	void identify_CameraAOISettings(void);
-
-	void create_TrackbarExposure(void);
-	static void cast_static_SetTrackbarHandlerExposure(int i, void *ptr);
-	void TrackbarHandlerExposure(int i);
-	void set_CameraInfoWindowName(const std::string &name);
-	std::string get_CameraInfoWindowName(void);
-
-	void draw_CameraInfo(void);
+				int *res_pt bits_p_pix,
+				int *res_pt pixel_bit_pitch);
+	bool caught_Error(void);
 	void show_CameraTrackbars(void);
-
-	void TrackbarHandlerStartAOIWidth(int i);
-	static void cast_static_SetTrackbarHandlerStartAOIWidth(int i, void *ptr);
-	void create_TrackbarStartAOIWidth(void);
-
+	double get_PixelPitch(void);
+	std::string get_CameraInfoWindowName(void);
+		bool get_Image(Mat &im);
+	bool get_Image(void);
 	static void cast_static_set_MouseEvent(const int event,
 											const int x, const int y,
 											const int flags,
 											void *u);
-	void set_MouseEvent(const int event, const int x, const int y,
-						const int flags);
+	int get_Width(void);
+	int get_Height(void);
+	void create_TrackbarExposure(void);
+	void draw_CameraInfo(void);
+	/* The following functions are accessed by wxWidgets. */
+	void get_ExposureTimesAtomic(double *res_pt time,
+							double *res_pt min_time,
+							double *res_pt max_time,
+							double *res_pt inc_time);
+	void set_ExposureTimeAtomic(double time);
+	void exchange_ExposureTimeAtomic(void);
 };
 
 #endif

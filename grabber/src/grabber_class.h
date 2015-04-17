@@ -16,6 +16,89 @@ that the calculated moment is not finite */
 
 class grabber
 {
+public:
+
+	enum class save_Im_type : char {RGB = 1, WORK, FP_IN, IN};
+
+	Mat in;
+
+	grabber(void);
+	~grabber(void);
+
+	bool get_MouseDrag(void);
+	void set_RoiActive(const bool val);
+	void set_StartRoi(const Point_<int> &val);
+	void set_EndRoi(const Point_<int> &val);
+	void set_MouseDrag(const bool val);
+	void get_StartRoi(int *res_pt px, int *res_pt py);
+	uint32_t get_nRows(void);
+	uint32_t get_nCols(void);
+	void set_RectRoi(const Rect_<int> &val);
+	void set_PixelValue(const double val);
+	double get_PixelValueWork(const int x, const int y);
+	void copy_MousePosition(const int px, const int py);
+	void show_Help(void);
+	void show_Intro(void);
+	void update_Mats_RgbAndFp(void);
+	void set_Pix2UmScale(const double scl);
+	bool signal_MinimeThreadIfWait(void);
+	bool signal_CopyThreadIfWait(void);
+	void toggle_Smoothing(void);
+	void get_MainWindowName(std::string &name);
+	void set_MainWindowName(const std::string &name);
+	std::string get_TrackbarWindowName(void);
+	void show_Trackbars(void);
+	std::string get_MainWindowName(void);
+	void create_TrackbarBlur(void);
+	void create_TrackbarBlurSize(void);
+	void create_TrackbarGroundlift(void);
+	void show_Im_RGB(void);
+	static void schedule_Viewer(int argc, char **argv);
+	static void copy_DataToViewer(void);
+	bool is_Grabbing(void);
+	static void schedule_Minime(const double wavelengthUm, const double pix2um);
+	void increment_Frames(void);
+	void set_Background(void);
+	void unset_Background(void);
+	void save_Image(const save_Im_type mtype,
+					const std::string &win_title = "",
+					const std::string &fmt = "png");
+	void store_Image(const save_Im_type mtype,
+					const std::string &fname = "");
+	void toggle_Grabbing(void);
+	bool signal_ViewerThreadIfWait(void);
+	void gnuplot_Image(const save_Im_type mtype,
+						const std::string &win_title = "");
+	void get_Moments(void);
+	void draw_Moments(const bool chatty = true);
+	void draw_Info(void);
+	void close_MinimeThread(void);
+	void close_CopyThread(void);
+	void close_ViewerWindow(void);
+	void close_ViewerThread(void);
+	bool is_ViewerWindowRunning(void);
+	uint64_t get_Frames(void);
+	static void cast_static_set_MouseEvent(const int event,
+										const int x, const int y,
+										const int flags,
+										void *u);
+	/* accessed by wxWidgets */
+	bool get_RoiActive(void);
+	void get_RectRoi(int *res_pt sx, int *res_pt sy,
+					int *res_pt rw, int *res_pt rh);
+	uint get_KernelSizeAtomic(uint *res_pt sze_min, uint *res_pt sze_max);
+	void get_GroundliftRangeAtomic(double *res_pt gl_current,
+									double *res_pt gl_max);
+	double get_GaussBlurRangeAtomic(double *res_pt gb_min, double *res_pt gb_max);
+	void exchange_Atomics(void);
+	void draw_RoiRectangle(void);
+	void set_GroundliftAtomic(const double val);
+	void set_KernelSizeAtomic(const uint i);
+	void set_GaussBlurAtomic(const double val);
+	void toggle_ViewerIdling(void);
+	void toggle_ViewerMap3DMode(void);
+	void toggle_ViewerRotation(void);
+
 private:
 
 	bool detct_settings,
@@ -69,19 +152,19 @@ private:
 
 
 	double *work_roi_arr,
-	       *work_roi_arr_buf, /** @todo candidate for atomic? */
-	       *work_roi_arr_tflip_buf, /** @todo candidate for atomic? */
+	       *work_roi_arr_buf, /** @todo Candidate for atomic? */
+	       *work_roi_arr_tflip_buf, /** @todo Candidate for atomic? */
 	       *gldata_buf;
 
 	constexpr static uint32_t saturated_thresh = 80 * 80;
 
 	constexpr static uint16_t mat_typ = CV_32FC1;
 
-	Mat fp_in, /**< a floating point copy of the input */
-	    bground, /**< a background matrix of floating point type */
-	    work, /**< the matrix that is to be worked on */
-	    work_roi, /**< a copy of 'work' but with a specific AOI */
-	    work_roi_tflip, /**< similar to 'work_roi' but flipped */
+	Mat fp_in, /**< A floating point copy of the input. */
+	    bground, /**< A background matrix of floating point type. */
+	    work, /**< The matrix that is to be worked on. */
+	    work_roi, /**< A copy of 'work' but with a specific AOI. */
+	    work_roi_tflip, /**< Similar to 'work_roi' but flipped. */
 	    rgb, /**< The input in RGB format. To be drawn on. */
 	    temp_CV_32FC3,
 	    temp_CV_32FC1,
@@ -106,7 +189,6 @@ private:
 
 	Size gaussblur_sze;
 
-
 	threadhand event_CopyToViewer,
 	           event_LaunchViewer,
 	           event_LaunchMinime;
@@ -119,116 +201,33 @@ private:
 
 	void init_Mats(void);
 	void fill_DataForViewer(const uint nrows, const uint ncols);
-
-public:
-
-	enum save_Im_type{RGB = 1, WORK, FP_IN, IN};
-
-	Mat in;
-
-	grabber(void);
-	~grabber(void);
 	void produce_Mat_Work(void);
-	void update_Mats_RgbAndFp(void);
-	void set_Pix2UmScale(const double scl);
 	void get_Moments_own(void);
-	void get_Moments(void);
-	void draw_Moments(const bool chatty = true);
-	void draw_Info(void);
-	void set_Background(void);
-	void unset_Background(void);
-	static void cast_static_set_MouseEvent(const int event,
-											const int x, const int y,
-											const int flags,
-											void *u);
-	void draw_RoiRectangle(void);
 	void set_MouseEvent(const int event, const int x, const int y,
 						const int flags);
-	void show_Im_RGB(void);
-	void show_Trackbars(void);
-	void show_Help(void);
-	void show_Intro(void);
 	void show_HelpOnCurses(void);
-	Mat get_Mat_private(const enum save_Im_type mtype);
-	void save_Image(const enum save_Im_type mtype,
-					const std::string &win_title = "",
-					const std::string &fmt = "png");
-	void store_Image(const enum save_Im_type mtype,
-					const std::string &fname = "");
+	Mat get_Mat_private(const save_Im_type mtype);
 	void draw_Crossline(void);
 	void apply_RemoveBase(const double thresh = 0.);
-	void set_MainWindowName(const std::string &name);
 	void set_TrackbarWindowName(const std::string &name);
-	void get_MainWindowName(std::string &name);
-	std::string get_MainWindowName(void);
 	void get_TrackbarWindowName(std::string &name);
-	std::string get_TrackbarWindowName(void);
 	Mat get_TrackbarWindowMat(void);
 	Mat &get_TrackbarWindowMatPtr(void);
-	void toggle_Smoothing(void);
-	uint32_t get_nRows(void);
-	uint32_t get_nCols(void);
 	uint32_t get_nRowsROI(void);
 	uint32_t get_nColsROI(void);
-	void toggle_Grabbing(void);
-	bool is_Grabbing(void);
-	void increment_Frames(void);
-	uint64_t get_Frames(void);
-	void gnuplot_Image(const enum save_Im_type mtype,
-						const std::string &win_title = "");
 	void calculate_BeamRadius(void);
-
-	static void copy_DataToViewer(void);
-	static void schedule_Viewer(int argc, char **argv);
-	static void schedule_Minime(const double wavelengthUm, const double pix2um);
-
 	void launch_Minime(const double wavelengthUm, const double pix2um);
-	void close_MinimeThread(void);
-	bool signal_MinimeThreadIfWait(void);
-	void close_CopyThread(void);
-	bool signal_CopyThreadIfWait(void);
-	void close_ViewerThread(void);
-	bool signal_ViewerThreadIfWait(void);
-	bool is_ViewerWindowRunning(void);
-	void close_ViewerWindow(void);
-
-	void create_TrackbarBlur(void);
 	static void cast_static_SetTrackbarHandlerBlur(int i, void *ptr);
 	void TrackbarHandlerBlur(int i);
-	void create_TrackbarBlurSize(void);
 	static void cast_static_SetTrackbarHandlerBlurSize(int i, void *ptr);
 	void TrackbarHandlerBlurSize(int i);
-	void create_TrackbarGroundlift(void);
 	static void cast_static_SetTrackbarHandlerGroundlift(int i, void *ptr);
-	void set_GroundliftAtomic(const double val);
 	void TrackbarHandlerGroundlift(int i);
-
-	void get_GroundliftRangeAtomic(double *res_pt gl_current,
-									double *res_pt gl_max);
-	uint get_KernelSizeAtomic(uint *res_pt sze_min, uint *res_pt sze_max);
-	void set_KernelSizeAtomic(const uint i);
-	double get_GaussBlurRangeAtomic(double *res_pt gb_min, double *res_pt gb_max);
-	void set_GaussBlurAtomic(const double val);
-	bool get_MouseDrag(void);
-	void set_MouseDrag(const bool val);
-	bool get_RoiActive(void);
-	void set_RoiActive(const bool val);
 	double get_PixelValue(void);
-	void set_PixelValue(const double val);
-	void copy_MousePosition(const int px, const int py);
-	void set_StartRoi(const Point_<int> &val);
-	void set_EndRoi(const Point_<int> &val);
-	void set_RectRoi(const Rect_<int> &val);
-	void get_RectRoi(int *res_pt sx, int *res_pt sy,
-					int *res_pt rw, int *res_pt rh);
-	double get_PixelValueWork(const int x, const int y);
-	void get_StartRoi(int *res_pt px, int *res_pt py);
-
-	void toggle_ViewerIdling(void);
-	void toggle_ViewerMap3DMode(void);
-	void toggle_ViewerRotation(void);
-
-	void exchange_Atomics(void);
+	void store_WorkRoiRows(const uint n);
+	uint load_WorkRoiRows(void);
+	void store_WorkRoiCols(const uint n);
+	uint load_WorkRoiCols(void);
 };
 
 #endif

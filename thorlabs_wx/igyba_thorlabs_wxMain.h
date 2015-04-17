@@ -215,41 +215,41 @@ class igyba_thorlabs_wxFrame : public wxFrame
 
 		DECLARE_EVENT_TABLE()
 
-	public:
+public:
 
-		igyba_thorlabs_wxFrame(int argc, wchar_t **argv, wxWindow *parent,
-								wxWindowID id = -1);
-		virtual ~igyba_thorlabs_wxFrame(void);
+	igyba_thorlabs_wxFrame(int argc, wchar_t **argv, wxWindow *parent,
+							wxWindowID id = -1);
+	virtual ~igyba_thorlabs_wxFrame(void);
 
-		int launch_Cam(int argc, char **argv);
-		void close_CamThread(void);
-		bool signal_CamThreadIfWait(void);
-		void init_SliderExpTime(void);
-		void init_SliderGroundlift(void);
-		void init_SliderStdDev(void);
-		void init_SliderKernelSize(void);
-		void update_TextExpTime(const double val = -1.);
-		void update_TextAOI(void);
-		void update_TextGroundlift(const double val = -1.);
-		void update_TextStdDev(const double val = -1.);
-		void update_TextKernelSize(const uint val = 0);
-		void set_MouseEvent(const int event, const int x, const int y,
-							const int flags);
+	int launch_Cam(int argc, char **argv);
+	void close_CamThread(void);
+	bool signal_CamThreadIfWait(void);
+	void init_SliderExpTime(void);
+	void init_SliderGroundlift(void);
+	void init_SliderStdDev(void);
+	void init_SliderKernelSize(void);
+	void update_TextExpTime(const double val = -1.);
+	void update_TextAOI(void);
+	void update_TextGroundlift(const double val = -1.);
+	void update_TextStdDev(const double val = -1.);
+	void update_TextKernelSize(const uint val = 0);
+	void set_MouseEvent(const int event, const int x, const int y,
+						const int flags);
 
-		static void cast_static_set_MouseEvent(const int event,
-												const int x, const int y,
-												const int flags,
-												void *u);
-		static void schedule_CamThread(int argc, char **argv);
+	static void cast_static_set_MouseEvent(const int event,
+											const int x, const int y,
+											const int flags,
+											void *u);
+	static void schedule_CamThread(int argc, char **argv);
 
-		static wxString get_wxBuildInfo(void);
+	static wxString get_wxBuildInfo(void);
 
-		void store_ButtonState(const uint32_t wxb);
-		uint32_t load_ButtonState(void);
-		void store_CloseCamState(const bool b);
-		bool load_CloseCamState(void);
-		void store_SelectRoi(const bool b);
-		bool load_SelectRoi(void);
+	void store_ButtonState(const uint32_t wxb);
+	uint32_t load_ButtonState(void);
+	void store_CloseCamState(const bool b);
+	bool load_CloseCamState(void);
+	void store_SelectRoi(const bool b);
+	bool load_SelectRoi(void);
 };
 
 #endif // IGYBA_THORLABS_WXMAIN_H

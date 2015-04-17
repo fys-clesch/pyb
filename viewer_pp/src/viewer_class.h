@@ -38,19 +38,19 @@ private:
 		   mov_lvl,
 		   zoom;
 
-	uint nstrps, /**< number of stripes for the colour box */
+	uint nstrps, /**< Number of stripes for the colour box */
 	     win_width,
 	     win_height,
 	     row_slice,
 	     col_slice,
 	     glrows,
-	     glcols; /**< number of the datapoints in each direction */
+	     glcols; /**< Number of the datapoints in each direction */
 
 	std::atomic<uint> atmc_glrows,
-	                  atmc_glcols; /**< this is an atomic version of glcols.
+	                  atmc_glcols; /**< This is an atomic version of glcols.
 	                  it has to be atomic to prevent data races between the
-	                  copy and viewer thread. a relaxed memory order is OK,
-	                  there's no visible side effect. */
+	                  copy and viewer thread. A relaxed memory order is OK,
+	                  as long as there's no visible side effect. */
 
 	int win_main,
 	    win_sub;
@@ -90,12 +90,14 @@ private:
 	                        far_clip = 1e1,
 	                        zoom_std = 200.,
 	                        rot_y_std = 45.,
-	                        rot_x_std = -45;
+	                        rot_x_std = -45,
+							zoom_max = zoom_std * (1. + 1.5),
+							zoom_min = zoom_std * .2;
 
 	constexpr static uint std_win_width = 800,
 	                      std_win_height = 600;
 
-	enum switch_TrackbarHandle
+	enum get_TrackballState
 	{
 		VIEWER_MOUSEMOTION = 0,
 		VIEWER_KNOWMOUSEBUTTON,
@@ -120,26 +122,8 @@ private:
 	static void reshape_View(const int width, const int height);
 	static void set_OnExitMain(void);
 	static void close_All(void);
-
-public:
-
-	threadhand event_SwapDataToViewer;
-
-	viewer(void);
-	~viewer(void);
-
-	void alloc_DataFromFile(const std::string &fname);
-	void alloc_DataFromMemory(const uint nrows, const uint ncols);
-	void fill_DataFromFile(const std::string &fname);
 	void reset_MemberVariables(const bool make_free = false);
 	void fill_DrawingData(const double *res_pt const m_in, const bool noisy);
-	void set_DrawingData(const double *res_pt max_val_out,
-						const double *res_pt min_val_out,
-						const double *res_pt max_norm_out,
-						const double *res_pt min_norm_out,
-						const double *res_pt data_out,
-						const double *res_pt rgb_out);
-
 	void print_BlockString2d(const char *s,
 						const uint lw,
 						double sx, double sy,
@@ -157,28 +141,12 @@ public:
 							const uint prpr,
 							const double xl,
 							const double ymin, const double ymax);
-	void init_Colorbox(void);
 	void init_Main(int argc, char **argv);
 
 	void reset_DrawingControls(void);
-	void close_Freeglut(void);
 	void wait_UntilViewerPause(const std::string &text);
 
 	static void launch_FreeglutTest(int argc, char **argv);
-	static void launch_Freeglut(int argc, char **argv,
-								const bool threading = false);
-	static void calc_DrawingData(const double *res_pt const m_in,
-								const bool noisy,
-								double *res_pt max_val_out,
-								double *res_pt min_val_out,
-								double *res_pt max_norm_out,
-								double *res_pt min_norm_out,
-								const uint row_in, const uint col_in,
-								double *res_pt data_out,
-								double *res_pt rgb_out);
-	void toggle_Idling(void);
-	void toggle_Map3DMode(void);
-	void toggle_Rotation(void);
 
 	void store_MapMode(const bool b);
 	bool load_MapMode(void);
@@ -188,19 +156,57 @@ public:
 	bool load_AllocatedMemory(void);
 	void store_AllocatedMemoryRelease(const bool b);
 	bool load_AllocatedMemoryAcquire(void);
-	void store_FilledMemory(const bool b);
-	bool load_FilledMemory(void);
-	void store_NewDataAvailable(const bool b);
 	bool load_NewDataAvailable(void);
 	void store_ConstantAnimation(const bool b);
 	bool load_ConstantAnimation(void);
 	void store_IsRunning(const bool b);
-	bool load_IsRunning(void);
 
 	void store_GlRows(const uint n);
 	uint load_GlRows(void);
 	void store_GlCols(const uint n);
 	uint load_GlCols(void);
+	bool load_PressedEsc(void);
+	void store_PressedEsc(const bool b);
+	void store_UpdateAnimate(const bool b);
+	bool load_UpdateAnimate(void);
+
+public:
+
+	threadhand event_SwapDataToViewer;
+
+	viewer(void);
+	~viewer(void);
+
+	bool load_FilledMemory(void);
+	void init_Colorbox(void);
+	void close_Freeglut(void);
+	void toggle_Idling(void);
+	void toggle_Map3DMode(void);
+	void toggle_Rotation(void);
+	void store_NewDataAvailable(const bool b);
+	void alloc_DataFromMemory(const uint nrows, const uint ncols);
+	static void launch_Freeglut(int argc, char **argv,
+								const bool threading = false);
+	bool load_IsRunning(void);
+	static void calc_DrawingData(const double *res_pt const m_in,
+							const bool noisy,
+							double *res_pt max_val_out,
+							double *res_pt min_val_out,
+							double *res_pt max_norm_out,
+							double *res_pt min_norm_out,
+							const uint row_in, const uint col_in,
+							double *res_pt data_out,
+							double *res_pt rgb_out);
+	void set_DrawingData(const double *res_pt max_val_out,
+					const double *res_pt min_val_out,
+					const double *res_pt max_norm_out,
+					const double *res_pt min_norm_out,
+					const double *res_pt data_out,
+					const double *res_pt rgb_out);
+	void store_FilledMemory(const bool b);
+	void alloc_DataFromFile(const std::string &fname);
+	void fill_DataFromFile(const std::string &fname);
+
 };
 
 #endif
