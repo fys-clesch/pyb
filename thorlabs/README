@@ -1,25 +1,17 @@
 *UNFINISHED BUSINESS*
 
-Controls
-========
-
-r         : takes the current images as a background
-shift + r : unloads background
-s         : saves the displayed image
-shift + s : saves the image that is worked on, i.e. a floating point matrix
-            precision loss due to rounding!
-
 Requires
 ========
 
-fftw3, freeglut, OpenCV
+fftw3, freeglut, OpenCV, OpenMP, C++11, wxWidgets
 
 Linux
 =====
 
 Built from source or install it via the repository, e.g. on Ubuntu via
 sudo apt-get install fftw3 opencv freeglut ...
-Linking is done as:
+
+Linking is done as:
 - See the Code::Blocks dependence
 
 Windows
