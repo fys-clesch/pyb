@@ -812,9 +812,11 @@ void viewer::calc_DrawingData(const double *res_pt const m_in, const bool noisy,
 	if(fabs(diff) <= DBL_EPSILON * 1e2)
 	{
 		*min_norm_out = 0.;
-		*max_norm_out = 1;
+		*max_norm_out = 1.;
+		#ifndef IGYBA_NDEBUG
 		warn_msg("the input data is too flat", ERR_ARG);
-		for(uint i = 0; i < row_in * col_in; i++)
+		#endif
+		for(uint i = 0; i < row_in * col_in; ++i)
 		{
 			data_out[i * 3 + 2] = 0.;
 			memcpy(&rgb_out[i * 3], def_col, 3 * sizeof(double));

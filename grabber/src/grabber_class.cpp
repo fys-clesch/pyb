@@ -331,30 +331,42 @@ void grabber::produce_Mat_Work(void)
 	#endif
 	/** @todo If there's a bottleneck here, a parallelization can be introduced.
 	 * One processor runs the normal matrix, the other one the flipped one.
+	 * 2015-04-21: Implemented the following OpenMP section, but couldn't
+	 * profile it with gpof - meaningless results. In addition, one spurious
+	 * error occurred, maybe because of a data race.
 	 */
-	if(work_roi.isContinuous())
-	{
-		uny = unxm * unym;
-		unx = 1;
-	}
-	for(uint i = 0; i < unx; ++i)
-	{
-		const float *const m = work_roi.ptr<float>(i);
-		for(uint j = 0; j < uny; ++j)
-			work_roi_arr_buf[i * uny + j] =
-			work_roi_arr[i * uny + j] = (double)m[j];
-	}
-	if(work_roi_tflip.isContinuous())
-	{
-		uny = 1;
-		unx = unxm * unym;
-	}
-	for(uint i = 0; i < uny; ++i)
-	{
-		const float *const m_tf = work_roi_tflip.ptr<float>(i);
-		for(uint j = 0; j < unx; ++j)
-			work_roi_arr_tflip_buf[i * unx + j] = (double)m_tf[j];
-	}
+//	#pragma omp parallel sections private(uny, unx) firstprivate(unxm, unym)
+//	{
+//		#pragma omp section
+//		{
+			if(work_roi.isContinuous())
+			{
+				uny = unxm * unym;
+				unx = 1;
+			}
+			for(uint i = 0; i < unx; ++i)
+			{
+				const float *const m = work_roi.ptr<float>(i);
+				for(uint j = 0; j < uny; ++j)
+					work_roi_arr_buf[i * uny + j] =
+					work_roi_arr[i * uny + j] = (double)m[j];
+			}
+//		}
+//		#pragma omp section
+//		{
+			if(work_roi_tflip.isContinuous())
+			{
+				uny = 1;
+				unx = unxm * unym;
+			}
+			for(uint i = 0; i < uny; ++i)
+			{
+				const float *const m_tf = work_roi_tflip.ptr<float>(i);
+				for(uint j = 0; j < unx; ++j)
+					work_roi_arr_tflip_buf[i * unx + j] = (double)m_tf[j];
+			}
+//		}
+//	}
 }
 
 /** \brief Calculates the first and second moments of the working matrix with
@@ -429,15 +441,13 @@ void grabber::get_Moments_own(void)
 		}
 		centroid = Point2d(cen[0], cen[1]);
 		covar = (Mat_<double>(2, 2) << rxx, rxy, rxy, ryy);
+		double eig[2],
+			   temp = covar.at<double>(0, 0) - covar.at<double>(1, 1);
+		if(fabs(temp) >= DBL_EPSILON)
+			ell_theta = .5 * atan2(2. * rxy, temp) * 180. / M_PI;
 		/* The eigenvalues of the covariance matrix give the variance along
 		 * the main axis.
 		 */
-		double eig[2],
-			   temp = covar.at<double>(0, 0) - covar.at<double>(1, 1);
-
-		if(fabs(temp) >= DBL_EPSILON)
-			ell_theta = .5 * atan2(2. * rxy, temp) * 180. / M_PI;
-
 		eig[0] = eig[1] =
 		.5 * (covar.at<double>(0, 0) + covar.at<double>(1, 1));
 		temp = .5 * sqrt(4. * POW2(covar.at<double>(0, 1)) + POW2(temp));
@@ -703,7 +713,8 @@ void grabber::draw_Info(void)
 		putText(rgb, "out of focus", putText_ARGS);
 	draw_RoiRectangle();
 	/* Information regarding too high pixel values. */
-	const double minval = max_pval, maxval = max_pval;
+	const double minval = max_pval,
+	             maxval = max_pval;
 	static Mat mmmat(in_rows, in_cols, CV_8UC1);
 	inRange(fp_in, minval, maxval, mmmat);
 	uint count_nz = countNonZero(mmmat);
@@ -771,6 +782,57 @@ void grabber::draw_Info(void)
 		convert_Int2Str(roi_rect.height) + ") pixel";
 		putText(tbar_win_mat, infos, putText_ARGS);
 	}
+	#undef putText_ARGS
+}
+
+/** \brief Same as draw_Info(void) but boiled-down for wxWidgets.
+ *
+ * \param void
+ * \return void
+ *
+ */
+void grabber::draw_InfoWxVersion(void)
+{
+	/* Some definitions. */
+	const uint16_t lw = 1;
+	double fscl = .45;
+	const int font = FONT_HERSHEY_SIMPLEX;
+	const Scalar_<double> clr_txt(0., 255., 0.);
+	static std::string infos(128, '\0');
+	#define putText_ARGS Point2d(sx, sy), font, fscl, clr_txt, lw, CV_AA
+	double sx = 1. / 128. * in_cols,
+	       sy = in_rows - 10.;
+	/* Print the value under the mouse pointer. */
+	if(pval != 0xDEADDEAD)
+	{
+		infos = "(" + convert_Int2Str(px_mouse) + ", " +
+		convert_Int2Str(py_mouse) + "): " +
+		convert_Double2Str(pval);
+		putText(rgb, infos, putText_ARGS);
+	}
+	else
+		putText(rgb, "out of focus", putText_ARGS);
+	draw_RoiRectangle();
+	/* Information regarding too high pixel values. */
+	const double minval = max_pval,
+	             maxval = max_pval;
+	static Mat mmmat(in_rows, in_cols, CV_8UC1);
+	inRange(fp_in, minval, maxval, mmmat);
+	uint count_nz = countNonZero(mmmat);
+	if(count_nz > saturated_thresh)
+		saturated = true;
+	else
+		saturated = false;
+	sx = 1. / 128. * in_cols;
+	sy = in_rows >> 1;
+	fscl = .6;
+	infos = "# pixels at max: " + convert_Int2Str(count_nz);
+	putText(rgb, infos, putText_ARGS);
+	fscl = .45;
+	#ifndef IGYBA_NDEBUG
+	iprint(stdout, "# pixels at %g: %u\n",
+			       max_pval, count_nz);
+	#endif
 	#undef putText_ARGS
 }
 
@@ -887,14 +949,19 @@ Mat grabber::get_Mat_private(const save_Im_type mtype)
 }
 
 void grabber::save_Image(const save_Im_type mtype,
-						const std::string &win_title,
+						const std::string &fname,
 						const std::string &fmt)
 {
 	std::string str, strc;
-	if(win_title.empty())
+	if(fname.empty())
 		get_DateAndTime(str);
 	else
-		str = win_title;
+		str = fname;
+	/* If necessary, remove the last '.fmt'. */
+	const size_t found = str.rfind("." + fmt);
+	if(found != std::string::npos)
+		str.erase(str.begin() + found, str.end() - 1);
+	/* Continue. */
 	strc = str + "_info." + fmt;
 	str += "." + fmt;
 	iprint(stdout, "storing to '%s' . ", str.c_str());
@@ -908,7 +975,7 @@ void grabber::save_Image(const save_Im_type mtype,
 	else
 		error_msg("wrong enumerator", ERR_ARG);
 
-		draw_Info();
+	draw_Info();
 	imwrite(strc, tbar_win_mat);
 	iprint(stdout, "done\n");
 }
@@ -1444,7 +1511,8 @@ void grabber::toggle_Smoothing(void)
 	blur_appl = !blur_appl;
 }
 
-double grabber::get_GaussBlurRangeAtomic(double *res_pt gb_min, double *res_pt gb_max)
+double grabber::get_GaussBlurRangeAtomic(double *res_pt gb_min,
+										double *res_pt gb_max)
 {
 	*gb_min = gaussblur_min_atm.load(std::memory_order_relaxed);
 	*gb_max = gaussblur_max_atm.load(std::memory_order_relaxed);
@@ -1459,7 +1527,8 @@ void grabber::set_GaussBlurAtomic(const double val)
 void grabber::TrackbarHandlerBlur(int i)
 {
 	const double out_min = 0., out_max = 50.;
-	double res = map_Linear((double)i, out_min, out_max, gaussblur_min, gaussblur_max);
+	double res = map_Linear((double)i, out_min, out_max,
+							gaussblur_min, gaussblur_max);
 	gaussblur_sigma_x = res;
 }
 
@@ -1712,19 +1781,24 @@ uint64_t grabber::get_Frames(void)
 }
 
 void grabber::gnuplot_Image(const save_Im_type mtype,
-							const std::string &win_title)
+							const std::string &fname)
 {
 	std::string str;
-	if(win_title.empty())
-		get_DateAndTime(str, true);
-	else
-		str = win_title;
+
+	if(!fname.empty()) /**< If a name is not provided, a generic one will
+		be generated. */
+		ffc.set_FileName(fname);
+
+	get_DateAndTime(str);
+
+	std::replace(str.begin(), str.end(), '_', ' ');
+
 	if(mtype == save_Im_type::RGB)
-		str += " rgb";
+		str += " RGB";
 	else if(mtype == save_Im_type::WORK)
-		str += " work";
+		str += " Work";
 	else if(mtype == save_Im_type::FP_IN)
-		str += " fp";
+		str += " Raw";
 	else
 	{
 		error_msg("wrong enumerator", ERR_ARG);

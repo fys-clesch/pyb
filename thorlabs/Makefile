@@ -20,7 +20,7 @@ endif
 
 FILES = main.cpp
 EXTFILES = auxf.cpp threadhand_class.cpp
-FILES_MINIME = minime_class.cpp fifo_class.cpp fit_fun.cpp funcs.cpp gabe_class.cpp minimizer_s.cpp random.cpp
+FILES_MINIME = minime_class.cpp fifo_class.cpp fit_fun_profile.cpp funcs.cpp gabe_class.cpp minimizer_s.cpp random.cpp
 FILES_VIEWER = draw.cpp viewer_class.cpp
 FILES_GRABBER = grabber_class.cpp
 FILES_TC = thorlabs_cam.cpp

@@ -29,7 +29,7 @@ struct pset
 		   eval;
 };
 
-/* internal header */
+/* Internal header */
 
 static double punish(const double x);
 static void swap_pset(pset *p1, pset *p2);
@@ -52,7 +52,7 @@ static double fmarq(double loglam);
 static void marq(pset *p, const bool noisy);
 static void manymarquardt(pset *ptp, const bool noisy);
 static double hessian(pset *p);
-static void covar(pset *p, void *extra);
+void covar(pset *p, const bool tofile);
 
 /* Global but static definitions. */
 struct lmar
@@ -72,10 +72,12 @@ struct mini_struct
 	uint nparm_tot,
 		 nparm,
 		 pindex[MAXPARAM],
-		 funcp_nout;
+		 funcp_nout,
+		 dat_pnts;
 	parameter *pa_io;
 	void (*funcp)(double *, double *); /* 1. parameter is input, 2. one is
 	output per reference. */
+	FILE *fp;
 };
 
 static mini_struct min_s;
@@ -83,7 +85,7 @@ static lmar lmar_c;
 
 #pragma omp threadprivate(min_s, lmar_c)
 
-/* functions */
+/* Functions */
 
 double punish(const double x)
 {
@@ -291,7 +293,7 @@ double ssq(pset *pp)
 	uchar ssq_lift;
 	for(uint i = 0; i < min_s.nparm; i++)
 	{
-		int i0 = min_s.pindex[i]; /* min_s.pindex in original parameter */
+		const uint i0 = min_s.pindex[i];
 		if(min_s.pa_io[i0].log)
 			min_s.pa_io[i0].val = exp(pp->parm[i]);
 		else
@@ -357,7 +359,7 @@ double amotry(pset p[MAXPARAM], pset *psump, const uint ihi, const double fac)
 void amoeba(pset p[MAXPARAM], const double ftol, const bool noisy)
 {
 	uint nsame = 0;
-	pset psum; /* holds only coordinates, no ssq */
+	pset psum; /* Holds only coordinates, no ssq */
 	double ymin, oldlow, oldsum, span = 1.;
 
 	for(uint j = 0; j < MAXPARAM; j++)
@@ -376,7 +378,7 @@ void amoeba(pset p[MAXPARAM], const double ftol, const bool noisy)
 			sum += p[i].eval;
 		if(check_equal(p[0].eval, oldlow) && check_equal(sum, oldsum))
 		{
-			/* no progress */
+			/* No progress */
 			++nsame;
 			if(nsame >= min_s.nparm)
 				break;
@@ -403,7 +405,7 @@ void amoeba(pset p[MAXPARAM], const double ftol, const bool noisy)
 		span = get_span(p);
 		if(p[ilo].eval < ymin)
 		{
-			/* nur Verbesserungen drucken */
+			/* Only print improvements */
 			ymin = .9 * p[ilo].eval;
 			if(noisy)
 				status(&(p[0]), "splx", "");
@@ -418,7 +420,7 @@ void amoeba(pset p[MAXPARAM], const double ftol, const bool noisy)
 			ytry = amotry(p, &psum, ihi, .5);
 			if(ytry >= ysave)
 			{
-				/* shrinking */
+				/* Shrinking */
 				for(uint i = 0; i < min_s.nparm + 1; i++)
 					if(i != ilo)
 					{
@@ -459,7 +461,7 @@ void simplex(pset *p0, double startlen, double tol, const bool noisy)
 		status(p0, "Sout", " ");
 }
 
-/* find minimum of 1-D function, from NETLIB */
+/* Find minimum of 1-D function, from NETLIB */
 double fminbr(double a, double b, double(*f)(double x), double tol)
 {
 	double x, v, w, /* abscissas */
@@ -665,7 +667,8 @@ double hessian(pset *p)
 }
 
 double minimizer(void (*f)(double *, double *), const uint np, parameter *ppa,
-				const uint f_nout, const bool noisy, const bool tofile)
+				const uint f_nout, const bool noisy, const bool tofile,
+				const uint dat_pnts)
 {
 	pset p;
 	min_s.pa_io = ppa;
@@ -675,6 +678,7 @@ double minimizer(void (*f)(double *, double *), const uint np, parameter *ppa,
 	min_s.nfunc = 0;
 	min_s.nparm = 0;
 	min_s.funcp_nout = f_nout;
+	min_s.dat_pnts = dat_pnts;
 	frandseed(time(0));
 
 	for(uint i = 0; i < np; i++)
@@ -760,12 +764,14 @@ double minimizer(void (*f)(double *, double *), const uint np, parameter *ppa,
 		std::string timebuf;
 		get_DateAndTime(timebuf);
 
-		FILE *fp = fopen("minime_output.txt", "a");
-		if(fp == NULL)
+		min_s.fp = fopen("minime_output.txt", "a");
+		if(min_s.fp == NULL)
 			perror("error opening file");
-		fprintf(fp, "\n%s\n", timebuf.c_str());
+		fprintf(min_s.fp, "\n%s\n", timebuf.c_str());
 		for(uint i = 0; i < np; i++)
-			fprintf(fp, "{'%s', '%s', %g, %g, %g, %d, %d, 0}\n",
+			fprintf(min_s.fp, "{'%s', '%s', value %g, " \
+					"min %g, max %g, " \
+					"log mode %d, fitted %d}\n",
 					min_s.pa_io[i].name.c_str(),
 					min_s.pa_io[i].unit.c_str(),
 					min_s.pa_io[i].val,
@@ -773,8 +779,9 @@ double minimizer(void (*f)(double *, double *), const uint np, parameter *ppa,
 					min_s.pa_io[i].maxv,
 					min_s.pa_io[i].log,
 					min_s.pa_io[i].fit);
-		fclose(fp);
+		fclose(min_s.fp);
 	}
+	covar(&p, tofile);
 	return p.eval;
 }
 
@@ -784,79 +791,118 @@ void v_banane(double *res_pt x, double *res_pt y)
 	y[1] = -1.; /**< just a test */
 }
 
-void covar(pset *p, void *extra)
+/** \brief
+ *
+ * \param p pset*
+ * \param extra void*
+ * \return void
+ *
+ * Standard references on statistics and data analysis give the well-known
+ * result that the variances of the coefficients, a_j, are given by the diagonal
+ * elements of the covariance matrix, C, i.e., sigma^2 a_j = C_{j,j}, where C is
+ * the inverse of the Hessian. The standard error of the data points can be
+ * estimated by f(x, a) / (M - n), where M are the data points and n the fit
+ * parameters. This assumes that all data points share the same error which are
+ * independend of each other.
+ */
+void covar(pset *p, const bool tofile)
 {
-	mini_struct fitd = min_s;
-	FILE *logfp = fopen("minime_output_covar.txt", "a");
+	FILE *stream;
+	mini_struct fitd;
+	memcpy(&fitd, &min_s, sizeof(mini_struct));
+	if(tofile)
+	{
+		stream = fitd.fp;
+		fitd.fp = fopen("minime_output.txt", "a");
+	}
+	else
+		stream = stdout;
+
 	double *ainv = (double *)malloc(fitd.nparm * fitd.nparm * sizeof(double)),
 	       *delta = (double *)malloc(fitd.nparm * sizeof(double));
-	char msg[256];
 
 	hessian(p);
-	memcpy(ainv, lmar_c.a, fitd.nparm * fitd.nparm * sizeof (double));
+	memcpy(ainv, lmar_c.a, fitd.nparm * fitd.nparm * sizeof(double));
+
 	for(uint i = 0; i < fitd.nparm; i++)
-		delta[i] = 0;
+		delta[i] = 0.;
 	if(gaussj(ainv, fitd.nparm, delta))
 	{
-		snprintf(msg, 255, "Hessian is singular. Skipped evaluation of covar.");
-		status(p, "", msg);
+		status(p, "", "hessian is singular. skipped evaluation of covar.");
 		free(ainv);
 		free(delta);
-		fclose(logfp);
+		if(tofile)
+			fclose(fitd.fp);
 		return;
 	}
-	fprintf(logfp, "\nCorrelation matrix:\n         ");
+
+	if(min_s.dat_pnts == 0)
+		fprintf(stream, "\ncorrelation matrix for simulated data:\n%12s ", " ");
+	else
+		fprintf(stream, "\ncorrelation matrix for measured data:\n%12s ", " ");
+
 	for(uint i = 0; i < fitd.nparm; i++)
-		fprintf(logfp, "%s ", fitd.pa_io[fitd.pindex[i]].name.c_str());
-	fprintf(logfp, "\n");
+		fprintf(stream, "%12s%c", fitd.pa_io[fitd.pindex[i]].name.c_str(),
+				i < fitd.nparm - 1 ? ' ' : '\n');
+
 	for(uint i = 0; i < fitd.nparm; i++)
 	{
-		fprintf(logfp, "%s ", fitd.pa_io[fitd.pindex[i]].name.c_str());
+		fprintf(stream, "%-12s ", fitd.pa_io[fitd.pindex[i]].name.c_str());
 		for(uint j = 0; j <= i; j++)
 		{
 			double temp = ainv[i * fitd.nparm + i] * ainv[j * fitd.nparm + j];
 			if(temp > 0.)
 			{
-				double corr = ainv[i * fitd.nparm + j] / sqrt (temp);
-				fprintf(logfp, "%g ", corr);
+				const double corr = ainv[i * fitd.nparm + j] / sqrt(temp);
+				fprintf(stream, "%12g", corr);
 			}
 			else
-				fprintf(logfp, " ******* ");
+				fprintf(stream, "%3s******%3s", " ", " ");
+			fprintf(stream, "%c", j < i ? ' ' : '\n');
 		}
-		putc('\n', logfp);
 	}
-	double cfact = p->eval / (50. - fitd.nparm); // ghh
-	fprintf(logfp, "\nBest parameter estimates:\n");
+	double var_dat;
+	if(min_s.dat_pnts == 0)
+		var_dat = p->eval / (fitd.dat_pnts - fitd.nparm);
+	else
+		var_dat = 1.; /** @todo Is this sane? */
+	fprintf(stream, "\nbest parameter estimates:\n");
 	for(uint i = 0; i < fitd.nparm; i++)
 	{
-		double ep, rvar;
+		double ep,
+		       rvar;
 		if(ainv[i * fitd.nparm + i] < 0.)
-			status(p, "", "newcovar[i, i] < 0.");
+			status(p, "", "covar[i, i] < 0.");
 		if(fitd.pa_io[fitd.pindex[i]].log)
 		{
 			ep = exp(p->parm[i]);
-			rvar = (exp(sqrt(cfact * (fabs(ainv[i * fitd.nparm + i])))) - 1.);
+			rvar = expm1(sqrt(var_dat * (fabs(ainv[i * fitd.nparm + i]))));
 		}
 		else
 		{
 			ep = p->parm[i];
-			rvar = (sqrt(cfact * (fabs(ainv[i * fitd.nparm + i])))) / ep;
+			rvar = sqrt(var_dat * (fabs(ainv[i * fitd.nparm + i]))) / ep;
 		}
-		if(rvar < .5)
-			fprintf(logfp, "%s = %30.20g +- %g (%.3g%%) ",
+		fitd.pa_io[i].std_rel_err = rvar;
+		if(rvar < .5) /**< Relative error is smaller than 50 % */
+			fprintf(stream, "%12s = %16g +- %-16g (%6.3g%%)",
 					fitd.pa_io[fitd.pindex[i]].name.c_str(), ep,
-					rvar * ep, 100. * rvar);
+					rvar * ep, 1e2 * rvar);
 		else
-			fprintf(logfp, "%s = %g */ %g ",
-					fitd.pa_io[fitd.pindex[i]].name.c_str(), ep, rvar + 1.);
+			fprintf(stream, "%12s = %16g */ %-16g",
+					fitd.pa_io[fitd.pindex[i]].name.c_str(), ep,
+					rvar + 1.);
+
 		if(ep < fitd.pa_io[fitd.pindex[i]].minv)
-			fprintf(logfp, "< MIN!\n");
+			fprintf(stream, " < MIN!\n");
 		else if(ep > fitd.pa_io[fitd.pindex[i]].maxv)
-			fprintf(logfp, "> MAX!\n");
+			fprintf(stream, " > MAX!\n");
 		else
-			fprintf(logfp, "\n");
+			fprintf(stream, "\n");
 	}
 	free(ainv);
 	free(delta);
-	fclose(logfp);
+	if(tofile)
+		fclose(fitd.fp);
+	memcpy(&min_s, &fitd, sizeof(mini_struct));
 }

@@ -61,17 +61,18 @@ public:
 	void set_Background(void);
 	void unset_Background(void);
 	void save_Image(const save_Im_type mtype,
-					const std::string &win_title = "",
+					const std::string &fname = "",
 					const std::string &fmt = "png");
 	void store_Image(const save_Im_type mtype,
 					const std::string &fname = "");
 	void toggle_Grabbing(void);
 	bool signal_ViewerThreadIfWait(void);
 	void gnuplot_Image(const save_Im_type mtype,
-						const std::string &win_title = "");
+						const std::string &fname = "");
 	void get_Moments(void);
 	void draw_Moments(const bool chatty = true);
 	void draw_Info(void);
+	void draw_InfoWxVersion(void);
 	void close_MinimeThread(void);
 	void close_CopyThread(void);
 	void close_ViewerWindow(void);

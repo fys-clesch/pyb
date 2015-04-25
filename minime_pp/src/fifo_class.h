@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <chrono>
 #include <thread>
+#include <algorithm>
 
 #ifndef __FIFO_NO_OPENCV__
 #include <opencv2/core/core.hpp>
@@ -40,7 +41,8 @@ private:
 	std::string ax_x_title,
 	            ax_y_title,
 	            ax_z_title,
-	            plot_title;
+	            plot_title,
+	            file_name;
 
 	void write_Data_g(const std::string &fname,
 					const uchar format,
@@ -57,6 +59,7 @@ public:
 	void set_AxisTitles(const std::string &xtitle,
 						const std::string &ytitle,
 						const std::string &ztitle = "z");
+	void set_FileName(const std::string &fname);
 	void set_PlotTitle(const std::string &title);
 	void set_UseContours(const bool set_it);
 	static void print_HistogramFromUintFile(const std::string &target,

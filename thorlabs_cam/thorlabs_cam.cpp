@@ -355,7 +355,8 @@ bool thorlabs_cam::get_Image(IplImage *ipl_im)
 	}
 	else if(err == IS_CAPTURE_RUNNING)
 	{
-		warn_msg("capture operation in progress must be terminated before starting another one", ERR_ARG);
+		warn_msg("capture operation in progress must be " \
+				"terminated before starting another one", ERR_ARG);
 		return false;
 	}
 	return true;
@@ -382,7 +383,8 @@ bool thorlabs_cam::get_Image(Mat &im)
 	}
 	else if(err == IS_CAPTURE_RUNNING)
 	{
-		warn_msg("capture operation in progress must be terminated before starting another one", ERR_ARG);
+		warn_msg("capture operation in progress must be " \
+				"terminated before starting another one", ERR_ARG);
 		return false;
 	}
 	return true;
@@ -405,7 +407,8 @@ bool thorlabs_cam::get_Image(void)
 	}
 	else if(err == IS_CAPTURE_RUNNING)
 	{
-		warn_msg("capture operation in progress must be terminated before starting another one", ERR_ARG);
+		warn_msg("capture operation in progress must be " \
+				"terminated before starting another one", ERR_ARG);
 		return false;
 	}
 	return true;
@@ -529,7 +532,7 @@ void thorlabs_cam::get_ExposureTime(void)
 	exp_time_max = rng[1];
 	exp_time_inc = rng[2];
 
-	exp_time_atm.store(exp_time, std::memory_order_relaxed);
+	set_ExposureTimeAtomic(exp_time);
 	exp_time_min_atm.store(exp_time_min, std::memory_order_relaxed);
 	exp_time_max_atm.store(exp_time_max, std::memory_order_relaxed);
 	exp_time_inc_atm.store(exp_time_inc, std::memory_order_relaxed);
@@ -557,7 +560,7 @@ void thorlabs_cam::set_ExposureTime(double time)
 		iprint(stdout, "exposure time set to %g ms\n", time);
 		#endif
 		exp_time = time;
-		exp_time_atm.store(exp_time, std::memory_order_relaxed);
+		set_ExposureTimeAtomic(exp_time);
 	}
 }
 
@@ -593,7 +596,7 @@ void thorlabs_cam::exchange_ExposureTimeAtomic(void)
 
 void thorlabs_cam::set_ExposureTimeAtomic(double time)
 {
-	exp_time_atm.store(time, std::memory_order_release);
+	exp_time_atm.store(time, std::memory_order_relaxed);
 }
 
 void thorlabs_cam::get_ExposureTimesAtomic(double *res_pt time,
@@ -743,6 +746,19 @@ void thorlabs_cam::draw_CameraInfo(void)
 	info = "camera model: " + sensorname;
 	putText(infotbar_win_mat, info, putText_ARGS);
 	#undef putText_ARGS
+}
+
+std::string thorlabs_cam::get_CameraInfo(void)
+{
+	std::string out;
+	out = "Camera model: " + sensorname +
+	"\nSensor area: " +
+	convert_Int2Str(sensor_aa_width) + " * " +
+	convert_Int2Str(sensor_aa_height) +	" um^2\n" +
+	"Pixel count: " +
+	convert_Int2Str(im_aoi_height) + " * " +
+	convert_Int2Str(im_aoi_width);
+	return out;
 }
 
 void thorlabs_cam::identify_CameraAOISettings(void)

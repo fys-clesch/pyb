@@ -94,6 +94,24 @@
 												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 												<border>5</border>
 											</object>
+											<object class="sizeritem">
+												<object class="wxStaticBoxSizer" variable="StaticBoxSizerOutputInfo" member="no">
+													<label>Output</label>
+													<object class="sizeritem">
+														<object class="wxTextCtrl" name="ID_TEXTCTRL_OUTPUT_INFO" variable="TextCtrlOutputInfo" member="yes">
+															<value>Displays last saved data</value>
+															<maxlength>512</maxlength>
+															<bg>wxSYS_COLOUR_MENU</bg>
+															<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER</style>
+														</object>
+														<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<option>1</option>
+													</object>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
 										</object>
 									</object>
 									<label>Output</label>
@@ -204,17 +222,19 @@
 											</object>
 											<object class="sizeritem">
 												<object class="wxStaticBoxSizer" variable="StaticBoxSizerAOI" member="no">
-													<label>AOI of interest</label>
+													<label>Area of interest</label>
 													<orient>wxVERTICAL</orient>
 													<object class="sizeritem">
 														<object class="wxTextCtrl" name="ID_TEXTCTRL_AOI" variable="TextCtrlAOI" member="yes">
 															<value>No AOI selected</value>
 															<maxlength>256</maxlength>
-															<size>-1,50</size>
-															<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH</style>
+															<size>-1,35</size>
+															<bg>wxSYS_COLOUR_MENU</bg>
+															<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxTE_CENTRE|wxSTATIC_BORDER</style>
 														</object>
 														<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
+														<option>1</option>
 													</object>
 													<object class="sizeritem">
 														<object class="wxToggleButton" name="ID_TOGGLEBUTTON_AOI" variable="ToggleButtonAOI" member="yes">
@@ -375,6 +395,25 @@
 										</object>
 									</object>
 									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticBoxSizer" variable="StaticBoxSizerCamInfo" member="no">
+										<label>Information</label>
+										<object class="sizeritem">
+											<object class="wxTextCtrl" name="ID_TEXTCTRL_CAM_INFO" variable="TextCtrlCamInfo" member="yes">
+												<value>Loading...</value>
+												<maxlength>512</maxlength>
+												<size>-1,50</size>
+												<bg>wxSYS_COLOUR_MENU</bg>
+												<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER</style>
+											</object>
+											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
 								</object>
 							</object>

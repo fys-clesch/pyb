@@ -1,7 +1,8 @@
 #ifndef __IGYBA_HEADER_HPP__
 #define __IGYBA_HEADER_HPP__
 
-/* definitions from other header files to declare types in the functions of this header */
+/* Definitions from other header files to declare types in the functions
+of this header */
 #include <stdio.h>
 #include <stdarg.h>
 #include <string>
@@ -9,7 +10,7 @@
 #include <iomanip>
 #include <sstream>
 
-/* operating system definition */
+/* Operating system definition */
 #if defined(__unix__) || defined(__LINUX__)
  #define ISLINUX
  #define DIRMOD ,0775)
@@ -22,7 +23,7 @@
  #endif
 #endif
 
-/* useful macros */
+/* Useful macros */
 #define MAXOF(a, b) ((a) > (b) ? (a) : (b))
 #define MINOF(a, b) ((a) < (b) ? (a) : (b))
 #define POW2(x) ((x) != 0. ? (x) * (x) : 0.)
@@ -30,7 +31,7 @@
 #define PRINT_TOKEN_DOUBLE(tok) iprint(stdout, #tok " is %g\n", tok)
 #define ERR_ARG __FILE__,__LINE__,__func__
 
-/* other global definitions */
+/* Other global definitions */
 #define STOP_AT_ERR 1
 #define USE_RESTRICT 1
 #define SHOW_WAIT_KEY 0
@@ -56,7 +57,7 @@ constexpr unsigned int FILENAME_MAX1 = FILENAME_MAX + 1;
  #define M_PI2 6.2831853071795865
 #endif
 
-/* project name */
+/* Project name */
 const std::string PROJECT_NAME = "igyba";
 const std::string PROJECT_MAJ_VERSION = "1";
 const std::string PROJECT_MIN_VERSION = "2";

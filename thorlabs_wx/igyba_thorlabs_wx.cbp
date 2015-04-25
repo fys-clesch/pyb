@@ -71,8 +71,6 @@
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O3" />
-					<Add option="-pipe" />
-					<Add option="-mthreads" />
 					<Add option="-D__WXMSW__" />
 					<Add option="-DWXUSINGDLL" />
 					<Add option="-DwxUSE_UNICODE" />
@@ -179,6 +177,32 @@
 					<Add directory="C:/MinGW/mingw64/opencv_static_wo_exr/x64/mingw/staticlib" />
 				</Linker>
 			</Target>
+			<Target title="Release_Linux">
+				<Option output="bin/igyba_thorlabs" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="test test" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="`wx-config --cflags`" />
+					<Add option="-DIGYBA_NDEBUG" />
+					<Add option="-DNDEBUG" />
+					<Add directory="/usr/include/wx-3.0/" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="`wx-config --libs`" />
+					<Add library="opencv_highgui" />
+					<Add library="opencv_imgproc" />
+					<Add library="opencv_core" />
+					<Add library="freeglut" />
+					<Add library="glu32" />
+					<Add library="opengl32" />
+					<Add library="uc480_64" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-pedantic" />
@@ -197,7 +221,7 @@
 		<Unit filename="../grabber/src/test.h" />
 		<Unit filename="../minime_pp/src/fifo_class.cpp" />
 		<Unit filename="../minime_pp/src/fifo_class.h" />
-		<Unit filename="../minime_pp/src/fit_fun.cpp" />
+		<Unit filename="../minime_pp/src/fit_fun_profile.cpp" />
 		<Unit filename="../minime_pp/src/funcs.cpp" />
 		<Unit filename="../minime_pp/src/funcs.h" />
 		<Unit filename="../minime_pp/src/gabe_class.cpp" />

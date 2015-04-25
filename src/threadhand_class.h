@@ -31,4 +31,42 @@ public:
     bool check(void);
 };
 
+/* A simple lock */
+class SimpleLock
+{
+private:
+
+	std::atomic<uint8_t> v;
+
+public:
+
+	SimpleLock(void)
+	{
+		v.store(0);
+	}
+    /** \brief
+     *
+     * \param void
+     * \return bool True if 'z' compares equal to 'v'.
+     *
+     * Compares the contents of the 'v' value with 'z':
+     * If true, it replaces the 'v' value with 1 (like store).
+     * If false, it replaces 'z' with the 'v' value.
+     */
+	bool try_lock(void)
+	{
+		uint8_t z = 0;
+		return v.compare_exchange_strong(z, 1);
+	}
+	void lock(void)
+	{
+		while(try_lock() == false)
+			std::this_thread::yield();
+	}
+	void unlock(void)
+	{
+		v.store(0);
+	}
+};
+
 #endif

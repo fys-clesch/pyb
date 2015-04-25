@@ -40,6 +40,11 @@ void fifo::set_AxisTitles(const std::string &xtitle, const std::string &ytitle,
 	ax_z_title = ztitle;
 }
 
+void fifo::set_FileName(const std::string &fname)
+{
+	file_name = fname;
+}
+
 void fifo::set_PlotTitle(const std::string &title)
 {
 	plot_title = title;
@@ -185,7 +190,8 @@ void fifo::write_Data_g(const std::string &fname, const uchar format,
                     else if(!y && x != 0)
                         tsp[x * (dat_cols + 1) + y] = x - 1;
                     else
-                        tsp[x * (dat_cols + 1) + y] = (float)data[(x - 1) * dat_cols + y - 1];
+                        tsp[x * (dat_cols + 1) + y] = (float)data[(x - 1) *
+                        dat_cols + y - 1];
 
             write_Bin_float(fname, tsp, (dat_rows + 1) * (dat_cols + 1));
             free(tsp);
@@ -220,7 +226,8 @@ void fifo::write_Data_g(const std::string &fname, const uchar format,
                     else if(!y && x != 0)
                         tdp[x * (dat_cols + 1) + y] = x - 1;
                     else
-                        tdp[x * (dat_cols + 1) + y] = data[(x - 1) * dat_cols + y - 1];
+                        tdp[x * (dat_cols + 1) + y] = data[(x - 1) *
+                        dat_cols + y - 1];
 
             write_Bin_double(fname, tdp, (dat_rows + 1) * (dat_cols + 1));
             free(tdp);
@@ -299,11 +306,20 @@ void fifo::plot_Data(const double *res_pt data,
 					const bool auto_range,
 					const double lo, const double hi)
 {
-	const std::string tmpdat = "temp/igyba_plttmp.dat",
-	                  cmdtmp = "temp/igyba_pltcmd";
+	std::string fname_tmp = std::tmpnam(nullptr);
+	/* If any forward or backward slashes appear in the temp name,
+	remove them. */
+	fname_tmp.erase(std::remove(fname_tmp.begin(), fname_tmp.end(), '/'),
+					fname_tmp.end());
+	fname_tmp.erase(std::remove(fname_tmp.begin(), fname_tmp.end(), '\\'),
+					fname_tmp.end());
 
-	mkdir("plot" DIRMOD;
-	mkdir("temp" DIRMOD;
+	const std::string tmpdat = fname_tmp + ".dat",
+	                  cmdtmp = fname_tmp,
+	                  syscall = "gnuplot " + cmdtmp;
+
+	if(file_name.empty())
+		mkdir("plot" DIRMOD;
 
 	write_Data_g(tmpdat, 2, data);
 
@@ -315,79 +331,101 @@ void fifo::plot_Data(const double *res_pt data,
 	}
 
 	fprintf(gnufile,
-			"set term pngcairo dl 1 font \",10\" size 640, 480\n" \
+			"set term pngcairo dl 1 font \",10\" size 640, 480\n"
 			"set pm3d implicit at s\n"
-			"unset surface\n" \
-			"set colorbox user origin .8, .6 size .04, .3\n" \
-			"set cntrlabel onecolor\n" \
-			"%cset contour base\n" \
-			"%cset cntrparam\n" \
-			"set ticslevel .2\n" \
-			"set grid x, y, z\n" \
-			"set xtics offset -.4, -.2\n" \
-			"set ytics offset .8, -.2\n" \
-			"set xr [0 : %u]\n" \
-			"set yr [0 : %u]\n" \
+			"unset surface\n"
+			"set colorbox user origin .8, .6 size .04, .3\n"
+			"set cntrlabel onecolor\n"
+			"%cset contour base\n"
+			"%cset cntrparam\n"
+			"set ticslevel .2\n"
+			"set grid x, y, z\n"
+			"set xtics offset -.4, -.2\n"
+			"set ytics offset .8, -.2\n"
+			"set xr [0 : %u]\n"
+			"set yr [0 : %u]\n"
 			"set format z '%%g'\n",
 			use_contours ? ' ' : '#',
 			use_contours ? ' ' : '#',
-			dat_rows - 1, dat_cols - 1);
+			dat_rows - 1,
+			dat_cols - 1);
 	if(!auto_range)
 		fprintf(gnufile, "set zr [%g : %g]\n", lo, hi);
 
 	fprintf(gnufile,
-			"set zlabel '%s' rotate parallel offset -3, 0\n" \
-			"set ylabel '%s'\n" \
+			"set zlabel '%s' rotate parallel offset -3, 0\n"
+			"set ylabel '%s'\n"
 			"set xlabel '%s' offset 0, -.4\n",
 			ax_z_title.c_str(),
 			ax_y_title.c_str(),
 			ax_x_title.c_str());
+
 	if(!plot_title.empty())
 		fprintf(gnufile,
 			"set title '%s'\n",
 			plot_title.c_str());
 
 	std::string timebuf;
-	get_DateAndTime(timebuf);
+	if(file_name.empty())
+	{
+		get_DateAndTime(timebuf);
+		fprintf(gnufile, "set out 'plot/%s.png'\n", timebuf.c_str());
+	}
+	else
+		fprintf(gnufile, "set out '%s'\n", file_name.c_str());
 
 	fprintf(gnufile,
-			"set out 'plot/%s.png'\n" \
-			"#splot '%s' binary matrix using 2:1:3 w l ls 7 palette t '' \
-			 # doesn't work on Windows\n"
+			"#splot '%s' binary matrix using 2:1:3 w l ls 7 palette t ''"
+			"# doesn't work on Windows\n"
 			"splot '%s' matrix using 2:1:3 w l ls 7 palette t ''\n",
-			timebuf.c_str(), tmpdat.c_str(), tmpdat.c_str());
+			tmpdat.c_str(), tmpdat.c_str());
 
 	fclose(gnufile);
 	iprint(stdout, "gnuplot message: ");
 	fflush(stdout);
-	int i = system("gnuplot temp/igyba_pltcmd");
+	const int i = system(syscall.c_str());
 	if(i)
 		warn_msg("\ngnuplot command returned '1' -- the plotting went wrong!",
 				ERR_ARG);
 	else
-		iprint(stdout, "plotted 'plot/%s.png'\n", timebuf.c_str());
+	{
+		if(file_name.empty())
+			iprint(stdout, "plotted 'plot/%s.png'\n", timebuf.c_str());
+		else
+			iprint(stdout, "plotted '%s'\n", file_name.c_str());
+	}
 
 	remove(tmpdat.c_str());
 	remove(cmdtmp.c_str());
 }
 
-/* plots a histogram from a file */
+/** \brief Plots a histogram of a given file.
+ *
+ * \param fname const std::string&
+ * \param steps const uint
+ * \return void
+ *
+ */
 void fifo::plot_Histogram(const std::string &fname, const uint steps)
 {
-	/** @todo Finish this. */
-//	std::string fname_tmp = std::tmpnam(nullptr);
-//	std::cout << "temporary file name: " << fname_tmp << '\n';
+	std::string fname_tmp = std::tmpnam(nullptr);
+	/* If any forward or backward slashes appear in the temp name,
+	remove them. */
+	fname_tmp.erase(std::remove(fname_tmp.begin(), fname_tmp.end(), '/'),
+					fname_tmp.end());
+	fname_tmp.erase(std::remove(fname_tmp.begin(), fname_tmp.end(), '\\'),
+					fname_tmp.end());
+	const std::string cmdtmp = fname_tmp,
+	                  syscall = "gnuplot " + cmdtmp;
 
-	const std::string cmdtmp = "temp/igyba_pltcmd";
 	mkdir("plot" DIRMOD;
-	mkdir("temp" DIRMOD;
+
 	FILE *gnufile = fopen(cmdtmp.c_str(), "w");
 	if(gnufile == NULL)
 	{
 		file_error_msg(cmdtmp.c_str(), ERR_ARG);
 		exit(EXIT_FAILURE);
 	}
-
 	fprintf(gnufile,
 			"set term pngcairo\n" \
 			"set angles radians\n" \
@@ -414,7 +452,7 @@ void fifo::plot_Histogram(const std::string &fname, const uint steps)
 	fclose(gnufile);
 	iprint(stdout, "gnuplot message: ");
 	fflush(stdout);
-	int i = system("gnuplot temp/igyba_pltcmd");
+	int i = system(syscall.c_str());
 	if(i)
 		warn_msg("\ngnuplot command returned '1' -- the plotting went wrong!",
 				ERR_ARG);
@@ -434,11 +472,17 @@ void fifo::plot_Data(const cv::Mat &mdata,
 		error_msg("wrong number of channels in the input matrix", ERR_ARG);
 		return;
 	}
-	const std::string tmpdat = "temp/igyba_plttmp.dat",
-	                  cmdtmp = "temp/igyba_pltcmd";
+	std::string fname_tmp = std::tmpnam(nullptr);
+	fname_tmp.erase(std::remove(fname_tmp.begin(), fname_tmp.end(), '/'),
+					fname_tmp.end());
+	fname_tmp.erase(std::remove(fname_tmp.begin(), fname_tmp.end(), '\\'),
+					fname_tmp.end());
+	const std::string tmpdat = fname_tmp + ".dat",
+	                  cmdtmp = fname_tmp,
+	                  syscall = "gnuplot " + cmdtmp;
 
-	mkdir("plot" DIRMOD;
-	mkdir("temp" DIRMOD;
+	if(file_name.empty())
+		mkdir("plot" DIRMOD;
 
 	write_MatToFile(mdata, tmpdat);
 
@@ -466,7 +510,7 @@ void fifo::plot_Data(const cv::Mat &mdata,
 			"set format z '%%g'\n",
 			use_contours ? ' ' : '#',
 			use_contours ? ' ' : '#',
-			mdata.cols - 1, /**< rows and columns are swapped */
+			mdata.cols - 1, /**< Rows and columns are swapped. */
 			mdata.rows - 1);
 	if(!auto_range)
 		fprintf(gnufile, "set zr [%g : %g]\n", lo, hi);
@@ -485,32 +529,36 @@ void fifo::plot_Data(const cv::Mat &mdata,
 			plot_title.c_str());
 
 	std::string timebuf;
-	get_DateAndTime(timebuf);
-	timebuf += ".png";
+	if(file_name.empty())
+	{
+		get_DateAndTime(timebuf);
+		timebuf += ".png";
+		fprintf(gnufile, "set out 'plot/%s'\n", timebuf.c_str());
+	}
+	else
+		fprintf(gnufile, "set out '%s'\n", file_name.c_str());
 
 	if(mdata.channels() == 1)
-	{
-		fprintf(gnufile,
-				"set out 'plot/%s'\n" \
-				"splot '%s' matrix u 1:2:3 w l ls 7 t ''\n",
-				timebuf.c_str(), tmpdat.c_str());
-	}
+		fprintf(gnufile, "splot '%s' matrix u 1:2:3 w l ls 7 t ''\n",
+				tmpdat.c_str());
 	else if(mdata.channels() == 3)
-	{
-		fprintf(gnufile,
-				"set out 'plot/%s'\n" \
-				"splot '%s' using 3:4:(0):0:1:2 w rgbimage t ''\n", /**< (x,y,z,r,g,b) */
-				timebuf.c_str(), tmpdat.c_str());
-	}
+		fprintf(gnufile, /**! (x,y,z,r,g,b) */
+				"splot '%s' using 3:4:(0):0:1:2 w rgbimage t ''\n",
+				tmpdat.c_str());
 
 	fclose(gnufile);
 	fprintf(stdout, "gnuplot message: ");
 	fflush(stdout);
-	int i = system("gnuplot temp/igyba_pltcmd");
+	const int i = system(syscall.c_str());
 	if(i)
 		fprintf(stderr, "\ngnuplot command returned '1' -- the plotting went wrong!\n");
 	else
-		fprintf(stdout, "plotted 'plot/%s'\n", timebuf.c_str());
+	{
+		if(file_name.empty())
+			iprint(stdout, "plotted 'plot/%s.png'\n", timebuf.c_str());
+		else
+			iprint(stdout, "plotted '%s'\n", file_name.c_str());
+	}
 
 	remove(tmpdat.c_str());
 	remove(cmdtmp.c_str());

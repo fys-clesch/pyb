@@ -35,38 +35,44 @@
 class igyba_thorlabs_wxFrame : public wxFrame
 {
 
-	private:
+private:
 
-		thorlabs_cam t_cam;
+	thorlabs_cam t_cam;
 
-		char **mb_argv;
+	char **mb_argv;
 
-		int m_argc;
+	int m_argc;
 
-		threadhand event_Cam;
+	threadhand event_Cam;
 
-		std::thread thread_Cam;
+	std::thread thread_Cam;
 
-		std::atomic<bool> close_cam_thread,
-		                  select_roi;
+	std::atomic<bool> close_cam_thread,
+					  select_roi;
 
-		std::atomic<uint32_t> btn_state;
+	std::atomic<uint32_t> btn_state;
 
-		enum wx_button_clicked
-		{
-			ERROR_BTN, NONE_BTN,
-			SAVE_RGB_BTN, SAVE_WORK_BTN, SAVE_FP_BTN,
-			STORE_RGB_BTN, STORE_WORK_BTN, STORE_FP_BTN,
-			ACQ_SET_BACKGROUND, UNSET_BACKGROUND,
-			SHOW_HELP,
-			TOGGLE_IDLING,
-			MAKE_GNUPLOT,
-			TOGGLE_SMOOTHING,
-			START_VIEWER,
-			START_MINIME,
-			RESIZE_CAM_WINDOW,
-			CLOSE_CAM_WINDOW
-		};
+	wxString fname_img_out,
+			 fname_dat_out,
+			 fname_gnu_out,
+			 dirname_bin;
+
+	enum wx_button_clicked
+	{
+		ERROR_BTN, NONE_BTN,
+		SAVE_RGB_BTN, SAVE_WORK_BTN, SAVE_FP_BTN,
+		STORE_RGB_BTN, STORE_WORK_BTN, STORE_FP_BTN,
+		ACQ_SET_BACKGROUND, UNSET_BACKGROUND,
+		SHOW_HELP,
+		TOGGLE_IDLING,
+		MAKE_GNUPLOT,
+		TOGGLE_SMOOTHING,
+		START_VIEWER,
+		START_MINIME,
+		RESIZE_CAM_WINDOW,
+		CLOSE_CAM_WINDOW,
+		REMOVE_AOI
+	};
 
 		//(*Handlers(igyba_thorlabs_wxFrame)
 		void OnQuit(wxCommandEvent &event);
@@ -113,6 +119,7 @@ class igyba_thorlabs_wxFrame : public wxFrame
 		static const long ID_BUTTON_SAVE_DATA_WORK;
 		static const long ID_BUTTON_SAVE_DATA_FP;
 		static const long ID_BUTTON_GNUPLOT;
+		static const long ID_TEXTCTRL_OUTPUT_INFO;
 		static const long ID_PANEL_OUTPUT;
 		static const long ID_TOGGLEBUTTON_VIEWER;
 		static const long ID_TOGGLEBUTTON_VIEWER_ANIMATION;
@@ -139,6 +146,7 @@ class igyba_thorlabs_wxFrame : public wxFrame
 		static const long ID_BUTTON_DEC_EXP_TIME;
 		static const long ID_SLIDER_EXP_TIME;
 		static const long ID_BUTTON_INC_EXP_TIME;
+		static const long ID_TEXTCTRL_CAM_INFO;
 		static const long ID_PANEL_CAMERA;
 		static const long ID_TOGGLEBUTTON_SMOOTHING;
 		static const long ID_STATICTEXT_KERNEL_SIZE;
@@ -170,6 +178,7 @@ class igyba_thorlabs_wxFrame : public wxFrame
 		wxButton* ButtonDecGroundlift;
 		wxButton* ButtonIncKernelSize;
 		wxTextCtrl* TextCtrlAOI;
+		wxTextCtrl* TextCtrlCamInfo;
 		wxButton* ButtonIncGroundlift;
 		wxButton* ButtonSaveImgFP;
 		wxStaticText* StaticTextExpTimeDisp;
@@ -186,6 +195,7 @@ class igyba_thorlabs_wxFrame : public wxFrame
 		wxButton* ButtonIncExpTime;
 		wxNotebook* NotebookMain;
 		wxSlider* SliderGroundlift;
+		wxTextCtrl* TextCtrlOutputInfo;
 		wxStaticText* StaticTextGroundlift;
 		wxButton* ButtonIncStdDev;
 		wxLed* LedMain;
@@ -215,12 +225,6 @@ class igyba_thorlabs_wxFrame : public wxFrame
 
 		DECLARE_EVENT_TABLE()
 
-public:
-
-	igyba_thorlabs_wxFrame(int argc, wchar_t **argv, wxWindow *parent,
-							wxWindowID id = -1);
-	virtual ~igyba_thorlabs_wxFrame(void);
-
 	int launch_Cam(int argc, char **argv);
 	void close_CamThread(void);
 	bool signal_CamThreadIfWait(void);
@@ -229,7 +233,9 @@ public:
 	void init_SliderStdDev(void);
 	void init_SliderKernelSize(void);
 	void update_TextExpTime(const double val = -1.);
+	void update_TextOutputInfo(const wxString &str);
 	void update_TextAOI(void);
+	void update_TextCamInfo(const std::string &str);
 	void update_TextGroundlift(const double val = -1.);
 	void update_TextStdDev(const double val = -1.);
 	void update_TextKernelSize(const uint val = 0);
@@ -250,6 +256,13 @@ public:
 	bool load_CloseCamState(void);
 	void store_SelectRoi(const bool b);
 	bool load_SelectRoi(void);
+
+public:
+
+	igyba_thorlabs_wxFrame(int argc, wchar_t **argv, wxWindow *parent,
+							wxWindowID id = -1);
+	virtual ~igyba_thorlabs_wxFrame(void);
+
 };
 
 #endif // IGYBA_THORLABS_WXMAIN_H

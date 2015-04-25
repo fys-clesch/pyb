@@ -172,7 +172,7 @@
 		<Unit filename="../grabber/src/test.h" />
 		<Unit filename="../minime_pp/src/fifo_class.cpp" />
 		<Unit filename="../minime_pp/src/fifo_class.h" />
-		<Unit filename="../minime_pp/src/fit_fun.cpp" />
+		<Unit filename="../minime_pp/src/fit_fun_profile.cpp" />
 		<Unit filename="../minime_pp/src/funcs.cpp" />
 		<Unit filename="../minime_pp/src/funcs.h" />
 		<Unit filename="../minime_pp/src/gabe_class.cpp" />

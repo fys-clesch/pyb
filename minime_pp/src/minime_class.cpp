@@ -58,8 +58,13 @@ minime::minime(void)
 
 	data = nullptr;
 
-	for(double &x : lin_reg_par)
-		x = 0.;
+	linregpar.aoff =
+	linregpar.bmul =
+	linregpar.siga =
+	linregpar.sigb =
+	linregpar.sigdat =
+	linregpar.ssq =
+	linregpar.corr = 0.;
 
 	bad = nullptr;
 
@@ -72,10 +77,13 @@ minime::minime(void)
 	mnm_ntot = 0;
 
 	const parameter null_par = {"", "",
-	                            0., 0., 0., 0.,
+	                            0., 0., 0., 0., 0.,
 	                            0, 0};
 
-	for(parameter &x : fit_par)
+	for(parameter &x : fit_par_b)
+		x = null_par;
+
+	for(parameter &x : fit_par_p)
 		x = null_par;
 }
 

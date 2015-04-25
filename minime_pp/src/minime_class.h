@@ -13,12 +13,13 @@
 
 struct parameter
 {
-	std::string name,
-		 unit;
+	std::string name, /**< Name of the parameter */
+		 unit; /**< Unit of the parameter */
 	double init, /**< Initial value */
-		   minv,
-		   maxv,
-		   val; /**< Current value */
+		   minv, /**< Lower bound */
+		   maxv, /**< Upper bound */
+		   val, /**< Current value */
+		   std_rel_err; /**< Error estimate, relative */
 	bool log, /**< False: linear, True: log */
 		 fit; /**< True means 'fit this' */
 };
@@ -43,22 +44,26 @@ private:
 	     mnm_cols,
 	     mnm_ntot;
 
-	double *res_pt data,
-		   lin_reg_par[7]; /**< Holds data of the linear regression fit:
-		   * 0. entry is the ssq
-		   * 1. entry is offset, a
-		   * 2. entry is multiplier, b
-		   * 3. entry is sigma of 1., siga
-		   * 4. entry is sigma of 2., sigb
-		   * 5. entry is sigma the dataset that is fitted, sigdat
-		   * 6. is the correlation between 1. and 2., r = covar / (siga * sigb)
-		   */
+	struct linear_reg_par
+	{
+		double ssq, /**< The sum of squares */
+			   aoff, /**< Linear offset */
+			   bmul, /**< Multiplier */
+			   siga, /**< Sigma of a */
+			   sigb, /**< Sigma of b */
+			   sigdat, /**< Sigma of the dataset */
+			   corr; /** The correlation between a and b: covar / (siga * sigb) */
+	}linregpar;
 
-	parameter fit_par[5];
+	double *res_pt data;
+
+	parameter fit_par_b[5],
+	          fit_par_p[4];
 
 	fifo ffc;
 
 	static void fit_GaussianMultinormal(double *res_pt set, double *res_pt ssq);
+	static void fit_BeamPropagation(double *res_pt set, double *res_pt ssq);
 	void store_AllocatedMemory(const bool b);
 	void store_FilledMemory(const bool b);
 	bool load_AllocatedMemory(void);
@@ -99,6 +104,7 @@ public:
 	void fill_DataFromMemory(const double *res_pt data_in,
 						const uchar *res_pt const bad_in = nullptr);
 	void fit_GaussEllip(void);
+	void fit_BeamProp(void);
 	void fill_DataFromFile(const std::string &fname,
 						const std::string &bad_fname = "");
 };

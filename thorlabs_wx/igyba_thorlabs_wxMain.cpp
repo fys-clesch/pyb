@@ -1,16 +1,17 @@
 #include "igyba_thorlabs_wxMain.h"
 #include <wx/msgdlg.h>
+#include <wx/filedlg.h>
 
 //(*InternalHeaders(igyba_thorlabs_wxFrame)
 #include <wx/bitmap.h>
 #include <wx/icon.h>
+#include <wx/settings.h>
 #include <wx/intl.h>
 #include <wx/image.h>
 #include <wx/string.h>
 //*)
 
-/** @todo check all the button transactions for thread safety.
- * this can be introduced as a comunicator port in the camera loop. */
+/** @todo Add a mode matching call. */
 
 static igyba_thorlabs_wxFrame *itw1ptr = nullptr;
 
@@ -22,6 +23,7 @@ const long igyba_thorlabs_wxFrame::ID_BUTTON_SAVE_DATA_RGB = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_BUTTON_SAVE_DATA_WORK = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_BUTTON_SAVE_DATA_FP = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_BUTTON_GNUPLOT = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_TEXTCTRL_OUTPUT_INFO = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_PANEL_OUTPUT = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_TOGGLEBUTTON_VIEWER = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_TOGGLEBUTTON_VIEWER_ANIMATION = wxNewId();
@@ -48,6 +50,7 @@ const long igyba_thorlabs_wxFrame::ID_STATICTEXT_EXP_TIME_DISP = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_BUTTON_DEC_EXP_TIME = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_SLIDER_EXP_TIME = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_BUTTON_INC_EXP_TIME = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_TEXTCTRL_CAM_INFO = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_PANEL_CAMERA = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_TOGGLEBUTTON_SMOOTHING = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_STATICTEXT_KERNEL_SIZE = wxNewId();
@@ -92,6 +95,10 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 		mb_argv[i] = (char *)calloc(wcslen(argv[i]) + 1, sizeof(char));
 		wcstombs(mb_argv[i], argv[i], wcslen(argv[i]));
 	}
+	/* wxString */
+	std::wstring str(argv[0]);
+	size_t found = str.find_last_of(L"/\\");
+	dirname_bin = wxString(str.substr(0, found));
 	/* atomic<bool> */
 	select_roi.store(false, std::memory_order_relaxed);
 	close_cam_thread.store(false, std::memory_order_relaxed); /* 2 */
@@ -105,6 +112,7 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	wxFlexGridSizer* FlexGridSizerStart;
 	wxStaticBoxSizer* StaticBoxSizerStdDev;
 	wxStaticBoxSizer* StaticBoxSizerCamera;
+	wxStaticBoxSizer* StaticBoxSizerCamInfo;
 	wxStaticBoxSizer* StaticBoxSizerViewerDispSet;
 	wxStaticBoxSizer* StaticBoxSizerGroundlift;
 	wxStaticBoxSizer* StaticBoxSizerControlsMain;
@@ -122,6 +130,7 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	wxStaticBoxSizer* StaticBoxSizerImgManip;
 	wxStaticBoxSizer* StaticBoxSizerExpTime;
 	wxBoxSizer* BoxSizerThreads;
+	wxStaticBoxSizer* StaticBoxSizerOutputInfo;
 	wxMenuBar* MenuBarMain;
 	wxGridBagSizer* GridBagSizerKernelSize;
 	wxStaticBoxSizer* StaticBoxSizerAOI;
@@ -165,6 +174,12 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	ButtonGnuplot = new wxButton(PanelOutput, ID_BUTTON_GNUPLOT, _("Make gnuplot"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_GNUPLOT"));
 	ButtonGnuplot->SetToolTip(_("Plot current processed image data"));
 	StaticBoxSizerOutput->Add(ButtonGnuplot, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerOutputInfo = new wxStaticBoxSizer(wxHORIZONTAL, PanelOutput, _("Output"));
+	TextCtrlOutputInfo = new wxTextCtrl(PanelOutput, ID_TEXTCTRL_OUTPUT_INFO, _("Displays last saved data"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_OUTPUT_INFO"));
+	TextCtrlOutputInfo->SetMaxLength(512);
+	TextCtrlOutputInfo->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
+	StaticBoxSizerOutputInfo->Add(TextCtrlOutputInfo, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerOutput->Add(StaticBoxSizerOutputInfo, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	PanelOutput->SetSizer(StaticBoxSizerOutput);
 	StaticBoxSizerOutput->Fit(PanelOutput);
 	StaticBoxSizerOutput->SetSizeHints(PanelOutput);
@@ -212,10 +227,11 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	ButtonResizeCamWin = new wxButton(PanelAOIWin, ID_BUTTON_RESIZE_CAM_WIN, _("Resize window"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_RESIZE_CAM_WIN"));
 	ButtonResizeCamWin->SetToolTip(_("Resizes the camera display window"));
 	StaticBoxSizerAOIWin->Add(ButtonResizeCamWin, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizerAOI = new wxStaticBoxSizer(wxVERTICAL, PanelAOIWin, _("AOI of interest"));
-	TextCtrlAOI = new wxTextCtrl(PanelAOIWin, ID_TEXTCTRL_AOI, _("No AOI selected"), wxDefaultPosition, wxSize(-1,50), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH, wxDefaultValidator, _T("ID_TEXTCTRL_AOI"));
+	StaticBoxSizerAOI = new wxStaticBoxSizer(wxVERTICAL, PanelAOIWin, _("Area of interest"));
+	TextCtrlAOI = new wxTextCtrl(PanelAOIWin, ID_TEXTCTRL_AOI, _("No AOI selected"), wxDefaultPosition, wxSize(-1,35), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxTE_CENTRE|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_AOI"));
 	TextCtrlAOI->SetMaxLength(256);
-	StaticBoxSizerAOI->Add(TextCtrlAOI, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	TextCtrlAOI->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
+	StaticBoxSizerAOI->Add(TextCtrlAOI, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	ToggleButtonAOI = new wxToggleButton(PanelAOIWin, ID_TOGGLEBUTTON_AOI, _("Draw rectangle"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_AOI"));
 	ToggleButtonAOI->SetToolTip(_("Click and draw a rectangle in the camera window"));
 	StaticBoxSizerAOI->Add(ToggleButtonAOI, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -270,6 +286,12 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	GridBagSizerExpTime->Add(ButtonIncExpTime, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizerExpTime->Add(GridBagSizerExpTime, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizerCamera->Add(StaticBoxSizerExpTime, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerCamInfo = new wxStaticBoxSizer(wxHORIZONTAL, PanelCamera, _("Information"));
+	TextCtrlCamInfo = new wxTextCtrl(PanelCamera, ID_TEXTCTRL_CAM_INFO, _("Loading..."), wxDefaultPosition, wxSize(-1,50), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_CAM_INFO"));
+	TextCtrlCamInfo->SetMaxLength(512);
+	TextCtrlCamInfo->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
+	StaticBoxSizerCamInfo->Add(TextCtrlCamInfo, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerCamera->Add(StaticBoxSizerCamInfo, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	PanelCamera->SetSizer(StaticBoxSizerCamera);
 	StaticBoxSizerCamera->Fit(PanelCamera);
 	StaticBoxSizerCamera->SetSizeHints(PanelCamera);
@@ -380,7 +402,6 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnAbout);
 	Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnCloseMainFrame);
 	//*)
-	ToggleButtonAOI->SetLabel(_T("Select AOI"));
 	thread_Cam = std::thread(igyba_thorlabs_wxFrame::schedule_CamThread,
 							m_argc, mb_argv);
 	event_Cam.signal();
@@ -414,6 +435,11 @@ void igyba_thorlabs_wxFrame::update_TextExpTime(const double val)
 	StaticTextExpTimeDisp->SetLabel(out);
 }
 
+void igyba_thorlabs_wxFrame::update_TextOutputInfo(const wxString &str)
+{
+	TextCtrlOutputInfo->SetLabel(str);
+}
+
 void igyba_thorlabs_wxFrame::update_TextAOI(void)
 {
 	wxString out;
@@ -433,6 +459,15 @@ void igyba_thorlabs_wxFrame::update_TextAOI(void)
 			sh << ") pixel";
 	}
 	TextCtrlAOI->SetLabel(out);
+}
+
+void igyba_thorlabs_wxFrame::update_TextCamInfo(const std::string &str)
+{
+	wxString out(str);
+	if(out.IsEmpty())
+		TextCtrlCamInfo->SetLabel("Loading...");
+	else
+		TextCtrlCamInfo->SetLabel(out);
 }
 
 void igyba_thorlabs_wxFrame::update_TextGroundlift(const double val)
@@ -527,22 +562,22 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 	(*itw1ptr).t_cam.set_Pix2UmScale((*itw1ptr).t_cam.get_PixelPitch());
 	(*itw1ptr).t_cam.update_Mats_RgbAndFp();
 	(*itw1ptr).t_cam.set_MainWindowName(main_win_title);
-	/* track bar setup */
-	namedWindow((*itw1ptr).t_cam.get_CameraInfoWindowName(), CV_WINDOW_AUTOSIZE);
-	(*itw1ptr).t_cam.show_CameraTrackbars();
-	/* main window setup */
+
+	update_TextCamInfo((*itw1ptr).t_cam.get_CameraInfo());
+
+	/* Main window setup */
 	namedWindow((*itw1ptr).t_cam.get_MainWindowName(), CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO);
 
 	setMouseCallback((*itw1ptr).t_cam.get_MainWindowName(),
-					(*itw1ptr).cast_static_set_MouseEvent,
+					cast_static_set_MouseEvent,
 					itw1ptr);
 
-	/* camera track bars */
-	(*itw1ptr).init_SliderExpTime();
-	/* image processing track bars */
-	(*itw1ptr).init_SliderStdDev();
-	(*itw1ptr).init_SliderKernelSize();
-	(*itw1ptr).init_SliderGroundlift();
+	/* Camera slider bars */
+	init_SliderExpTime();
+	/* Image processing slider bars */
+	init_SliderStdDev();
+	init_SliderKernelSize();
+	init_SliderGroundlift();
 
 	(*itw1ptr).t_cam.show_Im_RGB();
 
@@ -574,6 +609,9 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 										std::memory_order_acquire);
 		switch(c_btn_state)
 		{
+			case REMOVE_AOI:
+				(*itw1ptr).t_cam.set_RoiActive(false);
+				break;
 			case ACQ_SET_BACKGROUND:
 				(*itw1ptr).t_cam.set_Background();
 				break;
@@ -581,29 +619,42 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 				(*itw1ptr).t_cam.unset_Background();
 				break;
 			case SAVE_RGB_BTN:
-				(*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.save_Im_type::RGB);
+				(*itw1ptr).t_cam.save_Image(
+					(*itw1ptr).t_cam.save_Im_type::RGB,
+					fname_img_out.ToStdString());
 				break;
 			case SAVE_WORK_BTN:
-				(*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.save_Im_type::WORK);
+				(*itw1ptr).t_cam.save_Image(
+					(*itw1ptr).t_cam.save_Im_type::WORK,
+					fname_img_out.ToStdString());
 				break;
 			case SAVE_FP_BTN:
-				(*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.save_Im_type::FP_IN);
+				(*itw1ptr).t_cam.save_Image(
+					(*itw1ptr).t_cam.save_Im_type::FP_IN,
+					fname_img_out.ToStdString());
 				break;
 			case STORE_RGB_BTN:
-				(*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.save_Im_type::RGB);
+				(*itw1ptr).t_cam.store_Image(
+					(*itw1ptr).t_cam.save_Im_type::RGB,
+					fname_dat_out.ToStdString());
 				break;
 			case STORE_WORK_BTN:
-				(*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.save_Im_type::WORK);
+				(*itw1ptr).t_cam.store_Image(
+					(*itw1ptr).t_cam.save_Im_type::WORK,
+					fname_dat_out.ToStdString());
 				break;
 			case STORE_FP_BTN:
-				(*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.save_Im_type::FP_IN);
+				(*itw1ptr).t_cam.store_Image(
+					(*itw1ptr).t_cam.save_Im_type::FP_IN,
+					fname_dat_out.ToStdString());
 				break;
 			case SHOW_HELP:
 				(*itw1ptr).t_cam.show_Help();
 				break;
 			case RESIZE_CAM_WINDOW:
 				resizeWindow((*itw1ptr).t_cam.get_MainWindowName(),
-								(*itw1ptr).t_cam.get_Width(), (*itw1ptr).t_cam.get_Height());
+								(*itw1ptr).t_cam.get_Width(),
+								(*itw1ptr).t_cam.get_Height());
 				break;
 			case TOGGLE_SMOOTHING:
 				(*itw1ptr).t_cam.toggle_Smoothing();
@@ -618,18 +669,17 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 				(*itw1ptr).t_cam.toggle_Grabbing();
 				break;
 			case MAKE_GNUPLOT:
-				(*itw1ptr).t_cam.gnuplot_Image((*itw1ptr).t_cam.save_Im_type::WORK);
+				(*itw1ptr).t_cam.gnuplot_Image(
+					(*itw1ptr).t_cam.save_Im_type::WORK,
+					fname_gnu_out.ToStdString());
 				break;
 			default:
 				(*itw1ptr).t_cam.update_Mats_RgbAndFp();
 				(*itw1ptr).t_cam.get_Moments();
 				(*itw1ptr).t_cam.signal_CopyThreadIfWait();
-
 				(*itw1ptr).t_cam.draw_Moments(false);
-				(*itw1ptr).t_cam.draw_CameraInfo();
-				(*itw1ptr).t_cam.draw_RoiRectangle();
+				(*itw1ptr).t_cam.draw_InfoWxVersion();
 				(*itw1ptr).t_cam.show_Im_RGB();
-				(*itw1ptr).t_cam.show_CameraTrackbars();
 		}
 
 		#if SHOW_WAIT_KEY
@@ -646,7 +696,6 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 			break;
 	}
 
-	destroyWindow((*itw1ptr).t_cam.get_CameraInfoWindowName());
 	destroyWindow((*itw1ptr).t_cam.get_MainWindowName());
 
 	if(c_btn_state != CLOSE_CAM_WINDOW)
@@ -654,23 +703,23 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 
 	iprint(stdout, "i made %lu turns\n", (*itw1ptr).t_cam.get_Frames());
 
-	/* first stop minime */
+	/* First stop minime. */
 	(*itw1ptr).t_cam.close_MinimeThread();
 	thread_Minime.join();
 
-	/* next stop reloading data into the viewer */
+	/* Next stop reloading data into the viewer. */
 	(*itw1ptr).t_cam.close_CopyThread();
 	thread_Copy.join();
 
-	/* then close, if necessary, the display */
+	/* Then close, if necessary, the display. */
 	if((*itw1ptr).t_cam.is_ViewerWindowRunning())
 		(*itw1ptr).t_cam.close_ViewerWindow();
 
-	/* finally close the actual thread */
+	/* Finally close the actual thread. */
 	(*itw1ptr).t_cam.close_ViewerThread();
 	thread_Viewer.join();
 
-	/* wait for second to rest - and maybe to flush memory */
+	/* Wait for second to rest - and maybe to flush memory */
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 	return EXIT_SUCCESS;
@@ -680,17 +729,17 @@ void igyba_thorlabs_wxFrame::schedule_CamThread(int argc, char **argv)
 {
 	while(true)
 	{
-		/* wait for the main loop to start the thread: */
+		/* Wait for the main loop to start the thread: */
 		(*itw1ptr).event_Cam.wait();
-		/* in case we want to leave: */
+		/* In case we want to leave: */
 		if((*itw1ptr).load_CloseCamState())
 		{
 			(*itw1ptr).event_Cam.reset();
 			break;
 		}
-		/* fire up the thread: */
+		/* Fire up the thread: */
 		(*itw1ptr).launch_Cam(argc, argv);
-		/* go back and be ready to wait for the next round */
+		/* Go back and be ready to wait for the next round. */
 		(*itw1ptr).event_Cam.reset();
 	}
 }
@@ -780,6 +829,8 @@ void igyba_thorlabs_wxFrame::set_MouseEvent(const int event, const int x, const 
 			{
 				t_cam.set_RoiActive(true);
 				ToggleButtonAOI->SetValue(false);
+				ToggleButtonAOI->SetLabel(_T("Remove AOI"));
+				ToggleButtonAOI->SetToolTip(_("Click to remove AOI"));
 				store_SelectRoi(false);
 			}
 		}
@@ -861,31 +912,123 @@ void igyba_thorlabs_wxFrame::OnButtonDecExpTimeClick(wxCommandEvent& event)
 
 void igyba_thorlabs_wxFrame::OnButtonSaveImgRGBClick(wxCommandEvent& event)
 {
+	std::string str;
+	get_DateAndTime(str);
+	str += "_rgb";
+	wxString def_fname(str);
+	static wxString def_dirname = dirname_bin;
+	wxFileDialog saveDialog(this, _("Save RGB image"),
+							def_dirname, def_fname,
+							"Image file (*.png)|*.png",
+							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if(saveDialog.ShowModal() == wxID_CANCEL)
+		return; /* The user changed idea... */
+	/* Save the last directory. */
+	def_dirname = saveDialog.GetDirectory();
+	/* Save the full name of the file. */
+	fname_img_out = saveDialog.GetPath();
+	update_TextOutputInfo("Saving image to:\n" + fname_img_out);
+
 	store_ButtonState(SAVE_RGB_BTN);
 }
 
 void igyba_thorlabs_wxFrame::OnButtonSaveImgWorkClick(wxCommandEvent& event)
 {
+	std::string str;
+	get_DateAndTime(str);
+	str += "_work";
+	wxString def_fname(str);
+	static wxString def_dirname = dirname_bin;
+	wxFileDialog saveDialog(this, _("Save Work image"),
+							def_dirname, def_fname,
+							"Image file (*.png)|*.png",
+							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if(saveDialog.ShowModal() == wxID_CANCEL)
+		return;
+	def_dirname = saveDialog.GetDirectory();
+	fname_img_out = saveDialog.GetPath();
+	update_TextOutputInfo("Saving image to:\n" + fname_img_out);
+
 	store_ButtonState(SAVE_WORK_BTN);
 }
 
 void igyba_thorlabs_wxFrame::OnButtonSaveImgFPClick(wxCommandEvent& event)
 {
+	std::string str;
+	get_DateAndTime(str);
+	str += "_fp";
+	wxString def_fname(str);
+	static wxString def_dirname = dirname_bin;
+	wxFileDialog saveDialog(this, _("Save FP image"),
+							def_dirname, def_fname,
+							"Image file (*.png)|*.png",
+							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if(saveDialog.ShowModal() == wxID_CANCEL)
+		return;
+	def_dirname = saveDialog.GetDirectory();
+	fname_img_out = saveDialog.GetPath();
+	update_TextOutputInfo("Saving image to:\n" + fname_img_out);
+
 	store_ButtonState(SAVE_FP_BTN);
 }
 
 void igyba_thorlabs_wxFrame::OnButtonSaveDataRGBClick(wxCommandEvent& event)
 {
+	std::string str;
+	get_DateAndTime(str);
+	str += "_raw_3_ch";
+	wxString def_fname(str);
+	static wxString def_dirname = dirname_bin;
+	wxFileDialog saveDialog(this, _("Save Raw triple channel data"),
+							def_dirname, def_fname,
+							"Data file (*.dat)|*.dat",
+							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if(saveDialog.ShowModal() == wxID_CANCEL)
+		return;
+	def_dirname = saveDialog.GetDirectory();
+	fname_dat_out = saveDialog.GetPath();
+	update_TextOutputInfo("Saving data to:\n" + fname_dat_out);
+
 	store_ButtonState(STORE_RGB_BTN);
 }
 
 void igyba_thorlabs_wxFrame::OnButtonSaveDataWorkClick(wxCommandEvent& event)
 {
+	std::string str;
+	get_DateAndTime(str);
+	str += "_work";
+	wxString def_fname(str);
+	static wxString def_dirname = dirname_bin;
+	wxFileDialog saveDialog(this, _("Save Work data"),
+							def_dirname, def_fname,
+							"Data file (*.dat)|*.dat",
+							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if(saveDialog.ShowModal() == wxID_CANCEL)
+		return;
+	def_dirname = saveDialog.GetDirectory();
+	fname_dat_out = saveDialog.GetPath();
+	update_TextOutputInfo("Saving data to:\n" + fname_dat_out);
+
 	store_ButtonState(STORE_WORK_BTN);
 }
 
 void igyba_thorlabs_wxFrame::OnButtonSaveDataFPClick(wxCommandEvent& event)
 {
+	std::string str;
+	get_DateAndTime(str);
+	str += "_raw_1_ch";
+	wxString def_fname(str);
+	static wxString def_dirname = dirname_bin;
+	wxFileDialog saveDialog(this, _("Save Raw single channel data"),
+							def_dirname, def_fname,
+							"Data file (*.dat)|*.dat",
+							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if(saveDialog.ShowModal() == wxID_CANCEL)
+		return;
+	def_dirname = saveDialog.GetDirectory();
+	fname_dat_out = saveDialog.GetPath();
+	update_TextOutputInfo("Saving data to:\n" + fname_dat_out);
+
 	store_ButtonState(STORE_FP_BTN);
 }
 
@@ -1027,6 +1170,20 @@ void igyba_thorlabs_wxFrame::OnCloseMainFrame(wxCloseEvent& event)
 
 void igyba_thorlabs_wxFrame::OnButtonGnuplotClick(wxCommandEvent& event)
 {
+	std::string str;
+	get_DateAndTime(str);
+	wxString def_fname(str);
+	static wxString def_dirname = dirname_bin;
+	wxFileDialog saveDialog(this, _("Save gnuplot"),
+							def_dirname, def_fname,
+							"Image file (*.png)|*.png",
+							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if(saveDialog.ShowModal() == wxID_CANCEL)
+		return;
+	def_dirname = saveDialog.GetDirectory();
+	fname_gnu_out = saveDialog.GetPath();
+	update_TextOutputInfo("Saving plot to:\n" + fname_gnu_out);
+
 	store_ButtonState(MAKE_GNUPLOT);
 }
 
@@ -1276,7 +1433,17 @@ void igyba_thorlabs_wxFrame::OnButtonMinimeClick(wxCommandEvent& event)
 void igyba_thorlabs_wxFrame::OnToggleButtonAOIToggle(wxCommandEvent& event)
 {
 	if(ToggleButtonAOI->GetValue())
-		store_SelectRoi(true);
+	{
+		if(ToggleButtonAOI->GetLabel().Cmp("Draw rectangle") == 0)
+			store_SelectRoi(true);
+		else
+		{
+			store_ButtonState(REMOVE_AOI);
+			ToggleButtonAOI->SetLabel(_T("Draw rectangle"));
+			ToggleButtonAOI->SetValue(false);
+			TextCtrlAOI->SetLabel("No AOI selected");
+		}
+	}
 }
 
 void igyba_thorlabs_wxFrame::OnToggleButtonMapViewerToggle(wxCommandEvent& event)

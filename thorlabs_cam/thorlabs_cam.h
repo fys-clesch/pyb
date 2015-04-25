@@ -136,6 +136,7 @@ public:
 							double *res_pt inc_time);
 	void set_ExposureTimeAtomic(double time);
 	void exchange_ExposureTimeAtomic(void);
+	std::string get_CameraInfo(void);
 };
 
 #endif
