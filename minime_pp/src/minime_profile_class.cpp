@@ -1,28 +1,6 @@
 #include "minime_class.h"
 
-parameter *minime::alloc_Parameter(const uint n)
-{
-	parameter *m = static_cast<parameter *>(malloc(n * sizeof(parameter)));
-	if(NULL == m)
-	{
-		error_msg("memory allocation failed. good bye.", ERR_ARG);
-		exit(EXIT_FAILURE);
-	}
-	for(uint i = 0; i < n; ++i)
-	{
-		m[i].name = "";
-		m[i].unit = "";
-		m[i].init =
-		m[i].minv =
-		m[i].maxv =
-		m[i].val = 0.;
-		m[i].log =
-		m[i].fit = 0;
-	}
-	return m;
-}
-
-void minime::print_Parameter(const parameter *pp)
+void minime_profile::print_Parameter(const parameter *pp)
 {
 	if((*pp).unit.length() != 5 && (*pp).unit.compare("pixel"))
 		iprint(stdout,
@@ -51,7 +29,7 @@ void minime::print_Parameter(const parameter *pp)
 				(*pp).log, (*pp).fit);
 }
 
-minime::minime(void)
+minime_profile::minime_profile(void)
 {
 	lambda = 0xDEADDEAD;
 	scl = 1.;
@@ -76,57 +54,47 @@ minime::minime(void)
 	mnm_cols =
 	mnm_ntot = 0;
 
-	const parameter null_par = {"", "",
-	                            0., 0., 0., 0., 0.,
-	                            0, 0};
-
 	for(parameter &x : fit_par_b)
-		x = null_par;
-
-	for(parameter &x : fit_par_p)
 		x = null_par;
 }
 
-minime::~minime(void)
+minime_profile::~minime_profile(void)
 {
 	if(load_AllocatedMemory())
-	{
-		free(data);
 		if(bad != nullptr)
 			free(bad);
-	}
 
 	#ifndef IGYBA_NDEBUG
 	iprint(stdout, "'%s': memory released\n", __func__);
 	#endif
 }
 
-void minime::set_Plotting(const bool do_it)
+void minime_profile::set_Plotting(const bool do_it)
 {
     store_UseGnuplot(do_it);
 }
 
-void minime::set_Wavelength(const double wlen)
+void minime_profile::set_Wavelength(const double wlen)
 {
 	lambda = wlen;
 }
 
-double minime::get_Wavelength(void)
+double minime_profile::get_Wavelength(void)
 {
 	return lambda;
 }
 
-void minime::set_PixelToUm(const double pix2um)
+void minime_profile::set_PixelToUm(const double pix2um)
 {
 	scl = pix2um;
 }
 
-double minime::get_PixelToUm(void)
+double minime_profile::get_PixelToUm(void)
 {
 	return scl;
 }
 
-void minime::fill_DataFromFile(const std::string &fname,
+void minime_profile::fill_DataFromFile(const std::string &fname,
 							const std::string &bad_fname)
 {
 	if(!load_AllocatedMemory())
@@ -170,7 +138,7 @@ void minime::fill_DataFromFile(const std::string &fname,
 	}
 }
 
-void minime::alloc_DataFromMemory(const uint nrows, const uint ncols,
+void minime_profile::alloc_DataFromMemory(const uint nrows, const uint ncols,
 								const uchar *const bad_in)
 {
 	if(!load_AllocatedMemory())
@@ -211,7 +179,7 @@ void minime::alloc_DataFromMemory(const uint nrows, const uint ncols,
 		warn_msg("why did you call me?", ERR_ARG);
 }
 
-void minime::fill_DataFromMemory(const double *res_pt data_in,
+void minime_profile::fill_DataFromMemory(const double *res_pt data_in,
 								const uchar *res_pt const bad_in)
 {
 	if(load_AllocatedMemory())
@@ -223,7 +191,7 @@ void minime::fill_DataFromMemory(const double *res_pt data_in,
 	}
 }
 
-void minime::get_CentroidBeamRadius(double *res_pt cen_x, double *res_pt cen_y,
+void minime_profile::get_CentroidBeamRadius(double *res_pt cen_x, double *res_pt cen_y,
 									double *res_pt rad_x, double *res_pt rad_y,
 									double *res_pt corr)
 {
@@ -294,7 +262,7 @@ void minime::get_CentroidBeamRadius(double *res_pt cen_x, double *res_pt cen_y,
 	free(work);
 }
 
-void minime::get_CentroidBeamCovariance(double *res_pt cen_x,
+void minime_profile::get_CentroidBeamCovariance(double *res_pt cen_x,
 										double *res_pt cen_y,
 										double *res_pt wxx, double *res_pt wyy,
 										double *res_pt wxy)
@@ -369,7 +337,7 @@ void minime::get_CentroidBeamCovariance(double *res_pt cen_x,
  * \return void
  *
  */
-void minime::get_GaussBeamMultinormal(const double wxz, const double wyz,
+void minime_profile::get_GaussBeamMultinormal(const double wxz, const double wyz,
 									const double corr,
 									const double x_off, const double y_off,
 									double *out)
@@ -408,7 +376,7 @@ void minime::get_GaussBeamMultinormal(const double wxz, const double wyz,
 			out[i] = 0.;
 }
 
-void minime::get_GaussBeamMultinormalCovar(const double sxx, const double syy,
+void minime_profile::get_GaussBeamMultinormalCovar(const double sxx, const double syy,
 										const double sxy,
 										const double x_off, const double y_off,
 										double *out)
@@ -452,32 +420,32 @@ void minime::get_GaussBeamMultinormalCovar(const double sxx, const double syy,
 			out[i] = 0.;
 }
 
-void minime::store_AllocatedMemory(const bool b)
+void minime_profile::store_AllocatedMemory(const bool b)
 {
 	allocd.store(b, std::memory_order_release);
 }
 
-bool minime::load_AllocatedMemory(void)
+bool minime_profile::load_AllocatedMemory(void)
 {
 	return allocd.load(std::memory_order_acquire);
 }
 
-void minime::store_FilledMemory(const bool b)
+void minime_profile::store_FilledMemory(const bool b)
 {
 	filled.store(b, std::memory_order_release);
 }
 
-bool minime::load_FilledMemory(void)
+bool minime_profile::load_FilledMemory(void)
 {
 	return filled.load(std::memory_order_acquire);
 }
 
-void minime::store_UseGnuplot(const bool b)
+void minime_profile::store_UseGnuplot(const bool b)
 {
 	do_gnuplot.store(b, std::memory_order_release);
 }
 
-bool minime::load_UseGnuplot(void)
+bool minime_profile::load_UseGnuplot(void)
 {
 	return do_gnuplot.load(std::memory_order_acquire);
 }

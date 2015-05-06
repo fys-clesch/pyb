@@ -11,7 +11,8 @@ fifo::fifo(void)
 	use_contours = false;
 }
 
-fifo::fifo(const uint nrows, const uint ncols) : dat_rows(nrows), dat_cols(ncols)
+fifo::fifo(const uint nrows, const uint ncols) : dat_rows(nrows),
+dat_cols(ncols)
 {
 	ax_x_title = "";
 	ax_y_title = "";
@@ -361,9 +362,7 @@ void fifo::plot_Data(const double *res_pt data,
 			ax_x_title.c_str());
 
 	if(!plot_title.empty())
-		fprintf(gnufile,
-			"set title '%s'\n",
-			plot_title.c_str());
+		fprintf(gnufile, "set title '%s'\n", plot_title.c_str());
 
 	std::string timebuf;
 	if(file_name.empty())
@@ -375,8 +374,8 @@ void fifo::plot_Data(const double *res_pt data,
 		fprintf(gnufile, "set out '%s'\n", file_name.c_str());
 
 	fprintf(gnufile,
-			"#splot '%s' binary matrix using 2:1:3 w l ls 7 palette t ''"
-			"# doesn't work on Windows\n"
+			"#splot '%s' binary matrix using 2:1:3 w l ls 7 palette t '' "
+			"#doesn't work on Windows\n"
 			"splot '%s' matrix using 2:1:3 w l ls 7 palette t ''\n",
 			tmpdat.c_str(), tmpdat.c_str());
 
@@ -401,8 +400,8 @@ void fifo::plot_Data(const double *res_pt data,
 
 /** \brief Plots a histogram of a given file.
  *
- * \param fname const std::string&
- * \param steps const uint
+ * \param fname const std::string& Name of the file to be printed.
+ * \param steps const uint The number of integer steps for the histogram.
  * \return void
  *
  */
@@ -415,10 +414,12 @@ void fifo::plot_Histogram(const std::string &fname, const uint steps)
 					fname_tmp.end());
 	fname_tmp.erase(std::remove(fname_tmp.begin(), fname_tmp.end(), '\\'),
 					fname_tmp.end());
+
 	const std::string cmdtmp = fname_tmp,
 	                  syscall = "gnuplot " + cmdtmp;
 
-	mkdir("plot" DIRMOD;
+	if(file_name.empty())
+		mkdir("plot" DIRMOD;
 
 	FILE *gnufile = fopen(cmdtmp.c_str(), "w");
 	if(gnufile == NULL)
@@ -434,30 +435,41 @@ void fifo::plot_Histogram(const std::string &fname, const uint steps)
 			"set style line 1 lt 1 lw 2 pt 1\n" \
 			"set style line 2 lt 2 lw 2 pt 2\n" \
 			"set style fill pattern border\n"\
-			"set xr [1 : %u]\n", steps);
+			"set xrange [1 : %u]\n", steps);
 	fprintf(gnufile,
-			"set yl '%s' rotate parallel\n" \
-			"set xl '%s'\n",
+			"set ylabel '%s' rotate parallel\n" \
+			"set xlabel '%s'\n",
 			ax_y_title.c_str(),
 			ax_x_title.c_str());
 
-	std::string timebuf;
-	get_DateAndTime(timebuf);
+	if(!plot_title.empty())
+		fprintf(gnufile, "set title '%s'\n", plot_title.c_str());
 
-	fprintf(gnufile,
-			"set out 'plot/%s.png'\n" \
-			"plot '%s' w filledcurves\n",
-			timebuf.c_str(), fname.c_str());
+	std::string timebuf;
+	if(file_name.empty())
+	{
+		get_DateAndTime(timebuf);
+		fprintf(gnufile, "set out 'plot/%s.png'\n", timebuf.c_str());
+	}
+	else
+		fprintf(gnufile, "set out '%s'\n", file_name.c_str());
+
+	fprintf(gnufile, "plot '%s' w filledcurves\n", fname.c_str());
 
 	fclose(gnufile);
 	iprint(stdout, "gnuplot message: ");
 	fflush(stdout);
-	int i = system(syscall.c_str());
+	const int i = system(syscall.c_str());
 	if(i)
 		warn_msg("\ngnuplot command returned '1' -- the plotting went wrong!",
 				ERR_ARG);
 	else
-		iprint(stdout, "plotted '%s'\n", timebuf.c_str());
+	{
+		if(file_name.empty())
+			iprint(stdout, "plotted 'plot/%s.png'\n", timebuf.c_str());
+		else
+			iprint(stdout, "plotted '%s'\n", file_name.c_str());
+	}
 
 	remove(cmdtmp.c_str());
 }
@@ -715,3 +727,108 @@ void fifo::write_MatToFile(const cv::Mat &mat, const std::string &fname)
     fclose(wfile);
 }
 #endif
+
+/** \brief
+ *
+ * \param data_x const double *res_pt The measurements points in x in
+ micrometer.
+ * \param data_y const double *res_pt The measurements points in y in
+ micrometer.
+ * \param z_pnts_mm const double *res_pt The points along the axis of
+ propagation in millimeter.
+ * \param res_x const double *res_pt The results from the fit:
+ z_{0, x}, w_{0, x} in micrometer.
+ * \param res_y const double *res_pt The results from the fit:
+ z_{0, y}, w_{0, y} in micrometer.
+ * \param lambda_um const double The wavelength in micrometer.
+ * \return void
+ *
+ */
+void fifo::plot_BeamWidthsFit(const double *res_pt data_x,
+							const double *res_pt data_y,
+							const double *res_pt z_pnts_mm,
+							const double *res_pt res_x,
+							const double *res_pt res_y,
+							const double lambda_um)
+{
+	std::string fname_tmp = std::tmpnam(nullptr);
+	fname_tmp.erase(std::remove(fname_tmp.begin(), fname_tmp.end(), '/'),
+					fname_tmp.end());
+	fname_tmp.erase(std::remove(fname_tmp.begin(), fname_tmp.end(), '\\'),
+					fname_tmp.end());
+	const std::string cmdtmp = fname_tmp,
+	                  tmpdat = fname_tmp + ".dat",
+	                  syscall = "gnuplot " + cmdtmp;
+
+	if(file_name.empty())
+		mkdir("plot" DIRMOD;
+
+	/* Save the data to a temporary file. */
+	{
+		FILE *tmpfile = fopen(tmpdat.c_str(), "w");
+		if(tmpfile == NULL)
+		{
+			file_error_msg(tmpdat.c_str(), ERR_ARG);
+			exit(EXIT_FAILURE);
+		}
+		for(uint i = 0; i < dat_rows; ++i)
+			fprintf(tmpfile, "%g %g %g\n", z_pnts_mm[i], data_x[i], data_y[i]);
+		fclose(tmpfile);
+	}
+
+	FILE *gnufile = fopen(cmdtmp.c_str(), "w");
+	if(gnufile == NULL)
+	{
+		file_error_msg(cmdtmp.c_str(), ERR_ARG);
+		exit(EXIT_FAILURE);
+	}
+	fprintf(gnufile,
+			"set term pngcairo\n"
+			"set grid\n"
+			"f(x, lambda, z0, w0) = "
+			"w0 * sqrt(1. + ((x - z0) / (w0**2 * pi / lambda))**2)\n"
+			"set xr [:]\n"
+			"set yr [:]\n"
+			"set yl 'Beam radius / {/Symbol m}m' rotate parallel\n"
+			"set xl 'Propagation / mm'\n");
+
+	if(!plot_title.empty())
+		fprintf(gnufile, "set title '%s'\n", plot_title.c_str());
+
+	std::string timebuf;
+	if(file_name.empty())
+	{
+		get_DateAndTime(timebuf);
+		fprintf(gnufile, "set out 'plot/%s.png'\n", timebuf.c_str());
+	}
+	else
+		fprintf(gnufile, "set out '%s'\n", file_name.c_str());
+
+	fprintf(gnufile,
+			"plot "
+			"f(x * 1e3, %g, %g * 1e3, %g) w l t 'w_{x}(z)', "
+			"f(x * 1e3, %g, %g * 1e3, %g) w l t 'w_{y}(z)', "
+			"'%s' using ($1):($2) w p t 'Data_{x}', "
+			"'%s' using ($1):($3) w p t 'Data_{y}'\n",
+			lambda_um, res_x[0], res_x[1],
+			lambda_um, res_y[0], res_y[1],
+			tmpdat.c_str(), tmpdat.c_str());
+
+	fclose(gnufile);
+	iprint(stdout, "gnuplot message: ");
+	fflush(stdout);
+	const int i = system(syscall.c_str());
+	if(i)
+		warn_msg("\ngnuplot command returned '1' -- the plotting went wrong!",
+				ERR_ARG);
+	else
+	{
+		if(file_name.empty())
+			iprint(stdout, "plotted 'plot/%s.png'\n", timebuf.c_str());
+		else
+			iprint(stdout, "plotted '%s'\n", file_name.c_str());
+	}
+
+	remove(cmdtmp.c_str());
+	remove(tmpdat.c_str());
+}

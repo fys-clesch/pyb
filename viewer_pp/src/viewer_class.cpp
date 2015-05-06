@@ -57,13 +57,14 @@ viewer::viewer(void)
 	win_main =
 	win_sub = 0; /* 2 */
 	/* bool */
+	map_mode =
 	lmb_down =
 	rmb_down =
-	move_box = false; /* 3 */
+	move_box = false; /* 4 */
 	/* atomic<bool> */
 	rot_box.store(false, std::memory_order_relaxed);
 	esc_down.store(false, std::memory_order_relaxed);
-	map_mode.store(false, std::memory_order_relaxed);
+	map_mode_atm.store(false, std::memory_order_relaxed);
 	running.store(false, std::memory_order_relaxed);
 	allocd.store(false, std::memory_order_relaxed);
 	filled.store(false, std::memory_order_relaxed);
@@ -87,30 +88,24 @@ viewer::~viewer(void)
 	#endif
 }
 
-/** \brief Reset everything for a re-use of this instance.
+/** \brief Reset some members of the for a clean re-use.
  *
  * \param void
  * \return void
  *
- * The variables glrows, glcols, allocd, filled and the double
- * arrays don't need to be freed, this happens at the end of the
- * class instance.
+ * The variables glrows, glcols, allocd, filled don't need to be reset, as
+ * they will be checked anyway in each loop. The double arrays don't need to be
+ * freed, this happens at the end of the class instance.
+ * The function might be called also from other threads. In this case, however
+ * the display should have been stopped.
  */
 void viewer::reset_MemberVariables(const bool make_free)
 {
-	/* atomic<bool> */
-	store_UpdateAnimate(true); /**< This makes sure	that the next run is
-	displayed immediately */
-	store_MapMode(false);
-	store_NewDataAvailable(true);
-	store_PressedEsc(false);
-	store_RotateBox(false);
-	store_ConstantAnimation(true);
-	store_IsRunning(false); /* 7 */
 	/* bool */
+	map_mode =
 	lmb_down =
 	rmb_down =
-	move_box = false; /* 3 */
+	move_box = false; /* 4 */
 	/* double */
 	min_norm = -1.;
 	min_val = -DBL_MAX;
@@ -130,6 +125,15 @@ void viewer::reset_MemberVariables(const bool make_free)
 	win_height = 1;
 	row_slice =
 	col_slice = 0; /* 4 */
+	/* atomic<bool> */
+	store_UpdateAnimate(true); /**< This makes sure	that the next run is
+	displayed immediately */
+	store_MapMode(map_mode);
+	store_NewDataAvailable(true);
+	store_PressedEsc(false);
+	store_RotateBox(false);
+	store_ConstantAnimation(true);
+	store_IsRunning(false); /* 7 */
 
 	if(make_free)
 	{
@@ -143,6 +147,13 @@ void viewer::reset_MemberVariables(const bool make_free)
 	}
 }
 
+/** \brief Resets variables that control the drawing action.
+ *
+ * \param void
+ * \return void
+ *
+ * Not supposed to be called by another thread.
+ */
 void viewer::reset_DrawingControls(void)
 {
 	rot_y = rot_y_std;
@@ -164,9 +175,11 @@ void viewer::init_Main(int argc, char **argv)
 	glutInit(&argc, argv);
 	glutInitWindowSize(win_width, win_height);
 	glutInitWindowPosition(0, 0);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA |
+						GLUT_DEPTH | GLUT_MULTISAMPLE);
 
-	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,
+				GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 	glutCreateWindow("viewer");
 	#ifndef ISLINUX
 	glutSetCursor(GLUT_CURSOR_CROSSHAIR);
@@ -198,8 +211,8 @@ void viewer::init_Main(int argc, char **argv)
 	glViewport(0, 0, (int)win_width, (int)win_height);
 
 	if(!glutGet(GLUT_DISPLAY_MODE_POSSIBLE))
-		warn_msg("can not establish correct display mode. flawless display is unlikely.",
-				ERR_ARG);
+		warn_msg("can not establish correct display mode. "
+				"flawless display is unlikely.", ERR_ARG);
 	iprint(stdout,"rendering with\n%-15s %s\n%-15s %s\n%-15s %s\n",
 		"OGL version", glGetString(GL_VERSION),
 		"renderer", glGetString(GL_RENDERER),
@@ -604,8 +617,7 @@ void viewer::draw_CoordinateOverview(void)
 	glPopMatrix();
 }
 
-void viewer::print_BlockString2d(const char *s,
-								const uint lw,
+void viewer::print_BlockString2d(const char *s, const uint lw,
 								double sx, double sy,
 								const double ix, const double iy)
 {
@@ -677,6 +689,17 @@ void viewer::print_LevelColorbox(const double *res_pt vmin,
 	print_String(c);
 }
 
+/** \brief Fill data blocks that has been already allocated. The colouring and
+the map information for 3D display is generated and the data is formatted
+correctly.
+ *
+ * \param const double *res_pt const m_in The input data, formatted as a matrix.
+ * \param noisy const bool Flag to switch on warning messages. Only used when
+ compiled in debug mode.
+ * \return void
+ *
+ * Not thread safe. Ideally used when the data comes from a file.
+ */
 void viewer::fill_DrawingData(const double *res_pt const m_in, const bool noisy)
 {
 	max_val = -DBL_MAX;
@@ -758,7 +781,31 @@ void viewer::fill_DrawingData(const double *res_pt const m_in, const bool noisy)
 	}
 }
 
-void viewer::calc_DrawingData(const double *res_pt const m_in, const bool noisy,
+/** \brief A static function to generate data which is then made ready to be
+loaded into the viewer memory.
+ *
+ * \param const double *res_pt const m_in The input data, formatted as a matrix.
+ * \param noisy const bool A flag to switch on warnings. Works only in debugging
+ mode.
+ * \param max_val_out double *res_pt The maximum value found in the input data.
+ * \param min_val_out double *res_pt The minimum value found in the input data.
+ * \param max_norm_out double *res_pt The value obtained by dividing the
+ maximal positive value by the absolute maximum.
+ * \param min_norm_out double *res_pt The value obtained by dividing the
+ maximal negative value by the absolute maximum.
+ * \param row_in const uint The number of rows in the input data.
+ * \param col_in const uint The number of columns in the input data.
+ * \param data_out double *res_pt The output data formatted correctly for the
+ display. It holds 3 times as much data as the input, as a vertex is created
+ from every input "point", i.e. entry in the input matrix.
+ * \param rgb_out double *res_pt The output data that is used to colour the data
+ to-be-displayed.
+ * \return void
+ *
+ * This function is thread safe, as it does not access any class members.
+ */
+void viewer::calc_DrawingData(const double *res_pt const m_in,
+							const bool noisy,
 							double *res_pt max_val_out,
 							double *res_pt min_val_out,
 							double *res_pt max_norm_out,
@@ -779,8 +826,8 @@ void viewer::calc_DrawingData(const double *res_pt const m_in, const bool noisy,
 	             mapx = -1. + 2. * 1. / (row_in - 1),
 	             mapy = -1. + 2. * 1. / (col_in - 1);
 	if(testx != mapx || testy != mapy)
-		for(uint x = 0; x < row_in; x++)
-			for(uint y = 0; y < col_in; y++)
+		for(uint x = 0; x < row_in; ++x)
+			for(uint y = 0; y < col_in; ++y)
 			{
 				const uint idx = (x * col_in + y) * 3;
 				/* x, y: */
@@ -795,8 +842,8 @@ void viewer::calc_DrawingData(const double *res_pt const m_in, const bool noisy,
 		*min_val_out = 0.;
 		*max_val_out = 0.;
 		*min_norm_out = 0.;
-		*max_norm_out = 1;
-		for(uint i = 0; i < row_in * col_in; i++)
+		*max_norm_out = 1.;
+		for(uint i = 0; i < row_in * col_in; ++i)
 		{
 			data_out[i * 3 + 2] = 0.;
 			memcpy(&rgb_out[i * 3], def_col, 3 * sizeof(double));
@@ -825,7 +872,7 @@ void viewer::calc_DrawingData(const double *res_pt const m_in, const bool noisy,
 	}
 	/* ...then continue as normal. */
 	bool scl_err = false;
-	for(uint i = 0; i < col_in * row_in; i++)
+	for(uint i = 0; i < col_in * row_in; ++i)
 	{
 		double temp = m_in[i];
 		const uint idx = i * 3;
@@ -855,6 +902,13 @@ void viewer::calc_DrawingData(const double *res_pt const m_in, const bool noisy,
 	#endif
 }
 
+/** \brief Initialises the data used to draw the colour box in the display.
+ *
+ * \param void
+ * \return void
+ *
+ * Not thread safe.
+ */
 void viewer::init_Colorbox(void)
 {
 	const double diff = 1. / (nstrps - 1.);
@@ -920,12 +974,15 @@ void viewer::alloc_DataFromFile(const std::string &fname)
 	}
 }
 
-/** \brief This function is called by the copy thread.
+/** \brief Allocates memory for the display thread. If necessary, it reallocates
+the memory.
  *
- * \param nrows const uint
- * \param ncols const uint
+ * \param nrows const uint The number of rows for the data to be displayed.
+ * \param ncols const uint The number of columns for the data to be displayed.
  * \return void
  *
+ * This function is called by the copy thread and is thread safe with respect
+ to the main viewer thread, as it is blocked by a mutex.
  */
 void viewer::alloc_DataFromMemory(const uint nrows, const uint ncols)
 {
@@ -981,15 +1038,21 @@ void viewer::fill_DataFromFile(const std::string &fname)
 	store_FilledMemory(true);
 }
 
-/** \brief This function serves to set the allocated memory which is normed
-for the viewer thread.
+/** \brief This function serves to set the allocated memory. The input has to
+formatted properly elsewhere before.
  *
- * \param max_val_out const double*res_pt
- * \param min_val_out const double*res_pt
- * \param max_norm_out const double*res_pt
- * \param min_norm_out const double*res_pt
- * \param data_out const double*res_pt
- * \param rgb_out const double*res_pt
+ * \param max_val_out const double *res_pt The maximal positive value in the
+ input.
+ * \param min_val_out const double *res_pt The maximal negative value in the
+ input.
+ * \param max_norm_out const double *res_pt The value obtained by dividing the
+ maximal positive value by the absolute maximum.
+ * \param min_norm_out const double *res_pt The value obtained by dividing the
+ maximal negative value by the absolute maximum.
+ * \param data_out const double *res_pt The data containing the vertices to
+ be set over into the class.
+ * \param rgb_out const double *res_pt The data containing colour information
+ at each vertex to be set over into the class.
  * \return void
  *
  * The function is called in the copy thread, so the viewer thread has to stop
@@ -1098,7 +1161,7 @@ void viewer::KeyboardHandler(const uchar key, const int x, const int y)
 			break;
 		case 'p':
 			(*dv1p).store_UpdateAnimate(true);
-			(*dv1p).toggle_Map3DMode();
+			(*dv1p).map_mode = !(*dv1p).map_mode;
 			break;
 		default:
 			#ifndef IGYBA_NDEBUG
@@ -1124,7 +1187,7 @@ void viewer::ArrowKeysHandler(const int a_keys, const int x, const int y)
 			glutPositionWindow(0, 0);
 			break;
 		case GLUT_KEY_LEFT:
-			if((*dv1p).load_MapMode())
+			if((*dv1p).map_mode)
 			{
 				if((*dv1p).row_slice)
 				{
@@ -1134,14 +1197,14 @@ void viewer::ArrowKeysHandler(const int a_keys, const int x, const int y)
 			}
 			break;
 		case GLUT_KEY_RIGHT:
-			if((*dv1p).load_MapMode())
+			if((*dv1p).map_mode)
 			{
 				(*dv1p).store_UpdateAnimate(true);
 				(*dv1p).row_slice++;
 			}
 			break;
 		case GLUT_KEY_UP:
-			if(!(*dv1p).load_MapMode())
+			if(!(*dv1p).map_mode)
 			{
 				if((*dv1p).mov_lvl + .1 <= 1.)
 				{
@@ -1164,7 +1227,7 @@ void viewer::ArrowKeysHandler(const int a_keys, const int x, const int y)
 			}
 			break;
 		case GLUT_KEY_DOWN:
-			if(!(*dv1p).load_MapMode())
+			if(!(*dv1p).map_mode)
 			{
 				if((*dv1p).mov_lvl - .1 >= (*dv1p).min_norm)
 				{
@@ -1200,7 +1263,8 @@ void viewer::ArrowKeysHandler(const int a_keys, const int x, const int y)
 	}
 }
 
-void viewer::TrackballHandler(const int mode, const int button, const int state, const int x, const int y)
+void viewer::TrackballHandler(const int mode, const int button,
+							const int state, const int x, const int y)
 {
 	static double startMX = .0, startMY = .0;
 	switch(mode)
@@ -1224,7 +1288,7 @@ void viewer::TrackballHandler(const int mode, const int button, const int state,
 				#endif
 				(*dv1p).store_UpdateAnimate(true);
 			}
-			if(!(*dv1p).load_MapMode())
+			if(!(*dv1p).map_mode)
 			{
 				if(!button && !state && !(*dv1p).move_box && !(*dv1p).rmb_down) /* rotate */
 				{
@@ -1250,7 +1314,7 @@ void viewer::TrackballHandler(const int mode, const int button, const int state,
 				break;
 			}
 		case VIEWER_MOUSEMOTION:
-			if(!(*dv1p).load_MapMode())
+			if(!(*dv1p).map_mode)
 			{
 				if((*dv1p).lmb_down && !(*dv1p).move_box && !(*dv1p).rmb_down) /* rotate */
 				{
@@ -1297,12 +1361,32 @@ void viewer::MotionHandler(const int x, const int y)
 	TrackballHandler(VIEWER_MOUSEMOTION, 0, 0, x, y);
 }
 
-void viewer::MouseHandler(const int button, const int state, const int x, const int y)
+void viewer::MouseHandler(const int button, const int state,
+						const int x, const int y)
 {
 	#ifndef IGYBA_NDEBUG
 	iprint(stdout, "b = %d, s = %d, (%d, %d)\n", button, state, x, y);
 	#endif
 	TrackballHandler(VIEWER_KNOWMOUSEBUTTON, button, state, x, y);
+}
+
+void viewer::exchange_Atomics(void)
+{
+	/** @todo Extend this exchange to more variables, if necessary, for both
+	performance and readability issues. */
+	static bool mm_atm_prev = load_MapMode(),
+	            mm_prev = map_mode;
+
+	if(mm_prev != map_mode)
+	{
+		store_MapMode(map_mode);
+		mm_prev = map_mode;
+	}
+	else if(mm_atm_prev != load_MapMode())
+	{
+		map_mode = load_MapMode();
+		mm_atm_prev = map_mode;
+	}
 }
 
 void viewer::set_DisplayMainThread(void)
@@ -1315,9 +1399,11 @@ void viewer::set_DisplayMainThread(void)
 		(*dv1p).event_SwapDataToViewer.reset();
 	}
 
+	(*dv1p).exchange_Atomics(); /** Exchange atomics and global variables. */
+
 	static uchar prev = 0xFF;
 
-	if(!(*dv1p).load_MapMode())
+	if(!(*dv1p).map_mode)
 	{
 		if(prev || prev == 0xFF)
 		{
@@ -1337,7 +1423,7 @@ void viewer::set_DisplayMainThread(void)
 		else
 			(*dv1p).display_MapView(false);
 	}
-	prev = (*dv1p).load_MapMode();
+	prev = (*dv1p).map_mode;
 }
 
 void viewer::animate_View(void)
@@ -1386,7 +1472,7 @@ void viewer::set_DisplayMain(void)
 {
 	static uchar prev = 0xFF;
 
-	if(!(*dv1p).load_MapMode())
+	if(!(*dv1p).map_mode)
 	{
 		if(prev || prev == 0xFF)
 		{
@@ -1406,7 +1492,7 @@ void viewer::set_DisplayMain(void)
 		else
 			(*dv1p).display_MapView(false);
 	}
-	prev = (*dv1p).load_MapMode();
+	prev = (*dv1p).map_mode;
 }
 
 void viewer::set_SubDisplay(void)
@@ -1449,7 +1535,7 @@ void viewer::reshape_View(const int width, const int height)
 	}
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	if(!(*dv1p).load_MapMode())
+	if(!(*dv1p).map_mode)
 		glOrtho(-.5 * (*dv1p).win_width, .5 * (*dv1p).win_width,
 				-.5 * (*dv1p).win_height, .5 * (*dv1p).win_height,
 				viewer::near_clip,
@@ -1529,7 +1615,7 @@ void viewer::toggle_Idling(void)
 
 void viewer::toggle_Map3DMode(void)
 {
-	map_mode.store(!map_mode.load(std::memory_order_acquire),
+	map_mode_atm.store(!map_mode_atm.load(std::memory_order_acquire),
 				std::memory_order_release);
 }
 
@@ -1548,12 +1634,12 @@ allow for any reasoning of a sequential sanity outside of the viewer thread.
  */
 void viewer::store_MapMode(const bool b)
 {
-	map_mode.store(b, std::memory_order_relaxed);
+	map_mode_atm.store(b, std::memory_order_relaxed);
 }
 
 bool viewer::load_MapMode(void)
 {
-	return map_mode.load(std::memory_order_relaxed);
+	return map_mode_atm.load(std::memory_order_relaxed);
 }
 
 void viewer::store_RotateBox(const bool b)
@@ -1651,7 +1737,7 @@ uint viewer::load_GlCols(void)
  * \param void
  * \return bool
  *
- * The relaxed atomic load won't syncing or ordering any operation.
+ * The relaxed atomic load won't sync or order any other operation.
  */
 bool viewer::load_PressedEsc(void)
 {
@@ -1663,7 +1749,7 @@ bool viewer::load_PressedEsc(void)
  * \param void
  * \return bool
  *
- * The relaxed atomic store won't syncing or ordering any operation.
+ * The relaxed atomic store won't sync or order any other operation.
  */
 void viewer::store_PressedEsc(const bool b)
 {

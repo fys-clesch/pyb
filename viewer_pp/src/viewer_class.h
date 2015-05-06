@@ -57,9 +57,11 @@ private:
 
 	bool lmb_down,
 	     rmb_down,
-	     move_box;
+	     move_box,
+	     map_mode; /**< A non atomic version to reduce thread safe
+	     store and load operations. */
 
-	std::atomic<bool> map_mode,
+	std::atomic<bool> map_mode_atm,
 	                  allocd,
 	                  filled,
 	                  running,
@@ -117,6 +119,7 @@ private:
 	static void check_Visibility(const int vis);
 	static void check_WindowState(const int state);
 	static void set_DisplayMain(void);
+	void exchange_Atomics(void);
 	static void set_DisplayMainThread(void);
 	static void set_SubDisplay(void);
 	static void reshape_View(const int width, const int height);

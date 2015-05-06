@@ -870,7 +870,7 @@ wxString igyba_thorlabs_wxFrame::get_wxBuildInfo(void)
 	return wxbuild;
 }
 
-/* buttons etc. */
+/* Buttons etc. */
 
 void igyba_thorlabs_wxFrame::OnToggleButtonBackgroundToggle(wxCommandEvent& event)
 {

@@ -40,7 +40,7 @@ grabber::grabber(void)
 	ell_ecc =
 	ell_theta = 0xDEADDEAD;
 	gaussblur_min = .25;
-	gaussblur_max = 2.5;
+	gaussblur_max = 5.;
 	gaussblur_sigma_x = 1.;
 	groundlift_max = 40.;
 	groundlift_sub = 0.; /* 10 */
@@ -70,7 +70,7 @@ grabber::grabber(void)
 	tbar_win_name = "igyba - trackbar window"; /* 2 */
 	/* uint */
 	gaussblur_sze_min = 1;
-	gaussblur_sze_max = 51; /* 2 */
+	gaussblur_sze_max = 61; /* 2 */
 	/* Size */
 	gaussblur_sze = Size(3, 3); /* 1 */
 	/* atomic<uint> */

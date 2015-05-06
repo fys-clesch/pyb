@@ -36,9 +36,10 @@ void gabe::get_RayleighRange_Elliptic(const double wx0, const double wy0,
 
 double gabe::get_Waist_z(const double z, const double z0)
 {
-	static const double pisq = M_PI * M_PI;
-	const double w0sq = w0 * w0;
-	double wz = sqrt(w0sq + (z - z0) * (z - z0) * lambda * lambda / w0sq / pisq);
+	constexpr double pisq = M_PI * M_PI;
+	const double w0sq = w0 * w0,
+	             wz = sqrt(w0sq + (z - z0) * (z - z0) *
+							lambda * lambda / (w0sq * pisq));
 	return wz;
 }
 
@@ -111,7 +112,7 @@ void gabe::get_GaussianIntensity_Elliptic_Array(const double wxz, const double w
 }
 
 /**
- * calculates the Rayleigh range via waist development
+ * Calculates the Rayleigh range via waist development.
  *
  * z1 and z2 are the measurement points, zr* is the Rayleigh range in the respective direction.
  */

@@ -2,10 +2,11 @@
 #include "funcs.h"
 #include "minimizer_s.h"
 
-static minime *d2m_global;
+static minime_profile *d2m_global;
 static double *sim;
 
-void minime::fit_GaussianMultinormal(double *res_pt set, double *res_pt ssq)
+void minime_profile::fit_GaussianMultinormal(double *res_pt set,
+											double *res_pt ssq)
 {
 	/* calculate linear offset and scaling */
 	static bool init = false;
@@ -105,7 +106,7 @@ void minime::fit_GaussianMultinormal(double *res_pt set, double *res_pt ssq)
 	(*d2m_global).linregpar.corr = r;
 }
 
-void minime::fit_GaussEllip(void)
+void minime_profile::fit_GaussEllip(void)
 {
 	fit_par_b[0].name = "x waist(z)";
 	fit_par_b[0].unit = "pixel";
@@ -168,8 +169,10 @@ void minime::fit_GaussEllip(void)
 	const double fac = 1., /**< Use 4. to get the normal Gaussian definition */
 	             covar_fin[4] = {
 	             	fit_par_b[0].val * fit_par_b[0].val / fac,
-	             	fit_par_b[0].val * fit_par_b[1].val * fit_par_b[4].val / fac,
-	             	fit_par_b[0].val * fit_par_b[1].val * fit_par_b[4].val / fac,
+	             	fit_par_b[0].val * fit_par_b[1].val *
+	             	fit_par_b[4].val / fac,
+	             	fit_par_b[0].val * fit_par_b[1].val *
+	             	fit_par_b[4].val / fac,
 	             	fit_par_b[1].val * fit_par_b[1].val / fac};
 	double eigen_fin[2] = {},
 		   temp = covar_fin[0] - covar_fin[3];
@@ -190,6 +193,7 @@ void minime::fit_GaussEllip(void)
 
 	if(load_UseGnuplot())
 	{
+		ffc.set_UseContours(true);
 		ffc.set_AxisTitles("x / pixel", "y / pixel", "Intensity / bit");
 		ffc.set_PlotTitle("Input data");
 		ffc.plot_Data(data);
@@ -212,7 +216,6 @@ void minime::fit_GaussEllip(void)
 							convert_Double2Str(fit_par_b[1].val * scl) + "); " +
 							"degrees: " +
 							convert_Double2Str(ell_theta, 3));
-		ffc.set_UseContours(true);
 		ffc.plot_Data(sim);
 		sub_Matrices(data, sim, mnm_rows, mnm_cols);
 		ffc.set_PlotTitle("Residuum: Fit_{ij} - Data_{ij}");

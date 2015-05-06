@@ -779,16 +779,17 @@ double minimizer(void (*f)(double *, double *), const uint np, parameter *ppa,
 					min_s.pa_io[i].maxv,
 					min_s.pa_io[i].log,
 					min_s.pa_io[i].fit);
-		fclose(min_s.fp);
 	}
 	covar(&p, tofile);
+	if(tofile)
+        fclose(min_s.fp);
 	return p.eval;
 }
 
 void v_banane(double *res_pt x, double *res_pt y)
 {
 	y[0] = (100. * POW2(x[1] - POW2(x[0])) + POW2(1. - x[0]));
-	y[1] = -1.; /**< just a test */
+	y[1] = -1.; /**< Just a test. */
 }
 
 /** \brief
@@ -797,7 +798,7 @@ void v_banane(double *res_pt x, double *res_pt y)
  * \param extra void*
  * \return void
  *
- * Standard references on statistics and data analysis give the well-known
+ * Standard references on statistics and data analysis give the
  * result that the variances of the coefficients, a_j, are given by the diagonal
  * elements of the covariance matrix, C, i.e., sigma^2 a_j = C_{j,j}, where C is
  * the inverse of the Hessian. The standard error of the data points can be
@@ -811,10 +812,7 @@ void covar(pset *p, const bool tofile)
 	mini_struct fitd;
 	memcpy(&fitd, &min_s, sizeof(mini_struct));
 	if(tofile)
-	{
 		stream = fitd.fp;
-		fitd.fp = fopen("minime_output.txt", "a");
-	}
 	else
 		stream = stdout;
 
@@ -831,12 +829,10 @@ void covar(pset *p, const bool tofile)
 		status(p, "", "hessian is singular. skipped evaluation of covar.");
 		free(ainv);
 		free(delta);
-		if(tofile)
-			fclose(fitd.fp);
 		return;
 	}
 
-	if(min_s.dat_pnts == 0)
+	if(fitd.dat_pnts == 0)
 		fprintf(stream, "\ncorrelation matrix for simulated data:\n%12s ", " ");
 	else
 		fprintf(stream, "\ncorrelation matrix for measured data:\n%12s ", " ");
@@ -862,47 +858,47 @@ void covar(pset *p, const bool tofile)
 		}
 	}
 	double var_dat;
-	if(min_s.dat_pnts == 0)
+	if(fitd.dat_pnts != 0)
 		var_dat = p->eval / (fitd.dat_pnts - fitd.nparm);
 	else
+	{
 		var_dat = 1.; /** @todo Is this sane? */
+		fprintf(stream, "ATTENTION: estimation not verified\n");
+	}
 	fprintf(stream, "\nbest parameter estimates:\n");
 	for(uint i = 0; i < fitd.nparm; i++)
 	{
-		double ep,
-		       rvar;
+		double iparm,
+		       rvar; /**< Relative variance. */
 		if(ainv[i * fitd.nparm + i] < 0.)
 			status(p, "", "covar[i, i] < 0.");
 		if(fitd.pa_io[fitd.pindex[i]].log)
 		{
-			ep = exp(p->parm[i]);
+			iparm = exp(p->parm[i]);
 			rvar = expm1(sqrt(var_dat * (fabs(ainv[i * fitd.nparm + i]))));
 		}
 		else
 		{
-			ep = p->parm[i];
-			rvar = sqrt(var_dat * (fabs(ainv[i * fitd.nparm + i]))) / ep;
+			iparm = p->parm[i];
+			rvar = sqrt(var_dat * (fabs(ainv[i * fitd.nparm + i]))) / iparm;
 		}
 		fitd.pa_io[i].std_rel_err = rvar;
-		if(rvar < .5) /**< Relative error is smaller than 50 % */
-			fprintf(stream, "%12s = %16g +- %-16g (%6.3g%%)",
-					fitd.pa_io[fitd.pindex[i]].name.c_str(), ep,
-					rvar * ep, 1e2 * rvar);
-		else
-			fprintf(stream, "%12s = %16g */ %-16g",
-					fitd.pa_io[fitd.pindex[i]].name.c_str(), ep,
-					rvar + 1.);
 
-		if(ep < fitd.pa_io[fitd.pindex[i]].minv)
+		fprintf(stream, "%12s = %16g",
+				fitd.pa_io[fitd.pindex[i]].name.c_str(), iparm);
+		if(rvar < .5) /**< Relative error is smaller than 50 %. */
+			fprintf(stream, " +- %-16g (%6.3g%%)", rvar * iparm, 1e2 * rvar);
+		else
+			fprintf(stream, " */ %-16g", rvar + 1.);
+
+		if(iparm < fitd.pa_io[fitd.pindex[i]].minv)
 			fprintf(stream, " < MIN!\n");
-		else if(ep > fitd.pa_io[fitd.pindex[i]].maxv)
+		else if(iparm > fitd.pa_io[fitd.pindex[i]].maxv)
 			fprintf(stream, " > MAX!\n");
 		else
 			fprintf(stream, "\n");
 	}
 	free(ainv);
 	free(delta);
-	if(tofile)
-		fclose(fitd.fp);
 	memcpy(&min_s, &fitd, sizeof(mini_struct));
 }

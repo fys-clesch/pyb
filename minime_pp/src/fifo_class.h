@@ -88,6 +88,12 @@ public:
 	void write_Bin_uint(const std::string &fname, const uint *res_pt data,
 						const uint nrowscols = 0);
 	void plot_Histogram(const std::string &fname, const uint steps);
+	void plot_BeamWidthsFit(const double *res_pt data_x,
+							const double *res_pt data_y,
+							const double *res_pt z_pnts_mm,
+							const double *res_pt res_x,
+							const double *res_pt res_y,
+							const double lambda_um);
 };
 
 #endif

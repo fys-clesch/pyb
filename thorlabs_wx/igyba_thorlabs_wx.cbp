@@ -226,8 +226,9 @@
 		<Unit filename="../minime_pp/src/funcs.h" />
 		<Unit filename="../minime_pp/src/gabe_class.cpp" />
 		<Unit filename="../minime_pp/src/gabe_class.h" />
-		<Unit filename="../minime_pp/src/minime_class.cpp" />
 		<Unit filename="../minime_pp/src/minime_class.h" />
+		<Unit filename="../minime_pp/src/minime_profile_class.cpp" />
+		<Unit filename="../minime_pp/src/minime_propagation_class.cpp" />
 		<Unit filename="../minime_pp/src/minimizer_s.cpp" />
 		<Unit filename="../minime_pp/src/minimizer_s.h" />
 		<Unit filename="../minime_pp/src/random.cpp" />

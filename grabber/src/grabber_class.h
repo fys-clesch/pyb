@@ -137,7 +137,6 @@ private:
 	uint32_t in_rows,
 	         in_cols;
 
-
 	uint64_t frms;
 
 	double pval,
@@ -194,7 +193,7 @@ private:
 	           event_LaunchViewer,
 	           event_LaunchMinime;
 
-	minime mime;
+	minime_profile mime;
 
 	viewer beau;
 

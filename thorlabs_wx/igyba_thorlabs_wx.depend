@@ -2769,12 +2769,12 @@
 
 1425221509 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs\igyba_thorlabs.rc
 
-1429967913 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
+1430055114 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
 	"grabber_class.h"
 	<assert.h>
 	"curses.h"
 
-1429967140 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
+1430055059 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/imgproc/imgproc.hpp>
@@ -2967,7 +2967,7 @@
 	<wx/statusbr.h>
 	"../thorlabs_cam/thorlabs_cam.h"
 
-1429965835 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
+1430054855 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
 	"igyba_thorlabs_wxMain.h"
 	<wx/msgdlg.h>
 	<wx/filedlg.h>
@@ -3316,7 +3316,7 @@
 
 1412631243 c:\wxwidgets-3.0.2\include\wx\os2\filedlg.h
 
-1429906470 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
+1430055517 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
 	"minime_class.h"
 	"funcs.h"
 	"minimizer_s.h"

@@ -131,3 +131,15 @@ unsigned int irand(unsigned int max) /* integer random number 0...(max-1) */
 	while((result = (unsigned int)(frand() * (double) max)) >= max);
 	return result;
 }
+
+#undef Ncount
+#undef Mcount
+#undef MATRIX_A
+#undef UPPER_MASK
+#undef LOWER_MASK
+#undef TEMPERING_MASK_B
+#undef TEMPERING_MASK_C
+#undef TEMPERING_SHIFT_U
+#undef TEMPERING_SHIFT_S
+#undef TEMPERING_SHIFT_T
+#undef TEMPERING_SHIFT_L
