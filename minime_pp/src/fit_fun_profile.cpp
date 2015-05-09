@@ -197,7 +197,7 @@ void minime_profile::fit_GaussEllip(void)
 		ffc.set_AxisTitles("x / pixel", "y / pixel", "Intensity / bit");
 		ffc.set_PlotTitle("Input data");
 		ffc.plot_Data(data);
-		std::this_thread::sleep_for(std::chrono::milliseconds(200));
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		get_GaussBeamMultinormal(fit_par_b[0].val, fit_par_b[1].val,
 								fit_par_b[4].val,
 								fit_par_b[2].val, fit_par_b[3].val,

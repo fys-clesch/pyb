@@ -752,12 +752,13 @@ std::string thorlabs_cam::get_CameraInfo(void)
 {
 	std::string out;
 	out = "Camera model: " + sensorname +
-	"\nSensor area: " +
+	"\nSensor area: (" +
 	convert_Int2Str(sensor_aa_width) + " * " +
-	convert_Int2Str(sensor_aa_height) +	" um^2\n" +
+	convert_Int2Str(sensor_aa_height) +	") um^2\n" +
 	"Pixel count: " +
-	convert_Int2Str(im_aoi_height) + " * " +
-	convert_Int2Str(im_aoi_width);
+	convert_Int2Str(im_aoi_width) + " * " +
+	convert_Int2Str(im_aoi_height) +
+	"\nPixel pitch: " + convert_Double2Str(dpix_size) + " um / pix";
 	return out;
 }
 

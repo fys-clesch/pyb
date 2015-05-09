@@ -2774,7 +2774,7 @@
 	<assert.h>
 	"curses.h"
 
-1430055059 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
+1430322701 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/imgproc/imgproc.hpp>
@@ -2791,7 +2791,7 @@
 	<iomanip>
 	<sstream>
 
-1429176689 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.h
+1430313932 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.h
 	<stdlib.h>
 	<math.h>
 	<string.h>
@@ -2831,7 +2831,7 @@
 	<assert.h>
 	<condition_variable>
 
-1429906494 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
+1430844504 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
 	<stdlib.h>
 	<math.h>
 	<float.h>
@@ -2841,7 +2841,7 @@
 	"../../src/header.hpp"
 	"fifo_class.h"
 
-1429967020 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.h
+1430831341 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.h
 	<string.h>
 	<stdlib.h>
 	<cstdio>
@@ -2860,7 +2860,7 @@
 
 1426348211 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\test.h
 
-1429969028 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.cpp
+1431160727 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.cpp
 	"fifo_class.h"
 
 1429426917 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun.cpp
@@ -2876,11 +2876,11 @@
 	"minime_class.h"
 	"funcs.h"
 
-1425203744 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\gabe_class.cpp
+1430320491 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\gabe_class.cpp
 	"gabe_class.h"
 	"funcs.h"
 
-1425052377 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\gabe_class.h
+1430833697 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\gabe_class.h
 	"../../src/header.hpp"
 	<math.h>
 	<float.h>
@@ -2888,7 +2888,7 @@
 1429906539 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.cpp
 	"minime_class.h"
 
-1429429121 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.cpp
+1430839798 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.cpp
 	"minime_class.h"
 	"minimizer_s.h"
 	"random.h"
@@ -2896,7 +2896,7 @@
 
 1424952968 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\random.h
 
-1424952968 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\random.cpp
+1430831034 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\random.cpp
 	<time.h>
 	"random.h"
 
@@ -2914,7 +2914,7 @@
 1428930771 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\threadhand_class.cpp
 	"threadhand_class.h"
 
-1429962803 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.cpp
+1431161434 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.cpp
 	"thorlabs_cam.h"
 	<assert.h>
 
@@ -2939,7 +2939,7 @@
 1424969217 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\draw.cpp
 	"viewer_class.h"
 
-1429955310 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.cpp
+1430821708 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.cpp
 	"viewer_class.h"
 
 1428684517 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxapp.cpp
@@ -2950,7 +2950,7 @@
 1428428544 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxapp.h
 	<wx/app.h>
 
-1429955014 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.h
+1431160949 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.h
 	<wx/notebook.h>
 	<wx/sizer.h>
 	<wx/stattext.h>
@@ -2967,7 +2967,7 @@
 	<wx/statusbr.h>
 	"../thorlabs_cam/thorlabs_cam.h"
 
-1430054855 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
+1431160936 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
 	"igyba_thorlabs_wxMain.h"
 	<wx/msgdlg.h>
 	<wx/filedlg.h>
@@ -3316,8 +3316,14 @@
 
 1412631243 c:\wxwidgets-3.0.2\include\wx\os2\filedlg.h
 
-1430055517 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
+1431160829 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
 	"minime_class.h"
 	"funcs.h"
 	"minimizer_s.h"
+
+1430833970 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_profile_class.cpp
+	"minime_class.h"
+
+1430844761 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_propagation_class.cpp
+	"minime_class.h"
 

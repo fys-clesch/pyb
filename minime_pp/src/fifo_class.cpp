@@ -332,7 +332,7 @@ void fifo::plot_Data(const double *res_pt data,
 	}
 
 	fprintf(gnufile,
-			"set term pngcairo dl 1 font \",10\" size 640, 480\n"
+			"set term pngcairo dl 1 font \",10\" size 800, 600\n"
 			"set pm3d implicit at s\n"
 			"unset surface\n"
 			"set colorbox user origin .8, .6 size .04, .3\n"
@@ -506,7 +506,7 @@ void fifo::plot_Data(const cv::Mat &mdata,
 	}
 
 	fprintf(gnufile,
-			"set term pngcairo dl 1 font \",10\" size 640, 480\n\n" \
+			"set term pngcairo dl 1 font \",10\" size 800, 600\n\n" \
 			"set pm3d implicit at s\n" \
 			"unset surface\n" \
 			"set colorbox user origin .8, .6 size .04, .3\n" \
@@ -783,7 +783,7 @@ void fifo::plot_BeamWidthsFit(const double *res_pt data_x,
 		exit(EXIT_FAILURE);
 	}
 	fprintf(gnufile,
-			"set term pngcairo\n"
+			"set term pngcairo size 800, 600\n"
 			"set grid\n"
 			"f(x, lambda, z0, w0) = "
 			"w0 * sqrt(1. + ((x - z0) / (w0**2 * pi / lambda))**2)\n"
