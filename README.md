@@ -1,6 +1,6 @@
 # igyba
 
-Copyright 2015 Clemens Schäfermeier
+Copyright 2015 Clemens Schäfermeier, clemens ( at ) fh-muenster.de
 
     This file is part of igyba.
 
