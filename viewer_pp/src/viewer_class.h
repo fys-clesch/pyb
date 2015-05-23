@@ -1,6 +1,11 @@
 #ifndef __VIEWER_HEADER_H__
 #define __VIEWER_HEADER_H__
 
+#ifndef __VIEWER_NO_OPENCV__
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#endif
+
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
@@ -13,6 +18,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
+#include <GL/glext.h>
 
 #include "../../src/header.hpp"
 #include "../../src/threadhand_class.h"
@@ -67,9 +73,12 @@ private:
 	                  running,
 	                  update_animate,
 	                  new_data,
+	                  save_screen,
 	                  esc_down,
 	                  constant_animate,
 	                  rot_box;
+
+	std::string file_name; /**< Attention, the use of it is across threads! */
 
 	static const double cwhite[4],
 	              cblack[4],
@@ -172,6 +181,9 @@ private:
 	void store_PressedEsc(const bool b);
 	void store_UpdateAnimate(const bool b);
 	bool load_UpdateAnimate(void);
+	bool exchange_SaveScreen(void);
+	void save_Screenshot(const std::string &fname = "",
+					const std::string &fmt = "png");
 
 public:
 
@@ -181,6 +193,7 @@ public:
 	~viewer(void);
 
 	bool load_FilledMemory(void);
+	void store_SaveScreen(const bool b, const std::string &fname);
 	void init_Colorbox(void);
 	void close_Freeglut(void);
 	void toggle_Idling(void);

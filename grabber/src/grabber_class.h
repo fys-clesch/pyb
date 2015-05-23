@@ -97,6 +97,7 @@ public:
 	void set_KernelSizeAtomic(const uint i);
 	void set_GaussBlurAtomic(const double val);
 	void toggle_ViewerIdling(void);
+	void save_ViewerScreenshot(const std::string &fname);
 	void toggle_ViewerMap3DMode(void);
 	void toggle_ViewerRotation(void);
 

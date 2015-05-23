@@ -39,6 +39,8 @@ viewer::viewer(void)
 	mov_x = 0.;
 	mov_lvl = .5;
 	zoom = zoom_std; /* 10 */
+	/* std::string */
+	file_name = ""; /* 1 */
 	/* double[3] */
 	for(double &x : wc)
 		x = 0.; /* 1 */
@@ -70,7 +72,8 @@ viewer::viewer(void)
 	filled.store(false, std::memory_order_relaxed);
 	update_animate.store(false, std::memory_order_relaxed);
 	constant_animate.store(true, std::memory_order_relaxed);
-	new_data.store(true, std::memory_order_relaxed); /* 9 */
+	save_screen.store(false, std::memory_order_relaxed);
+	new_data.store(true, std::memory_order_relaxed); /* 10 */
 }
 
 viewer::~viewer(void)
@@ -725,7 +728,7 @@ void viewer::fill_DrawingData(const double *res_pt const m_in, const bool noisy)
 			}
 	/* Check if the data is normal... */
 	if(max_val == -DBL_MAX || min_val == DBL_MAX ||
-		!isfinite(max_val) || !isfinite(min_val))
+		!std::isfinite(max_val) || !std::isfinite(min_val))
 	{
 		warn_msg("the input data is not finite", ERR_ARG);
 		min_val =
@@ -836,7 +839,7 @@ void viewer::calc_DrawingData(const double *res_pt const m_in,
 			}
 	/* Check if the data is normal... */
 	if(*max_val_out == -DBL_MAX || *min_val_out == DBL_MAX ||
-		!isfinite(*max_val_out) || !isfinite(*min_val_out))
+		!std::isfinite(*max_val_out) || !std::isfinite(*min_val_out))
 	{
 		warn_msg("the input data is not finite", ERR_ARG);
 		*min_val_out = 0.;
@@ -1370,6 +1373,47 @@ void viewer::MouseHandler(const int button, const int state,
 	TrackballHandler(VIEWER_KNOWMOUSEBUTTON, button, state, x, y);
 }
 
+#ifndef __VIEWER_NO_OPENCV__
+void viewer::save_Screenshot(const std::string &fname, const std::string &fmt)
+{
+	cv::Mat img;
+	img.create(win_height, win_width, CV_8UC3);
+	/* Byte alignment of each pixel row in memory. */
+	glPixelStorei(GL_PACK_ALIGNMENT, (img.step & 3) ? 1 : 4);
+	/* Set length of one complete row in destination data. */
+	glPixelStorei(GL_PACK_ROW_LENGTH, img.step / img.elemSize());
+	glReadPixels(0, 0, (GLint)win_width, (GLint)win_height, GL_BGR,
+				GL_UNSIGNED_BYTE, img.data);
+	cv::flip(img, img, 0);
+	{
+		std::string str;
+		if(fname.empty())
+		{
+			if(file_name.empty())
+				get_DateAndTime(str);
+			else
+				str = file_name;
+		}
+		else
+			str = fname;
+		/* If necessary, remove the last '.fmt'. This makes sure that there are
+		no files like abc.png.png. */
+		iprint(stdout, "storing to '%s'\n", str.c_str());
+		const size_t found = str.rfind("." + fmt);
+		if(found != std::string::npos)
+			str.erase(str.begin() + found, str.end());
+		/* Continue. */
+		str += "." + fmt;
+		iprint(stdout, "storing to '%s' . ", str.c_str());
+		fflush(stdout);
+
+		imwrite(str, img);
+
+		iprint(stdout, "done\n");
+	}
+}
+#endif
+
 void viewer::exchange_Atomics(void)
 {
 	/** @todo Extend this exchange to more variables, if necessary, for both
@@ -1398,6 +1442,9 @@ void viewer::set_DisplayMainThread(void)
 		/* ...and we are ready to be stopped again! */
 		(*dv1p).event_SwapDataToViewer.reset();
 	}
+
+	if((*dv1p).exchange_SaveScreen())
+		(*dv1p).save_Screenshot();
 
 	(*dv1p).exchange_Atomics(); /** Exchange atomics and global variables. */
 
@@ -1764,4 +1811,15 @@ void viewer::store_UpdateAnimate(const bool b)
 bool viewer::load_UpdateAnimate(void)
 {
 	return update_animate.load(std::memory_order_relaxed);
+}
+
+void viewer::store_SaveScreen(const bool b, const std::string &fname)
+{
+	save_screen.store(b, std::memory_order_relaxed);
+	file_name = fname;
+}
+
+bool viewer::exchange_SaveScreen(void)
+{
+	return save_screen.exchange(false, std::memory_order_relaxed);
 }

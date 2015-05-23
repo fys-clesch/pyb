@@ -2769,12 +2769,12 @@
 
 1425221509 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs\igyba_thorlabs.rc
 
-1430055114 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
+1432393493 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
 	"grabber_class.h"
 	<assert.h>
 	"curses.h"
 
-1430322701 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
+1432390512 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/imgproc/imgproc.hpp>
@@ -2791,7 +2791,9 @@
 	<iomanip>
 	<sstream>
 
-1430313932 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.h
+1432393905 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.h
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
 	<stdlib.h>
 	<math.h>
 	<string.h>
@@ -2803,6 +2805,7 @@
 	<GL/gl.h>
 	<GL/glu.h>
 	<GL/freeglut.h>
+	<GL/glext.h>
 	"../../src/header.hpp"
 	"../../src/threadhand_class.h"
 
@@ -2888,7 +2891,7 @@
 1429906539 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.cpp
 	"minime_class.h"
 
-1430839798 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.cpp
+1432380518 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.cpp
 	"minime_class.h"
 	"minimizer_s.h"
 	"random.h"
@@ -2939,7 +2942,7 @@
 1424969217 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\draw.cpp
 	"viewer_class.h"
 
-1430821708 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.cpp
+1432393821 source:c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\viewer_class.cpp
 	"viewer_class.h"
 
 1428684517 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxapp.cpp
@@ -2950,7 +2953,7 @@
 1428428544 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxapp.h
 	<wx/app.h>
 
-1431160949 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.h
+1432390276 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.h
 	<wx/notebook.h>
 	<wx/sizer.h>
 	<wx/stattext.h>
@@ -2967,7 +2970,7 @@
 	<wx/statusbr.h>
 	"../thorlabs_cam/thorlabs_cam.h"
 
-1431160936 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
+1432391974 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
 	"igyba_thorlabs_wxMain.h"
 	<wx/msgdlg.h>
 	<wx/filedlg.h>

@@ -29,6 +29,7 @@ const long igyba_thorlabs_wxFrame::ID_TOGGLEBUTTON_VIEWER = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_TOGGLEBUTTON_VIEWER_ANIMATION = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_TOGGLEBUTTON_MAP_VIEWER = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_TOGGLEBUTTON_VIEWER_ROTATION = wxNewId();
+const long igyba_thorlabs_wxFrame::ID_BUTTON_VIEWER_SCREENSHOT = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_PANEL_VIEWER = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_BUTTON_MINIME = wxNewId();
 const long igyba_thorlabs_wxFrame::ID_PANEL_MINIME = wxNewId();
@@ -106,6 +107,7 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	btn_state.store(NONE_BTN, std::memory_order_relaxed); /* 1 */
 
 	//(*Initialize(igyba_thorlabs_wxFrame)
+	wxStaticBoxSizer* StaticBoxSizerViewerOutput;
 	wxStaticBoxSizer* StaticBoxSizerSaveData;
 	wxStaticBoxSizer* StaticBoxSizerMinime;
 	wxMenuItem* MenuItemAbout;
@@ -204,7 +206,12 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	ToggleButtonViewerRotation->Disable();
 	ToggleButtonViewerRotation->SetToolTip(_("Toggle rotation in 3D mode"));
 	StaticBoxSizerViewerDispSet->Add(ToggleButtonViewerRotation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizerViewer->Add(StaticBoxSizerViewerDispSet, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerViewer->Add(StaticBoxSizerViewerDispSet, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerViewerOutput = new wxStaticBoxSizer(wxVERTICAL, PanelViewer, _("Output"));
+	ButtonViewerScreenshot = new wxButton(PanelViewer, ID_BUTTON_VIEWER_SCREENSHOT, _("Save screenshot"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_VIEWER_SCREENSHOT"));
+	ButtonViewerScreenshot->Disable();
+	StaticBoxSizerViewerOutput->Add(ButtonViewerScreenshot, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerViewer->Add(StaticBoxSizerViewerOutput, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	PanelViewer->SetSizer(StaticBoxSizerViewer);
 	StaticBoxSizerViewer->Fit(PanelViewer);
 	StaticBoxSizerViewer->SetSizeHints(PanelViewer);
@@ -382,6 +389,7 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	Connect(ID_TOGGLEBUTTON_VIEWER_ANIMATION,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnToggleButtonViewerAnimationToggle);
 	Connect(ID_TOGGLEBUTTON_MAP_VIEWER,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnToggleButtonMapViewerToggle);
 	Connect(ID_TOGGLEBUTTON_VIEWER_ROTATION,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnToggleButtonViewerRotationToggle);
+	Connect(ID_BUTTON_VIEWER_SCREENSHOT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonViewerScreenshotClick);
 	Connect(ID_BUTTON_MINIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonMinimeClick);
 	Connect(ID_BUTTON_RESIZE_CAM_WIN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonResizeCamWinClick);
 	Connect(ID_TOGGLEBUTTON_AOI,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnToggleButtonAOIToggle);
@@ -589,8 +597,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 	LedMain->SwitchOn();
 	ButtonQuit->Enable();
 
-	uint32_t kctrl = 0,
-	         c_btn_state = NONE_BTN;
+	uint32_t c_btn_state = NONE_BTN;
 	for(;;)
 	{
 		if((*itw1ptr).t_cam.is_Grabbing())
@@ -682,11 +689,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 				(*itw1ptr).t_cam.show_Im_RGB();
 		}
 
-		#if SHOW_WAIT_KEY
-		iprint(stdout, "kctrl: %u\n", kctrl);
-		#endif
-
-		kctrl = waitKey(20);
+		waitKey(20);
 		if(c_btn_state == CLOSE_CAM_WINDOW)
 			break;
 
@@ -972,6 +975,26 @@ void igyba_thorlabs_wxFrame::OnButtonSaveImgFPClick(wxCommandEvent& event)
 	store_ButtonState(SAVE_FP_BTN);
 }
 
+void igyba_thorlabs_wxFrame::OnButtonViewerScreenshotClick(wxCommandEvent& event)
+{
+	std::string str;
+	get_DateAndTime(str);
+	str += "_viewer";
+	wxString def_fname(str);
+	static wxString def_dirname = dirname_bin;
+	wxFileDialog saveDialog(this, _("Save viewer screenshot"),
+							def_dirname, def_fname,
+							"Image file (*.png)|*.png",
+							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if(saveDialog.ShowModal() == wxID_CANCEL)
+		return;
+	def_dirname = saveDialog.GetDirectory();
+	fname_img_out = saveDialog.GetPath();
+	update_TextOutputInfo("Saving screenshot to:\n" + fname_img_out);
+
+	t_cam.save_ViewerScreenshot(fname_img_out.ToStdString());
+}
+
 void igyba_thorlabs_wxFrame::OnButtonSaveDataRGBClick(wxCommandEvent& event)
 {
 	std::string str;
@@ -1143,6 +1166,7 @@ void igyba_thorlabs_wxFrame::OnToggleButtonViewerToggle(wxCommandEvent& event)
 		ToggleButtonViewerAnimation->Enable();
 		ToggleButtonMapViewer->Enable();
 		ToggleButtonViewerRotation->Enable();
+		ButtonViewerScreenshot->Enable();
 		ToggleButtonViewer->SetLabel(_T("Close viewer"));
 	}
 	else
@@ -1151,6 +1175,7 @@ void igyba_thorlabs_wxFrame::OnToggleButtonViewerToggle(wxCommandEvent& event)
 		ToggleButtonViewerAnimation->Disable();
 		ToggleButtonMapViewer->Disable();
 		ToggleButtonViewerRotation->Disable();
+		ButtonViewerScreenshot->Disable();
 		ToggleButtonViewer->SetLabel(_T("Launch viewer"));
 	}
 }

@@ -172,7 +172,24 @@
 																			<border>5</border>
 																		</object>
 																	</object>
-																	<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																	<border>5</border>
+																</object>
+																<object class="sizeritem">
+																	<object class="wxStaticBoxSizer" variable="StaticBoxSizerViewerOutput" member="no">
+																		<label>Output</label>
+																		<orient>wxVERTICAL</orient>
+																		<object class="sizeritem">
+																			<object class="wxButton" name="ID_BUTTON_VIEWER_SCREENSHOT" variable="ButtonViewerScreenshot" member="yes">
+																				<label>Save screenshot</label>
+																				<enabled>0</enabled>
+																				<handler function="OnButtonViewerScreenshotClick" entry="EVT_BUTTON" />
+																			</object>
+																			<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																			<border>5</border>
+																		</object>
+																	</object>
+																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																	<border>5</border>
 																</object>
 															</object>

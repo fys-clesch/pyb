@@ -226,9 +226,7 @@ void grabber::update_Mats_RgbAndFp(void)
 		in.convertTo(temp_CV_32FC3, CV_32FC3);
 		cvtColor(temp_CV_32FC3, temp_CV_32FC1, CV_BGR2GRAY, 1);
 		if(temp_CV_32FC1.type() != CV_32FC1)
-			error_msg("Mat should be CV_32FC1. performance issues.", ERR_ARG);
-		temp_CV_32FC1.convertTo(fp_in, mat_typ); /** @todo Can be removed if
-		the line above is fine. Test first with RGB camera. */
+			warn_msg("Mat should be CV_32FC1. performance issues.", ERR_ARG);
 	}
 	else if(in_chn == 1)
 	{
@@ -308,7 +306,7 @@ void grabber::produce_Mat_Work(void)
 	/* Process the ROI version of 'work'. */
 	if(roi_on)
 	{
-		/* Attention here! */
+		/* Attention here! The height is the number of rows. */
 		store_WorkRoiRows(roi_rect.height);
 		store_WorkRoiCols(roi_rect.width);
 		work_roi = work(roi_rect).clone();
@@ -332,13 +330,14 @@ void grabber::produce_Mat_Work(void)
 	/** @todo If there's a bottleneck here, a parallelization can be introduced.
 	 * One processor runs the normal matrix, the other one the flipped one.
 	 * 2015-04-21: Implemented the following OpenMP section, but couldn't
-	 * profile it with gpof - meaningless results. In addition, one spurious
+	 * profile it with gprof - meaningless results. In addition, one spurious
 	 * error occurred, maybe because of a data race.
 	 */
 //	#pragma omp parallel sections private(uny, unx) firstprivate(unxm, unym)
 //	{
 //		#pragma omp section
 //		{
+			/* First treat the data in the normally ordered way. */
 			if(work_roi.isContinuous())
 			{
 				uny = unxm * unym;
@@ -354,6 +353,7 @@ void grabber::produce_Mat_Work(void)
 //		}
 //		#pragma omp section
 //		{
+			/* Next treat the flipped data to be processed in the viewer. */
 			if(work_roi_tflip.isContinuous())
 			{
 				uny = 1;
@@ -957,10 +957,11 @@ void grabber::save_Image(const save_Im_type mtype,
 		get_DateAndTime(str);
 	else
 		str = fname;
-	/* If necessary, remove the last '.fmt'. */
+	/* If necessary, remove the last '.fmt'. This makes sure that there are
+		no files like abc.png.png. */
 	const size_t found = str.rfind("." + fmt);
 	if(found != std::string::npos)
-		str.erase(str.begin() + found, str.end() - 1);
+		str.erase(str.begin() + found, str.end());
 	/* Continue. */
 	strc = str + "_info." + fmt;
 	str += "." + fmt;
@@ -1638,10 +1639,15 @@ void grabber::get_GroundliftRangeAtomic(double *res_pt gl_current,
 
 void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
 {
+	const uint n_roi_rows = load_WorkRoiRows(),
+	           n_roi_cols = load_WorkRoiCols();
+
 	mime.set_Wavelength(wavelengthUm);
 	mime.set_PixelToUm(pix2um);
 	mime.set_Plotting(true);
-	mime.alloc_DataFromMemory(load_WorkRoiRows(), load_WorkRoiCols());
+	/** @todo It seems that something is going wrong here during the
+	reallocation. */
+	mime.alloc_DataFromMemory(n_roi_rows, n_roi_cols);
 
 	if(work_roi_arr == nullptr)
 	{
@@ -1649,10 +1655,8 @@ void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
 		return;
 	}
 
-	double *cpy = alloc_mat(load_WorkRoiRows(),
-							load_WorkRoiCols());
-	memcpy(cpy, work_roi_arr_buf,
-			load_WorkRoiRows() * load_WorkRoiCols() * sizeof(double));
+	double *cpy = alloc_mat(n_roi_rows, n_roi_cols);
+	memcpy(cpy, work_roi_arr_buf, n_roi_rows * n_roi_cols * sizeof(double));
 	mime.fill_DataFromMemory(cpy);
 	free(cpy);
 
@@ -1807,6 +1811,7 @@ void grabber::gnuplot_Image(const save_Im_type mtype,
 
 	ffc.set_AxisTitles("x / pixel", "y / pixel", "Intensity");
 	ffc.set_PlotTitle(str);
+	ffc.set_UseContours(true);
 
 	switch(mtype)
 	{
@@ -1909,6 +1914,11 @@ void grabber::get_StartRoi(int *res_pt px, int *res_pt py)
 void grabber::toggle_ViewerIdling(void)
 {
 	beau.toggle_Idling();
+}
+
+void grabber::save_ViewerScreenshot(const std::string &fname)
+{
+	beau.store_SaveScreen(true, fname);
 }
 
 void grabber::toggle_ViewerMap3DMode(void)

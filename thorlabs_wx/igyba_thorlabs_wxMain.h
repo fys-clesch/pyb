@@ -109,6 +109,7 @@ private:
 		void OnToggleButtonMapViewerToggle(wxCommandEvent& event);
 		void OnToggleButtonViewerAnimationToggle(wxCommandEvent& event);
 		void OnToggleButtonViewerRotationToggle(wxCommandEvent& event);
+		void OnButtonViewerScreenshotClick(wxCommandEvent& event);
 		//*)
 
 		//(*Identifiers(igyba_thorlabs_wxFrame)
@@ -125,6 +126,7 @@ private:
 		static const long ID_TOGGLEBUTTON_VIEWER_ANIMATION;
 		static const long ID_TOGGLEBUTTON_MAP_VIEWER;
 		static const long ID_TOGGLEBUTTON_VIEWER_ROTATION;
+		static const long ID_BUTTON_VIEWER_SCREENSHOT;
 		static const long ID_PANEL_VIEWER;
 		static const long ID_BUTTON_MINIME;
 		static const long ID_PANEL_MINIME;
@@ -193,6 +195,7 @@ private:
 		wxButton* ButtonSaveDataWork;
 		wxStaticLine* StaticLine2;
 		wxButton* ButtonIncExpTime;
+		wxButton* ButtonViewerScreenshot;
 		wxNotebook* NotebookMain;
 		wxSlider* SliderGroundlift;
 		wxTextCtrl* TextCtrlOutputInfo;
