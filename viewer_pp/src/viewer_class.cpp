@@ -1442,10 +1442,10 @@ void viewer::set_DisplayMainThread(void)
 		/* ...and we are ready to be stopped again! */
 		(*dv1p).event_SwapDataToViewer.reset();
 	}
-
+	#ifndef __VIEWER_NO_OPENCV__
 	if((*dv1p).exchange_SaveScreen())
 		(*dv1p).save_Screenshot();
-
+	#endif
 	(*dv1p).exchange_Atomics(); /** Exchange atomics and global variables. */
 
 	static uchar prev = 0xFF;

@@ -7,7 +7,7 @@
 #endif
 
 #include <stdlib.h>
-#include <math.h>
+#include <cmath>
 #include <string.h>
 #include <float.h>
 #include <ctype.h>

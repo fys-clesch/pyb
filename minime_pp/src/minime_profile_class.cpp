@@ -189,6 +189,8 @@ void minime_profile::fill_DataFromMemory(const double *res_pt data_in,
 			memcpy(bad, bad_in, mnm_ntot * sizeof(uchar));
 		store_FilledMemory(true);
 	}
+	else
+		error_msg("memory not allocated", ERR_ARG);
 }
 
 void minime_profile::get_CentroidBeamRadius(double *res_pt cen_x, double *res_pt cen_y,

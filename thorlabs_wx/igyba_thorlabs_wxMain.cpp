@@ -1,6 +1,8 @@
 #include "igyba_thorlabs_wxMain.h"
+
 #include <wx/msgdlg.h>
 #include <wx/filedlg.h>
+#include <wx/aboutdlg.h>
 
 //(*InternalHeaders(igyba_thorlabs_wxFrame)
 #include <wx/bitmap.h>
@@ -139,7 +141,7 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	wxMenu* Menu2;
 	wxStaticBoxSizer* StaticBoxSizerOutput;
 
-	Create(parent, wxID_ANY, _("igyba 4 fingers"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
+	Create(parent, wxID_ANY, "igyba 4 fingers", wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
 	{
 	wxIcon FrameIcon;
 	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("icon.ico"))));
@@ -655,9 +657,6 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 					(*itw1ptr).t_cam.save_Im_type::FP_IN,
 					fname_dat_out.ToStdString());
 				break;
-			case SHOW_HELP:
-				(*itw1ptr).t_cam.show_Help();
-				break;
 			case RESIZE_CAM_WINDOW:
 				resizeWindow((*itw1ptr).t_cam.get_MainWindowName(),
 								(*itw1ptr).t_cam.get_Width(),
@@ -680,6 +679,14 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 					(*itw1ptr).t_cam.save_Im_type::WORK,
 					fname_gnu_out.ToStdString());
 				break;
+			case CLOSE_CAM_WINDOW:
+				/** @todo If the GUI holds on 'waiting for camera ...', then
+				it is because the mouse callback has interfered with the
+				closing action of the window. If this happens despite the next
+				call, a flag can be added in the mouse callback that makes sure
+				that the callback is blocked when closing the window. */
+				destroyWindow((*itw1ptr).t_cam.get_MainWindowName());
+				break;
 			default:
 				(*itw1ptr).t_cam.update_Mats_RgbAndFp();
 				(*itw1ptr).t_cam.get_Moments();
@@ -698,8 +705,6 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 		if(hwnd == nullptr)
 			break;
 	}
-
-	destroyWindow((*itw1ptr).t_cam.get_MainWindowName());
 
 	if(c_btn_state != CLOSE_CAM_WINDOW)
 		LedMain->SwitchOff();
@@ -750,7 +755,7 @@ void igyba_thorlabs_wxFrame::schedule_CamThread(int argc, char **argv)
 void igyba_thorlabs_wxFrame::close_CamThread(void)
 {
 	store_CloseCamState(true);
-	iprint(stdout, "waiting for cam to close .");
+	iprint(stdout, "waiting for camera to close .");
 	while(true)
 	{
 		if(signal_CamThreadIfWait())
@@ -832,8 +837,8 @@ void igyba_thorlabs_wxFrame::set_MouseEvent(const int event, const int x, const 
 			{
 				t_cam.set_RoiActive(true);
 				ToggleButtonAOI->SetValue(false);
-				ToggleButtonAOI->SetLabel(_T("Remove AOI"));
-				ToggleButtonAOI->SetToolTip(_("Click to remove AOI"));
+				ToggleButtonAOI->SetLabel("Remove AOI");
+				ToggleButtonAOI->SetToolTip("Click to remove AOI");
 				store_SelectRoi(false);
 			}
 		}
@@ -879,12 +884,12 @@ void igyba_thorlabs_wxFrame::OnToggleButtonBackgroundToggle(wxCommandEvent& even
 {
 	if(ToggleButtonBackground->GetValue())
 	{
-		ToggleButtonBackground->SetLabel(_T("Unload background"));
+		ToggleButtonBackground->SetLabel("Unload background");
 		store_ButtonState(ACQ_SET_BACKGROUND);
 	}
 	else
 	{
-		ToggleButtonBackground->SetLabel(_T("Acquire background"));
+		ToggleButtonBackground->SetLabel("Acquire background");
 		store_ButtonState(UNSET_BACKGROUND);
 	}
 }
@@ -920,7 +925,7 @@ void igyba_thorlabs_wxFrame::OnButtonSaveImgRGBClick(wxCommandEvent& event)
 	str += "_rgb";
 	wxString def_fname(str);
 	static wxString def_dirname = dirname_bin;
-	wxFileDialog saveDialog(this, _("Save RGB image"),
+	wxFileDialog saveDialog(this, "Save RGB image",
 							def_dirname, def_fname,
 							"Image file (*.png)|*.png",
 							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -942,7 +947,7 @@ void igyba_thorlabs_wxFrame::OnButtonSaveImgWorkClick(wxCommandEvent& event)
 	str += "_work";
 	wxString def_fname(str);
 	static wxString def_dirname = dirname_bin;
-	wxFileDialog saveDialog(this, _("Save Work image"),
+	wxFileDialog saveDialog(this, "Save Work image",
 							def_dirname, def_fname,
 							"Image file (*.png)|*.png",
 							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -962,7 +967,7 @@ void igyba_thorlabs_wxFrame::OnButtonSaveImgFPClick(wxCommandEvent& event)
 	str += "_fp";
 	wxString def_fname(str);
 	static wxString def_dirname = dirname_bin;
-	wxFileDialog saveDialog(this, _("Save FP image"),
+	wxFileDialog saveDialog(this, "Save FP image",
 							def_dirname, def_fname,
 							"Image file (*.png)|*.png",
 							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -982,7 +987,7 @@ void igyba_thorlabs_wxFrame::OnButtonViewerScreenshotClick(wxCommandEvent& event
 	str += "_viewer";
 	wxString def_fname(str);
 	static wxString def_dirname = dirname_bin;
-	wxFileDialog saveDialog(this, _("Save viewer screenshot"),
+	wxFileDialog saveDialog(this, "Save viewer screenshot",
 							def_dirname, def_fname,
 							"Image file (*.png)|*.png",
 							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -1002,7 +1007,7 @@ void igyba_thorlabs_wxFrame::OnButtonSaveDataRGBClick(wxCommandEvent& event)
 	str += "_raw_3_ch";
 	wxString def_fname(str);
 	static wxString def_dirname = dirname_bin;
-	wxFileDialog saveDialog(this, _("Save Raw triple channel data"),
+	wxFileDialog saveDialog(this, "Save Raw triple channel data",
 							def_dirname, def_fname,
 							"Data file (*.dat)|*.dat",
 							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -1022,7 +1027,7 @@ void igyba_thorlabs_wxFrame::OnButtonSaveDataWorkClick(wxCommandEvent& event)
 	str += "_work";
 	wxString def_fname(str);
 	static wxString def_dirname = dirname_bin;
-	wxFileDialog saveDialog(this, _("Save Work data"),
+	wxFileDialog saveDialog(this, "Save Work data",
 							def_dirname, def_fname,
 							"Data file (*.dat)|*.dat",
 							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -1042,7 +1047,7 @@ void igyba_thorlabs_wxFrame::OnButtonSaveDataFPClick(wxCommandEvent& event)
 	str += "_raw_1_ch";
 	wxString def_fname(str);
 	static wxString def_dirname = dirname_bin;
-	wxFileDialog saveDialog(this, _("Save Raw single channel data"),
+	wxFileDialog saveDialog(this, "Save Raw single channel data",
 							def_dirname, def_fname,
 							"Data file (*.dat)|*.dat",
 							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -1060,7 +1065,7 @@ void igyba_thorlabs_wxFrame::OnToggleButtonSmoothingToggle(wxCommandEvent& event
 	store_ButtonState(TOGGLE_SMOOTHING);
 	if(ToggleButtonSmoothing->GetValue())
 	{
-		ToggleButtonSmoothing->SetLabel(_T("Disable manipulation"));
+		ToggleButtonSmoothing->SetLabel("Disable manipulation");
 		SliderKernelSize->Enable();
 		SliderStdDev->Enable();
 		SliderGroundlift->Enable();
@@ -1073,7 +1078,7 @@ void igyba_thorlabs_wxFrame::OnToggleButtonSmoothingToggle(wxCommandEvent& event
 	}
 	else
 	{
-		ToggleButtonSmoothing->SetLabel(_T("Enable manipulation"));
+		ToggleButtonSmoothing->SetLabel("Enable manipulation");
 		SliderKernelSize->Disable();
 		SliderStdDev->Disable();
 		SliderGroundlift->Disable();
@@ -1093,9 +1098,9 @@ void igyba_thorlabs_wxFrame::OnQuit(wxCommandEvent &event)
 
 void igyba_thorlabs_wxFrame::OnAbout(wxCommandEvent &event)
 {
-	store_ButtonState(SHOW_HELP);
-
-	wxString msg;
+	wxString msg,
+	         author;
+	author << "Clemens Sch\x00E4" << "fermeier";
 	msg << "Called " + PROJECT_NAME + " " +
  	PROJECT_MAJ_VERSION + "." + PROJECT_MIN_VERSION + "\n" +
  	"Build with tons of key strokes. And with\n" +
@@ -1111,8 +1116,15 @@ void igyba_thorlabs_wxFrame::OnAbout(wxCommandEvent &event)
  	__GNUC_MINOR__ << "." <<
  	__GNUC_PATCHLEVEL__ <<
  	"\n- " + get_wxBuildInfo() +
- 	"\nclesch@fysik.dtu.dk";
-	wxMessageBox(msg, _T("Nice to see you here!"));
+ 	"\n(C) " + author + ", 2015, clemens@fh-muenster.de";
+	wxMessageBox(msg, "Nice to see you here!");
+
+	wxAboutDialogInfo info;
+	wxString version;
+	version = "igyba " + PROJECT_MAJ_VERSION + "." + PROJECT_MIN_VERSION;
+	info.SetName(version);
+	info.SetDescription("This program does something great.");
+	info.SetCopyright("(C) 2015," + author + "<clemens@fh-muenster.de>");
 }
 
 void igyba_thorlabs_wxFrame::OnButtonIncExpTimeClick(wxCommandEvent& event)
@@ -1152,10 +1164,10 @@ void igyba_thorlabs_wxFrame::OnToggleButtonFrameGrabToggle(wxCommandEvent& event
 	store_ButtonState(TOGGLE_IDLING);
 	if(ToggleButtonFrameGrab->GetValue())
 	{
-		ToggleButtonFrameGrab->SetLabel(_T("Continue frame grab"));
+		ToggleButtonFrameGrab->SetLabel("Continue frame grab");
 	}
 	else
-		ToggleButtonFrameGrab->SetLabel(_T("Idle frame grab"));
+		ToggleButtonFrameGrab->SetLabel("Idle frame grab");
 }
 
 void igyba_thorlabs_wxFrame::OnToggleButtonViewerToggle(wxCommandEvent& event)
@@ -1167,7 +1179,7 @@ void igyba_thorlabs_wxFrame::OnToggleButtonViewerToggle(wxCommandEvent& event)
 		ToggleButtonMapViewer->Enable();
 		ToggleButtonViewerRotation->Enable();
 		ButtonViewerScreenshot->Enable();
-		ToggleButtonViewer->SetLabel(_T("Close viewer"));
+		ToggleButtonViewer->SetLabel("Close viewer");
 	}
 	else
 	{
@@ -1176,7 +1188,7 @@ void igyba_thorlabs_wxFrame::OnToggleButtonViewerToggle(wxCommandEvent& event)
 		ToggleButtonMapViewer->Disable();
 		ToggleButtonViewerRotation->Disable();
 		ButtonViewerScreenshot->Disable();
-		ToggleButtonViewer->SetLabel(_T("Launch viewer"));
+		ToggleButtonViewer->SetLabel("Launch viewer");
 	}
 }
 
@@ -1199,7 +1211,7 @@ void igyba_thorlabs_wxFrame::OnButtonGnuplotClick(wxCommandEvent& event)
 	get_DateAndTime(str);
 	wxString def_fname(str);
 	static wxString def_dirname = dirname_bin;
-	wxFileDialog saveDialog(this, _("Save gnuplot"),
+	wxFileDialog saveDialog(this, "Save gnuplot",
 							def_dirname, def_fname,
 							"Image file (*.png)|*.png",
 							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -1219,7 +1231,16 @@ void igyba_thorlabs_wxFrame::OnButtonResizeCamWinClick(wxCommandEvent& event)
 
 void igyba_thorlabs_wxFrame::OnButtonQuitClick(wxCommandEvent& event)
 {
-	Close();
+	const wxPoint pt = wxGetMousePosition();
+	const int mx = pt.x,
+	          my = pt.y,
+	          ans = wxMessageBox("Continue closing?",
+								"Please confirm", wxICON_QUESTION | wxYES_NO,
+								NULL, mx, my);
+	if(ans == wxYES)
+		Close();
+	else
+		return;
 }
 
 void igyba_thorlabs_wxFrame::OnSliderExpTimeCmdScroll(wxScrollEvent& event)
@@ -1464,7 +1485,7 @@ void igyba_thorlabs_wxFrame::OnToggleButtonAOIToggle(wxCommandEvent& event)
 		else
 		{
 			store_ButtonState(REMOVE_AOI);
-			ToggleButtonAOI->SetLabel(_T("Draw rectangle"));
+			ToggleButtonAOI->SetLabel("Draw rectangle");
 			ToggleButtonAOI->SetValue(false);
 			TextCtrlAOI->SetLabel("No AOI selected");
 		}
@@ -1474,27 +1495,27 @@ void igyba_thorlabs_wxFrame::OnToggleButtonAOIToggle(wxCommandEvent& event)
 void igyba_thorlabs_wxFrame::OnToggleButtonMapViewerToggle(wxCommandEvent& event)
 {
 	if(ToggleButtonMapViewer->GetValue())
-		ToggleButtonMapViewer->SetLabel(_T("Show 3D map"));
+		ToggleButtonMapViewer->SetLabel("Show 3D map");
 	else
-		ToggleButtonMapViewer->SetLabel(_T("Show 2D map"));
+		ToggleButtonMapViewer->SetLabel("Show 2D map");
 	t_cam.toggle_ViewerMap3DMode();
 }
 
 void igyba_thorlabs_wxFrame::OnToggleButtonViewerAnimationToggle(wxCommandEvent& event)
 {
 	if(ToggleButtonViewerAnimation->GetValue())
-		ToggleButtonViewerAnimation->SetLabel(_T("Start animation"));
+		ToggleButtonViewerAnimation->SetLabel("Start animation");
 	else
-		ToggleButtonViewerAnimation->SetLabel(_T("Stop animation"));
+		ToggleButtonViewerAnimation->SetLabel("Stop animation");
 	t_cam.toggle_ViewerIdling();
 }
 
 void igyba_thorlabs_wxFrame::OnToggleButtonViewerRotationToggle(wxCommandEvent& event)
 {
 	if(ToggleButtonViewerRotation->GetValue())
-		ToggleButtonViewerRotation->SetLabel(_T("Stop rotation"));
+		ToggleButtonViewerRotation->SetLabel("Stop rotation");
 	else
-		ToggleButtonViewerRotation->SetLabel(_T("Start rotation"));
+		ToggleButtonViewerRotation->SetLabel("Start rotation");
 	t_cam.toggle_ViewerRotation();
 }
 
