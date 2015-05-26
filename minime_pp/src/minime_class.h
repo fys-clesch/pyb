@@ -53,10 +53,12 @@ protected:
 				"min: %g\n" \
 				"max: %g\n" \
 				"val: %g\n" \
+				"err: %g\n" \
 				"log: %u\n" \
 				"fit: %u\n",
 				(*pp).name.c_str(), (*pp).unit.c_str(),
 				(*pp).init, (*pp).minv, (*pp).maxv, (*pp).val,
+				(*pp).std_rel_err,
 				(*pp).log, (*pp).fit);
 	}
 
@@ -104,6 +106,7 @@ public:
 			m[i].init =
 			m[i].minv =
 			m[i].maxv =
+			m[i].std_rel_err =
 			m[i].val = 0.;
 			m[i].log =
 			m[i].fit = 0;
@@ -124,7 +127,8 @@ private:
 	variables. */
 	std::atomic<bool> allocd,
 	                  filled,
-	                  do_gnuplot;
+	                  do_gnuplot,
+	                  use_bad;
 
 	uchar *res_pt bad;
 
@@ -139,6 +143,7 @@ private:
 	bool load_AllocatedMemory(void);
 	bool load_FilledMemory(void);
 	bool load_UseGnuplot(void);
+
 	double get_Wavelength(void);
 	double get_PixelToUm(void);
 	void get_CentroidBeamRadius(double *res_pt cen_x, double *res_pt cen_y,
@@ -157,6 +162,8 @@ private:
 										const double x_off, const double y_off,
 										double *out);
 	void store_UseGnuplot(const bool b);
+	bool load_UseBad(void);
+	void store_UseBad(const bool b);
 
 public:
 
@@ -164,7 +171,6 @@ public:
 	~minime_profile(void);
 
 	virtual void print_Parameter(const parameter *pp);
-
 	void set_Wavelength(const double wlen);
 	void set_PixelToUm(const double pix2um);
 	void set_Plotting(const bool do_it);

@@ -73,7 +73,7 @@ double *alloc_vec(const uint n)
 
 double *alloc_mat(const uint row, const uint col)
 {
-	double *m = (double *)malloc((row * col) * sizeof(double));
+	double *m = (double *)malloc(row * col * sizeof(double));
 	if(NULL == m)
 	{
 		error_msg("memory allocation failed", ERR_ARG);
@@ -84,7 +84,7 @@ double *alloc_mat(const uint row, const uint col)
 
 double *realloc_mat(double *m, const uint row, const uint col)
 {
-	double *old = (double *)realloc(m, (row * col) * sizeof(double));
+	double *old = (double *)realloc(m, row * col * sizeof(double));
 	if(NULL == m)
 	{
 		error_msg("memory reallocation failed", ERR_ARG);
@@ -95,7 +95,7 @@ double *realloc_mat(double *m, const uint row, const uint col)
 
 float *alloc_mat_float(const uint row, const uint col)
 {
-	float *m = (float *)malloc((row * col) * sizeof(float));
+	float *m = (float *)malloc(row * col * sizeof(float));
 	if(NULL == m)
 	{
 		error_msg("memory allocation failed", ERR_ARG);
@@ -106,7 +106,7 @@ float *alloc_mat_float(const uint row, const uint col)
 
 double *alloc_3mat(const uint row, const uint col)
 {
-	double *m = (double *) malloc((3 * row * col) * sizeof(double));
+	double *m = (double *) malloc(3 * row * col * sizeof(double));
 	if(NULL == m)
 	{
 		error_msg("memory allocation failed", ERR_ARG);
@@ -117,7 +117,7 @@ double *alloc_3mat(const uint row, const uint col)
 
 double *alloc_3matrix(const uint row, const uint col, const double init)
 {
-	double *m = (double *) malloc((3 * row * col) * sizeof(double));
+	double *m = (double *) malloc(3 * row * col * sizeof(double));
 	if(NULL == m)
 	{
 		error_msg("memory allocation failed", ERR_ARG);
@@ -131,7 +131,7 @@ double *alloc_3matrix(const uint row, const uint col, const double init)
 double *realloc_3mat(double *m, const uint row, const uint col)
 {
 	double *old = m;
-	m = (double *)realloc(m, (3 * row * col) * sizeof(double));
+	m = (double *)realloc(m, 3 * row * col * sizeof(double));
 	if(NULL == m)
 	{
 		error_msg("memory reallocation failed", ERR_ARG);

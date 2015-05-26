@@ -8,20 +8,24 @@ static double *sim;
 void minime_profile::fit_GaussianMultinormal(double *res_pt set,
 											double *res_pt ssq)
 {
-	/* calculate linear offset and scaling */
-	static bool init = false;
+	/* Calculate linear offset and scaling. */
+	static bool init = false,
+	            use_bad_loc;
 	double b = 0., S_tt = 0., S_sim = 0.;
 	static double S_ccd = 0., sum = 0.;
 
 	if(!init)
 	{
-		if((*d2m_global).bad != nullptr)
+		use_bad_loc = (*d2m_global).load_UseBad();
+		if(use_bad_loc)
 			for(uint i = 0; i < (*d2m_global).mnm_ntot; ++i)
+			{
 				if(!(*d2m_global).bad[i])
 				{
 					S_ccd += (*d2m_global).data[i];
 					sum++;
 				}
+			}
 		else
 			for(uint i = 0; i < (*d2m_global).mnm_ntot; ++i)
 			{
@@ -37,24 +41,28 @@ void minime_profile::fit_GaussianMultinormal(double *res_pt set,
 											set[2], set[3],
 											sim);
 
-	if((*d2m_global).bad != nullptr)
+	if(use_bad_loc)
 		for(uint i = 0; i < (*d2m_global).mnm_ntot; ++i)
+		{
 			if(!(*d2m_global).bad[i])
 				S_sim += sim[i];
+		}
 	else
 		for(uint i = 0; i < (*d2m_global).mnm_ntot; ++i)
 			S_sim += sim[i];
 
 	const double sss = S_sim / sum;
 
-	if((*d2m_global).bad != nullptr)
+	if(use_bad_loc)
 		for(uint i = 0; i < (*d2m_global).mnm_ntot; ++i)
+		{
 			if(!(*d2m_global).bad[i])
 			{
 				const double t = sim[i] - sss;
 				S_tt += t * t;
 				b += t * (*d2m_global).data[i];
 			}
+		}
 	else
 		for(uint i = 0; i < (*d2m_global).mnm_ntot; ++i)
 		{
@@ -76,19 +84,19 @@ void minime_profile::fit_GaussianMultinormal(double *res_pt set,
 
 	*ssq = 0.;
 
-	if((*d2m_global).bad != nullptr)
+	if(use_bad_loc)
 		for(uint i = 0; i < (*d2m_global).mnm_ntot; ++i)
+		{
 			if(!(*d2m_global).bad[i])
 			{
-				const double t = (*d2m_global).data[i] -
-				                 a - b * sim[i];
+				const double t = (*d2m_global).data[i] - a - b * sim[i];
 				*ssq += t * t;
 			}
+		}
 	else
 		for(uint i = 0; i < (*d2m_global).mnm_ntot; ++i)
 		{
-			const double t = (*d2m_global).data[i] -
-			                 a - b * sim[i];
+			const double t = (*d2m_global).data[i] - a - b * sim[i];
 			*ssq += t * t;
 		}
 

@@ -49,6 +49,7 @@ minime_profile::minime_profile(void)
 	allocd.store(false, std::memory_order_relaxed);
 	filled.store(false, std::memory_order_relaxed);
 	do_gnuplot.store(false, std::memory_order_relaxed);
+	use_bad.store(false, std::memory_order_relaxed);
 
 	mnm_rows =
 	mnm_cols =
@@ -119,7 +120,10 @@ void minime_profile::fill_DataFromFile(const std::string &fname,
 							ERR_ARG);
 				exit(EXIT_FAILURE);
 			}
+			store_UseBad(true);
 		}
+		else
+			store_UseBad(false);
 
 		data = alloc_mat(mnm_rows, mnm_cols);
 		bad = alloc_ucharmatrix(mnm_rows, mnm_cols, 0);
@@ -132,7 +136,12 @@ void minime_profile::fill_DataFromFile(const std::string &fname,
 	{
 		fpfile2double(fname.c_str(), data, mnm_rows, mnm_cols);
 		if(!bad_fname.empty())
+		{
 			uintfile2uchar(bad_fname.c_str(), bad, mnm_rows, mnm_cols);
+			store_UseBad(true);
+		}
+		else
+			store_UseBad(false);
 
 		store_FilledMemory(true);
 	}
@@ -141,6 +150,7 @@ void minime_profile::fill_DataFromFile(const std::string &fname,
 void minime_profile::alloc_DataFromMemory(const uint nrows, const uint ncols,
 								const uchar *const bad_in)
 {
+	/** @todo Check this for ROI resetting. */
 	if(!load_AllocatedMemory())
 	{
 		mnm_rows = nrows;
@@ -149,17 +159,22 @@ void minime_profile::alloc_DataFromMemory(const uint nrows, const uint ncols,
 		ffc.set_Dimensions(mnm_rows, mnm_cols);
 
 		if(bad_in != nullptr)
+		{
 			for(uint i = 0; i < mnm_ntot; ++i)
 				if(bad_in[i] > 1)
 					error_msg("the bad pixel matrix is ill conditioned",
 								ERR_ARG);
+			store_UseBad(true);
+		}
+		else
+			store_UseBad(false);
 
 		data = alloc_mat(mnm_rows, mnm_cols);
 		bad = alloc_ucharmatrix(mnm_rows, mnm_cols, 0);
 
 		store_AllocatedMemory(true);
 	}
-	else if((mnm_rows != nrows) || (mnm_cols != ncols))
+	else if(mnm_rows != nrows || mnm_cols != ncols)
 	{
 		mnm_rows = nrows;
 		mnm_cols = ncols;
@@ -167,10 +182,15 @@ void minime_profile::alloc_DataFromMemory(const uint nrows, const uint ncols,
 		ffc.set_Dimensions(mnm_rows, mnm_cols);
 
 		if(bad_in != nullptr)
+		{
 			for(uint i = 0; i < mnm_ntot; ++i)
 				if(bad_in[i] > 1)
 					error_msg("the bad pixel matrix is ill conditioned",
 								ERR_ARG);
+			store_UseBad(true);
+		}
+		else
+			store_UseBad(false);
 
 		data = realloc_mat(data, mnm_rows, mnm_cols);
 		bad = realloc_ucharmatrix(bad, mnm_rows, mnm_cols, 0);
@@ -184,7 +204,12 @@ void minime_profile::fill_DataFromMemory(const double *res_pt data_in,
 {
 	if(load_AllocatedMemory())
 	{
-		memcpy(data, data_in, mnm_ntot * sizeof(double));
+		#ifndef IGYBA_NDEBUG
+		for(uint i = 0; i < mnm_ntot; ++i)
+			if(!std::isfinite(data[i]) || !std::isfinite(data_in[i]))
+				error_msg("Data range invalid", ERR_ARG);
+		#endif
+		memcpy(data, data_in, mnm_ntot * sizeof(double)); /** @todo Here I failed. */
 		if(bad_in != nullptr)
 			memcpy(bad, bad_in, mnm_ntot * sizeof(uchar));
 		store_FilledMemory(true);
@@ -193,9 +218,11 @@ void minime_profile::fill_DataFromMemory(const double *res_pt data_in,
 		error_msg("memory not allocated", ERR_ARG);
 }
 
-void minime_profile::get_CentroidBeamRadius(double *res_pt cen_x, double *res_pt cen_y,
-									double *res_pt rad_x, double *res_pt rad_y,
-									double *res_pt corr)
+void minime_profile::get_CentroidBeamRadius(double *res_pt cen_x,
+											double *res_pt cen_y,
+											double *res_pt rad_x,
+											double *res_pt rad_y,
+											double *res_pt corr)
 {
 	double cx = 0.,
 	       cy = 0.,
@@ -450,4 +477,14 @@ void minime_profile::store_UseGnuplot(const bool b)
 bool minime_profile::load_UseGnuplot(void)
 {
 	return do_gnuplot.load(std::memory_order_acquire);
+}
+
+void minime_profile::store_UseBad(const bool b)
+{
+	use_bad.store(b);
+}
+
+bool minime_profile::load_UseBad(void)
+{
+	return use_bad.load();
 }

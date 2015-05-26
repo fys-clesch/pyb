@@ -685,6 +685,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 				closing action of the window. If this happens despite the next
 				call, a flag can be added in the mouse callback that makes sure
 				that the callback is blocked when closing the window. */
+				store_ButtonState(CLOSE_CAM_WINDOW);
 				destroyWindow((*itw1ptr).t_cam.get_MainWindowName());
 				break;
 			default:

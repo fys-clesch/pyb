@@ -330,7 +330,7 @@ void grabber::produce_Mat_Work(void)
 	/** @todo If there's a bottleneck here, a parallelization can be introduced.
 	 * One processor runs the normal matrix, the other one the flipped one.
 	 * 2015-04-21: Implemented the following OpenMP section, but couldn't
-	 * profile it with gprof - meaningless results. In addition, one spurious
+	 * profile it with gprof - meaningless results. In addition, a (one) spurious
 	 * error occurred, maybe because of a data race.
 	 */
 //	#pragma omp parallel sections private(uny, unx) firstprivate(unxm, unym)
@@ -1637,6 +1637,16 @@ void grabber::get_GroundliftRangeAtomic(double *res_pt gl_current,
 	*gl_max = groundlift_max_atm.load(std::memory_order_relaxed);
 }
 
+/** \brief This is the thread function for the minime class member.
+ *
+ * \param wavelengthUm const double The wavelength in micro meter.
+ * \param pix2um const double The pixel to micro meter scaling given by the
+ camera.
+ * \return void
+ *
+ * This is the link between the grabber and minime thread, therefor care has to
+ * be taken with respect to race conditions.
+ */
 void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
 {
 	const uint n_roi_rows = load_WorkRoiRows(),
@@ -1645,8 +1655,7 @@ void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
 	mime.set_Wavelength(wavelengthUm);
 	mime.set_PixelToUm(pix2um);
 	mime.set_Plotting(true);
-	/** @todo It seems that something is going wrong here during the
-	reallocation. */
+
 	mime.alloc_DataFromMemory(n_roi_rows, n_roi_cols);
 
 	if(work_roi_arr == nullptr)
@@ -1656,7 +1665,9 @@ void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
 	}
 
 	double *cpy = alloc_mat(n_roi_rows, n_roi_cols);
+	/** @todo Check this for ROI resetting. Add a hold function here. */
 	memcpy(cpy, work_roi_arr_buf, n_roi_rows * n_roi_cols * sizeof(double));
+	/** Then release. */
 	mime.fill_DataFromMemory(cpy);
 	free(cpy);
 

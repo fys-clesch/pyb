@@ -2774,7 +2774,7 @@
 
 1425221509 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs\igyba_thorlabs.rc
 
-1432394489 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
+1432576038 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
 	"grabber_class.h"
 	<assert.h>
 	"curses.h"
@@ -2839,7 +2839,7 @@
 	<assert.h>
 	<condition_variable>
 
-1430844504 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
+1432583668 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
 	<stdlib.h>
 	<math.h>
 	<float.h>
@@ -2868,7 +2868,7 @@
 
 1426348211 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\test.h
 
-1431160727 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.cpp
+1432626350 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.cpp
 	"fifo_class.h"
 
 1429426917 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun.cpp
@@ -2908,7 +2908,7 @@
 	<time.h>
 	"random.h"
 
-1429118300 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\auxf.cpp
+1432576316 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\auxf.cpp
 	<math.h>
 	<float.h>
 	<assert.h>
@@ -2975,7 +2975,7 @@
 	<wx/statusbr.h>
 	"../thorlabs_cam/thorlabs_cam.h"
 
-1432552720 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
+1432566885 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
 	"igyba_thorlabs_wxMain.h"
 	<wx/msgdlg.h>
 	<wx/filedlg.h>
@@ -3325,15 +3325,15 @@
 
 1412631243 c:\wxwidgets-3.0.2\include\wx\os2\filedlg.h
 
-1431160829 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
+1432581516 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
 	"minime_class.h"
 	"funcs.h"
 	"minimizer_s.h"
 
-1432494128 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_profile_class.cpp
+1432581744 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_profile_class.cpp
 	"minime_class.h"
 
-1430844761 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_propagation_class.cpp
+1432577155 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_propagation_class.cpp
 	"minime_class.h"
 
 1431160829 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp

@@ -77,15 +77,23 @@ void minime_propagation::fit_BeamProp(void)
 
 	if(do_gnuplot)
 	{
-		double simx[2],
-		       simy[2];
-		ffc.set_PlotTitle("Beam width estimation");
+		double simx[4],
+		       simy[4];
+		std::string title, timestr;
+		get_DateAndTime(timestr);
+		std::replace(timestr.begin(), timestr.end(), '_', ' ');
+		title = "Mode estimation " + timestr;
+		ffc.set_PlotTitle(title);
 		ffc.set_Dimensions(mnm_ntot, 1);
 
 		simx[0] = fit_par_p[0].val; /* z0 first. */
-		simx[1] = fit_par_p[1].val; /* w0 */
+		simx[1] = fit_par_p[0].std_rel_err;
+		simx[2] = fit_par_p[1].val; /* w0 */
+		simx[3] = fit_par_p[1].std_rel_err;
 		simy[0] = fit_par_p[2].val;
-		simy[1] = fit_par_p[3].val;
+		simy[1] = fit_par_p[2].std_rel_err;
+		simy[2] = fit_par_p[3].val;
+		simy[3] = fit_par_p[3].std_rel_err;
 
 		ffc.plot_BeamWidthsFit(wz_x, wz_y, zpnt, simx, simy, lambda);
 	}

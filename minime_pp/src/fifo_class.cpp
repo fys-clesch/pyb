@@ -136,7 +136,12 @@ void fifo::write_Data_g(const std::string &fname, const uchar format,
 {
 	create_dir(fname.c_str());
 
-	FILE *wfile = fopen(fname.c_str(), "w");
+	FILE *wfile;
+	if(format == 4 || format == 6)
+		wfile = fopen(fname.c_str(), "wb");
+	else
+		wfile = fopen(fname.c_str(), "w");
+
 	if(wfile == NULL)
 	{
 		file_error_msg(fname.c_str(), ERR_ARG);
@@ -148,19 +153,19 @@ void fifo::write_Data_g(const std::string &fname, const uchar format,
 	    float *res_pt tsp;
 	    double *res_pt tdp;
 	    uint x, y;
-		case(0): /* xyz */
+		case(0): /* xyz. */
 			for(x = 0 + x_co; x < dat_rows - x_co; x++)
 				for(y = 0 + y_co; y < dat_cols - y_co; y++)
 					fprintf(wfile, "%u %u %.*g\n", x, y,
 								print_prec, data[x * dat_cols + y]);
 			break;
-		case(1): /* xyz with tabs */
+		case(1): /* xyz with tabs. */
 			for(x = 0 + x_co; x < dat_rows - x_co; x++)
 				for(y = 0 + y_co; y < dat_cols - y_co; y++)
 					fprintf(wfile, "%u\t%u\t%.*g\n", x, y,
 								print_prec, data[x * dat_cols + y]);
 			break;
-		case(2): /* matrix without last linefeed */
+		case(2): /* Matrix without last linefeed. */
 			for(x = 0 + x_co; x < dat_rows - x_co; x++)
 				for(y = 0 + y_co; y < dat_cols - y_co; y++)
 				{
@@ -171,7 +176,7 @@ void fifo::write_Data_g(const std::string &fname, const uchar format,
 						fprintf(wfile, "\n");
 				}
 			break;
-		case(3): /* gnuplot: xyz with linefeed after each block */
+		case(3): /* gnuplot: xyz with linefeed after each block. */
 			for(x = 0 + x_co; x < dat_rows - x_co; x++)
 				for(y = 0 + y_co; y < dat_cols - y_co; y++)
 				{
@@ -180,7 +185,7 @@ void fifo::write_Data_g(const std::string &fname, const uchar format,
 						fprintf(wfile, "\n");
 				}
 			break;
-        case(4): /* gnuplot: whole binary float matrix with header */
+        case(4): /* gnuplot: whole binary float matrix with header. */
             tsp = alloc_mat_float(dat_rows + 1, dat_cols + 1);
 			for(x = 0; x < dat_rows + 1; x++)
 				for(y = 0; y < dat_cols + 1; y++)
@@ -197,7 +202,7 @@ void fifo::write_Data_g(const std::string &fname, const uchar format,
             write_Bin_float(fname, tsp, (dat_rows + 1) * (dat_cols + 1));
             free(tsp);
             break;
-        case(5): /* whole ascii matrix with header */
+        case(5): /* Whole ASCII matrix with header. */
 			for(x = 0; x < dat_rows + 1; x++)
 				for(y = 0; y < dat_cols + 1; y++)
 				{
@@ -216,7 +221,7 @@ void fifo::write_Data_g(const std::string &fname, const uchar format,
 						fprintf(wfile, " ");
 				}
             break;
-        case(6): /* whole binary matrix with header */
+        case(6): /* Whole binary matrix with header. */
             tdp = alloc_mat(dat_rows + 1, dat_cols + 1);
 			for(x = 0; x < dat_rows + 1; x++)
 				for(y = 0; y < dat_cols + 1; y++)
@@ -251,7 +256,7 @@ void fifo::write_Bin_float(const std::string &fname, const float *res_pt data,
 
 	create_dir(fname.c_str());
 
-	FILE *outfile = fopen(fname.c_str(), "w");
+	FILE *outfile = fopen(fname.c_str(), "wb");
 	if(outfile == NULL)
 	{
 		file_error_msg(fname.c_str(), ERR_ARG);
@@ -273,7 +278,7 @@ void fifo::write_Bin_double(const std::string &fname, const double *res_pt data,
 
 	create_dir(fname.c_str());
 
-	FILE *outfile = fopen(fname.c_str(), "w");
+	FILE *outfile = fopen(fname.c_str(), "wb");
 	if(outfile == NULL)
 	{
 		file_error_msg(fname.c_str(), ERR_ARG);
@@ -293,7 +298,7 @@ void fifo::write_Bin_uint(const std::string &fname, const uint *res_pt data,
 	else
 		nn = nrowscols;
 	create_dir(fname.c_str());
-	FILE *outfile = fopen(fname.c_str(), "w");
+	FILE *outfile = fopen(fname.c_str(), "wb");
 	if(outfile == NULL)
 	{
 		file_error_msg(fname.c_str(), ERR_ARG);
@@ -322,7 +327,7 @@ void fifo::plot_Data(const double *res_pt data,
 	if(file_name.empty())
 		mkdir("plot" DIRMOD;
 
-	write_Data_g(tmpdat, 2, data);
+	write_Data_g(tmpdat, 4, data);
 
 	FILE *gnufile = fopen(cmdtmp.c_str(), "w");
 	if(gnufile == NULL)
@@ -374,9 +379,8 @@ void fifo::plot_Data(const double *res_pt data,
 		fprintf(gnufile, "set out '%s'\n", file_name.c_str());
 
 	fprintf(gnufile,
-			"#splot '%s' binary matrix using 2:1:3 w l ls 7 palette t '' "
-			"#doesn't work on Windows\n"
-			"splot '%s' matrix using 2:1:3 w l ls 7 palette t ''\n",
+			"splot '%s' binary matrix using 2:1:3 w l ls 7 palette t ''\n"
+			"#splot '%s' matrix using 2:1:3 w l ls 7 palette t ''\n",
 			tmpdat.c_str(), tmpdat.c_str());
 
 	fclose(gnufile);
@@ -605,16 +609,20 @@ void fifo::write_MatToFile(const cv::Mat &mat, const std::string &fname)
 	#define IJ_FOR_LOOP \
 	for(uint i = 0; i < (uint)mat.rows; i++) \
 		for(uint j = 0; j < (uint)mat.cols; j++)
+
 	#define SINGLE_CHANNEL_ARG(__MAT_TYPE__) \
 	mat.at<__MAT_TYPE__>(i, j), \
 	j < (uint)mat.cols - 1 ? ' ' : '\n'
+
 	#define TRIPPLE_CHANNEL_VAR(__MAT_TYPE__) \
 	const cv::Vec<__MAT_TYPE__, 3> rgb = \
 	mat.at<cv::Vec<__MAT_TYPE__, 3>>(i, j);
+
 	#define TRIPPLE_CHANNEL_ARG \
 	rgb[0], rgb[1], rgb[2], i, j, \
 	j < (uint)mat.cols - 1 ? "\n" : "\n\n"
 
+	/** @todo Add a binary output option. */
 	if(chn == 1)
 	{
 		if(bits_d == CV_8U)
@@ -785,12 +793,21 @@ void fifo::plot_BeamWidthsFit(const double *res_pt data_x,
 	fprintf(gnufile,
 			"set term pngcairo size 800, 600\n"
 			"set grid\n"
+			"set key outside horizontal top center Left reverse nobox width 2 spacing 1\n"
 			"f(x, lambda, z0, w0) = "
 			"w0 * sqrt(1. + ((x - z0) / (w0**2 * pi / lambda))**2)\n"
 			"set xr [:]\n"
 			"set yr [:]\n"
+			"set label 1 "
+			"sprintf(\"z_{0x}: (%%.3g +- %%.3g) mm, w_{x} = (%%.3g +- %%.3g) "
+			"{/Symbol m}m\", %g, %g, %g, %g) at graph .1, .9\n"
+			"set label 2 "
+			"sprintf(\"z_{0y}: (%%.3g +- %%.3g) mm, w_{y} = (%%.3g +- %%.3g) "
+			"{/Symbol m}m\", %g, %g, %g, %g) at graph .1, .85\n"
 			"set yl 'Beam radius / {/Symbol m}m' rotate parallel\n"
-			"set xl 'Propagation / mm'\n");
+			"set xl 'Propagation / mm'\n",
+			res_x[0], res_x[1] * res_x[0], res_x[2], res_x[3] * res_x[2],
+			res_y[0], res_y[1] * res_y[0], res_y[2], res_y[3] * res_y[2]);
 
 	if(!plot_title.empty())
 		fprintf(gnufile, "set title '%s'\n", plot_title.c_str());
@@ -810,8 +827,8 @@ void fifo::plot_BeamWidthsFit(const double *res_pt data_x,
 			"f(x * 1e3, %g, %g * 1e3, %g) w l t 'w_{y}(z)', "
 			"'%s' using ($1):($2) w p t 'Data_{x}', "
 			"'%s' using ($1):($3) w p t 'Data_{y}'\n",
-			lambda_um, res_x[0], res_x[1],
-			lambda_um, res_y[0], res_y[1],
+			lambda_um, res_x[0], res_x[2],
+			lambda_um, res_y[0], res_y[2],
 			tmpdat.c_str(), tmpdat.c_str());
 
 	fclose(gnufile);
