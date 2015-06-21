@@ -4,17 +4,17 @@
 
 static minime_profile *d2m_global;
 static double *sim;
+static bool sums_initialized = false;
 
 void minime_profile::fit_GaussianMultinormal(double *res_pt set,
 											double *res_pt ssq)
 {
 	/* Calculate linear offset and scaling. */
-	static bool init = false,
-	            use_bad_loc;
+	static bool use_bad_loc;
 	double b = 0., S_tt = 0., S_sim = 0.;
 	static double S_ccd = 0., sum = 0.;
 
-	if(!init)
+	if(!sums_initialized)
 	{
 		use_bad_loc = (*d2m_global).load_UseBad();
 		if(use_bad_loc)
@@ -32,7 +32,7 @@ void minime_profile::fit_GaussianMultinormal(double *res_pt set,
 				S_ccd += (*d2m_global).data[i];
 				sum++;
 			}
-		init = true;
+		sums_initialized = true;
 	}
 
 	/* wxz, wyz, corr, x_off, y_off */
@@ -229,5 +229,6 @@ void minime_profile::fit_GaussEllip(void)
 		ffc.set_PlotTitle("Residuum: Fit_{ij} - Data_{ij}");
 		ffc.plot_Data(sim);
 	}
+	sums_initialized = false;
 	free(sim);
 }

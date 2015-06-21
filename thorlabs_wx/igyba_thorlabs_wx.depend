@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1428684517 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxapp.cpp
+1432546809 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxapp.cpp
 	"igyba_thorlabs_wxApp.h"
 	"igyba_thorlabs_wxMain.h"
 	<wx/image.h>
@@ -1690,7 +1690,7 @@
 1412631243 c:\wxwidgets-3.0.2\include\wx\univ\theme.h
 	"wx/string.h"
 
-1432390276 c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.h
+1432546375 c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.h
 	<wx/notebook.h>
 	<wx/sizer.h>
 	<wx/stattext.h>
@@ -1808,11 +1808,14 @@
 	"wx/list.h"
 	"wx/dynarray.h"
 
-1428433056 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
+1432566885 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
 	"igyba_thorlabs_wxMain.h"
 	<wx/msgdlg.h>
+	<wx/filedlg.h>
+	<wx/aboutdlg.h>
 	<wx/bitmap.h>
 	<wx/icon.h>
+	<wx/settings.h>
 	<wx/intl.h>
 	<wx/image.h>
 	<wx/string.h>
@@ -1919,7 +1922,7 @@
 
 1412631243 c:\wxwidgets-3.0.2\include\wx\os2\msgdlg.h
 
-1428427143 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_wx\resource.rc
+1428938780 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_wx\resource.rc
 	"wx/msw/wx.rc"
 
 1412631243 c:\wxwidgets-3.0.2\include\wx\msw\wx.rc
@@ -1939,7 +1942,7 @@
 
 1427365008 c:\wxwidgets-3.0.2\lib\gcc_dll\mswu\wx\msw\rcdefs.h
 
-1429118300 source:c:\users\cs\dropbox\dtu\progs\igyba\src\auxf.cpp
+1432576316 source:c:\users\cs\dropbox\dtu\progs\igyba\src\auxf.cpp
 	<math.h>
 	<float.h>
 	<assert.h>
@@ -1950,7 +1953,7 @@
 	<sys/stat.h>
 	"header.hpp"
 
-1429363970 c:\users\cs\dropbox\dtu\progs\igyba\src\header.hpp
+1434280002 c:\users\cs\dropbox\dtu\progs\igyba\src\header.hpp
 	<stdio.h>
 	<stdarg.h>
 	<string>
@@ -1986,12 +1989,12 @@
 	<assert.h>
 	<condition_variable>
 
-1432394489 source:c:\users\cs\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
+1433523870 source:c:\users\cs\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
 	"grabber_class.h"
 	<assert.h>
 	"curses.h"
 
-1432390512 c:\users\cs\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
+1432632745 c:\users\cs\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/imgproc/imgproc.hpp>
@@ -2079,7 +2082,7 @@
 	"../../src/header.hpp"
 	"../../src/threadhand_class.h"
 
-1430844504 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
+1432583668 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
 	<stdlib.h>
 	<math.h>
 	<float.h>
@@ -2089,7 +2092,7 @@
 	"../../src/header.hpp"
 	"fifo_class.h"
 
-1430831341 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.h
+1434280178 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.h
 	<string.h>
 	<stdlib.h>
 	<cstdio>
@@ -3048,7 +3051,7 @@
 	<wx/image.h>
 	<wx/string.h>
 
-1428411836 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_wx\src\led.cpp
+1429627964 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs_wx\src\led.cpp
 	<wx/led.h>
 	<string.h>
 
@@ -3336,15 +3339,15 @@
 1432577155 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_propagation_class.cpp
 	"minime_class.h"
 
-1431160829 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
+1432629853 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
 	"minime_class.h"
 	"funcs.h"
 	"minimizer_s.h"
 
-1430833970 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime_profile_class.cpp
+1432628586 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime_profile_class.cpp
 	"minime_class.h"
 
-1430844761 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime_propagation_class.cpp
+1432577155 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime_propagation_class.cpp
 	"minime_class.h"
 
 1412631242 c:\wxwidgets-3.0.2\include\wx\aboutdlg.h

@@ -207,7 +207,7 @@ void minime_profile::fill_DataFromMemory(const double *res_pt data_in,
 		#ifndef IGYBA_NDEBUG
 		for(uint i = 0; i < mnm_ntot; ++i)
 			if(!std::isfinite(data[i]) || !std::isfinite(data_in[i]))
-				error_msg("Data range invalid", ERR_ARG);
+				error_msg("data range invalid", ERR_ARG);
 		#endif
 		memcpy(data, data_in, mnm_ntot * sizeof(double)); /** @todo Here I failed. */
 		if(bad_in != nullptr)

@@ -19,7 +19,8 @@ grabber::grabber(void)
 	/* atomic<bool> */
 	close_copy_thread.store(false, std::memory_order_relaxed);
 	close_viewer_thread.store(false, std::memory_order_relaxed);
-	close_minime_thread.store(false, std::memory_order_relaxed); /* 3 */
+	wait_camera_thread.store(false, std::memory_order_relaxed);
+	close_minime_thread.store(false, std::memory_order_relaxed); /* 4 */
 	/* int */
 	in_chn =
 	in_depth = 0xDEADDEAD;
@@ -347,8 +348,10 @@ void grabber::produce_Mat_Work(void)
 			{
 				const float *const m = work_roi.ptr<float>(i);
 				for(uint j = 0; j < uny; ++j)
-					work_roi_arr_buf[i * uny + j] =
+				{
+					work_roi_arr_buf[i * uny + j] = (double)m[j];
 					work_roi_arr[i * uny + j] = (double)m[j];
+				}
 			}
 //		}
 //		#pragma omp section
@@ -1644,7 +1647,7 @@ void grabber::get_GroundliftRangeAtomic(double *res_pt gl_current,
  camera.
  * \return void
  *
- * This is the link between the grabber and minime thread, therefor care has to
+ * This is the link between the grabber and minime thread, thus care has to
  * be taken with respect to race conditions.
  */
 void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
@@ -1658,17 +1661,17 @@ void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
 
 	mime.alloc_DataFromMemory(n_roi_rows, n_roi_cols);
 
-	if(work_roi_arr == nullptr)
+	if(work_roi_arr_buf == nullptr)
 	{
-		error_msg("no data in the buffer", ERR_ARG);
+		error_msg("buffer not allocated", ERR_ARG);
 		return;
 	}
 
 	double *cpy = alloc_mat(n_roi_rows, n_roi_cols);
-	/** @todo Check this for ROI resetting. Add a hold function here. */
+	/** @todo Check this for ROI resetting. Check the locking mechanism. */
 	memcpy(cpy, work_roi_arr_buf, n_roi_rows * n_roi_cols * sizeof(double));
-	/** Then release. */
 	mime.fill_DataFromMemory(cpy);
+	wait_camera_thread.store(false, std::memory_order_relaxed);
 	free(cpy);
 
 	mime.fit_GaussEllip();
@@ -1721,6 +1724,21 @@ bool grabber::signal_MinimeThreadIfWait(void)
 	}
 	else
 		return false;
+}
+
+void grabber::wait_CameraThread(void)
+{
+	wait_camera_thread.store(true, std::memory_order_relaxed);
+	iprint(stdout, "waiting for minime thread to get data .");
+	while(true)
+	{
+		if(!wait_camera_thread.load(std::memory_order_relaxed))
+			break;
+		std::this_thread::sleep_for(std::chrono::milliseconds(80));
+		iprint(stdout, ".");
+		fflush(stdout);
+	}
+	iprint(stdout, " done\n");
 }
 
 void grabber::close_CopyThread(void)

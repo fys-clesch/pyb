@@ -308,6 +308,46 @@ void fifo::write_Bin_uint(const std::string &fname, const uint *res_pt data,
 	fclose(outfile);
 }
 
+void fifo::write_Bin_int32(const std::string &fname,
+						const int32_t *res_pt data,
+						const uint nrowscols)
+{
+	uint nn;
+	if(nrowscols == 0)
+		nn = dat_rows * dat_cols;
+	else
+		nn = nrowscols;
+	create_dir(fname.c_str());
+	FILE *outfile = fopen(fname.c_str(), "wb");
+	if(outfile == NULL)
+	{
+		file_error_msg(fname.c_str(), ERR_ARG);
+		exit(EXIT_FAILURE);
+	}
+	fwrite(data, sizeof(int32_t), nn, outfile);
+	fclose(outfile);
+}
+
+void fifo::write_Bin_uint16(const std::string &fname,
+							const uint16_t *res_pt data,
+							const uint nrowscols)
+{
+	uint nn;
+	if(nrowscols == 0)
+		nn = dat_rows * dat_cols;
+	else
+		nn = nrowscols;
+	create_dir(fname.c_str());
+	FILE *outfile = fopen(fname.c_str(), "wb");
+	if(outfile == NULL)
+	{
+		file_error_msg(fname.c_str(), ERR_ARG);
+		exit(EXIT_FAILURE);
+	}
+	fwrite(data, sizeof(uint16_t), nn, outfile);
+	fclose(outfile);
+}
+
 void fifo::plot_Data(const double *res_pt data,
 					const bool auto_range,
 					const double lo, const double hi)
@@ -580,7 +620,8 @@ void fifo::plot_Data(const cv::Mat &mdata,
 	remove(cmdtmp.c_str());
 }
 
-void fifo::write_MatToFile(const cv::Mat &mat, const std::string &fname)
+void fifo::write_MatToFile(const cv::Mat &mat, const std::string &fname,
+						const bool use_bin)
 {
 	std::string fname_n;
 
@@ -604,15 +645,29 @@ void fifo::write_MatToFile(const cv::Mat &mat, const std::string &fname)
 	}
 
 	const uint chn = mat.channels(),
-	           bits_d = mat.depth();
+	           bits_d = mat.depth(),
+	           mat_rows = mat.rows,
+	           mat_cols = mat.cols;
 
 	#define IJ_FOR_LOOP \
-	for(uint i = 0; i < (uint)mat.rows; i++) \
-		for(uint j = 0; j < (uint)mat.cols; j++)
+	for(uint i = 0; i < mat_rows; ++i) \
+		for(uint j = 0; j < mat_cols; ++j)
 
 	#define SINGLE_CHANNEL_ARG(__MAT_TYPE__) \
 	mat.at<__MAT_TYPE__>(i, j), \
-	j < (uint)mat.cols - 1 ? ' ' : '\n'
+	j < mat_cols - 1 ? ' ' : '\n'
+
+	#define SINGLE_CHANNEL_BIT_ARG(__MAT_TYPE__) \
+	for(uint i = 0; i < mat_rows + 1; ++i) \
+		for(uint j = 0; j < mat_cols + 1; ++j) \
+			if(!j && !i) \
+				temp[0] = mat_cols; \
+			else if(!i && j != 0) \
+				temp[i * (mat_cols + 1) + j] = j - 1; \
+			else if(!j && i != 0) \
+				temp[i * (mat_cols + 1) + j] = i - 1; \
+			else \
+				temp[i * (mat_cols + 1) + j] = mat.at<__MAT_TYPE__>(i, j)
 
 	#define TRIPPLE_CHANNEL_VAR(__MAT_TYPE__) \
 	const cv::Vec<__MAT_TYPE__, 3> rgb = \
@@ -620,112 +675,145 @@ void fifo::write_MatToFile(const cv::Mat &mat, const std::string &fname)
 
 	#define TRIPPLE_CHANNEL_ARG \
 	rgb[0], rgb[1], rgb[2], i, j, \
-	j < (uint)mat.cols - 1 ? "\n" : "\n\n"
+	j < mat_cols - 1 ? "\n" : "\n\n"
 
 	/** @todo Add a binary output option. */
-	if(chn == 1)
+	if(use_bin)
 	{
-		if(bits_d == CV_8U)
+		if(chn == 1)
 		{
-			IJ_FOR_LOOP
-			fprintf(wfile, "%hhu%c", SINGLE_CHANNEL_ARG(uint8_t));
-		}
-		else if(bits_d == CV_8S)
-		{
-			IJ_FOR_LOOP
-			fprintf(wfile, "%hhi%c", SINGLE_CHANNEL_ARG(int8_t));
-		}
-		else if(bits_d == CV_16U)
-		{
-			IJ_FOR_LOOP
-			fprintf(wfile, "%hu%c", SINGLE_CHANNEL_ARG(uint16_t));
-		}
-		else if(bits_d == CV_16S)
-		{
-			IJ_FOR_LOOP
-			fprintf(wfile, "%hi%c", SINGLE_CHANNEL_ARG(int16_t));
-		}
-		else if(bits_d == CV_32S)
-		{
-			IJ_FOR_LOOP
-			fprintf(wfile, "%i%c", SINGLE_CHANNEL_ARG(int32_t));
-		}
-		else if(bits_d == CV_32F)
-		{
-			IJ_FOR_LOOP
-			fprintf(wfile, "%g%c", SINGLE_CHANNEL_ARG(float));
-		}
-		else if(bits_d == CV_64F)
-		{
-			IJ_FOR_LOOP
-			fprintf(wfile, "%g%c", SINGLE_CHANNEL_ARG(double));
-		}
-		else
-			warn_msg("unrecognised format\n", ERR_ARG);
-	}
-	else if(chn == 3)
-	{
-		if(bits_d == CV_8U)
-		{
-			IJ_FOR_LOOP
+			if(bits_d == CV_32S)
 			{
-				TRIPPLE_CHANNEL_VAR(uint8_t)
-				fprintf(wfile, "%hhu %hhu %hhu %u %u%s", TRIPPLE_CHANNEL_ARG);
+				int32_t *temp = alloc_mat_int32(mat_rows + 1, mat_cols + 1);
+				SINGLE_CHANNEL_BIT_ARG(int32_t);
+				write_Bin_int32(fname_n.c_str(), temp,
+									(mat_rows + 1) * (mat_cols + 1));
+				free(temp);
+			}
+			else if(bits_d == CV_32F)
+			{
+				float *temp = alloc_mat_float(mat_rows + 1, mat_cols + 1);
+				SINGLE_CHANNEL_BIT_ARG(float);
+				write_Bin_float(fname_n.c_str(), temp,
+									(mat_rows + 1) * (mat_cols + 1));
+				free(temp);
+			}
+			else if(bits_d == CV_64F)
+			{
+				double *temp = alloc_mat(mat_rows + 1, mat_cols + 1);
+				SINGLE_CHANNEL_BIT_ARG(double);
+				write_Bin_double(fname_n.c_str(), temp,
+									(mat_rows + 1) * (mat_cols + 1));
+				free(temp);
 			}
 		}
-		else if(bits_d == CV_8S)
-		{
-			IJ_FOR_LOOP
-			{
-				TRIPPLE_CHANNEL_VAR(int8_t)
-				fprintf(wfile, "%hhi %hhi %hhi %u %u%s", TRIPPLE_CHANNEL_ARG);
-			}
-		}
-		else if(bits_d == CV_16U)
-		{
-			IJ_FOR_LOOP
-			{
-				TRIPPLE_CHANNEL_VAR(uint16_t)
-				fprintf(wfile, "%hu %hu %hu %u %u%s", TRIPPLE_CHANNEL_ARG);
-			}
-		}
-		else if(bits_d == CV_16S)
-		{
-			IJ_FOR_LOOP
-			{
-				TRIPPLE_CHANNEL_VAR(int16_t)
-				fprintf(wfile, "%hi %hi %hi %u %u%s", TRIPPLE_CHANNEL_ARG);
-			}
-		}
-		else if(bits_d == CV_32S)
-		{
-			IJ_FOR_LOOP
-			{
-				TRIPPLE_CHANNEL_VAR(int32_t)
-				fprintf(wfile, "%i %i %i %u %u%s", TRIPPLE_CHANNEL_ARG);
-			}
-		}
-		else if(bits_d == CV_32F)
-		{
-			IJ_FOR_LOOP
-			{
-				TRIPPLE_CHANNEL_VAR(float)
-				fprintf(wfile, "%g %g %g %u %u%s", TRIPPLE_CHANNEL_ARG);
-			}
-		}
-		else if(bits_d == CV_64F)
-		{
-			IJ_FOR_LOOP
-			{
-				TRIPPLE_CHANNEL_VAR(double)
-				fprintf(wfile, "%g %g %g %u %u%s", TRIPPLE_CHANNEL_ARG);
-			}
-		}
-		else
-			warn_msg("unrecognised format\n", ERR_ARG);
 	}
 	else
-		error_msg("unknown matrix format", ERR_ARG);
+	{
+		if(chn == 1)
+		{
+			if(bits_d == CV_8U)
+			{
+				IJ_FOR_LOOP
+				fprintf(wfile, "%hhu%c", SINGLE_CHANNEL_ARG(uint8_t));
+			}
+			else if(bits_d == CV_8S)
+			{
+				IJ_FOR_LOOP
+				fprintf(wfile, "%hhi%c", SINGLE_CHANNEL_ARG(int8_t));
+			}
+			else if(bits_d == CV_16U)
+			{
+				IJ_FOR_LOOP
+				fprintf(wfile, "%hu%c", SINGLE_CHANNEL_ARG(uint16_t));
+			}
+			else if(bits_d == CV_16S)
+			{
+				IJ_FOR_LOOP
+				fprintf(wfile, "%hi%c", SINGLE_CHANNEL_ARG(int16_t));
+			}
+			else if(bits_d == CV_32S)
+			{
+				IJ_FOR_LOOP
+				fprintf(wfile, "%i%c", SINGLE_CHANNEL_ARG(int32_t));
+			}
+			else if(bits_d == CV_32F)
+			{
+				IJ_FOR_LOOP
+				fprintf(wfile, "%g%c", SINGLE_CHANNEL_ARG(float));
+			}
+			else if(bits_d == CV_64F)
+			{
+				IJ_FOR_LOOP
+				fprintf(wfile, "%g%c", SINGLE_CHANNEL_ARG(double));
+			}
+			else
+				warn_msg("unrecognised format\n", ERR_ARG);
+		}
+		else if(chn == 3)
+		{
+			if(bits_d == CV_8U)
+			{
+				IJ_FOR_LOOP
+				{
+					TRIPPLE_CHANNEL_VAR(uint8_t)
+					fprintf(wfile, "%hhu %hhu %hhu %u %u%s", TRIPPLE_CHANNEL_ARG);
+				}
+			}
+			else if(bits_d == CV_8S)
+			{
+				IJ_FOR_LOOP
+				{
+					TRIPPLE_CHANNEL_VAR(int8_t)
+					fprintf(wfile, "%hhi %hhi %hhi %u %u%s", TRIPPLE_CHANNEL_ARG);
+				}
+			}
+			else if(bits_d == CV_16U)
+			{
+				IJ_FOR_LOOP
+				{
+					TRIPPLE_CHANNEL_VAR(uint16_t)
+					fprintf(wfile, "%hu %hu %hu %u %u%s", TRIPPLE_CHANNEL_ARG);
+				}
+			}
+			else if(bits_d == CV_16S)
+			{
+				IJ_FOR_LOOP
+				{
+					TRIPPLE_CHANNEL_VAR(int16_t)
+					fprintf(wfile, "%hi %hi %hi %u %u%s", TRIPPLE_CHANNEL_ARG);
+				}
+			}
+			else if(bits_d == CV_32S)
+			{
+				IJ_FOR_LOOP
+				{
+					TRIPPLE_CHANNEL_VAR(int32_t)
+					fprintf(wfile, "%i %i %i %u %u%s", TRIPPLE_CHANNEL_ARG);
+				}
+			}
+			else if(bits_d == CV_32F)
+			{
+				IJ_FOR_LOOP
+				{
+					TRIPPLE_CHANNEL_VAR(float)
+					fprintf(wfile, "%g %g %g %u %u%s", TRIPPLE_CHANNEL_ARG);
+				}
+			}
+			else if(bits_d == CV_64F)
+			{
+				IJ_FOR_LOOP
+				{
+					TRIPPLE_CHANNEL_VAR(double)
+					fprintf(wfile, "%g %g %g %u %u%s", TRIPPLE_CHANNEL_ARG);
+				}
+			}
+			else
+				warn_msg("unrecognised format\n", ERR_ARG);
+		}
+		else
+			error_msg("unknown matrix format", ERR_ARG);
+	}
 
 	#undef IJ_FOR_LOOP
 	#undef SINGLE_CHANNEL_ARG

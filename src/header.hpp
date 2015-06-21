@@ -78,6 +78,11 @@ void file_error_msg(const char *res_pt fname, const char *res_pt file,
 double *alloc_vec(const uint n);
 double *alloc_mat(const uint row, const uint col);
 double *realloc_mat(double *m, const uint row, const uint col);
+int32_t *alloc_mat_int32(const uint row, const uint col);
+uint16_t *alloc_mat_uint16(const uint row, const uint col);
+int16_t *alloc_mat_int16(const uint row, const uint col);
+uint8_t *alloc_mat_uint8(const uint row, const uint col);
+int8_t *alloc_mat_int8(const uint row, const uint col);
 float *alloc_mat_float(const uint row, const uint col);
 double *alloc_3mat(const uint row, const uint col);
 double *alloc_3matrix(const uint row, const uint col, const double init);

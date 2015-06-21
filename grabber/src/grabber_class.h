@@ -42,6 +42,7 @@ public:
 	void update_Mats_RgbAndFp(void);
 	void set_Pix2UmScale(const double scl);
 	bool signal_MinimeThreadIfWait(void);
+	void wait_CameraThread(void);
 	bool signal_CopyThreadIfWait(void);
 	void toggle_Smoothing(void);
 	void get_MainWindowName(std::string &name);
@@ -115,7 +116,8 @@ private:
 
 	std::atomic<bool> close_copy_thread,
 	                  close_viewer_thread,
-	                  close_minime_thread;
+	                  close_minime_thread,
+	                  wait_camera_thread;
 
 	std::atomic<uint32_t> work_roi_rows,
 	                      work_roi_cols;
@@ -157,7 +159,7 @@ private:
 	       *work_roi_arr_tflip_buf, /** @todo Candidate for atomic? */
 	       *gldata_buf;
 
-	constexpr static uint32_t saturated_thresh = 80 * 80;
+	constexpr static uint32_t saturated_thresh = 100;
 
 	constexpr static uint16_t mat_typ = CV_32FC1;
 

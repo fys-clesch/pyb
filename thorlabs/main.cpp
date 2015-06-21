@@ -145,6 +145,7 @@ int main(int argc, char **argv)
 				break;
 			case 'F': // 1114182
 				t_cam.signal_MinimeThreadIfWait();
+				t_cam.wait_CameraThread();
 				break;
 			case 'p': // 1048688
 				t_cam.toggle_Grabbing();

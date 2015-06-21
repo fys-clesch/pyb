@@ -367,7 +367,7 @@ bool thorlabs_cam::get_Image(Mat &im)
 	err = is_FreezeVideo(pcam, IS_WAIT);
 	if(err == IS_SUCCESS)
 	{
-		/** @todo Mat(int rows, int cols, int type, void* data, size_t step=AUTO_STEP) */
+		/** @todo Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP) */
 		im_p.data = (uchar *)im_mem;
 		im_p.copyTo(im);
 	}
@@ -393,7 +393,7 @@ bool thorlabs_cam::get_Image(Mat &im)
 bool thorlabs_cam::get_Image(void)
 {
 	err = is_FreezeVideo(pcam, IS_WAIT);
-	if(err == IS_SUCCESS) /** @todo Mat(int rows, int cols, int type, void* data, size_t step=AUTO_STEP) */
+	if(err == IS_SUCCESS) /** @todo Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP) */
 		im_p.data = (uchar *)im_mem;
 	else if(err == IS_OUT_OF_MEMORY)
 	{

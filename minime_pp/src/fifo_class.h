@@ -79,13 +79,18 @@ public:
 					const double lo = 0.,
 					const double hi = 0.);
 	void write_MatToFile(const cv::Mat &mat,
-						const std::string &fname = "");
+						const std::string &fname = "",
+						const bool use_bin = false);
 	#endif
 	void write_Bin_float(const std::string &fname, const float *res_pt data,
 						const uint nrowscols = 0);
 	void write_Bin_double(const std::string &fname, const double *res_pt data,
 						const uint nrowscols = 0);
 	void write_Bin_uint(const std::string &fname, const uint *res_pt data,
+						const uint nrowscols = 0);
+	void write_Bin_int32(const std::string &fname, const int32_t *res_pt data,
+						const uint nrowscols = 0);
+	void write_Bin_uint16(const std::string &fname, const uint16_t *res_pt data,
 						const uint nrowscols = 0);
 	void plot_Histogram(const std::string &fname, const uint steps);
 	void plot_BeamWidthsFit(const double *res_pt data_x,
