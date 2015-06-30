@@ -68,20 +68,20 @@ int main(int argc, char **argv)
 	t_cam.set_Pix2UmScale(t_cam.get_PixelPitch());
 	t_cam.update_Mats_RgbAndFp();
 	t_cam.set_MainWindowName(main_win_title);
-	/* track bar setup */
+	/* Track bar setup. */
 	namedWindow(t_cam.get_TrackbarWindowName(), CV_WINDOW_AUTOSIZE);
 	t_cam.show_Trackbars();
 	namedWindow(t_cam.get_CameraInfoWindowName(), CV_WINDOW_AUTOSIZE);
 	t_cam.show_CameraTrackbars();
-	/* main window setup */
+	/* Main window setup. */
 	namedWindow(t_cam.get_MainWindowName(),
 				CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO);
 
 	setMouseCallback(t_cam.get_MainWindowName(),
 					t_cam.cast_static_set_MouseEvent, &t_cam);
-	/* camera track bars */
+	/* Camera track bars. */
 	t_cam.create_TrackbarExposure();
-	/* image processing track bars */
+	/* Image processing track bars. */
 	t_cam.create_TrackbarBlur();
 	t_cam.create_TrackbarBlurSize();
 	t_cam.create_TrackbarGroundlift();

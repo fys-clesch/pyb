@@ -84,7 +84,8 @@ double *alloc_mat(const uint row, const uint col)
 
 double *realloc_mat(double *m, const uint row, const uint col)
 {
-	double *old = (double *)realloc(m, row * col * sizeof(double));
+	double *old = m;
+	m = (double *)realloc(m, row * col * sizeof(double));
 	if(NULL == m)
 	{
 		error_msg("memory reallocation failed", ERR_ARG);
@@ -392,7 +393,7 @@ int *alloc_intmatrix(const uint row, const uint col, const int init)
 		error_msg("memory allocation failed. good bye.", ERR_ARG);
 		exit(EXIT_FAILURE);
 	}
-	for(uint i = 0; i < (row * col); ++i)
+	for(uint i = 0; i < row * col; ++i)
 		m[i] = init;
 	return m;
 }
@@ -405,7 +406,7 @@ uint *alloc_uintmatrix(const uint row, const uint col, const uint init)
 		error_msg("memory allocation failed. good bye.", ERR_ARG);
 		exit(EXIT_FAILURE);
 	}
-	for(uint i = 0; i < (row * col); ++i)
+	for(uint i = 0; i < row * col; ++i)
 		m[i] = init;
 	return m;
 }
@@ -418,21 +419,23 @@ uchar *alloc_ucharmatrix(const uint row, const uint col, const uchar init)
 		error_msg("memory allocation failed. good bye.", ERR_ARG);
 		exit(EXIT_FAILURE);
 	}
-	for(uint i = 0; i < (row * col); ++i)
+	for(uint i = 0; i < row * col; ++i)
 		m[i] = init;
 	return m;
 }
 
 uchar *realloc_ucharmatrix(uchar *m, const uint row, const uint col, const uchar init)
 {
-	uchar *old = (uchar *)realloc(m, row * col * sizeof(uchar));
+	uchar *old = m;
+	m = (uchar *)realloc(m, row * col * sizeof(uchar));
 	if(NULL == m)
 	{
 		error_msg("memory reallocation failed. good bye.", ERR_ARG);
 		m = old;
 	}
-	for(uint i = 0; i < (row * col); ++i)
-		m[i] = init;
+	else
+		for(uint i = 0; i < row * col; ++i)
+			m[i] = init;
 	return m;
 }
 

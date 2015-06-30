@@ -670,6 +670,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 				break;
 			case START_MINIME:
 				(*itw1ptr).t_cam.signal_MinimeThreadIfWait();
+				(*itw1ptr).t_cam.wait_CameraThread();
 				break;
 			case TOGGLE_IDLING:
 				(*itw1ptr).t_cam.toggle_Grabbing();

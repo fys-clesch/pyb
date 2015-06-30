@@ -965,8 +965,7 @@ void viewer::alloc_DataFromFile(const std::string &fname)
 		uninitialized read. */
 		store_AllocatedMemoryRelease(true);
 	}
-	else if(load_AllocatedMemory() &&
-			(nrow != glrows || ncol != glcols))
+	else if(load_AllocatedMemory() && (nrow != glrows || ncol != glcols))
 	{
 		glrows = nrow;
 		glcols = ncol;

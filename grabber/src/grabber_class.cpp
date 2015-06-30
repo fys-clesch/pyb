@@ -1658,7 +1658,6 @@ void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
 	mime.set_Wavelength(wavelengthUm);
 	mime.set_PixelToUm(pix2um);
 	mime.set_Plotting(true);
-
 	mime.alloc_DataFromMemory(n_roi_rows, n_roi_cols);
 
 	if(work_roi_arr_buf == nullptr)
@@ -1668,14 +1667,12 @@ void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
 	}
 
 	double *cpy = alloc_mat(n_roi_rows, n_roi_cols);
-	/** @todo Check this for ROI resetting. Check the locking mechanism. */
 	memcpy(cpy, work_roi_arr_buf, n_roi_rows * n_roi_cols * sizeof(double));
 	mime.fill_DataFromMemory(cpy);
 	wait_camera_thread.store(false, std::memory_order_relaxed);
 	free(cpy);
 
 	mime.fit_GaussEllip();
-
 	iprint(stdout, "fit is finished\n");
 }
 

@@ -46,7 +46,7 @@ private:
 
 	void write_Data_g(const std::string &fname,
 					const uchar format,
-					const double *res_pt data,
+					const double *res_pt data_fifo,
 					const uint x_co = 0, const uint y_co = 0);
 
 public:

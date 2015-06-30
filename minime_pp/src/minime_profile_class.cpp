@@ -150,7 +150,6 @@ void minime_profile::fill_DataFromFile(const std::string &fname,
 void minime_profile::alloc_DataFromMemory(const uint nrows, const uint ncols,
 								const uchar *const bad_in)
 {
-	/** @todo Check this for ROI resetting. */
 	if(!load_AllocatedMemory())
 	{
 		mnm_rows = nrows;
@@ -209,7 +208,7 @@ void minime_profile::fill_DataFromMemory(const double *res_pt data_in,
 			if(!std::isfinite(data[i]) || !std::isfinite(data_in[i]))
 				error_msg("data range invalid", ERR_ARG);
 		#endif
-		memcpy(data, data_in, mnm_ntot * sizeof(double)); /** @todo Here I failed. */
+		memcpy(data, data_in, mnm_ntot * sizeof(double));
 		if(bad_in != nullptr)
 			memcpy(bad, bad_in, mnm_ntot * sizeof(uchar));
 		store_FilledMemory(true);
