@@ -104,7 +104,8 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	dirname_bin = wxString(str.substr(0, found));
 	/* atomic<bool> */
 	select_roi.store(false, std::memory_order_relaxed);
-	close_cam_thread.store(false, std::memory_order_relaxed); /* 2 */
+	force_quit.store(false, std::memory_order_relaxed);
+	close_cam_thread.store(false, std::memory_order_relaxed); /* 3 */
 	/* atomic<uint32_t> */
 	btn_state.store(NONE_BTN, std::memory_order_relaxed); /* 1 */
 
@@ -141,7 +142,7 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	wxMenu* Menu2;
 	wxStaticBoxSizer* StaticBoxSizerOutput;
 
-	Create(parent, wxID_ANY, "igyba 4 fingers", wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
+	Create(parent, wxID_ANY, _("igyba 4 fingers"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
 	{
 	wxIcon FrameIcon;
 	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("icon.ico"))));
@@ -748,7 +749,12 @@ void igyba_thorlabs_wxFrame::schedule_CamThread(int argc, char **argv)
 			break;
 		}
 		/* Fire up the thread: */
-		(*itw1ptr).launch_Cam(argc, argv);
+		if((*itw1ptr).launch_Cam(argc, argv) == EXIT_FAILURE)
+		{
+			(*itw1ptr).store_ForceQuit(true);
+			(*itw1ptr).event_Cam.reset();
+			break;
+		}
 		/* Go back and be ready to wait for the next round. */
 		(*itw1ptr).event_Cam.reset();
 	}
@@ -1537,6 +1543,11 @@ void igyba_thorlabs_wxFrame::store_CloseCamState(const bool b)
 	close_cam_thread.store(b, std::memory_order_release);
 }
 
+void igyba_thorlabs_wxFrame::store_ForceQuit(const bool b)
+{
+	force_quit.store(b, std::memory_order_release);
+}
+
 void igyba_thorlabs_wxFrame::store_SelectRoi(const bool b)
 {
 	select_roi.store(b, std::memory_order_release);
@@ -1551,6 +1562,11 @@ void igyba_thorlabs_wxFrame::store_SelectRoi(const bool b)
 uint32_t igyba_thorlabs_wxFrame::load_ButtonState(void)
 {
 	return btn_state.load(std::memory_order_acquire);
+}
+
+bool igyba_thorlabs_wxFrame::load_ForceQuit(void)
+{
+	return force_quit.load(std::memory_order_acquire);
 }
 
 bool igyba_thorlabs_wxFrame::load_CloseCamState(void)

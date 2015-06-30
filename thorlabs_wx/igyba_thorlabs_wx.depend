@@ -2961,7 +2961,7 @@
 1428428544 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxapp.h
 	<wx/app.h>
 
-1432546375 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.h
+1435680243 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.h
 	<wx/notebook.h>
 	<wx/sizer.h>
 	<wx/stattext.h>
@@ -2978,7 +2978,7 @@
 	<wx/statusbr.h>
 	"../thorlabs_cam/thorlabs_cam.h"
 
-1435668073 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
+1435680258 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
 	"igyba_thorlabs_wxMain.h"
 	<wx/msgdlg.h>
 	<wx/filedlg.h>

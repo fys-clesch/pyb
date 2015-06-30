@@ -48,7 +48,8 @@ private:
 	std::thread thread_Cam;
 
 	std::atomic<bool> close_cam_thread,
-					  select_roi;
+					  select_roi,
+					  force_quit;
 
 	std::atomic<uint32_t> btn_state;
 
@@ -258,6 +259,8 @@ private:
 	bool load_CloseCamState(void);
 	void store_SelectRoi(const bool b);
 	bool load_SelectRoi(void);
+	void store_ForceQuit(const bool b);
+	bool load_ForceQuit(void);
 
 public:
 
