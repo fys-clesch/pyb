@@ -23,5 +23,14 @@ igyba is an open source project for profiling laser beams with CCD or CMOS camer
   - image manipulation and data export
   - a graphical user interface
   - access to Thorlabs (R) cameras
+  - Linux and Windows support
 
 It was written in a modular way, such that other cameras can be implemented along the existing module.
+
+Projects and libraries used:
+  - OpenCV for linear algebra and data structuring
+  - freeglut for visualization
+  - wxWidgets for the GUI
+  - mingw-std-threads for C++11 thread support on Windows
+  - gnuplot (if available on the machine) for plotting image captures
+  
