@@ -244,6 +244,7 @@
 		<Unit filename="../viewer_pp/src/draw.cpp" />
 		<Unit filename="../viewer_pp/src/viewer_class.cpp" />
 		<Unit filename="../viewer_pp/src/viewer_class.h" />
+		<Unit filename="Makefile" />
 		<Unit filename="igyba_thorlabs_wxApp.cpp" />
 		<Unit filename="igyba_thorlabs_wxApp.h" />
 		<Unit filename="igyba_thorlabs_wxMain.cpp" />

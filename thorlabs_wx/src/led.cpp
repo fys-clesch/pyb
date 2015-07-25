@@ -1,11 +1,10 @@
-// Name:        led.cpp
-// Purpose:     wxLed implementation
-// Author:      Thomas Monjalon
-// Created:     09/06/2005
-// Revision:    09/06/2005
-// Licence:     wxWidgets
-// mod   by:    Jonas Zinn
-// mod date:    24/03/2012
+/* Name:        led.cpp
+ * Purpose:     wxLed implementation
+ * Author:      Thomas Monjalon
+ * Created:     09/06/2005
+ * Revision:    09/06/2005
+ * Licence:     wxWidgets
+ */
 
 #include <wx/led.h>
 #include <string.h>

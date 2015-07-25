@@ -2777,12 +2777,12 @@
 
 1425221509 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs\igyba_thorlabs.rc
 
-1435667880 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
+1437770997 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
 	"grabber_class.h"
 	<assert.h>
 	"curses.h"
 
-1434892894 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
+1437770602 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/imgproc/imgproc.hpp>
@@ -3004,7 +3004,7 @@
 	<wx/dcclient.h>
 	<wx/thread.h>
 
-1429627964 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\src\led.cpp
+1436213807 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\src\led.cpp
 	<wx/led.h>
 	<string.h>
 

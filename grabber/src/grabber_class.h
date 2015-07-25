@@ -155,7 +155,7 @@ private:
 
 
 	double *work_roi_arr,
-	       *work_roi_arr_buf, /** @todo Candidate for atomic? */
+	       *work_roi_arr_buf,
 	       *work_roi_arr_tflip_buf, /** @todo Candidate for atomic? */
 	       *gldata_buf;
 
@@ -231,6 +231,8 @@ private:
 	uint load_WorkRoiRows(void);
 	void store_WorkRoiCols(const uint n);
 	uint load_WorkRoiCols(void);
+	void store_WaitCameraThread(const bool b);
+	bool load_WaitCameraThread(void);
 };
 
 #endif

@@ -103,17 +103,17 @@ thorlabs_cam::~thorlabs_cam(void)
 {
 	im_p.release();
 
-	/* stop live video mode */
+	/* Stop live video mode. */
 	err = is_StopLiveVideo(pcam, IS_FORCE_VIDEO_STOP);
 	if(err != IS_SUCCESS)
 		warn_msg("error forcing live video stop", ERR_ARG);
 
-	/* free image memory */
+	/* free image memory. */
 	err = is_FreeImageMem(pcam, im_mem, memID);
 	if(err != IS_SUCCESS)
 		warn_msg("error freeing image memory", ERR_ARG);
 
-	/* close / release camera handler */
+	/* close / release camera handler. */
 	err = is_ExitCamera(pcam);
 	if(err != IS_SUCCESS)
 		warn_msg("error releasing camera handler", ERR_ARG);
@@ -125,7 +125,7 @@ thorlabs_cam::~thorlabs_cam(void)
 
 void thorlabs_cam::init_Camera(void)
 {
-	/* initialise the camera */
+	/* Initialise the camera. */
 	err = is_InitCamera(&pcam, NULL);
 	if(err != IS_SUCCESS)
 		err_break = true;
@@ -143,7 +143,7 @@ void thorlabs_cam::init_Camera(void)
 
 	set_ErrorReport();
 
-	/* get board and sensor info */
+	/* Get board and sensor info. */
 	err = is_GetSensorInfo(pcam, &s_info);
 	if(err != IS_SUCCESS)
 	{
@@ -157,13 +157,15 @@ void thorlabs_cam::init_Camera(void)
 	sensorname = s_info.strSensorName;
 
 	#ifdef ISLINUX
-	warn_msg("pixel size not available on linux library 'ueye' yet. setting to 3.6 um.", ERR_ARG);
-	pix_size = 360;
+	warn_msg("pixel size not available on linux library 'ueye' yet. " \
+			"relying on the identification of the sensor name.", ERR_ARG);
 	#elif defined(ISWIN64) || defined(ISWIN32)
 	pix_size = s_info.wPixelSize;
 	#endif
 
-	dpix_size = pix_size * 1e-8 * 1e6; /**< into meters then into um */
+	identify_CameraAOISettings();
+
+	dpix_size = pix_size * 1e-8 * 1e6; /**< Into meters then into um. */
 	dpix_size_atm.store(dpix_size, std::memory_order_relaxed);
 
 	err = is_GetBoardInfo(pcam, &b_info);
@@ -233,10 +235,9 @@ void thorlabs_cam::init_Camera(void)
 	else
 	{
 		im_p = Mat(Size(im_width, im_height), CV_8UC1, 0.);
-		warn_msg("can't find right colour mode. setting Mat format to CV_8UC1.", ERR_ARG);
+		warn_msg("can't find right colour mode. " \
+				"setting Mat format to CV_8UC1.", ERR_ARG);
 	}
-
-	identify_CameraAOISettings();
 }
 
 void thorlabs_cam::set_ColourMode(void)
@@ -250,7 +251,7 @@ void thorlabs_cam::set_ColourMode(void)
 				color_mod_test);
 }
 
-/* set to auto-release camera and memory if camera is disconnected on-the-fly */
+/* Set to auto-release camera and memory if camera is disconnected on-the-fly. */
 void thorlabs_cam::set_ExitMode(void)
 {
 	err = is_EnableAutoExit(pcam, IS_ENABLE_AUTO_EXIT);
@@ -258,7 +259,7 @@ void thorlabs_cam::set_ExitMode(void)
 		warn_msg("error setting auto-exit mode", ERR_ARG);
 }
 
-/* set image mode to DIB = system memory */
+/* Set image mode to DIB = system memory. */
 void thorlabs_cam::set_Display(void)
 {
 	err = is_SetDisplayMode(pcam, IS_SET_DM_DIB);
@@ -266,7 +267,7 @@ void thorlabs_cam::set_Display(void)
 		error_msg("error setting DIB mode", ERR_ARG);
 }
 
-/* allocate image memory */
+/* Allocate image memory. */
 void thorlabs_cam::alloc_ImageMem(void)
 {
 	err = is_AllocImageMem(pcam,
@@ -278,7 +279,7 @@ void thorlabs_cam::alloc_ImageMem(void)
 	}
 }
 
-/* reads out properties of the allocated image memory */
+/* Reads out properties of the allocated image memory. */
 void thorlabs_cam::inquire_ImageMem(int *res_pt nx, int *res_pt ny,
 									int *res_pt bits_p_pix,
 									int *res_pt pixel_bit_pitch)
@@ -309,7 +310,12 @@ void thorlabs_cam::inquire_ImageMem(int *res_pt nx, int *res_pt ny,
 		*pixel_bit_pitch = pbpo;
 }
 
-/* activate image memory */
+/** \brief Activate image memory.
+ *
+ * \param void
+ * \return void
+ *
+ */
 void thorlabs_cam::set_ImageMem(void)
 {
 	err = is_SetImageMem(pcam, im_mem, memID);
@@ -322,7 +328,7 @@ void thorlabs_cam::set_ImageMem(void)
 
 void thorlabs_cam::set_ImageSize(void)
 {
-	/** deprecated:
+	/** Deprecated:
 	 * err = is_SetImageSize(pcam, width, height);
 	 */
 	IS_RECT rectAOI;
@@ -335,31 +341,30 @@ void thorlabs_cam::set_ImageSize(void)
 		error_msg("error setting image size", ERR_ARG);
 }
 
-/**
- * @brief acquire a single image from the camera
+/** \brief Acquire a single image from the camera.
+ *
+ * \param ipl_im IplImage*
+ * \return bool
+ *
  */
 bool thorlabs_cam::get_Image(IplImage *ipl_im)
 {
 	err = is_FreezeVideo(pcam, IS_WAIT);
 	if(err == IS_SUCCESS)
-		cvSetData(ipl_im, im_mem, im_width); /* sets imageData member */
+	{
+		cvSetData(ipl_im, im_mem, im_width); /* Sets imageData member. */
+		return true;
+	}
 	else if(err == IS_OUT_OF_MEMORY)
-	{
 		error_msg("no memory available", ERR_ARG);
-		return false;
-	}
 	else if(err == IS_CANT_COMMUNICATE_WITH_DRIVER)
-	{
 		error_msg("driver has not been loaded", ERR_ARG);
-		return false;
-	}
 	else if(err == IS_CAPTURE_RUNNING)
-	{
 		warn_msg("capture operation in progress must be " \
 				"terminated before starting another one", ERR_ARG);
-		return false;
-	}
-	return true;
+	else
+		warn_msg("unspecified error / warning during image capture", ERR_ARG);
+	return false;
 }
 
 bool thorlabs_cam::get_Image(Mat &im)
@@ -370,48 +375,38 @@ bool thorlabs_cam::get_Image(Mat &im)
 		/** @todo Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP) */
 		im_p.data = (uchar *)im_mem;
 		im_p.copyTo(im);
+		return true;
 	}
 	else if(err == IS_OUT_OF_MEMORY)
-	{
 		error_msg("no memory available", ERR_ARG);
-		return false;
-	}
 	else if(err == IS_CANT_COMMUNICATE_WITH_DRIVER)
-	{
 		error_msg("driver has not been loaded", ERR_ARG);
-		return false;
-	}
 	else if(err == IS_CAPTURE_RUNNING)
-	{
 		warn_msg("capture operation in progress must be " \
 				"terminated before starting another one", ERR_ARG);
-		return false;
-	}
-	return true;
+	else
+		warn_msg("unspecified error / warning during image capture", ERR_ARG);
+	return false;
 }
 
 bool thorlabs_cam::get_Image(void)
 {
 	err = is_FreezeVideo(pcam, IS_WAIT);
 	if(err == IS_SUCCESS) /** @todo Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP) */
+	{
 		im_p.data = (uchar *)im_mem;
+		return true;
+	}
 	else if(err == IS_OUT_OF_MEMORY)
-	{
 		error_msg("no memory available", ERR_ARG);
-		return false;
-	}
 	else if(err == IS_CANT_COMMUNICATE_WITH_DRIVER)
-	{
 		error_msg("driver has not been loaded", ERR_ARG);
-		return false;
-	}
 	else if(err == IS_CAPTURE_RUNNING)
-	{
 		warn_msg("capture operation in progress must be " \
 				"terminated before starting another one", ERR_ARG);
-		return false;
-	}
-	return true;
+	else
+		warn_msg("unspecified error / warning during image capture", ERR_ARG);
+	return false;
 }
 
 Mat thorlabs_cam::get_Mat(void)
@@ -476,7 +471,8 @@ double thorlabs_cam::get_PixelPitch(void)
 
 void thorlabs_cam::get_ExposureTime(void)
 {
-	double rng[3], time;
+	double rng[3],
+	       time;
 	uint32_t ncaps;
 	err = is_Exposure(pcam,
 					IS_EXPOSURE_CMD_GET_CAPS,
@@ -686,20 +682,19 @@ void thorlabs_cam::cast_static_SetTrackbarHandlerExposure(int i, void *ptr)
 
 void thorlabs_cam::create_TrackbarExposure(void)
 {
+	const std::string trck_name = "Exposure";
+	const double out_min = 0., out_max = 100.;
+	double res = map_Linear(exp_time, exp_time_min, exp_time_max,
+							out_min, out_max);
+	static int setting = res; /* Must be static, as its memory address is stored
+	in the cv function. */
+	assert(setting <= 100);
 	/**
 	 * 3 parameters are:
 	 * The address of the variable that is changing when the trackbar is moved,
 	 * the maximum value the trackbar can move,
 	 * and the function that is called whenever the trackbar is moved.
 	 */
-	const std::string trck_name = "Exposure";
-	const double out_min = 0., out_max = 100.;
-
-	double res = map_Linear(exp_time, exp_time_min, exp_time_max,
-							out_min, out_max);
-	static int setting = res; /* must be static, as its memory address is stored in the cv function*/
-	assert(setting <= 100);
-
 	createTrackbar(trck_name,
 					infotbar_win_name,
 					&setting,
@@ -764,74 +759,100 @@ std::string thorlabs_cam::get_CameraInfo(void)
 
 void thorlabs_cam::identify_CameraAOISettings(void)
 {
-	if(!sensorname.compare("DCC1645C"))
+	if(!sensorname.compare("DCC1240x") ||
+		!sensorname.compare("DCC1240M") ||
+		!sensorname.compare("DCC1240C") ||
+		!sensorname.compare("DCC1240N") ||
+		!sensorname.compare("DCC3240x") ||
+		!sensorname.compare("DCC3240M") ||
+		!sensorname.compare("DCC3240C") ||
+		!sensorname.compare("DCC3240N"))
 	{
-		/* sensor is Aptina MT9M131 */
-		im_min_width = 32;
-		im_inc_width = 4;
-		im_min_height = 4;
-		im_inc_height = 2;
-		sensor_aa_width = 4608; /* exact sensitive area in um */
-		sensor_aa_height = 3686;
-	}
-	else if(!sensorname.compare("DCC1240x") || !sensorname.compare("DCC3240x"))
-	{ /* sensor is e2v EV76C560ABT or e2v EV76C560ACT or e2v EV76C661ABT */
+		/* Sensor is
+		e2v EV76C560ABT (monochrome) or
+		e2v EV76C560ACT (color) or
+		e2v EV76C661ABT (NIR). */
 		im_min_width = 16;
 		im_inc_width = 4;
 		im_min_height = 4;
 		im_inc_height = 2;
 		sensor_aa_width = 6784;
 		sensor_aa_height = 5427;
+		if(!pix_size)
+			pix_size = 530;
 	}
 	else if(!sensorname.compare("DCC1545M"))
 	{
-		/* sensor is Aptina MT9M001 */
+		/* Sensor is Aptina MT9M001. */
 		im_min_width = 32;
 		im_inc_width = 4;
 		im_min_height = 4;
 		im_inc_height = 2;
 		sensor_aa_width = 6656;
 		sensor_aa_height = 5325;
+		if(!pix_size)
+			pix_size = 520;
 	}
-	else if(!sensorname.compare("DCU223C"))
+	if(!sensorname.compare("DCC1645C"))
 	{
-		/* sensor is Sony ICX204AK */
+		/* Sensor is Aptina MT9M131. */
+		im_min_width = 32;
+		im_inc_width = 4;
+		im_min_height = 4;
+		im_inc_height = 2;
+		sensor_aa_width = 4608; /* Exact sensitive area in um. */
+		sensor_aa_height = 3686;
+		if(!pix_size)
+			pix_size = 360;
+	}
+	else if(!sensorname.compare("DCU223x") ||
+			!sensorname.compare("DCU223C"))
+	{
+		/* Sensor is Sony ICX204AK. */
 		im_min_width = 16;
 		im_inc_width = 4;
 		im_min_height = 120;
 		im_inc_height = 2;
 		sensor_aa_width = 4762;
 		sensor_aa_height = 3571;
+		if(!pix_size)
+			pix_size = 465;
 	}
 	else if(!sensorname.compare("DCU223M"))
 	{
-		/* sensor is Sony ICX204AL */
+		/* Sensor is Sony ICX204AL. */
 		im_min_width = 16;
 		im_inc_width = 4;
 		im_min_height = 120;
 		im_inc_height = 1;
 		sensor_aa_width = 4762;
 		sensor_aa_height = 3571;
+		if(!pix_size)
+			pix_size = 465;
 	}
 	else if(!sensorname.compare("DCU224C"))
 	{
-		/* sensor is Sony ICX205AK */
+		/* Sensor is Sony ICX205AK. */
 		im_min_width = 16;
 		im_inc_width = 4;
 		im_min_height = 120;
 		im_inc_height = 2;
 		sensor_aa_width = 5952;
 		sensor_aa_height = 4762;
+		if(!pix_size)
+			pix_size = 465;
 	}
 	else if(!sensorname.compare("DCU224M"))
 	{
-		/* sensor is Sony ICX205AL */
+		/* Sensor is Sony ICX205AL. */
 		im_min_width = 16;
 		im_inc_width = 4;
 		im_min_height = 120;
 		im_inc_height = 1;
 		sensor_aa_width = 5952;
 		sensor_aa_height = 4762;
+		if(!pix_size)
+			pix_size = 465;
 	}
 	else
 		error_msg("error identifying the sensor name. " \
@@ -855,21 +876,21 @@ void thorlabs_cam::show_CameraTrackbars(void)
 
 void thorlabs_cam::TrackbarHandlerStartAOIWidth(int i)
 {
-	/* get the current position */
+	/* Get the current position. */
 	assert(i == getTrackbarPos(trck_name_aoi_sw, infotbar_win_name));
-	/* calculate the new one */
+	/* Calculate the new one. */
 	i -= i % im_inc_width;
-	/* set the new one */
+	/* Set the new one. */
 	if(i > 0)
 	{
 		im_aoi_width_start = i;
 		setTrackbarPos(trck_name_aoi_sw, infotbar_win_name, im_aoi_width_start);
 	}
-	/* set the new total width */
+	/* Set the new total width. */
 	const uint max_sze = im_max_width - im_aoi_width_start;
 	if(im_aoi_width > max_sze)
 		setTrackbarPos(trck_name_aoi_ww, infotbar_win_name, max_sze);
-	/* update AOI */
+	/* Update AOI. */
 }
 
 void thorlabs_cam::cast_static_SetTrackbarHandlerStartAOIWidth(int i, void *ptr)
@@ -907,7 +928,7 @@ void thorlabs_cam::set_MouseEvent(const int event,
 	{
 		if(event == EVENT_LBUTTONDOWN && !get_MouseDrag())
 		{
-			/* AOI selection begins */
+			/* AOI selection begins. */
 			set_RoiActive(false);
 			set_EndRoi(Point_<int>(x, y));
 			set_StartRoi(Point_<int>(x, y));
@@ -915,7 +936,7 @@ void thorlabs_cam::set_MouseEvent(const int event,
 		}
 		else if(event == EVENT_MOUSEMOVE && get_MouseDrag())
 		{
-			/* AOI being selected */
+			/* AOI being selected. */
 			set_EndRoi(Point_<int>(x, y));
 		}
 		else if(event == EVENT_LBUTTONUP && get_MouseDrag())

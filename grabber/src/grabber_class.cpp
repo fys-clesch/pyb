@@ -1669,11 +1669,15 @@ void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
 	double *cpy = alloc_mat(n_roi_rows, n_roi_cols);
 	memcpy(cpy, work_roi_arr_buf, n_roi_rows * n_roi_cols * sizeof(double));
 	mime.fill_DataFromMemory(cpy);
-	wait_camera_thread.store(false, std::memory_order_relaxed);
+	store_WaitCameraThread(false);
 	free(cpy);
 
 	mime.fit_GaussEllip();
 	iprint(stdout, "fit is finished\n");
+	store_WaitCameraThread(false); /**< Makes sure that an intermediate call to
+	the fit function hangs up. It also makes sure that no other frames are
+	grabbed between the call to the fit function and the finishing of an
+	ongoing fit. */
 }
 
 void grabber::schedule_Minime(const double wavelengthUm, const double pix2um)
@@ -1725,11 +1729,11 @@ bool grabber::signal_MinimeThreadIfWait(void)
 
 void grabber::wait_CameraThread(void)
 {
-	wait_camera_thread.store(true, std::memory_order_relaxed);
+	store_WaitCameraThread(true);
 	iprint(stdout, "waiting for minime thread to get data .");
 	while(true)
 	{
-		if(!wait_camera_thread.load(std::memory_order_relaxed))
+		if(!load_WaitCameraThread())
 			break;
 		std::this_thread::sleep_for(std::chrono::milliseconds(80));
 		iprint(stdout, ".");
@@ -1983,4 +1987,14 @@ void grabber::store_WorkRoiCols(const uint n)
 uint grabber::load_WorkRoiCols(void)
 {
 	return work_roi_cols.load(std::memory_order_relaxed);
+}
+
+void grabber::store_WaitCameraThread(const bool b)
+{
+	wait_camera_thread.store(b, std::memory_order_relaxed);
+}
+
+bool grabber::load_WaitCameraThread(void)
+{
+	return wait_camera_thread.load(std::memory_order_relaxed);
 }
