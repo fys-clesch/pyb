@@ -9,7 +9,7 @@ thorlabs_cam::thorlabs_cam(void)
 		"", '\0',
 		0, 0,
 		0, 0, 0, 0, 0,
-		#if defined(ISWIN64) || defined(ISWIN32)
+		#if defined(ISWIN32) || defined(ISWIN64)
 		0,
 		#endif
 		""};
@@ -159,7 +159,7 @@ void thorlabs_cam::init_Camera(void)
 	#ifdef ISLINUX
 	warn_msg("pixel size not available on linux library 'ueye' yet. " \
 			"relying on the identification of the sensor name.", ERR_ARG);
-	#elif defined(ISWIN64) || defined(ISWIN32)
+	#elif defined(ISWIN32) || defined(ISWIN64)
 	pix_size = s_info.wPixelSize;
 	#endif
 
@@ -793,7 +793,7 @@ void thorlabs_cam::identify_CameraAOISettings(void)
 		if(!pix_size)
 			pix_size = 520;
 	}
-	if(!sensorname.compare("DCC1645C"))
+	else if(!sensorname.compare("DCC1645C"))
 	{
 		/* Sensor is Aptina MT9M131. */
 		im_min_width = 32;
