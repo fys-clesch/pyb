@@ -8,6 +8,8 @@ fifo::fifo(void)
 	ax_y_title = "";
 	ax_z_title = "";
 	plot_title = "";
+	file_name = "";
+	file_name_suffix = "";
 	use_contours = false;
 }
 
@@ -18,6 +20,8 @@ dat_cols(ncols)
 	ax_y_title = "";
 	ax_z_title = "";
 	plot_title = "";
+	file_name = "";
+	file_name_suffix = "";
 }
 
 fifo::~fifo(void)
@@ -49,6 +53,11 @@ void fifo::set_FileName(const std::string &fname)
 void fifo::set_PlotTitle(const std::string &title)
 {
 	plot_title = title;
+}
+
+void fifo::set_FileNameSuffix(const std::string &suffix)
+{
+	file_name_suffix = suffix;
 }
 
 void fifo::set_UseContours(const bool set_it)
@@ -413,10 +422,13 @@ void fifo::plot_Data(const double *res_pt data,
 	if(file_name.empty())
 	{
 		get_DateAndTime(timebuf);
-		fprintf(gnufile, "set out 'plot/%s.png'\n", timebuf.c_str());
+		timebuf += file_name_suffix;
+		timebuf += ".png";
+		fprintf(gnufile, "set out 'plot/%s'\n", timebuf.c_str());
 	}
 	else
-		fprintf(gnufile, "set out '%s'\n", file_name.c_str());
+		fprintf(gnufile, "set out '%s%s'\n",
+				file_name.c_str(), file_name_suffix.c_str());
 
 	fprintf(gnufile,
 			"splot '%s' binary matrix using 2:1:3 w l ls 7 palette t ''\n"
@@ -433,9 +445,10 @@ void fifo::plot_Data(const double *res_pt data,
 	else
 	{
 		if(file_name.empty())
-			iprint(stdout, "plotted 'plot/%s.png'\n", timebuf.c_str());
+			iprint(stdout, "plotted 'plot/%s'\n", timebuf.c_str());
 		else
-			iprint(stdout, "plotted '%s'\n", file_name.c_str());
+			iprint(stdout, "plotted '%s%s'\n",
+					file_name.c_str(), file_name_suffix.c_str());
 	}
 
 	remove(tmpdat.c_str());
@@ -588,11 +601,13 @@ void fifo::plot_Data(const cv::Mat &mdata,
 	if(file_name.empty())
 	{
 		get_DateAndTime(timebuf);
+		timebuf += file_name_suffix;
 		timebuf += ".png";
 		fprintf(gnufile, "set out 'plot/%s'\n", timebuf.c_str());
 	}
 	else
-		fprintf(gnufile, "set out '%s'\n", file_name.c_str());
+		fprintf(gnufile, "set out '%s%s'\n",
+				file_name.c_str(), file_name_suffix.c_str());
 
 	if(mdata.channels() == 1)
 		fprintf(gnufile, "splot '%s' matrix u 1:2:3 w l ls 7 t ''\n",
@@ -611,9 +626,10 @@ void fifo::plot_Data(const cv::Mat &mdata,
 	else
 	{
 		if(file_name.empty())
-			iprint(stdout, "plotted 'plot/%s.png'\n", timebuf.c_str());
+			iprint(stdout, "plotted 'plot/%s'\n", timebuf.c_str());
 		else
-			iprint(stdout, "plotted '%s'\n", file_name.c_str());
+			iprint(stdout, "plotted '%s%s'\n",
+					file_name.c_str(), file_name_suffix.c_str());
 	}
 
 	remove(tmpdat.c_str());

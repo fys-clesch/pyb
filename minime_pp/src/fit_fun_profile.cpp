@@ -35,7 +35,7 @@ void minime_profile::fit_GaussianMultinormal(double *res_pt set,
 		sums_initialized = true;
 	}
 
-	/* wxz, wyz, corr, x_off, y_off */
+	/* Parameters: wxz, wyz, corr, x_off, y_off */
 	(*d2m_global).get_GaussBeamMultinormal(set[0], set[1],
 											set[4],
 											set[2], set[3],
@@ -204,8 +204,8 @@ void minime_profile::fit_GaussEllip(void)
 		ffc.set_UseContours(true);
 		ffc.set_AxisTitles("x / pixel", "y / pixel", "Intensity / bit");
 		ffc.set_PlotTitle("Input data");
+		ffc.set_FileNameSuffix("_input");
 		ffc.plot_Data(data);
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		get_GaussBeamMultinormal(fit_par_b[0].val, fit_par_b[1].val,
 								fit_par_b[4].val,
 								fit_par_b[2].val, fit_par_b[3].val,
@@ -224,9 +224,11 @@ void minime_profile::fit_GaussEllip(void)
 							convert_Double2Str(fit_par_b[1].val * scl) + "); " +
 							"degrees: " +
 							convert_Double2Str(ell_theta, 3));
+		ffc.set_FileNameSuffix("_fit");
 		ffc.plot_Data(sim);
 		sub_Matrices(data, sim, mnm_rows, mnm_cols);
 		ffc.set_PlotTitle("Residuum: Fit_{ij} - Data_{ij}");
+		ffc.set_FileNameSuffix("_sub");
 		ffc.plot_Data(sim);
 	}
 	sums_initialized = false;

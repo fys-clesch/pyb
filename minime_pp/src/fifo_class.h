@@ -42,7 +42,8 @@ private:
 	            ax_y_title,
 	            ax_z_title,
 	            plot_title,
-	            file_name;
+	            file_name,
+	            file_name_suffix;
 
 	void write_Data_g(const std::string &fname,
 					const uchar format,
@@ -60,6 +61,7 @@ public:
 						const std::string &ytitle,
 						const std::string &ztitle = "z");
 	void set_FileName(const std::string &fname);
+	void set_FileNameSuffix(const std::string &suffix);
 	void set_PlotTitle(const std::string &title);
 	void set_UseContours(const bool set_it);
 	static void print_HistogramFromUintFile(const std::string &target,

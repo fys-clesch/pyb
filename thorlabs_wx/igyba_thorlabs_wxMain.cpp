@@ -813,7 +813,7 @@ void igyba_thorlabs_wxFrame::set_MouseEvent(const int event, const int x, const 
 	{
 		if(event == EVENT_LBUTTONDOWN && !t_cam.get_MouseDrag())
 		{
-			/* AOI selection begins */
+			/* AOI selection begins. */
 			t_cam.set_RoiActive(false);
 			t_cam.set_EndRoi(Point_<int>(x, y));
 			t_cam.set_StartRoi(Point_<int>(x, y));
@@ -821,7 +821,7 @@ void igyba_thorlabs_wxFrame::set_MouseEvent(const int event, const int x, const 
 		}
 		else if(event == EVENT_MOUSEMOVE && t_cam.get_MouseDrag())
 		{
-			/* AOI being selected */
+			/* AOI being selected. */
 			t_cam.set_EndRoi(Point_<int>(x, y));
 		}
 		else if(event == EVENT_LBUTTONUP && t_cam.get_MouseDrag())
@@ -938,7 +938,7 @@ void igyba_thorlabs_wxFrame::OnButtonSaveImgRGBClick(wxCommandEvent& event)
 							"Image file (*.png)|*.png",
 							wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 	if(saveDialog.ShowModal() == wxID_CANCEL)
-		return; /* The user changed idea... */
+		return; /* The user changed her idea... */
 	/* Save the last directory. */
 	def_dirname = saveDialog.GetDirectory();
 	/* Save the full name of the file. */

@@ -18,9 +18,9 @@ minime_propagation::minime_propagation(void)
 void minime_propagation::print_Members(void)
 {
 	iprint(stdout,
-        "Wavelength: %g\n"
-        "Use gnuplot: %u\n"
-        "Total points: %u\n"
+        "      Wavelength: %g\n"
+        "     Use gnuplot: %u\n"
+        "    Total points: %u\n"
         "Arrays allocated: %u\n",
         lambda, do_gnuplot, mnm_ntot, allocd_vec);
 

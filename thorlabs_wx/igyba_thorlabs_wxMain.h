@@ -1,9 +1,9 @@
 /***************************************************************
  * Name:      igyba_thorlabs_wxMain.h
  * Purpose:   Defines Application Frame
- * Author:    Clemens Schäfermeier (clesch@fysik.dtu.dk)
+ * Author:    Clemens Schäfermeier (clemens@fh-muenster.de)
  * Created:   2015-04-03
- * Copyright: Clemens Schäfermeier ()
+ * Copyright: Clemens Schäfermeier (clemens@fh-muenster.de)
  * License:
  *
  * http://zetcode.com/gui/wxwidgets/layoutmanagement/

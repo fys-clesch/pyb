@@ -78,12 +78,12 @@ void get_Moments_own(const Mat &im, Mat &out, const double scale, const bool cha
 
 	for(uint i = 0; i < (uint)work.rows; i++)
 	{
-		const float *const m = work.ptr<float>(i); /**< pay attention here for the type of the image! */
+		const float *const m = work.ptr<float>(i); /**< Pay attention here for the type of the image! */
 		for(uint j = 0; j < (uint)work.cols; j++)
 		{
 			const double f = m[j];
-			cen[0] += f * i; /**< this doesn't account for */
-			cen[1] += f * j; /**< interleaving pixels */
+			cen[0] += f * i; /**< This doesn't account for */
+			cen[1] += f * j; /**< interleaving pixels. */
 			norm += f;
 		}
 	}
@@ -116,8 +116,8 @@ void get_Moments_own(const Mat &im, Mat &out, const double scale, const bool cha
 				const double f = m[j],
 							 x = i - cen[0],
 							 y = j - cen[1];
-				rxx += f * x * x; /**< this doesn't account for */
-				ryy += f * y * y; /**< interleaving pixels */
+				rxx += f * x * x; /**< This doesn't account for */
+				ryy += f * y * y; /**< interleaving pixels. */
 				rxy += f * x * y;
 			}
 		}
@@ -146,7 +146,7 @@ void get_Moments_own(const Mat &im, Mat &out, const double scale, const bool cha
 		Point2d centroid = Point2d(cen[0], cen[1]);
 		Mat covar = (Mat_<double>(2, 2) << rxx, rxy, rxy, ryy),
 		    eig;
-		/* the eigenvalues of the covariance matrix give
+		/* The eigenvalues of the covariance matrix give
 		 * the variance along the principal (or main) axis:
 		 */
 		{
@@ -160,7 +160,7 @@ void get_Moments_own(const Mat &im, Mat &out, const double scale, const bool cha
 
 			eig = (Mat_<double>(2, 1) << eig_[0], eig_[1]);
 		}
-		/* these are the parameters along the global axes: */
+		/* These are the parameters along the global axes: */
 		Mat beampar = (Mat_<double>(3, 1) <<
 						2. * sqrt(rxx),
 						2. * sqrt(ryy),
@@ -229,7 +229,7 @@ void draw_Moments(Mat &out, const Mat &beampar,
 				beampar.at<double>(1) / (eig.at<double>(1) * scale),
 				ecc);
 	{
-		/* test if the beam parameter along the global axes
+		/* Test if the beam parameter along the global axes
 		 * can be transformed into the main axes:
 		 */
 		const double rxx = POW2(beampar.at<double>(0)) / 4.,
@@ -549,7 +549,7 @@ void test_pic3(void)
 	cvtColor(im3, im3, CV_BGR2GRAY);
 	for(uint i = 0; i < (uint)im3.rows; i++)
 	{
-		uchar *const m = im3.ptr<uchar>(i); /**< pay attention here for the type of the image! */
+		uchar *const m = im3.ptr<uchar>(i); /**< Pay attention here for the type of the image! */
 		for(uint j = 0; j < (uint)im3.cols; j++)
 			if(m[j] < 20)
 				m[j] = 0;

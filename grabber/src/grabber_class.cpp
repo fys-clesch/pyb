@@ -1675,8 +1675,8 @@ void grabber::launch_Minime(const double wavelengthUm, const double pix2um)
 	mime.fit_GaussEllip();
 	iprint(stdout, "fit is finished\n");
 	store_WaitCameraThread(false); /**< Makes sure that an intermediate call to
-	the fit function hangs up. It also makes sure that no other frames are
-	grabbed between the call to the fit function and the finishing of an
+	the fit function doesn't hang up. It also makes sure that no other frames
+	are grabbed between the call to the fit function and the finishing of an
 	ongoing fit. */
 }
 

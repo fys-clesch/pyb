@@ -360,7 +360,7 @@ void minime_profile::get_CentroidBeamCovariance(double *res_pt cen_x,
  * \param wyz const double The global beam radius in y.
  * \param corr const double The correlation between wxz and wyz.
  * \param x_off const double The centroid in x.
- * \param y_off const double The centroid in y
+ * \param y_off const double The centroid in y.
  * \param out double* The output array.
  * \return void
  *
@@ -404,10 +404,12 @@ void minime_profile::get_GaussBeamMultinormal(const double wxz, const double wyz
 			out[i] = 0.;
 }
 
-void minime_profile::get_GaussBeamMultinormalCovar(const double sxx, const double syy,
-										const double sxy,
-										const double x_off, const double y_off,
-										double *out)
+void minime_profile::get_GaussBeamMultinormalCovar(const double sxx,
+												const double syy,
+												const double sxy,
+												const double x_off,
+												const double y_off,
+												double *out)
 {
 	const double t_n = sxx * syy - sxy * sxy,
 	             t_oy_xy = y_off * sxy,
