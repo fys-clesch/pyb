@@ -29,8 +29,9 @@ It was written in a modular way, such that other cameras can be implemented alon
 
 Projects and libraries used:
   - OpenCV for linear algebra and data structuring
-  - freeglut for visualization
+  - freeglut for visualization in OpenGL
   - wxWidgets for the GUI
   - mingw-std-threads for C++11 thread support on Windows
+  - OpenMP for multi core data processing in fit routines
   - gnuplot (if available on the machine) for plotting image captures
   
