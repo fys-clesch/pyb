@@ -210,7 +210,8 @@ public:
     void print_Members(void);
 	void set_Wavelength(const double wlen);
 	void set_Plotting(const bool do_it);
-	void fit_BeamProp(void);
+	void fit_BeamProp(const double z0_init = 0.,
+					const double z0_min = -2e3, const double z0_max = 2e3);
 	void fill_DataFromFile(const std::string &fname);
 	void store_AllocatedMemory(const bool b);
 	bool load_AllocatedMemory(void);

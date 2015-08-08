@@ -545,7 +545,8 @@ uint intfile2double(const char *res_pt target, double *res_pt m, const uint row,
 	return s;
 }
 
-uint fpfile2double(const char *res_pt target, double *res_pt m, const uint row, const uint col)
+uint fpfile2double(const char *res_pt target, double *res_pt out,
+				const uint row, const uint col, const bool check_cmmnts)
 {
 	FILE *readfile = fopen(target, "r");
 	if(readfile == NULL)
@@ -555,18 +556,57 @@ uint fpfile2double(const char *res_pt target, double *res_pt m, const uint row, 
 	}
 	uint i = 0, j = 0, s = 0;
 	double temp;
-	while(fscanf(readfile, "%18lg", &temp) != EOF)
-	{
-		m[i * col + j] = temp;
-		if(j < (col - 1))
-			j++;
-		else
+	if(!check_cmmnts)
+		while(fscanf(readfile, "%18lg", &temp) != EOF)
 		{
-			j = 0;
-			i++;
+			out[i * col + j] = temp;
+			if(j < (col - 1))
+				j++;
+			else
+			{
+				j = 0;
+				i++;
+			}
+			s++;
 		}
-		s++;
+	else
+	{
+		uint ncom = 0;
+		char tc;
+		const char cmt = '#';
+		fpos_t pos;
+		fgetpos(readfile, &pos);
+		while(fscanf(readfile, "%c", &tc) != EOF)
+		{
+			if(tc == cmt)
+			{
+				ncom++;
+				while(fscanf(readfile, "%c", &tc) != EOF) /**< Carry on scanning until EOF or line break */
+					if(tc == '\n')
+						break;
+			}
+			else if(tc == '0' || tc == '1' || tc == '2' || tc == '3' || tc == '4' ||
+					tc == '5' || tc == '6' || tc == '7' || tc == '8' || tc == '9' ||
+					tc == '.' || tc == '-' || tc == 'e' || tc == 'E')
+			{
+				fsetpos(readfile, &pos); /**< Undo the reading in 'while' */
+				while(fscanf(readfile, "%18lg", &temp) != EOF)
+				{
+					out[i * col + j] = temp;
+					if(j < (col - 1))
+						j++;
+					else
+					{
+						j = 0;
+						i++;
+					}
+					s++;
+				}
+			}
+			fgetpos(readfile, &pos);
+		}
 	}
+
 	fclose(readfile);
 	assert(i == row && s == row * col);
 	return s;
@@ -583,15 +623,26 @@ uint fpfile2double(const char *res_pt target, double *res_pt m, const uint row, 
  * The file is checked for consistence during evaluation. The pointer to the current
  * position in the file will be reset to the initial position.
  */
-void count_entries(FILE *res_pt file, uint *res_pt nrow, uint *res_pt ncol)
+void count_entries(FILE *res_pt file, uint *res_pt nrow, uint *res_pt ncol,
+				const bool check_cmmnts, uint *res_pt cmt_lines)
 {
-	uint i = 0, sum = 0;
+	uint i = 0, sum = 0, ncom = 0;
 	*ncol = 0;
 	*nrow = 0; /**< Use this as an error indicator. */
-	char tc, lbreak = 0, wspace = 0;
+	char tc, lbreak = 0, wspace = 0,
+	     cmt = '#'; /**< This is the indicator for a comment line in the file */
 	rewind(file);
 	while(fscanf(file, "%c", &tc) != EOF)
-		if(tc == '\n')
+		if(check_cmmnts && tc == cmt)
+		{
+			if(cmt_lines != nullptr)
+				cmt_lines[ncom] = *ncol; /**< This can be used as a locater for comment lines */
+			ncom++;
+			while(fscanf(file, "%c", &tc) != EOF) /**< Carry on scanning until EOF or line break */
+				if(tc == '\n')
+					break;
+		}
+		else if(tc == '\n')
 		{
 			if(lbreak)
 				break; /**< This happens in case of an additional line break at the end of the file. */

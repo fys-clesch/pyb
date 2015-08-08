@@ -74,7 +74,7 @@ void minime_propagation::fill_DataFromFile(const std::string &fname)
 	FILE *readfile = fopen(fname.c_str(), "r");
 	if(readfile == NULL)
 		file_error_msg(fname.c_str(), ERR_ARG);
-	count_entries(readfile, &tmp_rows, &tmp_cols);
+	count_entries(readfile, &tmp_rows, &tmp_cols, true);
 	fclose(readfile);
 
 	if(tmp_cols != 3)
@@ -90,7 +90,7 @@ void minime_propagation::fill_DataFromFile(const std::string &fname)
 
 	store_AllocatedMemory(true);
 
-	fpfile2double(fname.c_str(), tmp_data, mnm_ntot, tmp_cols);
+	fpfile2double(fname.c_str(), tmp_data, mnm_ntot, tmp_cols, true);
 
 	for(uint i = 0; i < mnm_ntot; ++i)
 	{

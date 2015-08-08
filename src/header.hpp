@@ -121,8 +121,11 @@ void uintfile2uchar(const char *res_pt target,
 uint intfile2double(const char *res_pt target,
 					double *res_pt m, const uint row, const uint col);
 uint fpfile2double(const char *res_pt target,
-				double *res_pt m, const uint row, const uint col);
-void count_entries(FILE *res_pt file, uint *res_pt nrow, uint *res_pt ncol);
+				double *res_pt out, const uint row, const uint col,
+				const bool check_cmmnts = false);
+void count_entries(FILE *res_pt file, uint *res_pt nrow, uint *res_pt ncol,
+				const bool check_cmmnts = false,
+				uint *res_pt cmt_lines = nullptr);
 uchar isfile(const char *szfile);
 void create_dir(const char *fname);
 void fp_error(const char *res_pt file, const int line,

@@ -18,14 +18,16 @@ void minime_propagation::fit_BeamPropagation(double *res_pt set,
 	}
 }
 
-void minime_propagation::fit_BeamProp(void)
+void minime_propagation::fit_BeamProp(const double z0_init,
+									const double z0_min,
+									const double z0_max)
 {
 	fit_par_p[0].name = "z_{0, x}";
 	fit_par_p[0].unit = "mm";
-	fit_par_p[0].minv = -500.;
-	fit_par_p[0].maxv = 500.;
+	fit_par_p[0].minv = z0_min;
+	fit_par_p[0].maxv = z0_max;
 	fit_par_p[0].fit = true;
-	fit_par_p[0].init = 0.;
+	fit_par_p[0].init = z0_init;
 	fit_par_p[0].log = false;
 
 	fit_par_p[1].name = "w_{0, x}";
