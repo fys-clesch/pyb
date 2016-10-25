@@ -392,7 +392,7 @@ void fifo::plot_Data(const double *res_pt data,
 			"set colorbox user origin .8, .6 size .04, .3\n"
 			"set cntrlabel onecolor\n"
 			"%cset contour base\n"
-			"%cset cntrparam\n"
+			"%cset cntrparam 8\n"
 			"set ticslevel .2\n"
 			"set grid x, y, z\n"
 			"set xtics offset -.4, -.2\n"
