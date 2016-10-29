@@ -20,7 +20,8 @@ public:
 
 	enum class save_Im_type : char {RGB = 1, WORK, FP_IN, IN};
 
-	Mat in;
+	Mat in,
+	    temp_in;
 
 	grabber(void);
 	~grabber(void);
@@ -59,6 +60,7 @@ public:
 	bool is_Grabbing(void);
 	static void schedule_Minime(const double wavelengthUm, const double pix2um);
 	void increment_Frames(void);
+	void increment_lost_Frames(void);
 	void set_Background(void);
 	void unset_Background(void);
 	void save_Image(const save_Im_type mtype,
@@ -140,7 +142,8 @@ private:
 	uint32_t in_rows,
 	         in_cols;
 
-	uint64_t frms;
+	uint64_t frms,
+	         lost_frms;
 
 	double pval,
 	       max_pval,
@@ -152,7 +155,6 @@ private:
 	       gaussblur_sigma_x,
 	       groundlift_max,
 	       groundlift_sub;
-
 
 	double *work_roi_arr,
 	       *work_roi_arr_buf,

@@ -33,7 +33,8 @@ grabber::grabber(void)
 	work_roi_rows.store(0, std::memory_order_relaxed);
 	work_roi_cols.store(0, std::memory_order_relaxed);
 	/* uint64_t */
-	frms = 0; /* 1 */
+	frms =
+	lost_frms = 0; /* 2 */
 	/* double */
 	max_pval =
 	pval =
@@ -56,7 +57,7 @@ grabber::grabber(void)
 	gaussblur_min_atm.store(gaussblur_min, std::memory_order_relaxed);
 	gaussblur_max_atm.store(gaussblur_max, std::memory_order_relaxed);
 	groundlift_max_atm.store(groundlift_max, std::memory_order_relaxed); /* 5 */
-	/* Mat */
+	/* Mat (apart from the image Mats) */
 	covar = (Mat_<double>(2, 2) << 0., 0., 0., 0.);
 	eigenv = (Mat_<double>(2, 1) << 0., 0.);
 	beam_parameter = (Mat_<double>(3, 1) << 0., 0., 0.);
@@ -83,6 +84,7 @@ grabber::grabber(void)
 grabber::~grabber(void)
 {
 	in.release();
+	temp_in.release();
 
 	fp_in.release();
 	rgb.release();
@@ -159,6 +161,8 @@ void grabber::init_Mats(void)
 	store_WorkRoiRows(in_rows);
 	store_WorkRoiCols(in_cols);
 	detct_settings = true;
+
+	temp_in.create(in_rows, in_cols, in.type());
 
 	fp_in.create(in_rows, in_cols, mat_typ);
 	work.create(in_rows, in_cols, mat_typ);
@@ -1807,6 +1811,11 @@ bool grabber::is_Grabbing(void)
 void grabber::increment_Frames(void)
 {
 	++frms;
+}
+
+void grabber::increment_lost_Frames(void)
+{
+	++lost_frms;
 }
 
 uint64_t grabber::get_Frames(void)

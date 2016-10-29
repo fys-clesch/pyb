@@ -119,7 +119,7 @@ public:
 	void show_CameraTrackbars(void);
 	double get_PixelPitch(void);
 	std::string get_CameraInfoWindowName(void);
-		bool get_Image(Mat &im);
+	bool get_Image(Mat &img);
 	bool get_Image(void);
 	static void cast_static_set_MouseEvent(const int event,
 											const int x, const int y,

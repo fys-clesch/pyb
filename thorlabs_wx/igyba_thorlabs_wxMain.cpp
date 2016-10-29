@@ -605,13 +605,18 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 	{
 		if((*itw1ptr).t_cam.is_Grabbing())
 		{
-			if(!(*itw1ptr).t_cam.get_Image((*itw1ptr).t_cam.in))
+			if(!(*itw1ptr).t_cam.get_Image((*itw1ptr).t_cam.temp_in))
 			{
-				error_msg("can't get an image from thorlabs_cam instance",
+				warn_msg("can't get an image from thorlabs_cam instance. " \
+							"using last successfully captured image.",
 							ERR_ARG);
-				break;
+				(*itw1ptr).t_cam.increment_lost_Frames();
 			}
-			(*itw1ptr).t_cam.increment_Frames();
+			else
+			{
+				(*itw1ptr).t_cam.temp_in.copyTo((*itw1ptr).t_cam.in);
+				(*itw1ptr).t_cam.increment_Frames();
+			}
 		}
 		(*itw1ptr).t_cam.exchange_Atomics();
 		(*itw1ptr).t_cam.exchange_ExposureTimeAtomic();
@@ -1124,7 +1129,7 @@ void igyba_thorlabs_wxFrame::OnAbout(wxCommandEvent &event)
  	__GNUC_MINOR__ << "." <<
  	__GNUC_PATCHLEVEL__ <<
  	"\n- " + get_wxBuildInfo() +
- 	"\n(C) " + author + ", 2015, clemens@fh-muenster.de";
+ 	"\n(C) " + author + ", 2016, clemens@fh-muenster.de";
 	wxMessageBox(msg, "Nice to see you here!");
 
 	wxAboutDialogInfo info;
@@ -1132,7 +1137,7 @@ void igyba_thorlabs_wxFrame::OnAbout(wxCommandEvent &event)
 	version = "igyba " + PROJECT_MAJ_VERSION + "." + PROJECT_MIN_VERSION;
 	info.SetName(version);
 	info.SetDescription("This program does something great.");
-	info.SetCopyright("(C) 2015," + author + "<clemens@fh-muenster.de>");
+	info.SetCopyright("(C) 2016," + author + "<clemens@fh-muenster.de>");
 }
 
 void igyba_thorlabs_wxFrame::OnButtonIncExpTimeClick(wxCommandEvent& event)

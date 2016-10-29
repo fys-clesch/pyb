@@ -2777,12 +2777,12 @@
 
 1425221509 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs\igyba_thorlabs.rc
 
-1438085871 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
+1477662616 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.cpp
 	"grabber_class.h"
 	<assert.h>
 	"curses.h"
 
-1437770602 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
+1477662200 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\grabber_class.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/imgproc/imgproc.hpp>
@@ -2791,7 +2791,7 @@
 	"../../minime_pp/src/minime_class.h"
 	"../../src/threadhand_class.h"
 
-1437846800 c:\users\clesch\dropbox\dtu\progs\igyba\src\header.hpp
+1439025199 c:\users\clesch\dropbox\dtu\progs\igyba\src\header.hpp
 	<stdio.h>
 	<stdarg.h>
 	<string>
@@ -2842,7 +2842,7 @@
 	<assert.h>
 	<condition_variable>
 
-1435667733 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
+1439020106 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
 	<stdlib.h>
 	<math.h>
 	<float.h>
@@ -2865,13 +2865,13 @@
 	<sys/stat.h>
 	<dir.h>
 
-1429460949 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\test.cpp
+1438603500 source:c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\test.cpp
 	"grabber_class.h"
 	"test.h"
 
 1426348211 c:\users\clesch\dropbox\dtu\progs\igyba\grabber\src\test.h
 
-1438087123 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.cpp
+1477405069 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.cpp
 	"fifo_class.h"
 
 1429426917 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun.cpp
@@ -2911,7 +2911,7 @@
 	<time.h>
 	"random.h"
 
-1435667720 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\auxf.cpp
+1439025333 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\auxf.cpp
 	<math.h>
 	<float.h>
 	<assert.h>
@@ -2925,11 +2925,11 @@
 1428930771 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\threadhand_class.cpp
 	"threadhand_class.h"
 
-1437907233 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.cpp
+1477655713 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.cpp
 	"thorlabs_cam.h"
 	<assert.h>
 
-1437847107 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.h
+1477655800 c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_cam\thorlabs_cam.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	"../src/header.hpp"
@@ -2978,7 +2978,7 @@
 	<wx/statusbr.h>
 	"../thorlabs_cam/thorlabs_cam.h"
 
-1438085374 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
+1477662236 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
 	"igyba_thorlabs_wxMain.h"
 	<wx/msgdlg.h>
 	<wx/filedlg.h>
@@ -3328,7 +3328,7 @@
 
 1412631243 c:\wxwidgets-3.0.2\include\wx\os2\filedlg.h
 
-1438086535 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
+1438087304 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
 	"minime_class.h"
 	"funcs.h"
 	"minimizer_s.h"
@@ -3336,7 +3336,7 @@
 1438086195 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_profile_class.cpp
 	"minime_class.h"
 
-1438086127 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_propagation_class.cpp
+1439025237 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_propagation_class.cpp
 	"minime_class.h"
 
 1432629853 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp

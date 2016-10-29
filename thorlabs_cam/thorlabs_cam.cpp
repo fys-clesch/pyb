@@ -367,14 +367,14 @@ bool thorlabs_cam::get_Image(IplImage *ipl_im)
 	return false;
 }
 
-bool thorlabs_cam::get_Image(Mat &im)
+bool thorlabs_cam::get_Image(Mat &img)
 {
 	err = is_FreezeVideo(pcam, IS_WAIT);
 	if(err == IS_SUCCESS)
 	{
 		/** @todo Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP) */
 		im_p.data = (uchar *)im_mem;
-		im_p.copyTo(im);
+		im_p.copyTo(img);
 		return true;
 	}
 	else if(err == IS_OUT_OF_MEMORY)
