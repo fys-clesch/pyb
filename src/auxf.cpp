@@ -42,7 +42,7 @@ void error_msg(const char *res_pt msg, const char *res_pt file, int line, const 
 void warn_msg(const char *res_pt msg, const char *res_pt file, int line, const char *res_pt func)
 {
 	iprint(stderr,
-			"\acaught something in file %s line %i from '%s':\n%s\n",
+			"caught something in file %s line %i from '%s':\n%s\n",
 			file, line, func, msg);
 }
 

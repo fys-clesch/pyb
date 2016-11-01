@@ -82,6 +82,7 @@ public:
 	void close_ViewerThread(void);
 	bool is_ViewerWindowRunning(void);
 	uint64_t get_Frames(void);
+	uint64_t get_lost_Frames(void);
 	static void cast_static_set_MouseEvent(const int event,
 										const int x, const int y,
 										const int flags,

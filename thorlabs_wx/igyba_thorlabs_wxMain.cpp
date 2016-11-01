@@ -718,6 +718,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 		LedMain->SwitchOff();
 
 	iprint(stdout, "i made %lu turns\n", (*itw1ptr).t_cam.get_Frames());
+	iprint(stdout, "i lost %lu turns\n", (*itw1ptr).t_cam.get_lost_Frames());
 
 	/* First stop minime. */
 	(*itw1ptr).t_cam.close_MinimeThread();

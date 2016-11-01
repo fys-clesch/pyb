@@ -82,6 +82,7 @@ private:
 	                  trck_name_aoi_wh = "AOI height";
 
 	bool get_Image(IplImage *ipl_im);
+	void handle_Error(const uchar err);
 	Mat get_Mat(void);
 	void show_Image(const char *win_name);
 	void get_PixelClock(void);
