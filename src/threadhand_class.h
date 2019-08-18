@@ -8,7 +8,7 @@
 
 #include "header.hpp"
 
-#ifndef ISLINUX
+#if !defined(ISLINUX) && !defined(__WINPTHREADS_VERSION)
 #include "mingw.thread.h"
 #include "mingw.mutex.h"
 #include "mingw.condition_variable.h"

@@ -3,6 +3,7 @@
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/highgui/highgui_c.h>
 
 #include "../src/header.hpp"
 #include "../grabber/src/grabber_class.h"
@@ -70,7 +71,7 @@ private:
 	     cntrl_exp_time,
 	     supp_fine_inc_exp_time;
 
-	Mat im_p,
+	cv::Mat im_p,
 	    infotbar_win_mat;
 
 	std::string infotbar_win_name,
@@ -81,9 +82,9 @@ private:
 	                  trck_name_aoi_sh = "start height",
 	                  trck_name_aoi_wh = "AOI height";
 
-	bool get_Image(IplImage *ipl_im);
+	bool get_Image(cv::IplImage *ipl_im);
 	void handle_Error(const uchar err);
-	Mat get_Mat(void);
+	cv::Mat get_Mat(void);
 	void show_Image(const char *win_name);
 	void get_PixelClock(void);
 	void get_Fps(void);
@@ -120,7 +121,7 @@ public:
 	void show_CameraTrackbars(void);
 	double get_PixelPitch(void);
 	std::string get_CameraInfoWindowName(void);
-	bool get_Image(Mat &img);
+	bool get_Image(cv::Mat &img);
 	bool get_Image(void);
 	static void cast_static_set_MouseEvent(const int event,
 											const int x, const int y,

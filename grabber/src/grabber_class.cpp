@@ -58,15 +58,15 @@ grabber::grabber(void)
 	gaussblur_max_atm.store(gaussblur_max, std::memory_order_relaxed);
 	groundlift_max_atm.store(groundlift_max, std::memory_order_relaxed); /* 5 */
 	/* Mat (apart from the image Mats) */
-	covar = (Mat_<double>(2, 2) << 0., 0., 0., 0.);
-	eigenv = (Mat_<double>(2, 1) << 0., 0.);
-	beam_parameter = (Mat_<double>(3, 1) << 0., 0., 0.);
-	tbar_win_mat = Mat::zeros(150, 350, CV_8UC3); /* 4 */
+	covar = (cv::Mat_<double>(2, 2) << 0., 0., 0., 0.);
+	eigenv = (cv::Mat_<double>(2, 1) << 0., 0.);
+	beam_parameter = (cv::Mat_<double>(3, 1) << 0., 0., 0.);
+	tbar_win_mat = cv::Mat::zeros(150, 350, CV_8UC3); /* 4 */
 	/* Point2d */
-	centroid = Point2d(0., 0.); /* 1 */
+	centroid = cv::Point2d(0., 0.); /* 1 */
 	/* Point_<int> */
 	start_roi =
-	end_roi = Point_<int>(0, 0);  /* 2 */
+	end_roi = cv::Point_<int>(0, 0);  /* 2 */
 	/* string */
 	main_win_name = "igyba - main window";
 	tbar_win_name = "igyba - trackbar window"; /* 2 */
@@ -74,7 +74,7 @@ grabber::grabber(void)
 	gaussblur_sze_min = 1;
 	gaussblur_sze_max = 61; /* 2 */
 	/* Size */
-	gaussblur_sze = Size(3, 3); /* 1 */
+	gaussblur_sze = cv::Size(3, 3); /* 1 */
 	/* atomic<uint> */
 	gaussblur_sze_atm.store(gaussblur_sze.width, std::memory_order_relaxed);
 	gaussblur_sze_min_atm.store(gaussblur_sze_min, std::memory_order_relaxed);
@@ -202,9 +202,9 @@ void grabber::set_Background(void)
 		in.convertTo(bground, mat_typ);
 	else if(in_chn == 3)
 	{
-		Mat temp = in.clone();
+		cv::Mat temp = in.clone();
 		temp.convertTo(temp, CV_32FC3);
-		cvtColor(temp, temp, CV_BGR2GRAY, 1);
+		cv::cvtColor(temp, temp, cv::COLOR_BGR2GRAY, 1);
 		temp.convertTo(bground, mat_typ);
 	}
 
@@ -229,7 +229,7 @@ void grabber::update_Mats_RgbAndFp(void)
 	{
 		in.convertTo(rgb, CV_8UC3);
 		in.convertTo(temp_CV_32FC3, CV_32FC3);
-		cvtColor(temp_CV_32FC3, temp_CV_32FC1, CV_BGR2GRAY, 1);
+		cv::cvtColor(temp_CV_32FC3, temp_CV_32FC1, cv::COLOR_BGR2GRAY, 1);
 		if(temp_CV_32FC1.type() != CV_32FC1)
 			warn_msg("Mat should be CV_32FC1. performance issues.", ERR_ARG);
 	}
@@ -237,22 +237,22 @@ void grabber::update_Mats_RgbAndFp(void)
 	{
 		in.convertTo(fp_in, mat_typ);
 		double minv, maxv;
-		minMaxLoc(in, &minv, &maxv);
+		cv::minMaxLoc(in, &minv, &maxv);
 		if(in.type() == CV_32F || in.type() == CV_64F)
 		{
 			in = in * 255. / maxv - minv; /**< This should not be done on
 			integer-type Mat. */
-			cvtColor(in, temp_CV_32FC3, CV_GRAY2BGR, 3);
+			cv::cvtColor(in, temp_CV_32FC3, cv::COLOR_GRAY2BGR, 3);
 			temp_CV_32FC3.convertTo(rgb, CV_8UC3);
 		}
 		else if(in.type() == CV_16U)
 		{
-			cvtColor(in, temp_CV_16UC3, CV_GRAY2BGR, 3);
+			cv::cvtColor(in, temp_CV_16UC3, cv::COLOR_GRAY2BGR, 3);
 			temp_CV_16UC3.convertTo(rgb, CV_8UC3);
 		}
 		else if(in.type() == CV_8U)
 		{
-			cvtColor(in, rgb, CV_GRAY2BGR, 3);
+			cv::cvtColor(in, rgb, cv::COLOR_GRAY2BGR, 3);
 			if(rgb.type() != CV_8UC3)
 				error_msg("Mat should be CV_8UC3. performance issues.",
 							ERR_ARG);
@@ -274,7 +274,7 @@ void grabber::produce_Mat_Work(void)
 	{
 		work = fp_in - bground;
 		double minv;
-		minMaxLoc(work, &minv);
+		cv::minMaxLoc(work, &minv);
 		if(minv < 0.)
 			work = work - minv;
 		bground_appl = true;
@@ -295,7 +295,7 @@ void grabber::produce_Mat_Work(void)
 	}
 	if(blur_appl)
 	{
-		GaussianBlur(work, work,
+		cv::GaussianBlur(work, work,
 					gaussblur_sze,
 					gaussblur_sigma_x,
 					gaussblur_sigma_x);
@@ -323,7 +323,7 @@ void grabber::produce_Mat_Work(void)
 		work.copyTo(work_roi);
 	}
 	/* The flipping takes place. */
-	flip(work_roi.t(), work_roi_tflip, 1);
+	cv::flip(work_roi.t(), work_roi_tflip, 1);
 	unxm = load_WorkRoiRows();
 	unym = load_WorkRoiCols();
 	#ifndef IGYBA_NDEBUG
@@ -406,9 +406,9 @@ void grabber::get_Moments_own(void)
 		warn_msg("norm is 0.", ERR_ARG);
 		const double fscl = 1.5;
 		putText(rgb, "norm is 0., no output",
-				Point2d(.5 * in_cols, .5 * in_rows),
-				FONT_HERSHEY_SIMPLEX, fscl,
-				Scalar_<double>(255., 0., 0.), 1, CV_AA);
+				cv::Point2d(.5 * in_cols, .5 * in_rows),
+				cv::FONT_HERSHEY_SIMPLEX, fscl,
+				cv::Scalar_<double>(255., 0., 0.), 1, cv::LINE_AA);
 	}
 	else
 	{
@@ -446,8 +446,8 @@ void grabber::get_Moments_own(void)
 			rxx = ryy;
 			ryy = temp;
 		}
-		centroid = Point2d(cen[0], cen[1]);
-		covar = (Mat_<double>(2, 2) << rxx, rxy, rxy, ryy);
+		centroid = cv::Point2d(cen[0], cen[1]);
+		covar = (cv::Mat_<double>(2, 2) << rxx, rxy, rxy, ryy);
 		double eig[2],
 			   temp = covar.at<double>(0, 0) - covar.at<double>(1, 1);
 		if(fabs(temp) >= DBL_EPSILON)
@@ -488,12 +488,12 @@ void grabber::get_Moments_own(void)
  */
 void grabber::get_Moments(void)
 {
-	Moments mom = moments(work_roi);
+	cv::Moments mom = moments(work_roi);
 
 	centroid.x = mom.m10 / mom.m00;
 	centroid.y = mom.m01 / mom.m00;
 	double temp = mom.m11 / mom.m00 - centroid.x * centroid.y;
-	covar = (Mat_<double>(2, 2) <<
+	covar = (cv::Mat_<double>(2, 2) <<
 	        mom.m20 / mom.m00 - POW2(centroid.x),
 	        temp, temp,
 	        mom.m02 / mom.m00 - POW2(centroid.y));
@@ -547,11 +547,11 @@ void grabber::draw_Moments(const bool chatty)
 					beam_parameter.at<double>(2),
 					ell_ecc);
 
-	const Scalar_<double> clr_ell(100., 100., 255.);
+	const cv::Scalar_<double> clr_ell(100., 100., 255.);
 	uint16_t lw = 2;
-	static Mat scl_sqrt_eigenv(eigenv.size(), eigenv.depth());
+	static cv::Mat scl_sqrt_eigenv(eigenv.size(), eigenv.depth());
 	sqrt(eigenv, scl_sqrt_eigenv);
-	const Size_<double> minmaj_ax = Size_<double>(scl_sqrt_eigenv.at<double>(0),
+	const cv::Size_<double> minmaj_ax = cv::Size_<double>(scl_sqrt_eigenv.at<double>(0),
 												scl_sqrt_eigenv.at<double>(1));
 	/* The square root of the eigenvalues, multiplied by the pixel to
 	 * micro meter factor, gives the measure of the major and minor axis of
@@ -563,69 +563,69 @@ void grabber::draw_Moments(const bool chatty)
 	if(!finite_moments)
 	{
 		iprint(stdout, "moments are not finite, can't draw an ellipse\n");
-		Point p = Point(in_cols >> 1, in_rows >> 1);
+		cv::Point p = cv::Point(in_cols >> 1, in_rows >> 1);
 		#if DRAW_NOT_FINITE_SIGN_ATOM
-		Size s = Size(in_cols / 4, in_cols / 16);
-		ellipse(rgb, p, s, 90, 0., 360., clr_ell, lw, CV_AA);
-		ellipse(rgb, p, s, 0, 0., 360., clr_ell, lw, CV_AA);
-		ellipse(rgb, p, s, 45, 0., 360., clr_ell, lw, CV_AA);
-		ellipse(rgb, p, s, -45, 0., 360., clr_ell, lw, CV_AA);
-		circle(rgb, p, 5., clr_ell, lw, CV_AA);
+		cv::Size s = cv::Size(in_cols / 4, in_cols / 16);
+		ellipse(rgb, p, s, 90, 0., 360., clr_ell, lw, cv::LINE_AA);
+		ellipse(rgb, p, s, 0, 0., 360., clr_ell, lw, cv::LINE_AA);
+		ellipse(rgb, p, s, 45, 0., 360., clr_ell, lw, cv::LINE_AA);
+		ellipse(rgb, p, s, -45, 0., 360., clr_ell, lw, cv::LINE_AA);
+		circle(rgb, p, 5., clr_ell, lw, cv::LINE_AA);
 		#else
-		circle(rgb, p, in_cols / 6, clr_ell, 4, CV_AA);
-		const static Point pl = Point(p.x - in_cols / 16, in_rows / 2.4),
-		                   pr = Point(p.x + in_cols / 16, pl.y),
-		                   pfrown = Point(p.x, in_rows / 1.6);
-		circle(rgb, pl, 3., clr_ell, 4, CV_AA);
-		circle(rgb, pr, 3., clr_ell, 4, CV_AA);
-		const Size sfrown = Size(in_cols / 9, in_cols / 18);
-		ellipse(rgb, pfrown, sfrown, 0., -10., -170., clr_ell, 4, CV_AA);
+		cv::circle(rgb, p, in_cols / 6, clr_ell, 4, cv::LINE_AA);
+		const static cv::Point pl = cv::Point(p.x - in_cols / 16, in_rows / 2.4),
+		                   pr = cv::Point(p.x + in_cols / 16, pl.y),
+		                   pfrown = cv::Point(p.x, in_rows / 1.6);
+		cv::circle(rgb, pl, 3., clr_ell, 4, cv::LINE_AA);
+		cv::circle(rgb, pr, 3., clr_ell, 4, cv::LINE_AA);
+		const cv::Size sfrown = cv::Size(in_cols / 9, in_cols / 18);
+		cv::ellipse(rgb, pfrown, sfrown, 0., -10., -170., clr_ell, 4, cv::LINE_AA);
 		#endif
 	}
 	else if(saturated)
 	{
 		const uint shiftp = 15;
-		const static Point p = Point(in_cols >> 1, in_rows >> 1),
-		                   pl = Point(p.x - in_cols / 16, in_rows / 2.4),
-		                   pl0 = Point(pl.x - shiftp, pl.y - shiftp),
-		                   pl1 = Point(pl.x - shiftp, pl.y + shiftp),
-		                   pl2 = Point(pl.x + shiftp, pl.y - shiftp),
-		                   pl3 = Point(pl.x + shiftp, pl.y + shiftp),
-		                   pr = Point(p.x + in_cols / 16, pl.y),
-		                   pr0 = Point(pr.x - shiftp, pr.y - shiftp),
-		                   pr1 = Point(pr.x - shiftp, pr.y + shiftp),
-		                   pr2 = Point(pr.x + shiftp, pr.y - shiftp),
-		                   pr3 = Point(pr.x + shiftp, pr.y + shiftp);
-		circle(rgb, p, in_cols / 6, clr_ell, 4, CV_AA);
-		line(rgb, pl0, pl3, clr_ell, 4, CV_AA);
-		line(rgb, pl1, pl2, clr_ell, 4, CV_AA);
-		line(rgb, pr0, pr3, clr_ell, 4, CV_AA);
-		line(rgb, pr1, pr2, clr_ell, 4, CV_AA);
+		const static cv::Point p = cv::Point(in_cols >> 1, in_rows >> 1),
+		                   pl = cv::Point(p.x - in_cols / 16, in_rows / 2.4),
+		                   pl0 = cv::Point(pl.x - shiftp, pl.y - shiftp),
+		                   pl1 = cv::Point(pl.x - shiftp, pl.y + shiftp),
+		                   pl2 = cv::Point(pl.x + shiftp, pl.y - shiftp),
+		                   pl3 = cv::Point(pl.x + shiftp, pl.y + shiftp),
+		                   pr = cv::Point(p.x + in_cols / 16, pl.y),
+		                   pr0 = cv::Point(pr.x - shiftp, pr.y - shiftp),
+		                   pr1 = cv::Point(pr.x - shiftp, pr.y + shiftp),
+		                   pr2 = cv::Point(pr.x + shiftp, pr.y - shiftp),
+		                   pr3 = cv::Point(pr.x + shiftp, pr.y + shiftp);
+		cv::circle(rgb, p, in_cols / 6, clr_ell, 4, cv::LINE_AA);
+		cv::line(rgb, pl0, pl3, clr_ell, 4, cv::LINE_AA);
+		cv::line(rgb, pl1, pl2, clr_ell, 4, cv::LINE_AA);
+		cv::line(rgb, pr0, pr3, clr_ell, 4, cv::LINE_AA);
+		cv::line(rgb, pr1, pr2, clr_ell, 4, cv::LINE_AA);
 		const uint mh = 35,
 		           mw = 20;
-		const static Point pmouth = Point(p.x, in_rows / 1.75),
-		                   pf0 = Point(pmouth.x, pmouth.y),
-		                   pf1 = Point(pf0.x + mw, pf0.y + mh),
-		                   pf2 = Point(pf1.x + mw, pf1.y - mh),
-		                   pf3 = Point(pf2.x + mw, pf2.y + mh),
-		                   pf4 = Point(pf3.x + mw, pf3.y - mh),
-		                   pf1m = Point(pf0.x - mw, pf0.y + mh),
-		                   pf2m = Point(pf1m.x - mw, pf1m.y - mh),
-		                   pf3m = Point(pf2m.x - mw, pf2m.y + mh),
-		                   pf4m = Point(pf3m.x - mw, pf3m.y - mh);
-		rectangle(rgb, pf0, pf1, clr_ell, 4, CV_AA);
-		rectangle(rgb, pf1, pf2, clr_ell, 4, CV_AA);
-		rectangle(rgb, pf2, pf3, clr_ell, 4, CV_AA);
-		rectangle(rgb, pf3, pf4, clr_ell, 4, CV_AA);
+		const static cv::Point pmouth = cv::Point(p.x, in_rows / 1.75),
+		                   pf0 = cv::Point(pmouth.x, pmouth.y),
+		                   pf1 = cv::Point(pf0.x + mw, pf0.y + mh),
+		                   pf2 = cv::Point(pf1.x + mw, pf1.y - mh),
+		                   pf3 = cv::Point(pf2.x + mw, pf2.y + mh),
+		                   pf4 = cv::Point(pf3.x + mw, pf3.y - mh),
+		                   pf1m = cv::Point(pf0.x - mw, pf0.y + mh),
+		                   pf2m = cv::Point(pf1m.x - mw, pf1m.y - mh),
+		                   pf3m = cv::Point(pf2m.x - mw, pf2m.y + mh),
+		                   pf4m = cv::Point(pf3m.x - mw, pf3m.y - mh);
+		cv::rectangle(rgb, pf0, pf1, clr_ell, 4, cv::LINE_AA);
+		cv::rectangle(rgb, pf1, pf2, clr_ell, 4, cv::LINE_AA);
+		cv::rectangle(rgb, pf2, pf3, clr_ell, 4, cv::LINE_AA);
+		cv::rectangle(rgb, pf3, pf4, clr_ell, 4, cv::LINE_AA);
 
-		rectangle(rgb, pf0, pf1m, clr_ell, 4, CV_AA);
-		rectangle(rgb, pf1m, pf2m, clr_ell, 4, CV_AA);
-		rectangle(rgb, pf2m, pf3m, clr_ell, 4, CV_AA);
-		rectangle(rgb, pf3m, pf4m, clr_ell, 4, CV_AA);
+		cv::rectangle(rgb, pf0, pf1m, clr_ell, 4, cv::LINE_AA);
+		cv::rectangle(rgb, pf1m, pf2m, clr_ell, 4, cv::LINE_AA);
+		cv::rectangle(rgb, pf2m, pf3m, clr_ell, 4, cv::LINE_AA);
+		cv::rectangle(rgb, pf3m, pf4m, clr_ell, 4, cv::LINE_AA);
 	}
 	else
 	{
-		static Point2d cen_draw;
+		static cv::Point2d cen_draw;
 		if(roi_on)
 		{
 			cen_draw.x = centroid.x + roi_rect.x;
@@ -633,22 +633,22 @@ void grabber::draw_Moments(const bool chatty)
 		}
 		else
 			cen_draw = centroid;
-		ellipse(rgb, cen_draw, minmaj_ax, ell_theta, 0., 360.,
-				clr_ell, lw, CV_AA);
-		circle(rgb, cen_draw, 1., clr_ell, lw, CV_AA);
+		cv::ellipse(rgb, cen_draw, minmaj_ax, ell_theta, 0., 360.,
+				clr_ell, lw, cv::LINE_AA);
+		cv::circle(rgb, cen_draw, 1., clr_ell, lw, cv::LINE_AA);
 	}
 
 	double temp = 1. / 32. * in_rows;
 	const double incy = 1. / 32. * in_rows,
 				 sx = 1. / 128. * in_cols,
 				 fscl = .45;
-	const int font = FONT_HERSHEY_SIMPLEX;
-	Scalar_<double> clr_txt(0., 255., 0.);
+	const int font = cv::FONT_HERSHEY_SIMPLEX;
+	cv::Scalar_<double> clr_txt(0., 255., 0.);
 	lw = 1;
 
 	static std::string infos(128, '\0');
 
-	#define putText_ARGS Point2d(sx, temp), font, fscl, clr_txt, lw, CV_AA
+	#define putText_ARGS cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA
 	infos = "theta / deg: " + convert_Double2Str(ell_theta);
 	putText(rgb, infos, putText_ARGS);
 	temp += incy;
@@ -679,7 +679,7 @@ void grabber::draw_Moments(const bool chatty)
 			convert_Double2Str(beam_parameter.at<double>(1));
 	putText(rgb, infos, putText_ARGS);
 
-	clr_txt = Scalar_<double>(255., 0., 0.);
+	clr_txt = cv::Scalar_<double>(255., 0., 0.);
 	temp += incy;
 	if(in_cols <= sqrt(covar.at<double>(0, 0)))
 		putText(rgb, "sqrt(covar[0, 0]) > columns", putText_ARGS);
@@ -702,10 +702,10 @@ void grabber::draw_Info(void)
 	/* Some definitions. */
 	const uint16_t lw = 1;
 	double fscl = .45;
-	const int font = FONT_HERSHEY_SIMPLEX;
-	const Scalar_<double> clr_txt(0., 255., 0.);
+	const int font = cv::FONT_HERSHEY_SIMPLEX;
+	const cv::Scalar_<double> clr_txt(0., 255., 0.);
 	static std::string infos(128, '\0');
-	#define putText_ARGS Point2d(sx, sy), font, fscl, clr_txt, lw, CV_AA
+	#define putText_ARGS cv::Point2d(sx, sy), font, fscl, clr_txt, lw, cv::LINE_AA
 	double sx = 1. / 128. * in_cols,
 	       sy = in_rows - 10.;
 	/* Print the value under the mouse pointer. */
@@ -722,7 +722,7 @@ void grabber::draw_Info(void)
 	/* Information regarding too high pixel values. */
 	const double minval = max_pval,
 	             maxval = max_pval;
-	static Mat mmmat(in_rows, in_cols, CV_8UC1);
+	static cv::Mat mmmat(in_rows, in_cols, CV_8UC1);
 	inRange(fp_in, minval, maxval, mmmat);
 	uint count_nz = countNonZero(mmmat);
 	if(count_nz > saturated_thresh)
@@ -803,10 +803,10 @@ void grabber::draw_InfoWxVersion(void)
 	/* Some definitions. */
 	const uint16_t lw = 1;
 	double fscl = .45;
-	const int font = FONT_HERSHEY_SIMPLEX;
-	const Scalar_<double> clr_txt(0., 255., 0.);
+	const int font = cv::FONT_HERSHEY_SIMPLEX;
+	const cv::Scalar_<double> clr_txt(0., 255., 0.);
 	static std::string infos(128, '\0');
-	#define putText_ARGS Point2d(sx, sy), font, fscl, clr_txt, lw, CV_AA
+	#define putText_ARGS cv::Point2d(sx, sy), font, fscl, clr_txt, lw, cv::LINE_AA
 	double sx = 1. / 128. * in_cols,
 	       sy = in_rows - 10.;
 	/* Print the value under the mouse pointer. */
@@ -823,7 +823,7 @@ void grabber::draw_InfoWxVersion(void)
 	/* Information regarding too high pixel values. */
 	const double minval = max_pval,
 	             maxval = max_pval;
-	static Mat mmmat(in_rows, in_cols, CV_8UC1);
+	static cv::Mat mmmat(in_rows, in_cols, CV_8UC1);
 	inRange(fp_in, minval, maxval, mmmat);
 	uint count_nz = countNonZero(mmmat);
 	if(count_nz > saturated_thresh)
@@ -846,33 +846,33 @@ void grabber::draw_InfoWxVersion(void)
 void grabber::draw_RoiRectangle(void)
 {
 	if(mouse_drag)
-		rectangle(rgb, start_roi, end_roi, Scalar(100., 100., 50.), 2);
+		rectangle(rgb, start_roi, end_roi, cv::Scalar(100., 100., 50.), 2);
 	else if(roi_on)
-		rectangle(rgb, roi_rect, Scalar(150., 100., 50.), 2);
+		rectangle(rgb, roi_rect, cv::Scalar(150., 100., 50.), 2);
 }
 
 void grabber::set_MouseEvent(const int event,
 							const int x, const int y,
 							const int flags)
 {
-	if(flags & EVENT_FLAG_SHIFTKEY)
+	if(flags & cv::EVENT_FLAG_SHIFTKEY)
 	{
-		if(event == EVENT_LBUTTONDOWN && !mouse_drag)
+		if(event == cv::EVENT_LBUTTONDOWN && !mouse_drag)
 		{
 			/* AOI selection begins. */
 			roi_on = false;
-			end_roi = start_roi = Point_<int>(x, y);
+			end_roi = start_roi = cv::Point_<int>(x, y);
 			mouse_drag = true;
 		}
-		else if(event == EVENT_MOUSEMOVE && mouse_drag)
+		else if(event == cv::EVENT_MOUSEMOVE && mouse_drag)
 		{
 			/* AOI being selected. */
-			end_roi = Point_<int>(x, y);
+			end_roi = cv::Point_<int>(x, y);
 		}
-		else if(event == EVENT_LBUTTONUP && mouse_drag)
+		else if(event == cv::EVENT_LBUTTONUP && mouse_drag)
 		{
-			end_roi = Point_<int>(x, y);
-			roi_rect = Rect_<int>(start_roi.x, start_roi.y,
+			end_roi = cv::Point_<int>(x, y);
+			roi_rect = cv::Rect_<int>(start_roi.x, start_roi.y,
 									x - start_roi.x,
 									y - start_roi.y);
 			mouse_drag = false;
@@ -884,7 +884,7 @@ void grabber::set_MouseEvent(const int event,
 				roi_on = true;
 		}
 	}
-    else if(event == EVENT_MOUSEMOVE || event == EVENT_LBUTTONDOWN)
+    else if(event == cv::EVENT_MOUSEMOVE || event == cv::EVENT_LBUTTONDOWN)
     {
     	mouse_drag = false;
     	px_mouse = x;
@@ -894,21 +894,21 @@ void grabber::set_MouseEvent(const int event,
 		iprint(stdout, "val: %g, pos: (%i, %i)\n", pval, px_mouse, py_mouse);
 		#endif
 	}
-	else if(event == EVENT_RBUTTONDOWN)
+	else if(event == cv::EVENT_RBUTTONDOWN)
 	{
 		#if SHOW_MOUSE_CB
 		iprint(stdout, "r but: (%i, %i)\n", x, y);
 		#endif
 		pval = 0xDEADDEAD;
 	}
-	else if(event == EVENT_MBUTTONDOWN)
+	else if(event == cv::EVENT_MBUTTONDOWN)
 	{
 		#if SHOW_MOUSE_CB
 		iprint(stdout, "m but: (%i, %i)\n", x, y);
 		#endif
 		pval = 0xDEADDEAD;
 	}
-	else if(event == EVENT_MOUSEMOVE)
+	else if(event == cv::EVENT_MOUSEMOVE)
 	{
 		#if SHOW_MOUSE_CB
 		iprint(stdout, "pos: (%i, %i)\n", x, y);
@@ -940,7 +940,7 @@ void grabber::show_Trackbars(void)
 	imshow(tbar_win_name, tbar_win_mat);
 }
 
-Mat grabber::get_Mat_private(const save_Im_type mtype)
+cv::Mat grabber::get_Mat_private(const save_Im_type mtype)
 {
 	if(mtype == save_Im_type::RGB)
 		return rgb;
@@ -951,7 +951,7 @@ Mat grabber::get_Mat_private(const save_Im_type mtype)
 	else
 	{
 		error_msg("wrong enumerator", ERR_ARG);
-		return Mat::eye(in_rows, in_cols, mat_typ);
+		return cv::Mat::eye(in_rows, in_cols, mat_typ);
 	}
 }
 
@@ -1020,7 +1020,7 @@ void grabber::store_Image(const save_Im_type mtype,
 		for(uint i = 0; i < (uint)rgb.rows; i++)
 			for(uint j = 0; j < (uint)rgb.cols; j++)
 			{
-				const Vec3b m = rgb.at<Vec3b>(i, j);
+				const cv::Vec3b m = rgb.at<cv::Vec3b>(i, j);
 				fprintf(writefile,
 							"%u %u %hhu %hhu %hhu%s",
 							i, j, m[0], m[1], m[2],
@@ -1055,12 +1055,12 @@ void grabber::store_Image(const save_Im_type mtype,
 
 void grabber::show_Help(void)
 {
-	#define putText_ARGS Point2d(sx, sy), font, fscl, clr_txt, lw, CV_AA
+	#define putText_ARGS cv::Point2d(sx, sy), font, fscl, clr_txt, lw, cv::LINE_AA
 	static const std::string win_title = "Help me!";
 	const double fscl = .45, wwidth = 800., wheight = 600.;;
-	const int font = CV_FONT_HERSHEY_SIMPLEX;
-	const uint16_t lw = 1, lt = CV_AA;
-	const Scalar_<double> clr_txt(0., 255., 0.);
+	const int font = cv::FONT_HERSHEY_SIMPLEX;
+	const uint16_t lw = 1, lt = cv::LINE_AA;
+	const cv::Scalar_<double> clr_txt(0., 255., 0.);
 	double sx,
 	       sy,
 	       syinc1 = 15.,
@@ -1068,23 +1068,23 @@ void grabber::show_Help(void)
 	       sxstart1 = 10.,
 	       sxstart2 = 50.,
 	       sxstart3 = 70.;
-	namedWindow(win_title, CV_WINDOW_AUTOSIZE);
-	Mat img(Size(wwidth, wheight), CV_8UC3, Scalar::all(0));
+	cv::namedWindow(win_title, cv::WINDOW_AUTOSIZE);
+	cv::Mat img(cv::Size(wwidth, wheight), CV_8UC3, cv::Scalar::all(0));
 	{
 		static const std::string text =
 		"Welcome to the help function of 'igyba'";
 
 		int baseline = 0;
-		Size textSize = getTextSize(text, font, fscl, lw, &baseline);
+		cv::Size textSize = cv::getTextSize(text, font, fscl, lw, &baseline);
 		/* Centre the text. */
-		Point textOrg((img.cols - textSize.width) >> 1,
+		cv::Point textOrg((img.cols - textSize.width) >> 1,
 						(img.rows + textSize.height) >> 1);
 
 		sx = textOrg.x;
 		sy = 15.;
 		putText(img, text, putText_ARGS);
 		sy = 20.;
-		line(img, Point(sx, sy), Point(sx + 280., sy), clr_txt, lw, lt);
+		line(img, cv::Point(sx, sy), cv::Point(sx + 280., sy), clr_txt, lw, lt);
 	}
 	sx = sxstart1;
 	sy = 45.;
@@ -1170,57 +1170,57 @@ void grabber::show_Help(void)
 	imshow(win_title, img);
 	while(true)
 	{
-		uint32_t kctrl = waitKey(0);
+		uint32_t kctrl = cv::waitKey(0);
 		if(kctrl == 7340032 || kctrl == 1114046) /**< The latter happens on some
 			builds of OpenCV. */
 			break;
 	}
-	destroyWindow(win_title);
+	cv::destroyWindow(win_title);
 	#undef putText_ARGS
 }
 
 void grabber::show_Intro(void)
 {
-	#define putText_ARGS Point2d(sx, sy), font, fscl, clr_txt, lw, CV_AA
+	#define putText_ARGS cv::Point2d(sx, sy), font, fscl, clr_txt, lw, cv::LINE_AA
 	static const std::string win_title = "Welcome";
 	const double fscl = .45, wwidth = 550., wheight = 350.;
-	const int font = CV_FONT_HERSHEY_SIMPLEX | CV_FONT_ITALIC;
+	const int font = cv::FONT_HERSHEY_SIMPLEX | cv::FONT_ITALIC;
 	const uint16_t lw = 1,
-	               lt = CV_AA;
-	const Scalar_<double> clr_txt(0., 255., 0.);
+	               lt = cv::LINE_AA;
+	const cv::Scalar_<double> clr_txt(0., 255., 0.);
 	double sx, sy;
-	namedWindow(win_title, CV_WINDOW_AUTOSIZE);
-	Mat img(Size(wwidth, wheight), CV_8UC3, Scalar::all(0.));
+	cv::namedWindow(win_title, cv::WINDOW_AUTOSIZE);
+	cv::Mat img(cv::Size(wwidth, wheight), CV_8UC3, cv::Scalar::all(0.));
 	{
 		static const std::string text = "igyba -- igyba gets your beam analysed";
 
 		int baseline = 0;
-		Size textSize = getTextSize(text, font, fscl, lw, &baseline);
+		cv::Size textSize = cv::getTextSize(text, font, fscl, lw, &baseline);
 		/* Centre the text. */
-		Point textOrg((img.cols - textSize.width) >> 1, (img.rows + textSize.height) >> 1);
+		cv::Point textOrg((img.cols - textSize.width) >> 1, (img.rows + textSize.height) >> 1);
 
 		sx = textOrg.x;
 		sy = 15.;
-		putText(img, text, putText_ARGS);
+		cv::putText(img, text, putText_ARGS);
 		sy = 20.;
-		line(img, Point(sx, sy), Point(sx + 300., sy), clr_txt, lw, lt);
+		cv::line(img, cv::Point(sx, sy), cv::Point(sx + 300., sy), clr_txt, lw, lt);
 	}
 	sx = wwidth - 80.;
 	sy = wheight - 25.;
-	putText(img, "20161031 RC4", putText_ARGS);
+	cv::putText(img, "20161031 RC4", putText_ARGS);
 	sy = wheight - 5.;
-	putText(img, "GPLv3", putText_ARGS);
+	cv::putText(img, "GPLv3", putText_ARGS);
 
 	uint64_t seed = time(NULL);
-	RNG rng(seed);
+	cv::RNG rng(seed);
 	if(true)
 	{
-		Point p1(wwidth * .5, wheight * .5);
+		cv::Point p1(wwidth * .5, wheight * .5);
 		for(uint i = 0; i < 200; i++)
 		{
-			const Point p2(rng.gaussian(30.) + wwidth * .5,
+			const cv::Point p2(rng.gaussian(30.) + wwidth * .5,
 							rng.gaussian(30.) + wheight * .5);
-			const Scalar_<uint16_t> color = Scalar(rng.uniform(0, 255),
+			const cv::Scalar_<uint16_t> color = cv::Scalar(rng.uniform(0, 255),
 													rng.uniform(0, 255),
 													rng.uniform(0, 255));
 			line(img, p1, p2, color, lw, lt);
@@ -1229,22 +1229,22 @@ void grabber::show_Intro(void)
 	}
 	else
 	{
-		vector<Point> contour;
+		std::vector<cv::Point> contour;
 		for(uint i = 0; i < 100; i++)
 		{
 			double x = rng.gaussian(10.) + wwidth * .5,
 				   y = rng.gaussian(10.) + wheight * .5;
-			contour.push_back(Point(x, y));
+			contour.push_back(cv::Point(x, y));
 		}
-		const Point *pts = (const Point *)Mat(contour).data;
-		const int npts = Mat(contour).rows;
+		const cv::Point *pts = (const cv::Point *)cv::Mat(contour).data;
+		const int npts = cv::Mat(contour).rows;
 		const bool draw_clsd = true;
 		polylines(img, &pts, &npts, 1, draw_clsd, clr_txt, lw, lt);
 	}
 
-	imshow(win_title, img);
-	waitKey(1200);
-	destroyWindow(win_title);
+	cv::imshow(win_title, img);
+	cv::waitKey(1200);
+	cv::destroyWindow(win_title);
 	#undef putText_ARGS
 }
 
@@ -1288,15 +1288,15 @@ void grabber::show_HelpOnCurses(void)
 
 void grabber::draw_Crossline(void)
 {
-	Point2d pt1, pt2;
-	LineIterator lit(work, pt1, pt2)
+	cv::Point2d pt1, pt2;
+	cv::LineIterator lit(work, pt1, pt2)
 	#ifndef IGYBA_NDEBUG
 	             , lit2 = lit;
 	#else
 	;
 	#endif
 
-	vector<float> buf;
+	std::vector<float> buf;
 	buf.reserve(lit.count);
 
 	for(int i = 0; i < lit.count; i++, ++lit)
@@ -1335,8 +1335,8 @@ void grabber::apply_RemoveBase(const double thresh)
 	}
 	else
 	{
-		Mat cropped = work(Rect(0, 0, 10, 10)).clone(); /**< x0, y0, x1, y1 */
-		const Scalar_<double> sum_cropped = sum(cropped);
+		cv::Mat cropped = work(cv::Rect(0, 0, 10, 10)).clone(); /**< x0, y0, x1, y1 */
+		const cv::Scalar_<double> sum_cropped = sum(cropped);
 		const double non0_cropped = (double)countNonZero(cropped),
 		             res = sum_cropped[0] / non0_cropped;
 		work -= res;
@@ -1353,12 +1353,12 @@ void grabber::set_TrackbarWindowName(const std::string &name)
 	tbar_win_name = name;
 }
 
-Mat grabber::get_TrackbarWindowMat(void)
+cv::Mat grabber::get_TrackbarWindowMat(void)
 {
 	return tbar_win_mat;
 }
 
-Mat &grabber::get_TrackbarWindowMatPtr(void)
+cv::Mat &grabber::get_TrackbarWindowMatPtr(void)
 {
 	return tbar_win_mat;
 }
@@ -1555,7 +1555,7 @@ void grabber::create_TrackbarBlur(void)
 	static int setting = res;
 	assert(setting <= 50);
 
-	createTrackbar(trck_name,
+	cv::createTrackbar(trck_name,
 					tbar_win_name,
 					&setting,
 					(int)out_max,
@@ -1578,7 +1578,7 @@ void grabber::set_KernelSizeAtomic(const uint i)
 void grabber::TrackbarHandlerBlurSize(int i)
 {
 	uint res = (i << 1) + 1;
-	gaussblur_sze = Size(res, res);
+	gaussblur_sze = cv::Size(res, res);
 }
 
 void grabber::cast_static_SetTrackbarHandlerBlurSize(int i, void *ptr)
@@ -1593,7 +1593,7 @@ void grabber::create_TrackbarBlurSize(void)
 	const int out_max = (gaussblur_sze_max - 1) >> 1;
 	static int setting = (gaussblur_sze.width - 1) >> 1;
 
-	createTrackbar(trck_name,
+	cv::createTrackbar(trck_name,
 					tbar_win_name,
 					&setting,
 					out_max,
@@ -1629,7 +1629,7 @@ void grabber::create_TrackbarGroundlift(void)
 	static int setting = res;
 	assert(setting <= 50);
 
-	createTrackbar(trck_name,
+	cv::createTrackbar(trck_name,
 					tbar_win_name,
 					&setting,
 					out_max,
@@ -1920,17 +1920,17 @@ void grabber::copy_MousePosition(const int px, const int py)
 	py_mouse = py;
 }
 
-void grabber::set_StartRoi(const Point_<int> &val)
+void grabber::set_StartRoi(const cv::Point_<int> &val)
 {
 	start_roi = val;
 }
 
-void grabber::set_EndRoi(const Point_<int> &val)
+void grabber::set_EndRoi(const cv::Point_<int> &val)
 {
 	end_roi = val;
 }
 
-void grabber::set_RectRoi(const Rect_<int> &val)
+void grabber::set_RectRoi(const cv::Rect_<int> &val)
 {
 	roi_rect = val;
 }

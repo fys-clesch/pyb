@@ -68,7 +68,7 @@ thorlabs_cam::thorlabs_cam(void)
 	/* string */
 	infotbar_win_name  = "camera information window";
 	/* Mat */
-	infotbar_win_mat = Mat::zeros(150, 350, CV_8UC3);
+	infotbar_win_mat = cv::Mat::zeros(150, 350, CV_8UC3);
 
 	/* set the bits per pixel variable */
 	if(color_mod == IS_CM_MONO8 ||
@@ -214,27 +214,27 @@ void thorlabs_cam::init_Camera(void)
 
 	if(color_mod == IS_CM_MONO8 ||
 		color_mod == IS_CM_SENSOR_RAW8)
-		im_p = Mat(Size(im_width, im_height), CV_8UC1, 0.);
+		im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC1, 0.);
 	else if(color_mod == IS_CM_MONO12 ||
 			color_mod == IS_CM_MONO16 ||
 			color_mod == IS_CM_SENSOR_RAW12 ||
 			color_mod == IS_CM_SENSOR_RAW16 ||
 			color_mod == IS_CM_BGR555_PACKED ||
 			color_mod == IS_CM_BGR565_PACKED)
-		im_p = Mat(Size(im_width, im_height), CV_16UC1, 0.);
+		im_p = cv::Mat(cv::Size(im_width, im_height), CV_16UC1, 0.);
 	else if(color_mod == IS_CM_RGB8_PACKED ||
 			color_mod == IS_CM_BGR8_PACKED)
-		im_p = Mat(Size(im_width, im_height), CV_8UC3, 0.);
+		im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC3, 0.);
 	else if(color_mod == IS_CM_RGBA8_PACKED ||
 			color_mod == IS_CM_BGRA8_PACKED ||
 			color_mod == IS_CM_RGBY8_PACKED ||
 			color_mod == IS_CM_BGRY8_PACKED ||
 			color_mod == IS_CM_RGB10V2_PACKED ||
 			color_mod == IS_CM_BGR10V2_PACKED)
-		im_p = Mat(Size(im_width, im_height), CV_8UC4, 0.);
+		im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC4, 0.);
 	else
 	{
-		im_p = Mat(Size(im_width, im_height), CV_8UC1, 0.);
+		im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC1, 0.);
 		warn_msg("can't find right colour mode. " \
 				"setting Mat format to CV_8UC1.", ERR_ARG);
 	}
@@ -343,11 +343,11 @@ void thorlabs_cam::set_ImageSize(void)
 
 /** \brief Acquire a single image from the camera.
  *
- * \param ipl_im IplImage*
+ * \param ipl_im cv::IplImage*
  * \return bool
  *
  */
-bool thorlabs_cam::get_Image(IplImage *ipl_im)
+bool thorlabs_cam::get_Image(cv::IplImage *ipl_im)
 {
 	err = is_FreezeVideo(pcam, IS_WAIT);
 	if(err == IS_SUCCESS)
@@ -359,12 +359,12 @@ bool thorlabs_cam::get_Image(IplImage *ipl_im)
 	return false;
 }
 
-bool thorlabs_cam::get_Image(Mat &img)
+bool thorlabs_cam::get_Image(cv::Mat &img)
 {
 	err = is_FreezeVideo(pcam, IS_WAIT);
 	if(err == IS_SUCCESS)
 	{
-		/** @todo Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP) */
+		/** @todo cv::Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP) */
 		im_p.data = (uchar *)im_mem;
 		im_p.copyTo(img);
 		return true;
@@ -376,7 +376,7 @@ bool thorlabs_cam::get_Image(Mat &img)
 bool thorlabs_cam::get_Image(void)
 {
 	err = is_FreezeVideo(pcam, IS_WAIT);
-	if(err == IS_SUCCESS) /** @todo Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP) */
+	if(err == IS_SUCCESS) /** @todo cv::Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP) */
 	{
 		im_p.data = (uchar *)im_mem;
 		return true;
@@ -406,7 +406,7 @@ void thorlabs_cam::handle_Error(const uchar err)
 		warn_msg("unspecified error / warning during image capture", ERR_ARG);
 }
 
-Mat thorlabs_cam::get_Mat(void)
+cv::Mat thorlabs_cam::get_Mat(void)
 {
 	return im_p.clone();
 }
@@ -431,7 +431,7 @@ bool thorlabs_cam::caught_Error(void)
 
 void thorlabs_cam::show_Image(const char *win_name)
 {
-	imshow(win_name, im_p);
+	cv::imshow(win_name, im_p);
 }
 
 void thorlabs_cam::get_PixelClock(void)
@@ -700,7 +700,7 @@ void thorlabs_cam::create_TrackbarExposure(void)
 	 * the maximum value the trackbar can move,
 	 * and the function that is called whenever the trackbar is moved.
 	 */
-	createTrackbar(trck_name,
+	cv::createTrackbar(trck_name,
 					infotbar_win_name,
 					&setting,
 					(int)out_max,
@@ -714,37 +714,37 @@ void thorlabs_cam::draw_CameraInfo(void)
 	const uint16_t lw = 1;
 	double fscl = .45,
 	       sx, sy;
-	const int font = FONT_HERSHEY_SIMPLEX;
-	const Scalar_<double> clr_txt(0., 255., 0.);
+	const int font = cv::FONT_HERSHEY_SIMPLEX;
+	const cv::Scalar_<double> clr_txt(0., 255., 0.);
 	static std::string info(128, '\0');
-	#define putText_ARGS Point2d(sx, sy), font, fscl, clr_txt, lw, CV_AA
+	#define putText_ARGS cv::Point2d(sx, sy), font, fscl, clr_txt, lw, cv::LINE_AA
 
 	sx = 10.;
 	sy = infotbar_win_mat.rows - 10.;
 	get_Fps();
 	info = "frame rate: " + convert_Double2Str(fps, 1) + " 1 / s";
-	putText(infotbar_win_mat, info, putText_ARGS);
+	cv::putText(infotbar_win_mat, info, putText_ARGS);
 	sy -= 20.;
 	info = "exposure time: " + convert_Double2Str(exp_time, 3) + " ms";
-	putText(infotbar_win_mat, info, putText_ARGS);
+	cv::putText(infotbar_win_mat, info, putText_ARGS);
 	sy -= 20.;
 	info = "(start / end) width: (" +
 	convert_Int2Str(im_aoi_width_start) + ", " +
 	convert_Int2Str(im_aoi_width) + ") pixel";
-	putText(infotbar_win_mat, info, putText_ARGS);
+	cv::putText(infotbar_win_mat, info, putText_ARGS);
 	sy -= 20.;
 	info = "(start / end) height: (" +
 	convert_Int2Str(im_aoi_height_start) + ", " +
 	convert_Int2Str(im_aoi_height) + ") pixel";
-	putText(infotbar_win_mat, info, putText_ARGS);
+	cv::putText(infotbar_win_mat, info, putText_ARGS);
 	sy -= 20.;
 	info = "sensor area: (" +
 	convert_Int2Str(sensor_aa_width) + " * " +
 	convert_Int2Str(sensor_aa_height) + ") um^2";
-	putText(infotbar_win_mat, info, putText_ARGS);
+	cv::putText(infotbar_win_mat, info, putText_ARGS);
 	sy -= 20.;
 	info = "camera model: " + sensorname;
-	putText(infotbar_win_mat, info, putText_ARGS);
+	cv::putText(infotbar_win_mat, info, putText_ARGS);
 	#undef putText_ARGS
 }
 
@@ -876,25 +876,25 @@ std::string thorlabs_cam::get_CameraInfoWindowName(void)
 
 void thorlabs_cam::show_CameraTrackbars(void)
 {
-	imshow(infotbar_win_name, infotbar_win_mat);
+	cv::imshow(infotbar_win_name, infotbar_win_mat);
 }
 
 void thorlabs_cam::TrackbarHandlerStartAOIWidth(int i)
 {
 	/* Get the current position. */
-	assert(i == getTrackbarPos(trck_name_aoi_sw, infotbar_win_name));
+	assert(i == cv::getTrackbarPos(trck_name_aoi_sw, infotbar_win_name));
 	/* Calculate the new one. */
 	i -= i % im_inc_width;
 	/* Set the new one. */
 	if(i > 0)
 	{
 		im_aoi_width_start = i;
-		setTrackbarPos(trck_name_aoi_sw, infotbar_win_name, im_aoi_width_start);
+		cv::setTrackbarPos(trck_name_aoi_sw, infotbar_win_name, im_aoi_width_start);
 	}
 	/* Set the new total width. */
 	const uint max_sze = im_max_width - im_aoi_width_start;
 	if(im_aoi_width > max_sze)
-		setTrackbarPos(trck_name_aoi_ww, infotbar_win_name, max_sze);
+		cv::setTrackbarPos(trck_name_aoi_ww, infotbar_win_name, max_sze);
 	/* Update AOI. */
 }
 
@@ -909,7 +909,7 @@ void thorlabs_cam::create_TrackbarStartAOIWidth(void)
 	const int out_max = 100;
 	static int setting = 0;
 
-	createTrackbar(trck_name_aoi_sw,
+	cv::createTrackbar(trck_name_aoi_sw,
 					infotbar_win_name,
 					&setting,
 					out_max,
@@ -929,29 +929,29 @@ void thorlabs_cam::set_MouseEvent(const int event,
 							const int x, const int y,
 							const int flags)
 {
-	if(flags & EVENT_FLAG_SHIFTKEY)
+	if(flags & cv::EVENT_FLAG_SHIFTKEY)
 	{
-		if(event == EVENT_LBUTTONDOWN && !get_MouseDrag())
+		if(event == cv::EVENT_LBUTTONDOWN && !get_MouseDrag())
 		{
 			/* AOI selection begins. */
 			set_RoiActive(false);
-			set_EndRoi(Point_<int>(x, y));
-			set_StartRoi(Point_<int>(x, y));
+			set_EndRoi(cv::Point_<int>(x, y));
+			set_StartRoi(cv::Point_<int>(x, y));
 			set_MouseDrag(true);
 		}
-		else if(event == EVENT_MOUSEMOVE && get_MouseDrag())
+		else if(event == cv::EVENT_MOUSEMOVE && get_MouseDrag())
 		{
 			/* AOI being selected. */
-			set_EndRoi(Point_<int>(x, y));
+			set_EndRoi(cv::Point_<int>(x, y));
 		}
-		else if(event == EVENT_LBUTTONUP && get_MouseDrag())
+		else if(event == cv::EVENT_LBUTTONUP && get_MouseDrag())
 		{
-			set_EndRoi(Point_<int>(x, y));
+			set_EndRoi(cv::Point_<int>(x, y));
 			int sx, sy;
 			get_StartRoi(&sx, &sy);
 			const int sw = x - sx,
 			          sh = y - sy;
-			set_RectRoi(Rect_<int>(sx, sy, sw, sh));
+			set_RectRoi(cv::Rect_<int>(sx, sy, sw, sh));
 			set_MouseDrag(false);
 			if(sw <= 25 || sh <= 25 ||
 				sx + abs(sw) >= (int)get_nCols() ||
@@ -961,7 +961,7 @@ void thorlabs_cam::set_MouseEvent(const int event,
 				set_RoiActive(true);
 		}
 	}
-    else if(event == EVENT_MOUSEMOVE || event == EVENT_LBUTTONDOWN)
+    else if(event == cv::EVENT_MOUSEMOVE || event == cv::EVENT_LBUTTONDOWN)
     {
     	set_MouseDrag(false);
 		set_PixelValue(get_PixelValueWork(x, y));
@@ -970,21 +970,21 @@ void thorlabs_cam::set_MouseEvent(const int event,
 		#endif
 		copy_MousePosition(x, y);
 	}
-	else if(event == EVENT_RBUTTONDOWN)
+	else if(event == cv::EVENT_RBUTTONDOWN)
 	{
 		#if SHOW_MOUSE_CB
 		iprint(stdout, "r but: (%i, %i)\n", x, y);
 		#endif
 		set_PixelValue(0xDEADDEAD);
 	}
-	else if(event == EVENT_MBUTTONDOWN)
+	else if(event == cv::EVENT_MBUTTONDOWN)
 	{
 		#if SHOW_MOUSE_CB
 		iprint(stdout, "m but: (%i, %i)\n", x, y);
 		#endif
 		set_PixelValue(0xDEADDEAD);
 	}
-	else if(event == EVENT_MOUSEMOVE)
+	else if(event == cv::EVENT_MOUSEMOVE)
 	{
 		#if SHOW_MOUSE_CB
 		iprint(stdout, "pos: (%i, %i)\n", x, y);

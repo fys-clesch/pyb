@@ -577,9 +577,9 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 	update_TextCamInfo((*itw1ptr).t_cam.get_CameraInfo());
 
 	/* Main window setup */
-	namedWindow((*itw1ptr).t_cam.get_MainWindowName(), CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO);
+	cv::namedWindow((*itw1ptr).t_cam.get_MainWindowName(), cv::WINDOW_NORMAL | cv::WINDOW_KEEPRATIO);
 
-	setMouseCallback((*itw1ptr).t_cam.get_MainWindowName(),
+	cv::setMouseCallback((*itw1ptr).t_cam.get_MainWindowName(),
 					cast_static_set_MouseEvent,
 					itw1ptr);
 
@@ -664,7 +664,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 					fname_dat_out.ToStdString());
 				break;
 			case RESIZE_CAM_WINDOW:
-				resizeWindow((*itw1ptr).t_cam.get_MainWindowName(),
+				cv::resizeWindow((*itw1ptr).t_cam.get_MainWindowName(),
 								(*itw1ptr).t_cam.get_Width(),
 								(*itw1ptr).t_cam.get_Height());
 				break;
@@ -693,7 +693,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 				call, a flag can be added in the mouse callback that makes sure
 				that the callback is blocked when closing the window. */
 				store_ButtonState(CLOSE_CAM_WINDOW);
-				destroyWindow((*itw1ptr).t_cam.get_MainWindowName());
+				cv::destroyWindow((*itw1ptr).t_cam.get_MainWindowName());
 				break;
 			default:
 				(*itw1ptr).t_cam.update_Mats_RgbAndFp();
@@ -704,12 +704,12 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 				(*itw1ptr).t_cam.show_Im_RGB();
 		}
 
-		waitKey(20);
+		cv::waitKey(20);
 		if(c_btn_state == CLOSE_CAM_WINDOW)
 			break;
 
 		HWND *hwnd =
-		static_cast<HWND *>(cvGetWindowHandle(main_win_title.c_str()));
+		static_cast<HWND *>(cv::cvGetWindowHandle(main_win_title.c_str()));
 		if(hwnd == nullptr)
 			break;
 	}
@@ -815,29 +815,29 @@ thread.
  */
 void igyba_thorlabs_wxFrame::set_MouseEvent(const int event, const int x, const int y, const int flags)
 {
-	if(flags & EVENT_FLAG_SHIFTKEY || load_SelectRoi())
+	if(flags & cv::EVENT_FLAG_SHIFTKEY || load_SelectRoi())
 	{
-		if(event == EVENT_LBUTTONDOWN && !t_cam.get_MouseDrag())
+		if(event == cv::EVENT_LBUTTONDOWN && !t_cam.get_MouseDrag())
 		{
 			/* AOI selection begins. */
 			t_cam.set_RoiActive(false);
-			t_cam.set_EndRoi(Point_<int>(x, y));
-			t_cam.set_StartRoi(Point_<int>(x, y));
+			t_cam.set_EndRoi(cv::Point_<int>(x, y));
+			t_cam.set_StartRoi(cv::Point_<int>(x, y));
 			t_cam.set_MouseDrag(true);
 		}
-		else if(event == EVENT_MOUSEMOVE && t_cam.get_MouseDrag())
+		else if(event == cv::EVENT_MOUSEMOVE && t_cam.get_MouseDrag())
 		{
 			/* AOI being selected. */
-			t_cam.set_EndRoi(Point_<int>(x, y));
+			t_cam.set_EndRoi(cv::Point_<int>(x, y));
 		}
-		else if(event == EVENT_LBUTTONUP && t_cam.get_MouseDrag())
+		else if(event == cv::EVENT_LBUTTONUP && t_cam.get_MouseDrag())
 		{
-			t_cam.set_EndRoi(Point_<int>(x, y));
+			t_cam.set_EndRoi(cv::Point_<int>(x, y));
 			int sx, sy;
 			t_cam.get_StartRoi(&sx, &sy);
 			const int sw = x - sx,
 			          sh = y - sy;
-			t_cam.set_RectRoi(Rect_<int>(sx, sy, sw, sh));
+			t_cam.set_RectRoi(cv::Rect_<int>(sx, sy, sw, sh));
 			t_cam.set_MouseDrag(false);
 			if(sw <= 25 || sh <= 25 ||
 				sx + abs(sw) >= (int)t_cam.get_nCols() ||
@@ -857,14 +857,14 @@ void igyba_thorlabs_wxFrame::set_MouseEvent(const int event, const int x, const 
 			}
 		}
 	}
-    else if(event == EVENT_MOUSEMOVE || event == EVENT_LBUTTONDOWN)
+    else if(event == cv::EVENT_MOUSEMOVE || event == cv::EVENT_LBUTTONDOWN)
     {
     	t_cam.set_MouseDrag(false);
 		t_cam.set_PixelValue(t_cam.get_PixelValueWork(x, y));
 		t_cam.copy_MousePosition(x, y);
 	}
-	else if(event == EVENT_RBUTTONDOWN ||
-			event == EVENT_MBUTTONDOWN)
+	else if(event == cv::EVENT_RBUTTONDOWN ||
+			event == cv::EVENT_MBUTTONDOWN)
 	{
 		t_cam.set_PixelValue(0xDEADDEAD);
 	}

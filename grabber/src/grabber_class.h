@@ -19,7 +19,7 @@ public:
 
 	enum class save_Im_type : char {RGB = 1, WORK, FP_IN, IN};
 
-	Mat in,
+	cv::Mat in,
 	    temp_in;
 
 	grabber(void);
@@ -27,13 +27,13 @@ public:
 
 	bool get_MouseDrag(void);
 	void set_RoiActive(const bool val);
-	void set_StartRoi(const Point_<int> &val);
-	void set_EndRoi(const Point_<int> &val);
+	void set_StartRoi(const cv::Point_<int> &val);
+	void set_EndRoi(const cv::Point_<int> &val);
 	void set_MouseDrag(const bool val);
 	void get_StartRoi(int *res_pt px, int *res_pt py);
 	uint32_t get_nRows(void);
 	uint32_t get_nCols(void);
-	void set_RectRoi(const Rect_<int> &val);
+	void set_RectRoi(const cv::Rect_<int> &val);
 	void set_PixelValue(const double val);
 	double get_PixelValueWork(const int x, const int y);
 	void copy_MousePosition(const int px, const int py);
@@ -165,7 +165,7 @@ private:
 
 	constexpr static uint16_t mat_typ = CV_32FC1;
 
-	Mat fp_in, /**< A floating point copy of the input. */
+	cv::Mat fp_in, /**< A floating point copy of the input. */
 	    bground, /**< A background matrix of floating point type. */
 	    work, /**< The matrix that is to be worked on. */
 	    work_roi, /**< A copy of 'work' but with a specific AOI. */
@@ -179,12 +179,12 @@ private:
 	    beam_parameter,
 	    tbar_win_mat;
 
-	Point2d centroid;
+	cv::Point2d centroid;
 
-	Point_<int> start_roi,
+	cv::Point_<int> start_roi,
 	            end_roi;
 
-	Rect_<int> roi_rect;
+	cv::Rect_<int> roi_rect;
 
 	std::string main_win_name,
 	            tbar_win_name;
@@ -192,7 +192,7 @@ private:
 	uint gaussblur_sze_min,
 	     gaussblur_sze_max;
 
-	Size gaussblur_sze;
+	cv::Size gaussblur_sze;
 
 	threadhand event_CopyToViewer,
 	           event_LaunchViewer,
@@ -211,13 +211,13 @@ private:
 	void set_MouseEvent(const int event, const int x, const int y,
 						const int flags);
 	void show_HelpOnCurses(void);
-	Mat get_Mat_private(const save_Im_type mtype);
+	cv::Mat get_Mat_private(const save_Im_type mtype);
 	void draw_Crossline(void);
 	void apply_RemoveBase(const double thresh = 0.);
 	void set_TrackbarWindowName(const std::string &name);
 	void get_TrackbarWindowName(std::string &name);
-	Mat get_TrackbarWindowMat(void);
-	Mat &get_TrackbarWindowMatPtr(void);
+	cv::Mat get_TrackbarWindowMat(void);
+	cv::Mat &get_TrackbarWindowMatPtr(void);
 	uint32_t get_nRowsROI(void);
 	uint32_t get_nColsROI(void);
 	void calculate_BeamRadius(void);

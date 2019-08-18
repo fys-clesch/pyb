@@ -14,7 +14,7 @@
 
 #include "../../src/header.hpp"
 
-#ifndef ISLINUX
+#if !defined(ISLINUX) && !defined(__WINPTHREADS_VERSION)
 #include "../../src/mingw.thread.h"
 #endif
 
