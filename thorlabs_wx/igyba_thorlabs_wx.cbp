@@ -22,44 +22,41 @@
 					<Add option="-D__WXMSW__" />
 					<Add option="-DWXUSINGDLL" />
 					<Add option="-DwxUSE_UNICODE" />
-					<Add directory="C:/wxWidgets-3.0.2/lib/gcc_dll/mswu" />
-					<Add directory="C:/MinGW/mingw64/opencv/x64/mingw/bin" />
-					<Add directory="C:/MinGW/mingw64/opencv/include" />
-					<Add directory="C:/wxWidgets-3.0.2/include" />
+					<Add directory="C:/wxWidgets/lib/gcc_x64_dll/mswu" />
+					<Add directory="C:/wxWidgets/include" />
 				</Compiler>
 				<ResourceCompiler>
-					<Add directory="C:/wxWidgets-3.0.2/lib/gcc_dll/mswu" />
-					<Add directory="C:/wxWidgets-3.0.2/include" />
+					<Add directory="C:/wxWidgets/lib/gcc_x64_dll/mswu" />
+					<Add directory="C:/wxWidgets/include" />
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
 					<Add option="-mthreads" />
-					<Add library="wxmsw30u_richtext" />
-					<Add library="wxmsw30u_xrc" />
-					<Add library="wxmsw30u_aui" />
-					<Add library="wxmsw30u_media" />
-					<Add library="wxbase30u_net" />
-					<Add library="wxmsw30u_gl" />
-					<Add library="wxbase30u_xml" />
-					<Add library="wxmsw30u_adv" />
-					<Add library="wxmsw30u_html" />
-					<Add library="wxmsw30u_core" />
-					<Add library="wxbase30u" />
+					<Add library="wxmsw31u_richtext" />
+					<Add library="wxmsw31u_xrc" />
+					<Add library="wxmsw31u_aui" />
+					<Add library="wxmsw31u_media" />
+					<Add library="wxbase31u_net" />
+					<Add library="wxmsw31u_gl" />
+					<Add library="wxbase31u_xml" />
+					<Add library="wxmsw31u_adv" />
+					<Add library="wxmsw31u_html" />
+					<Add library="wxmsw31u_core" />
+					<Add library="wxbase31u" />
 					<Add library="wxpng" />
 					<Add library="wxjpeg" />
 					<Add library="wxtiff" />
 					<Add library="wxzlib" />
 					<Add library="wxregexu" />
 					<Add library="wxexpat" />
-					<Add library="opencv_highgui2411" />
-					<Add library="opencv_imgproc2411" />
-					<Add library="opencv_core2411" />
+					<Add library="opencv_highgui411" />
+					<Add library="opencv_imgproc411" />
+					<Add library="opencv_core411" />
 					<Add library="freeglut" />
 					<Add library="glu32" />
 					<Add library="opengl32" />
 					<Add library="uc480_64" />
-					<Add directory="C:/wxWidgets-3.0.2/lib/gcc_dll" />
-					<Add directory="C:/MinGW/mingw64/opencv/x64/mingw/lib" />
+					<Add directory="C:/wxWidgets/lib/gcc_x64_dll" />
 				</Linker>
 			</Target>
 			<Target title="Release">
