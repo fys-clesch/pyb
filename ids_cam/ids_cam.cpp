@@ -341,6 +341,18 @@ void thorlabs_cam::set_ImageSize(void)
 		error_msg("error setting image size", ERR_ARG);
 }
 
+//bool thorlabs_cam::get_Image(cv::IplImage *ipl_im)
+//{
+//	err = is_FreezeVideo(pcam, IS_WAIT);
+//	if(err == IS_SUCCESS)
+//	{
+//		cvSetData(ipl_im, im_mem, im_width); /* Sets imageData member. */
+//		return true;
+//	}
+//	handle_Error(err);
+//	return false;
+//}
+
 /** \brief Acquire a single image from the camera.
  *
  * \param img cv::Mat&

@@ -9,15 +9,17 @@ IMPLEMENT_APP(igyba_thorlabs_wxApp)
 
 bool igyba_thorlabs_wxApp::OnInit(void)
 {
-	//(*AppInitialize
-	bool wxsOK = true;
-	wxInitAllImageHandlers();
-	if ( wxsOK )
-	{
-		igyba_thorlabs_wxFrame* Frame = new igyba_thorlabs_wxFrame(0);
-		Frame->Show();
-		SetTopWindow(Frame);
-	}
-	//*)
-	return wxsOK;
+    //(*AppInitialize
+    bool wxsOK = true;
+    wxInitAllImageHandlers();
+    if ( wxsOK )
+    {
+        igyba_thorlabs_wxFrame* Frame = new igyba_thorlabs_wxFrame(wxApp::argc,
+                                                             wxApp::argv,
+                                                             0);
+        Frame->Show();
+        SetTopWindow(Frame);
+    }
+    //*)
+    return wxsOK;
 }

@@ -1350,6 +1350,7 @@ void viewer::TrackballHandler(const int mode, const int button,
 				}
 				break;
 			}
+			break;
 		case VIEWER_RESET:
 			startMX = startMY = 0.;
 	}

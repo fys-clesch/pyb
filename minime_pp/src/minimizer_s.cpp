@@ -230,7 +230,8 @@ int gaussj(double *res_pt a, const uint n, double *res_pt b)
 		double big = 0.;
 		for(uint j = 0; j < n; j++)
 			if(ipiv[j] != 1)
-				for(uint k = 0; k < n; k++)
+			{
+                for(uint k = 0; k < n; k++)
 					if(!ipiv[k])
 					{
 						if(fabs(a[j * n + k]) >= big)
@@ -245,6 +246,7 @@ int gaussj(double *res_pt a, const uint n, double *res_pt b)
 						iprint(stdout, " gaussj failed (1)\n");
 						return 1;
 					}
+			}
 		++(ipiv[icol]);
 		if(irow != icol)
 		{

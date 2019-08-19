@@ -43,12 +43,6 @@
 					<Add library="wxmsw31u_html" />
 					<Add library="wxmsw31u_core" />
 					<Add library="wxbase31u" />
-					<Add library="wxpng" />
-					<Add library="wxjpeg" />
-					<Add library="wxtiff" />
-					<Add library="wxzlib" />
-					<Add library="wxregexu" />
-					<Add library="wxexpat" />
 					<Add library="opencv_highgui411" />
 					<Add library="opencv_imgproc411" />
 					<Add library="opencv_core411" />

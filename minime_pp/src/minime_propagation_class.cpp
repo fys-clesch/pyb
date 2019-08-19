@@ -17,7 +17,7 @@ minime_propagation::minime_propagation(void)
 
 void minime_propagation::print_Members(void)
 {
-	iprint(stdout,
+    iprint(stdout,
         "      Wavelength: %g\n"
         "     Use gnuplot: %u\n"
         "    Total points: %u\n"
@@ -28,8 +28,8 @@ void minime_propagation::print_Members(void)
     for(uint i = 0; i < mnm_ntot; ++i)
         iprint(stdout, "%g %g %g\n", zpnt[i], wz_x[i], wz_y[i]);
 
-	for(parameter &x : fit_par_p)
-		print_Parameter(&x);
+    for(parameter &x : fit_par_p)
+        print_Parameter(&x);
 }
 
 minime_propagation::~minime_propagation(void)

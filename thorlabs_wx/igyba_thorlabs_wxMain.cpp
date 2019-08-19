@@ -7,9 +7,9 @@
 //(*InternalHeaders(igyba_thorlabs_wxFrame)
 #include <wx/bitmap.h>
 #include <wx/icon.h>
-#include <wx/settings.h>
-#include <wx/intl.h>
 #include <wx/image.h>
+#include <wx/intl.h>
+#include <wx/settings.h>
 #include <wx/string.h>
 //*)
 
@@ -110,43 +110,43 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	btn_state.store(NONE_BTN, std::memory_order_relaxed); /* 1 */
 
 	//(*Initialize(igyba_thorlabs_wxFrame)
-	wxStaticBoxSizer* StaticBoxSizerViewerOutput;
-	wxStaticBoxSizer* StaticBoxSizerSaveData;
-	wxStaticBoxSizer* StaticBoxSizerMinime;
-	wxMenuItem* MenuItemAbout;
-	wxFlexGridSizer* FlexGridSizerStart;
-	wxStaticBoxSizer* StaticBoxSizerStdDev;
-	wxStaticBoxSizer* StaticBoxSizerCamera;
-	wxStaticBoxSizer* StaticBoxSizerCamInfo;
-	wxStaticBoxSizer* StaticBoxSizerViewerDispSet;
-	wxStaticBoxSizer* StaticBoxSizerGroundlift;
-	wxStaticBoxSizer* StaticBoxSizerControlsMain;
-	wxStaticBoxSizer* StaticBoxSizerSaveImg;
-	wxMenu* Menu1;
-	wxGridBagSizer* GridBagSizerExpTime;
-	wxStaticBoxSizer* StaticBoxSizerViewer;
-	wxGridBagSizer* GridBagSizerStdDev;
-	wxBoxSizer* BoxSizerMain;
 	wxBoxSizer* BoxSizerInnerMain;
-	wxStaticBoxSizer* StaticBoxSizerAOIWin;
-	wxGridBagSizer* GridBagSizerGroundlift;
-	wxMenuItem* MenuItemQuit;
-	wxStaticBoxSizer* StaticBoxSizerKernelSize;
-	wxStaticBoxSizer* StaticBoxSizerImgManip;
-	wxStaticBoxSizer* StaticBoxSizerExpTime;
+	wxBoxSizer* BoxSizerMain;
 	wxBoxSizer* BoxSizerThreads;
-	wxStaticBoxSizer* StaticBoxSizerOutputInfo;
-	wxMenuBar* MenuBarMain;
+	wxFlexGridSizer* FlexGridSizerStart;
+	wxGridBagSizer* GridBagSizerExpTime;
+	wxGridBagSizer* GridBagSizerGroundlift;
 	wxGridBagSizer* GridBagSizerKernelSize;
-	wxStaticBoxSizer* StaticBoxSizerAOI;
+	wxGridBagSizer* GridBagSizerStdDev;
+	wxMenu* Menu1;
 	wxMenu* Menu2;
+	wxMenuBar* MenuBarMain;
+	wxMenuItem* MenuItemAbout;
+	wxMenuItem* MenuItemQuit;
+	wxStaticBoxSizer* StaticBoxSizerAOI;
+	wxStaticBoxSizer* StaticBoxSizerAOIWin;
+	wxStaticBoxSizer* StaticBoxSizerCamInfo;
+	wxStaticBoxSizer* StaticBoxSizerCamera;
+	wxStaticBoxSizer* StaticBoxSizerControlsMain;
+	wxStaticBoxSizer* StaticBoxSizerExpTime;
+	wxStaticBoxSizer* StaticBoxSizerGroundlift;
+	wxStaticBoxSizer* StaticBoxSizerImgManip;
+	wxStaticBoxSizer* StaticBoxSizerKernelSize;
+	wxStaticBoxSizer* StaticBoxSizerMinime;
 	wxStaticBoxSizer* StaticBoxSizerOutput;
+	wxStaticBoxSizer* StaticBoxSizerOutputInfo;
+	wxStaticBoxSizer* StaticBoxSizerSaveData;
+	wxStaticBoxSizer* StaticBoxSizerSaveImg;
+	wxStaticBoxSizer* StaticBoxSizerStdDev;
+	wxStaticBoxSizer* StaticBoxSizerViewer;
+	wxStaticBoxSizer* StaticBoxSizerViewerDispSet;
+	wxStaticBoxSizer* StaticBoxSizerViewerOutput;
 
 	Create(parent, wxID_ANY, _("igyba 4 fingers"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
 	{
-	wxIcon FrameIcon;
-	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("icon.ico"))));
-	SetIcon(FrameIcon);
+		wxIcon FrameIcon;
+		FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("icon.ico"))));
+		SetIcon(FrameIcon);
 	}
 	BoxSizerMain = new wxBoxSizer(wxHORIZONTAL);
 	PanelMain = new wxPanel(this, ID_PANEL_MAIN, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_MAIN"));
@@ -178,13 +178,13 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	StaticBoxSizerOutput->Add(StaticBoxSizerSaveData, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	ButtonGnuplot = new wxButton(PanelOutput, ID_BUTTON_GNUPLOT, _("Make gnuplot"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_GNUPLOT"));
 	ButtonGnuplot->SetToolTip(_("Plot current processed image data"));
-	StaticBoxSizerOutput->Add(ButtonGnuplot, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerOutput->Add(ButtonGnuplot, 0, wxALL|wxEXPAND, 5);
 	StaticBoxSizerOutputInfo = new wxStaticBoxSizer(wxHORIZONTAL, PanelOutput, _("Output"));
 	TextCtrlOutputInfo = new wxTextCtrl(PanelOutput, ID_TEXTCTRL_OUTPUT_INFO, _("Displays last saved data"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_OUTPUT_INFO"));
 	TextCtrlOutputInfo->SetMaxLength(512);
 	TextCtrlOutputInfo->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
-	StaticBoxSizerOutputInfo->Add(TextCtrlOutputInfo, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizerOutput->Add(StaticBoxSizerOutputInfo, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerOutputInfo->Add(TextCtrlOutputInfo, 1, wxALL|wxEXPAND, 5);
+	StaticBoxSizerOutput->Add(StaticBoxSizerOutputInfo, 0, wxALL|wxEXPAND, 5);
 	PanelOutput->SetSizer(StaticBoxSizerOutput);
 	StaticBoxSizerOutput->Fit(PanelOutput);
 	StaticBoxSizerOutput->SetSizeHints(PanelOutput);
@@ -195,7 +195,7 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	StaticBoxSizerViewer = new wxStaticBoxSizer(wxVERTICAL, PanelViewer, _("Controls"));
 	ToggleButtonViewer = new wxToggleButton(PanelViewer, ID_TOGGLEBUTTON_VIEWER, _("Launch viewer"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_VIEWER"));
 	ToggleButtonViewer->SetToolTip(_("Toggle 3D live plot for the current AOI"));
-	StaticBoxSizerViewer->Add(ToggleButtonViewer, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerViewer->Add(ToggleButtonViewer, 0, wxALL|wxEXPAND, 5);
 	StaticBoxSizerViewerDispSet = new wxStaticBoxSizer(wxVERTICAL, PanelViewer, _("Display settings"));
 	ToggleButtonViewerAnimation = new wxToggleButton(PanelViewer, ID_TOGGLEBUTTON_VIEWER_ANIMATION, _("Stop animation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_VIEWER_ANIMATION"));
 	ToggleButtonViewerAnimation->Disable();
@@ -209,12 +209,12 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	ToggleButtonViewerRotation->Disable();
 	ToggleButtonViewerRotation->SetToolTip(_("Toggle rotation in 3D mode"));
 	StaticBoxSizerViewerDispSet->Add(ToggleButtonViewerRotation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizerViewer->Add(StaticBoxSizerViewerDispSet, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerViewer->Add(StaticBoxSizerViewerDispSet, 0, wxALL|wxEXPAND, 5);
 	StaticBoxSizerViewerOutput = new wxStaticBoxSizer(wxVERTICAL, PanelViewer, _("Output"));
 	ButtonViewerScreenshot = new wxButton(PanelViewer, ID_BUTTON_VIEWER_SCREENSHOT, _("Save screenshot"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_VIEWER_SCREENSHOT"));
 	ButtonViewerScreenshot->Disable();
 	StaticBoxSizerViewerOutput->Add(ButtonViewerScreenshot, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizerViewer->Add(StaticBoxSizerViewerOutput, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerViewer->Add(StaticBoxSizerViewerOutput, 0, wxALL|wxEXPAND, 5);
 	PanelViewer->SetSizer(StaticBoxSizerViewer);
 	StaticBoxSizerViewer->Fit(PanelViewer);
 	StaticBoxSizerViewer->SetSizeHints(PanelViewer);
@@ -222,13 +222,13 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	StaticBoxSizerMinime = new wxStaticBoxSizer(wxVERTICAL, PanelMinime, _("Controls"));
 	ButtonMinime = new wxButton(PanelMinime, ID_BUTTON_MINIME, _("Launch minime"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_MINIME"));
 	ButtonMinime->SetToolTip(_("Start a fitting routine for the current AOI"));
-	StaticBoxSizerMinime->Add(ButtonMinime, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerMinime->Add(ButtonMinime, 0, wxALL|wxEXPAND, 5);
 	PanelMinime->SetSizer(StaticBoxSizerMinime);
 	StaticBoxSizerMinime->Fit(PanelMinime);
 	StaticBoxSizerMinime->SetSizeHints(PanelMinime);
 	NotebookThreads->AddPage(PanelViewer, _("Viewer"), true);
 	NotebookThreads->AddPage(PanelMinime, _("Minime"), false);
-	BoxSizerThreads->Add(NotebookThreads, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	BoxSizerThreads->Add(NotebookThreads, 1, wxALL|wxEXPAND, 0);
 	PanelThreads->SetSizer(BoxSizerThreads);
 	BoxSizerThreads->Fit(PanelThreads);
 	BoxSizerThreads->SetSizeHints(PanelThreads);
@@ -236,29 +236,29 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	StaticBoxSizerAOIWin = new wxStaticBoxSizer(wxVERTICAL, PanelAOIWin, _("Controls"));
 	ButtonResizeCamWin = new wxButton(PanelAOIWin, ID_BUTTON_RESIZE_CAM_WIN, _("Resize window"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_RESIZE_CAM_WIN"));
 	ButtonResizeCamWin->SetToolTip(_("Resizes the camera display window"));
-	StaticBoxSizerAOIWin->Add(ButtonResizeCamWin, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerAOIWin->Add(ButtonResizeCamWin, 0, wxALL|wxEXPAND, 5);
 	StaticBoxSizerAOI = new wxStaticBoxSizer(wxVERTICAL, PanelAOIWin, _("Area of interest"));
 	TextCtrlAOI = new wxTextCtrl(PanelAOIWin, ID_TEXTCTRL_AOI, _("No AOI selected"), wxDefaultPosition, wxSize(-1,35), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxTE_CENTRE|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_AOI"));
 	TextCtrlAOI->SetMaxLength(256);
 	TextCtrlAOI->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
-	StaticBoxSizerAOI->Add(TextCtrlAOI, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerAOI->Add(TextCtrlAOI, 1, wxALL|wxEXPAND, 5);
 	ToggleButtonAOI = new wxToggleButton(PanelAOIWin, ID_TOGGLEBUTTON_AOI, _("Draw rectangle"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_AOI"));
 	ToggleButtonAOI->SetToolTip(_("Click and draw a rectangle in the camera window"));
 	StaticBoxSizerAOI->Add(ToggleButtonAOI, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizerAOIWin->Add(StaticBoxSizerAOI, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerAOIWin->Add(StaticBoxSizerAOI, 0, wxALL|wxEXPAND, 5);
 	PanelAOIWin->SetSizer(StaticBoxSizerAOIWin);
 	StaticBoxSizerAOIWin->Fit(PanelAOIWin);
 	StaticBoxSizerAOIWin->SetSizeHints(PanelAOIWin);
 	NotebookMain->AddPage(PanelOutput, _("Output"), true);
 	NotebookMain->AddPage(PanelThreads, _("Threads"), false);
 	NotebookMain->AddPage(PanelAOIWin, _("AOI && Window"), false);
-	BoxSizerInnerMain->Add(NotebookMain, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	BoxSizerInnerMain->Add(NotebookMain, 1, wxALL|wxEXPAND, 0);
 	StaticBoxSizerControlsMain = new wxStaticBoxSizer(wxVERTICAL, PanelMain, _("Main controls"));
 	ToggleButtonFrameGrab = new wxToggleButton(PanelMain, ID_TOGGLEBUTTON_FRAMEGRAB, _("Idle frame grab"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_FRAMEGRAB"));
 	ToggleButtonFrameGrab->SetToolTip(_("Toggle frame grabbing"));
-	StaticBoxSizerControlsMain->Add(ToggleButtonFrameGrab, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerControlsMain->Add(ToggleButtonFrameGrab, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
 	StaticLine2 = new wxStaticLine(PanelMain, ID_STATICLINE2, wxDefaultPosition, wxSize(10,-1), wxLI_HORIZONTAL, _T("ID_STATICLINE2"));
-	StaticBoxSizerControlsMain->Add(StaticLine2, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerControlsMain->Add(StaticLine2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
 	FlexGridSizerStart = new wxFlexGridSizer(1, 3, 0, 0);
 	ButtonStart = new wxButton(PanelMain, ID_BUTTON_START, _("Start"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_START"));
 	ButtonStart->Disable();
@@ -266,26 +266,26 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	LedMain = new wxLed(PanelMain,ID_LED_MAIN,wxColour(128,128,128),wxColour(0,255,0),wxColour(255,0,0),wxDefaultPosition,wxDefaultSize);
 	LedMain->Disable();
 	LedMain->SwitchOff();
-	FlexGridSizerStart->Add(LedMain, 0, wxALL|wxSHAPED|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizerStart->Add(LedMain, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED|wxFIXED_MINSIZE, 5);
 	ButtonQuit = new wxButton(PanelMain, ID_BUTTON_QUIT, _("Quit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_QUIT"));
 	ButtonQuit->Disable();
 	ButtonQuit->SetToolTip(_("Quit the application"));
 	FlexGridSizerStart->Add(ButtonQuit, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizerControlsMain->Add(FlexGridSizerStart, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizerInnerMain->Add(StaticBoxSizerControlsMain, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizerInnerMain->Add(StaticBoxSizerControlsMain, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
 	PanelMain->SetSizer(BoxSizerInnerMain);
 	BoxSizerInnerMain->Fit(PanelMain);
 	BoxSizerInnerMain->SetSizeHints(PanelMain);
-	BoxSizerMain->Add(PanelMain, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	BoxSizerMain->Add(PanelMain, 0, wxALL|wxEXPAND, 0);
 	NotebookCamImg = new wxNotebook(this, ID_NOTEBOOK_CAM_IMG, wxDefaultPosition, wxDefaultSize, 0, _T("ID_NOTEBOOK_CAM_IMG"));
 	PanelCamera = new wxPanel(NotebookCamImg, ID_PANEL_CAMERA, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_CAMERA"));
 	StaticBoxSizerCamera = new wxStaticBoxSizer(wxVERTICAL, PanelCamera, _("Controls"));
 	ToggleButtonBackground = new wxToggleButton(PanelCamera, ID_TOGGLEBUTTON_BACKGROUND, _("Acquire background"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_BACKGROUND"));
 	ToggleButtonBackground->SetToolTip(_("Toggle background subtraction"));
-	StaticBoxSizerCamera->Add(ToggleButtonBackground, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerCamera->Add(ToggleButtonBackground, 0, wxALL|wxEXPAND, 5);
 	StaticBoxSizerExpTime = new wxStaticBoxSizer(wxVERTICAL, PanelCamera, _("Exposure time"));
 	StaticTextExpTimeDisp = new wxStaticText(PanelCamera, ID_STATICTEXT_EXP_TIME_DISP, _("Time / ms"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_EXP_TIME_DISP"));
-	StaticBoxSizerExpTime->Add(StaticTextExpTimeDisp, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerExpTime->Add(StaticTextExpTimeDisp, 1, wxALL|wxEXPAND, 5);
 	GridBagSizerExpTime = new wxGridBagSizer(0, 0);
 	ButtonDecExpTime = new wxButton(PanelCamera, ID_BUTTON_DEC_EXP_TIME, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_EXP_TIME"));
 	GridBagSizerExpTime->Add(ButtonDecExpTime, wxGBPosition(0, 0), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -295,13 +295,13 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	ButtonIncExpTime = new wxButton(PanelCamera, ID_BUTTON_INC_EXP_TIME, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_EXP_TIME"));
 	GridBagSizerExpTime->Add(ButtonIncExpTime, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizerExpTime->Add(GridBagSizerExpTime, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizerCamera->Add(StaticBoxSizerExpTime, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerCamera->Add(StaticBoxSizerExpTime, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
 	StaticBoxSizerCamInfo = new wxStaticBoxSizer(wxHORIZONTAL, PanelCamera, _("Information"));
 	TextCtrlCamInfo = new wxTextCtrl(PanelCamera, ID_TEXTCTRL_CAM_INFO, _("Loading..."), wxDefaultPosition, wxSize(-1,50), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_CAM_INFO"));
 	TextCtrlCamInfo->SetMaxLength(512);
 	TextCtrlCamInfo->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
-	StaticBoxSizerCamInfo->Add(TextCtrlCamInfo, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizerCamera->Add(StaticBoxSizerCamInfo, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerCamInfo->Add(TextCtrlCamInfo, 1, wxALL|wxEXPAND, 5);
+	StaticBoxSizerCamera->Add(StaticBoxSizerCamInfo, 0, wxALL|wxEXPAND, 5);
 	PanelCamera->SetSizer(StaticBoxSizerCamera);
 	StaticBoxSizerCamera->Fit(PanelCamera);
 	StaticBoxSizerCamera->SetSizeHints(PanelCamera);
@@ -309,10 +309,10 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	StaticBoxSizerImgManip = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Controls"));
 	ToggleButtonSmoothing = new wxToggleButton(PanelImgManip, ID_TOGGLEBUTTON_SMOOTHING, _("Enable manipulation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_SMOOTHING"));
 	ToggleButtonSmoothing->SetToolTip(_("Toggle smoothing and groundlift"));
-	StaticBoxSizerImgManip->Add(ToggleButtonSmoothing, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerImgManip->Add(ToggleButtonSmoothing, 0, wxALL|wxEXPAND, 5);
 	StaticBoxSizerKernelSize = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Kernel size"));
 	StaticTextKernelSize = new wxStaticText(PanelImgManip, ID_STATICTEXT_KERNEL_SIZE, _("Size / pixel"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_KERNEL_SIZE"));
-	StaticBoxSizerKernelSize->Add(StaticTextKernelSize, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerKernelSize->Add(StaticTextKernelSize, 1, wxALL|wxEXPAND, 5);
 	GridBagSizerKernelSize = new wxGridBagSizer(0, 0);
 	ButtonDecKernelSize = new wxButton(PanelImgManip, ID_BUTTON_DEC_KERNEL_SIZE, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_KERNEL_SIZE"));
 	ButtonDecKernelSize->Disable();
@@ -324,10 +324,10 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	ButtonIncKernelSize->Disable();
 	GridBagSizerKernelSize->Add(ButtonIncKernelSize, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizerKernelSize->Add(GridBagSizerKernelSize, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizerImgManip->Add(StaticBoxSizerKernelSize, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerImgManip->Add(StaticBoxSizerKernelSize, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
 	StaticBoxSizerStdDev = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Standard deviation"));
 	StaticTextStdDev = new wxStaticText(PanelImgManip, ID_STATICTEXT_STD_DEV, _("Width / pixel"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_STD_DEV"));
-	StaticBoxSizerStdDev->Add(StaticTextStdDev, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerStdDev->Add(StaticTextStdDev, 1, wxALL|wxEXPAND, 5);
 	GridBagSizerStdDev = new wxGridBagSizer(0, 0);
 	ButtonDecStdDev = new wxButton(PanelImgManip, ID_BUTTON_DEC_STD_DEV, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_STD_DEV"));
 	ButtonDecStdDev->Disable();
@@ -339,10 +339,10 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	ButtonIncStdDev->Disable();
 	GridBagSizerStdDev->Add(ButtonIncStdDev, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizerStdDev->Add(GridBagSizerStdDev, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizerImgManip->Add(StaticBoxSizerStdDev, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerImgManip->Add(StaticBoxSizerStdDev, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
 	StaticBoxSizerGroundlift = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Groundlift"));
 	StaticTextGroundlift = new wxStaticText(PanelImgManip, ID_STATICTEXT_GROUNDLIFT, _("Lift / counts"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_GROUNDLIFT"));
-	StaticBoxSizerGroundlift->Add(StaticTextGroundlift, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerGroundlift->Add(StaticTextGroundlift, 1, wxALL|wxEXPAND, 5);
 	GridBagSizerGroundlift = new wxGridBagSizer(0, 0);
 	ButtonDecGroundlift = new wxButton(PanelImgManip, ID_BUTTON_DEC_GROUNDLIFT, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_GROUNDLIFT"));
 	ButtonDecGroundlift->Disable();
@@ -354,13 +354,13 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
 	ButtonIncGroundlift->Disable();
 	GridBagSizerGroundlift->Add(ButtonIncGroundlift, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizerGroundlift->Add(GridBagSizerGroundlift, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizerImgManip->Add(StaticBoxSizerGroundlift, 0, wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizerImgManip->Add(StaticBoxSizerGroundlift, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
 	PanelImgManip->SetSizer(StaticBoxSizerImgManip);
 	StaticBoxSizerImgManip->Fit(PanelImgManip);
 	StaticBoxSizerImgManip->SetSizeHints(PanelImgManip);
 	NotebookCamImg->AddPage(PanelCamera, _("Camera"), true);
 	NotebookCamImg->AddPage(PanelImgManip, _("Image manipulation"), false);
-	BoxSizerMain->Add(NotebookCamImg, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	BoxSizerMain->Add(NotebookCamImg, 1, wxALL|wxEXPAND, 0);
 	SetSizer(BoxSizerMain);
 	MenuBarMain = new wxMenuBar();
 	Menu1 = new wxMenu();
@@ -687,54 +687,54 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 					fname_gnu_out.ToStdString());
 				break;
 			case CLOSE_CAM_WINDOW:
-				/** @todo If the GUI holds on 'waiting for camera ...', then
-				it is because the mouse callback has interfered with the
-				closing action of the window. If this happens despite the next
-				call, a flag can be added in the mouse callback that makes sure
-				that the callback is blocked when closing the window. */
-				store_ButtonState(CLOSE_CAM_WINDOW);
-				cv::destroyWindow((*itw1ptr).t_cam.get_MainWindowName());
-				break;
-			default:
-				(*itw1ptr).t_cam.update_Mats_RgbAndFp();
-				(*itw1ptr).t_cam.get_Moments();
-				(*itw1ptr).t_cam.signal_CopyThreadIfWait();
-				(*itw1ptr).t_cam.draw_Moments(false);
-				(*itw1ptr).t_cam.draw_InfoWxVersion();
-				(*itw1ptr).t_cam.show_Im_RGB();
-		}
+                /** @todo If the GUI holds on 'waiting for camera ...', then
+                it is because the mouse callback has interfered with the
+                closing action of the window. If this happens despite the next
+                call, a flag can be added in the mouse callback that makes sure
+                that the callback is blocked when closing the window. */
+                store_ButtonState(CLOSE_CAM_WINDOW);
+                cv::destroyWindow((*itw1ptr).t_cam.get_MainWindowName());
+                break;
+            default:
+                (*itw1ptr).t_cam.update_Mats_RgbAndFp();
+                (*itw1ptr).t_cam.get_Moments();
+                (*itw1ptr).t_cam.signal_CopyThreadIfWait();
+                (*itw1ptr).t_cam.draw_Moments(false);
+                (*itw1ptr).t_cam.draw_InfoWxVersion();
+                (*itw1ptr).t_cam.show_Im_RGB();
+        }
 
-		cv::waitKey(20);
-		if(c_btn_state == CLOSE_CAM_WINDOW)
-			break;
+        cv::waitKey(20);
+        if(c_btn_state == CLOSE_CAM_WINDOW)
+            break;
 
-		HWND *hwnd =
-		static_cast<HWND *>(cv::cvGetWindowHandle(main_win_title.c_str()));
-		if(hwnd == nullptr)
-			break;
-	}
+        HWND *hwnd =
+        static_cast<HWND *>(cvGetWindowHandle(main_win_title.c_str()));
+        if(hwnd == nullptr)
+            break;
+    }
 
-	if(c_btn_state != CLOSE_CAM_WINDOW)
-		LedMain->SwitchOff();
+    if(c_btn_state != CLOSE_CAM_WINDOW)
+        LedMain->SwitchOff();
 
-	iprint(stdout, "i made %lu turns\n", (*itw1ptr).t_cam.get_Frames());
-	iprint(stdout, "i lost %lu turns\n", (*itw1ptr).t_cam.get_lost_Frames());
+    iprint(stdout, "i made %lu turns\n", (*itw1ptr).t_cam.get_Frames());
+    iprint(stdout, "i lost %lu turns\n", (*itw1ptr).t_cam.get_lost_Frames());
 
-	/* First stop minime. */
-	(*itw1ptr).t_cam.close_MinimeThread();
-	thread_Minime.join();
+    /* First stop minime. */
+    (*itw1ptr).t_cam.close_MinimeThread();
+    thread_Minime.join();
 
-	/* Next stop reloading data into the viewer. */
-	(*itw1ptr).t_cam.close_CopyThread();
-	thread_Copy.join();
+    /* Next stop reloading data into the viewer. */
+    (*itw1ptr).t_cam.close_CopyThread();
+    thread_Copy.join();
 
-	/* Then close, if necessary, the display. */
-	if((*itw1ptr).t_cam.is_ViewerWindowRunning())
-		(*itw1ptr).t_cam.close_ViewerWindow();
+    /* Then close, if necessary, the display. */
+    if((*itw1ptr).t_cam.is_ViewerWindowRunning())
+        (*itw1ptr).t_cam.close_ViewerWindow();
 
-	/* Finally close the actual thread. */
-	(*itw1ptr).t_cam.close_ViewerThread();
-	thread_Viewer.join();
+    /* Finally close the actual thread. */
+    (*itw1ptr).t_cam.close_ViewerThread();
+    thread_Viewer.join();
 
 	/* Wait for second to rest - and maybe to flush memory */
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));

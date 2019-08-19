@@ -14,20 +14,20 @@
 #define IGYBA_THORLABS_WXMAIN_H
 
 //(*Headers(igyba_thorlabs_wxFrame)
-#include <wx/notebook.h>
-#include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/menu.h>
-#include <wx/textctrl.h>
-#include <wx/led.h>
-#include <wx/tglbtn.h>
-#include <wx/statline.h>
-#include <wx/slider.h>
-#include <wx/panel.h>
-#include <wx/gbsizer.h>
 #include <wx/button.h>
 #include <wx/frame.h>
+#include <wx/gbsizer.h>
+#include <wx/led.h>
+#include <wx/menu.h>
+#include <wx/notebook.h>
+#include <wx/panel.h>
+#include <wx/sizer.h>
+#include <wx/slider.h>
+#include <wx/statline.h>
+#include <wx/stattext.h>
 #include <wx/statusbr.h>
+#include <wx/textctrl.h>
+#include <wx/tglbtn.h>
 //*)
 
 #include "../thorlabs_cam/thorlabs_cam.h"
@@ -171,59 +171,59 @@ private:
 		//*)
 
 		//(*Declarations(igyba_thorlabs_wxFrame)
-		wxButton* ButtonSaveImgRGB;
-		wxPanel* PanelCamera;
-		wxButton* ButtonGnuplot;
 		wxButton* ButtonDecExpTime;
-		wxPanel* PanelOutput;
-		wxToggleButton* ToggleButtonViewerRotation;
 		wxButton* ButtonDecGroundlift;
-		wxButton* ButtonIncKernelSize;
-		wxTextCtrl* TextCtrlAOI;
-		wxTextCtrl* TextCtrlCamInfo;
-		wxButton* ButtonIncGroundlift;
-		wxButton* ButtonSaveImgFP;
-		wxStaticText* StaticTextExpTimeDisp;
-		wxToggleButton* ToggleButtonBackground;
-		wxSlider* SliderKernelSize;
-		wxPanel* PanelMinime;
-		wxButton* ButtonSaveDataRGB;
-		wxToggleButton* ToggleButtonAOI;
-		wxToggleButton* ToggleButtonMapViewer;
-		wxPanel* PanelViewer;
-		wxButton* ButtonMinime;
-		wxButton* ButtonSaveDataWork;
-		wxStaticLine* StaticLine2;
+		wxButton* ButtonDecKernelSize;
+		wxButton* ButtonDecStdDev;
+		wxButton* ButtonGnuplot;
 		wxButton* ButtonIncExpTime;
-		wxButton* ButtonViewerScreenshot;
-		wxNotebook* NotebookMain;
-		wxSlider* SliderGroundlift;
-		wxTextCtrl* TextCtrlOutputInfo;
-		wxStaticText* StaticTextGroundlift;
+		wxButton* ButtonIncGroundlift;
+		wxButton* ButtonIncKernelSize;
 		wxButton* ButtonIncStdDev;
+		wxButton* ButtonMinime;
+		wxButton* ButtonQuit;
+		wxButton* ButtonResizeCamWin;
+		wxButton* ButtonSaveDataFP;
+		wxButton* ButtonSaveDataRGB;
+		wxButton* ButtonSaveDataWork;
+		wxButton* ButtonSaveImgFP;
+		wxButton* ButtonSaveImgRGB;
+		wxButton* ButtonSaveImgWork;
+		wxButton* ButtonStart;
+		wxButton* ButtonViewerScreenshot;
 		wxLed* LedMain;
-		wxPanel* PanelThreads;
-		wxSlider* SliderStdDev;
+		wxNotebook* NotebookCamImg;
+		wxNotebook* NotebookMain;
+		wxNotebook* NotebookThreads;
+		wxPanel* PanelAOIWin;
+		wxPanel* PanelCamera;
 		wxPanel* PanelImgManip;
 		wxPanel* PanelMain;
-		wxToggleButton* ToggleButtonSmoothing;
-		wxButton* ButtonQuit;
-		wxStaticText* StaticTextKernelSize;
-		wxToggleButton* ToggleButtonViewerAnimation;
-		wxButton* ButtonResizeCamWin;
-		wxPanel* PanelAOIWin;
-		wxNotebook* NotebookThreads;
-		wxButton* ButtonDecKernelSize;
-		wxStaticText* StaticTextStdDev;
-		wxButton* ButtonStart;
+		wxPanel* PanelMinime;
+		wxPanel* PanelOutput;
+		wxPanel* PanelThreads;
+		wxPanel* PanelViewer;
 		wxSlider* SliderExpTime;
-		wxButton* ButtonSaveImgWork;
-		wxToggleButton* ToggleButtonFrameGrab;
+		wxSlider* SliderGroundlift;
+		wxSlider* SliderKernelSize;
+		wxSlider* SliderStdDev;
+		wxStaticLine* StaticLine2;
+		wxStaticText* StaticTextExpTimeDisp;
+		wxStaticText* StaticTextGroundlift;
+		wxStaticText* StaticTextKernelSize;
+		wxStaticText* StaticTextStdDev;
 		wxStatusBar* StatusBarMain;
+		wxTextCtrl* TextCtrlAOI;
+		wxTextCtrl* TextCtrlCamInfo;
+		wxTextCtrl* TextCtrlOutputInfo;
+		wxToggleButton* ToggleButtonAOI;
+		wxToggleButton* ToggleButtonBackground;
+		wxToggleButton* ToggleButtonFrameGrab;
+		wxToggleButton* ToggleButtonMapViewer;
+		wxToggleButton* ToggleButtonSmoothing;
 		wxToggleButton* ToggleButtonViewer;
-		wxButton* ButtonSaveDataFP;
-		wxNotebook* NotebookCamImg;
-		wxButton* ButtonDecStdDev;
+		wxToggleButton* ToggleButtonViewerAnimation;
+		wxToggleButton* ToggleButtonViewerRotation;
 		//*)
 
 		DECLARE_EVENT_TABLE()
