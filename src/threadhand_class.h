@@ -17,10 +17,10 @@
 class threadhand
 {
 private:
-	bool signalled;
-	std::atomic<bool> waiting;
-	std::condition_variable_any c_v;
-	std::mutex mtx;
+    bool signalled;
+    std::atomic<bool> waiting;
+    std::condition_variable_any c_v;
+    std::mutex mtx;
 
 public:
     threadhand(void);
@@ -36,14 +36,14 @@ class SimpleLock
 {
 private:
 
-	std::atomic<uint8_t> v;
+    std::atomic<uint8_t> v;
 
 public:
 
-	SimpleLock(void)
-	{
-		v.store(0);
-	}
+    SimpleLock(void)
+    {
+        v.store(0);
+    }
     /** \brief
      *
      * \param void
@@ -53,20 +53,20 @@ public:
      * If true, it replaces the 'v' value with 1 (like store).
      * If false, it replaces 'z' with the 'v' value.
      */
-	bool try_lock(void)
-	{
-		uint8_t z = 0;
-		return v.compare_exchange_strong(z, 1);
-	}
-	void lock(void)
-	{
-		while(try_lock() == false)
-			std::this_thread::yield();
-	}
-	void unlock(void)
-	{
-		v.store(0);
-	}
+    bool try_lock(void)
+    {
+        uint8_t z = 0;
+        return v.compare_exchange_strong(z, 1);
+    }
+    void lock(void)
+    {
+        while(try_lock() == false)
+            std::this_thread::yield();
+    }
+    void unlock(void)
+    {
+        v.store(0);
+    }
 };
 
 #endif

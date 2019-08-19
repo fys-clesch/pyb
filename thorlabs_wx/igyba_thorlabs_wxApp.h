@@ -14,8 +14,8 @@
 
 class igyba_thorlabs_wxApp : public wxApp
 {
-	public:
-		virtual bool OnInit(void);
+    public:
+        virtual bool OnInit(void);
 };
 
 #endif // IGYBA_THORLABS_WXAPP_H

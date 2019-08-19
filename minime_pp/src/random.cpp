@@ -60,19 +60,19 @@ static int mti = Ncount + 1; /* mti==Ncount+1 means mt[Ncount] is not initialize
 /* Initializing the array with a seed */
 void frandseed(long iseed)
 {
-	int i;
-	unsigned long seed;
-	if(iseed == 0)
-		iseed = (unsigned)((long) time(NULL));
-	seed = (unsigned) iseed;
-	for(i = 0; i < Ncount; i++)
-	{
-		mt[i] = seed & 0xffff0000;
-		seed = 69069 * seed + 1;
-		mt[i] |= (seed & 0xffff0000) >> 16;
-		seed = 69069 * seed + 1;
-	}
-	mti = Ncount;
+    int i;
+    unsigned long seed;
+    if(iseed == 0)
+        iseed = (unsigned)((long) time(NULL));
+    seed = (unsigned) iseed;
+    for(i = 0; i < Ncount; i++)
+    {
+        mt[i] = seed & 0xffff0000;
+        seed = 69069 * seed + 1;
+        mt[i] |= (seed & 0xffff0000) >> 16;
+        seed = 69069 * seed + 1;
+    }
+    mti = Ncount;
 }
 
 /*
@@ -89,47 +89,47 @@ void frandseed(long iseed)
 
 double frand(void)
 {
-	/* generating reals */
-	/* unsigned long */
-	/* for integer generation */
-	unsigned long y;
-	double res;
-	if(mti >= Ncount)
-	{
-		static unsigned long mag01[2] = { 0x0, MATRIX_A };
-		int kk;
-		/* generate Ncount words at one time */
-		if(mti == Ncount + 1) /* if sgenrand() has not been called, */
-			frandseed(4357); /* a default initial seed is used */
-		for(kk = 0; kk < Ncount - Mcount; kk++)
-		{
-			y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
-			mt[kk] = mt[kk + Mcount] ^ (y >> 1) ^ mag01[y & 0x1];
-		}
-		for(; kk < Ncount - 1; kk++)
-		{
-			y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
-			mt[kk] = mt[kk + (Mcount - Ncount)] ^ (y >> 1) ^ mag01[y & 0x1];
-		}
-		y = (mt[Ncount - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
-		mt[Ncount - 1] = mt[Mcount - 1] ^ (y >> 1) ^ mag01[y & 0x1];
-		mti = 0;
-	}
-	y = mt[mti++];
-	y ^= TEMPERING_SHIFT_U(y);
-	y ^= TEMPERING_SHIFT_S(y) & TEMPERING_MASK_B;
-	y ^= TEMPERING_SHIFT_T(y) & TEMPERING_MASK_C;
-	y ^= TEMPERING_SHIFT_L(y);
-	res = (double) y * 2.3283064365386963e-10;
-	return (res); /* reals: [0,1)-interval */
-	/* return y; *//* for integer generation */
+    /* generating reals */
+    /* unsigned long */
+    /* for integer generation */
+    unsigned long y;
+    double res;
+    if(mti >= Ncount)
+    {
+        static unsigned long mag01[2] = { 0x0, MATRIX_A };
+        int kk;
+        /* generate Ncount words at one time */
+        if(mti == Ncount + 1) /* if sgenrand() has not been called, */
+            frandseed(4357); /* a default initial seed is used */
+        for(kk = 0; kk < Ncount - Mcount; kk++)
+        {
+            y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+            mt[kk] = mt[kk + Mcount] ^ (y >> 1) ^ mag01[y & 0x1];
+        }
+        for(; kk < Ncount - 1; kk++)
+        {
+            y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
+            mt[kk] = mt[kk + (Mcount - Ncount)] ^ (y >> 1) ^ mag01[y & 0x1];
+        }
+        y = (mt[Ncount - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
+        mt[Ncount - 1] = mt[Mcount - 1] ^ (y >> 1) ^ mag01[y & 0x1];
+        mti = 0;
+    }
+    y = mt[mti++];
+    y ^= TEMPERING_SHIFT_U(y);
+    y ^= TEMPERING_SHIFT_S(y) & TEMPERING_MASK_B;
+    y ^= TEMPERING_SHIFT_T(y) & TEMPERING_MASK_C;
+    y ^= TEMPERING_SHIFT_L(y);
+    res = (double) y * 2.3283064365386963e-10;
+    return (res); /* reals: [0,1)-interval */
+    /* return y; *//* for integer generation */
 }
 
 unsigned int irand(unsigned int max) /* integer random number 0...(max-1) */
 {
-	unsigned int result;
-	while((result = (unsigned int)(frand() * (double) max)) >= max);
-	return result;
+    unsigned int result;
+    while((result = (unsigned int)(frand() * (double) max)) >= max);
+    return result;
 }
 
 #undef Ncount

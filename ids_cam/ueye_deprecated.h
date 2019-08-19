@@ -645,8 +645,8 @@ IDSEXP   is_GetCameraLUT                (HIDS hCam, UINT Mode, UINT NumberOfEntr
 IDSEXP   is_SetGamma                    (HIDS hCam, INT nGamma);
 
 // Persistent memory
-IDSEXP   is_ReadEEPROM					(HIDS hCam, INT Adr, char* pcString, INT Count);
-IDSEXP   is_WriteEEPROM					(HIDS hCam, INT Adr, char* pcString, INT Count);
+IDSEXP   is_ReadEEPROM                  (HIDS hCam, INT Adr, char* pcString, INT Count);
+IDSEXP   is_WriteEEPROM                 (HIDS hCam, INT Adr, char* pcString, INT Count);
 
 
 #ifdef __cplusplus

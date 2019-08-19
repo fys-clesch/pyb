@@ -1228,8 +1228,8 @@ extern "C" {
 #define DR_ENABLE_IMAGE_SCALING                 25
 #define DR_GET_OVERLAY_SIZE                     26
 #define DR_CHECK_COLOR_MODE_SUPPORT             27
-#define DR_GET_OVERLAY_DATA						28
-#define DR_UPDATE_OVERLAY_DATA					29
+#define DR_GET_OVERLAY_DATA                     28
+#define DR_UPDATE_OVERLAY_DATA                  29
 #define DR_GET_SUPPORTED                        30
 
 // ----------------------------------------------------------------------------
@@ -1572,7 +1572,7 @@ extern "C" {
 // nRegisterAddr | IS_I2C_16_BIT_REGISTER
 // ----------------------------------------------------------------------------
 #define IS_I2C_16_BIT_REGISTER              0x10000000
-#define IS_I2C_0_BIT_REGISTER	            0x20000000
+#define IS_I2C_0_BIT_REGISTER               0x20000000
 
 // nDeviceAddr | IS_I2C_DONT_WAIT
 #define IS_I2C_DONT_WAIT                    0x00800000
@@ -2999,8 +2999,8 @@ typedef struct _DC_INFO
 
   typedef struct _OPENGL_DISPLAY
   {
-      int 	nWindowID;
-      void 	*pDisplay;
+      int   nWindowID;
+      void  *pDisplay;
   } OPENGL_DISPLAY;
 
   USBCAMEXP is_DirectRenderer      (HCAM hCam, UINT nMode, void *pParam, UINT SizeOfParam);
@@ -3886,32 +3886,32 @@ typedef struct _DC_INFO
     USBCAMEXP is_Blacklevel(HCAM hCam, UINT nCommand, void* pParam, UINT cbSizeOfParam);
 
 
-	typedef struct S_MEASURE_SHARPNESS_AOI_INFO
-	{
-		UINT    u32NumberAOI;
-		UINT    u32SharpnessValue;
-		IS_RECT rcAOI;
+    typedef struct S_MEASURE_SHARPNESS_AOI_INFO
+    {
+        UINT    u32NumberAOI;
+        UINT    u32SharpnessValue;
+        IS_RECT rcAOI;
 
-	} MEASURE_SHARPNESS_AOI_INFO;
-
-
-	typedef enum E_MEASURE_CMD
-	{
-		IS_MEASURE_CMD_SHARPNESS_AOI_SET		= 1,
-		IS_MEASURE_CMD_SHARPNESS_AOI_INQUIRE	= 2,
-		IS_MEASURE_CMD_SHARPNESS_AOI_SET_PRESET	= 3
-
-	} MEASURE_CMD;
+    } MEASURE_SHARPNESS_AOI_INFO;
 
 
-	typedef enum E_MEASURE_SHARPNESS_AOI_PRESETS
-	{
-		IS_MEASURE_SHARPNESS_AOI_PRESET_1 = 1
+    typedef enum E_MEASURE_CMD
+    {
+        IS_MEASURE_CMD_SHARPNESS_AOI_SET        = 1,
+        IS_MEASURE_CMD_SHARPNESS_AOI_INQUIRE    = 2,
+        IS_MEASURE_CMD_SHARPNESS_AOI_SET_PRESET = 3
 
-	} MEASURE_SHARPNESS_AOI_PRESETS;
+    } MEASURE_CMD;
 
 
-	USBCAMEXP is_Measure(HCAM hf, UINT nCommand, void* pParam, UINT cbSizeOfParam);
+    typedef enum E_MEASURE_SHARPNESS_AOI_PRESETS
+    {
+        IS_MEASURE_SHARPNESS_AOI_PRESET_1 = 1
+
+    } MEASURE_SHARPNESS_AOI_PRESETS;
+
+
+    USBCAMEXP is_Measure(HCAM hf, UINT nCommand, void* pParam, UINT cbSizeOfParam);
 
 
     typedef enum E_IMGBUF_CMD

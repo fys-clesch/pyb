@@ -219,9 +219,9 @@ struct try_to_lock_t { };
  /// and manage it.
 struct adopt_lock_t { };
 
-constexpr defer_lock_t	defer_lock { };
-constexpr try_to_lock_t	try_to_lock { };
-constexpr adopt_lock_t	adopt_lock { };
+constexpr defer_lock_t  defer_lock { };
+constexpr try_to_lock_t try_to_lock { };
+constexpr adopt_lock_t  adopt_lock { };
 
 template <class M>
 class lock_guard

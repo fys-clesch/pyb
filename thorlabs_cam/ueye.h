@@ -1740,11 +1740,11 @@ extern "C" {
         #define FORCEINLINE         inline
         #define USHORT              IS_U16
 
-		#include <unistd.h>
+        #include <unistd.h>
 
-		#define Sleep(n)       usleep(n)
+        #define Sleep(n)       usleep(n)
 
-		#include <stdint.h>
+        #include <stdint.h>
 
         // aliases for common Win32 types
         typedef int32_t           BOOLEAN;
@@ -3414,8 +3414,8 @@ IDSEXP is_Trigger(HIDS hf, UINT nCommand, void* pParam, UINT cbSizeOfParam);
   // values for link speed setup
   typedef enum _UEYE_ETH_LINKSPEED_SETUP
   {
-      IS_ETH_LINKSPEED_100MB=		100,    /*!< 100 MBits */
-      IS_ETH_LINKSPEED_1000MB=	    1000    /*!< 1000 MBits */
+      IS_ETH_LINKSPEED_100MB=       100,    /*!< 100 MBits */
+      IS_ETH_LINKSPEED_1000MB=      1000    /*!< 1000 MBits */
 
   } UEYE_ETH_LINKSPEED_SETUP;
 
