@@ -1,7 +1,7 @@
-#include "thorlabs_cam.h"
+#include "ids_cam.h"
 #include <assert.h>
 
-thorlabs_cam::thorlabs_cam(void)
+ids_cam::ids_cam(void)
 {
     /* SENSORINFO */
     s_info = SENSORINFO{
@@ -12,7 +12,7 @@ thorlabs_cam::thorlabs_cam(void)
         #if defined(ISWIN32) || defined(ISWIN64)
         0,
         #endif
-        ""};
+        0, ""};
     /* BOARDINFO */
     b_info = BOARDINFO{
         "", "", "", "",
@@ -38,7 +38,7 @@ thorlabs_cam::thorlabs_cam(void)
     err_break = false; /* 3 */
     /* uint16_t */
     color_mod =
-    color_mod_test = IS_CM_BAYER_RG8;
+    color_mod_test = IS_CM_SENSOR_RAW8;
     color_mod_init =
     bits_p_pix =
     pix_size = 0; /* 5 */
@@ -72,25 +72,40 @@ thorlabs_cam::thorlabs_cam(void)
 
     /* set the bits per pixel variable */
     if(color_mod == IS_CM_MONO8 ||
-        color_mod == IS_CM_SENSOR_RAW8)
+       color_mod == IS_CM_SENSOR_RAW8)
         bits_p_pix = 8;
-    else if(color_mod == IS_CM_MONO12 ||
+    else if(color_mod == IS_CM_MONO10 ||
+            color_mod == IS_CM_MONO12 ||
             color_mod == IS_CM_MONO16 ||
+            color_mod == IS_CM_SENSOR_RAW10 ||
             color_mod == IS_CM_SENSOR_RAW12 ||
             color_mod == IS_CM_SENSOR_RAW16 ||
-            color_mod == IS_CM_BGR555_PACKED ||
-            color_mod == IS_CM_BGR565_PACKED)
+            color_mod == IS_CM_BGR5_PACKED ||
+            color_mod == IS_CM_BGR565_PACKED ||
+            color_mod == IS_CM_UYVY_PACKED ||
+            color_mod == IS_CM_UYVY_MONO_PACKED ||
+            color_mod == IS_CM_UYVY_BAYER_PACKED ||
+            color_mod == IS_CM_CBYCRY_PACKED)
         bits_p_pix = 16;
     else if(color_mod == IS_CM_RGB8_PACKED ||
-            color_mod == IS_CM_BGR8_PACKED)
+            color_mod == IS_CM_BGR8_PACKED ||
+            color_mod == IS_CM_RGB8_PLANAR)
         bits_p_pix = 24;
     else if(color_mod == IS_CM_RGBA8_PACKED ||
             color_mod == IS_CM_BGRA8_PACKED ||
             color_mod == IS_CM_RGBY8_PACKED ||
             color_mod == IS_CM_BGRY8_PACKED ||
-            color_mod == IS_CM_RGB10V2_PACKED ||
-            color_mod == IS_CM_BGR10V2_PACKED)
+            color_mod == IS_CM_RGB10_PACKED ||
+            color_mod == IS_CM_BGR10_PACKED)
         bits_p_pix = 32;
+    else if(color_mod == IS_CM_RGB10_UNPACKED ||
+            color_mod == IS_CM_BGR10_UNPACKED ||
+            color_mod == IS_CM_RGB12_UNPACKED ||
+            color_mod == IS_CM_BGR12_UNPACKED)
+        bits_p_pix = 48;
+    else if(color_mod == IS_CM_RGBA12_UNPACKED ||
+            color_mod == IS_CM_BGRA12_UNPACKED)
+        bits_p_pix = 64;
     else
     {
         bits_p_pix = 8;
@@ -99,7 +114,7 @@ thorlabs_cam::thorlabs_cam(void)
     }
 }
 
-thorlabs_cam::~thorlabs_cam(void)
+ids_cam::~ids_cam(void)
 {
     im_p.release();
 
@@ -123,7 +138,7 @@ thorlabs_cam::~thorlabs_cam(void)
     #endif
 }
 
-void thorlabs_cam::init_Camera(void)
+void ids_cam::init_Camera(void)
 {
     /* Initialise the camera. */
     err = is_InitCamera(&pcam, NULL);
@@ -240,7 +255,7 @@ void thorlabs_cam::init_Camera(void)
     }
 }
 
-void thorlabs_cam::set_ColourMode(void)
+void ids_cam::set_ColourMode(void)
 {
     err = is_SetColorMode(pcam, color_mod);
     if(err != IS_SUCCESS)
@@ -252,7 +267,7 @@ void thorlabs_cam::set_ColourMode(void)
 }
 
 /* Set to auto-release camera and memory if camera is disconnected on-the-fly. */
-void thorlabs_cam::set_ExitMode(void)
+void ids_cam::set_ExitMode(void)
 {
     err = is_EnableAutoExit(pcam, IS_ENABLE_AUTO_EXIT);
     if(err != IS_SUCCESS)
@@ -260,7 +275,7 @@ void thorlabs_cam::set_ExitMode(void)
 }
 
 /* Set image mode to DIB = system memory. */
-void thorlabs_cam::set_Display(void)
+void ids_cam::set_Display(void)
 {
     err = is_SetDisplayMode(pcam, IS_SET_DM_DIB);
     if(err != IS_SUCCESS)
@@ -268,7 +283,7 @@ void thorlabs_cam::set_Display(void)
 }
 
 /* Allocate image memory. */
-void thorlabs_cam::alloc_ImageMem(void)
+void ids_cam::alloc_ImageMem(void)
 {
     err = is_AllocImageMem(pcam,
                             im_width, im_height, bits_p_pix, &im_mem, &memID);
@@ -280,7 +295,7 @@ void thorlabs_cam::alloc_ImageMem(void)
 }
 
 /* Reads out properties of the allocated image memory. */
-void thorlabs_cam::inquire_ImageMem(int *res_pt nx, int *res_pt ny,
+void ids_cam::inquire_ImageMem(int *res_pt nx, int *res_pt ny,
                                     int *res_pt bits_p_pix,
                                     int *res_pt pixel_bit_pitch)
 {
@@ -316,7 +331,7 @@ void thorlabs_cam::inquire_ImageMem(int *res_pt nx, int *res_pt ny,
  * \return void
  *
  */
-void thorlabs_cam::set_ImageMem(void)
+void ids_cam::set_ImageMem(void)
 {
     err = is_SetImageMem(pcam, im_mem, memID);
     if(err != IS_SUCCESS)
@@ -326,7 +341,7 @@ void thorlabs_cam::set_ImageMem(void)
     }
 }
 
-void thorlabs_cam::set_ImageSize(void)
+void ids_cam::set_ImageSize(void)
 {
     /** Deprecated:
      * err = is_SetImageSize(pcam, width, height);
@@ -341,25 +356,13 @@ void thorlabs_cam::set_ImageSize(void)
         error_msg("error setting image size", ERR_ARG);
 }
 
-//bool thorlabs_cam::get_Image(cv::IplImage *ipl_im)
-//{
-//  err = is_FreezeVideo(pcam, IS_WAIT);
-//  if(err == IS_SUCCESS)
-//  {
-//      cvSetData(ipl_im, im_mem, im_width); /* Sets imageData member. */
-//      return true;
-//  }
-//  handle_Error(err);
-//  return false;
-//}
-
 /** \brief Acquire a single image from the camera.
  *
  * \param img cv::Mat&
  * \return bool
  *
  */
-bool thorlabs_cam::get_Image(cv::Mat &img)
+bool ids_cam::get_Image(cv::Mat &img)
 {
     err = is_FreezeVideo(pcam, IS_WAIT);
     if(err == IS_SUCCESS)
@@ -373,7 +376,7 @@ bool thorlabs_cam::get_Image(cv::Mat &img)
     return false;
 }
 
-bool thorlabs_cam::get_Image(void)
+bool ids_cam::get_Image(void)
 {
     err = is_FreezeVideo(pcam, IS_WAIT);
     if(err == IS_SUCCESS) /** @todo cv::Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP) */
@@ -385,7 +388,7 @@ bool thorlabs_cam::get_Image(void)
     return false;
 }
 
-void thorlabs_cam::handle_Error(const uchar err)
+void ids_cam::handle_Error(const uchar err)
 {
     if(err == IS_OUT_OF_MEMORY)
         error_msg("no memory available", ERR_ARG);
@@ -406,22 +409,22 @@ void thorlabs_cam::handle_Error(const uchar err)
         warn_msg("unspecified error / warning during image capture", ERR_ARG);
 }
 
-cv::Mat thorlabs_cam::get_Mat(void)
+cv::Mat ids_cam::get_Mat(void)
 {
     return im_p.clone();
 }
 
-int thorlabs_cam::get_Width(void)
+int ids_cam::get_Width(void)
 {
     return im_width;
 }
 
-int thorlabs_cam::get_Height(void)
+int ids_cam::get_Height(void)
 {
     return im_height;
 }
 
-bool thorlabs_cam::caught_Error(void)
+bool ids_cam::caught_Error(void)
 {
     if(err_break)
         return true;
@@ -429,12 +432,12 @@ bool thorlabs_cam::caught_Error(void)
         return false;
 }
 
-void thorlabs_cam::show_Image(const char *win_name)
+void ids_cam::show_Image(const char *win_name)
 {
     cv::imshow(win_name, im_p);
 }
 
-void thorlabs_cam::get_PixelClock(void)
+void ids_cam::get_PixelClock(void)
 {
     #ifdef ISLINUX
     pix_clock = is_GetUsedBandwidth(pcam);
@@ -451,7 +454,7 @@ void thorlabs_cam::get_PixelClock(void)
     }
 }
 
-void thorlabs_cam::get_Fps(void)
+void ids_cam::get_Fps(void)
 {
     err = is_GetFramesPerSecond(pcam, &fps);
     if(err != IS_SUCCESS)
@@ -461,12 +464,12 @@ void thorlabs_cam::get_Fps(void)
     }
 }
 
-double thorlabs_cam::get_PixelPitch(void)
+double ids_cam::get_PixelPitch(void)
 {
     return dpix_size;
 }
 
-void thorlabs_cam::get_ExposureTime(void)
+void ids_cam::get_ExposureTime(void)
 {
     double rng[3],
            time;
@@ -531,7 +534,7 @@ void thorlabs_cam::get_ExposureTime(void)
     exp_time_inc_atm.store(exp_time_inc, std::memory_order_relaxed);
 }
 
-void thorlabs_cam::set_ExposureTime(double time)
+void ids_cam::set_ExposureTime(double time)
 {
     if(time > exp_time_max)
         time = exp_time_max;
@@ -557,7 +560,7 @@ void thorlabs_cam::set_ExposureTime(double time)
     }
 }
 
-void thorlabs_cam::exchange_ExposureTimeAtomic(void)
+void ids_cam::exchange_ExposureTimeAtomic(void)
 {
     double time = exp_time_atm.load(std::memory_order_acquire);
     if(time != exp_time)
@@ -587,12 +590,12 @@ void thorlabs_cam::exchange_ExposureTimeAtomic(void)
     }
 }
 
-void thorlabs_cam::set_ExposureTimeAtomic(double time)
+void ids_cam::set_ExposureTimeAtomic(double time)
 {
     exp_time_atm.store(time, std::memory_order_relaxed);
 }
 
-void thorlabs_cam::get_ExposureTimesAtomic(double *res_pt time,
+void ids_cam::get_ExposureTimesAtomic(double *res_pt time,
                                         double *res_pt min_time,
                                         double *res_pt max_time,
                                         double *res_pt inc_time)
@@ -603,7 +606,7 @@ void thorlabs_cam::get_ExposureTimesAtomic(double *res_pt time,
     *inc_time = exp_time_inc_atm.load(std::memory_order_acquire);
 }
 
-void thorlabs_cam::get_CameraStatus(void)
+void ids_cam::get_CameraStatus(void)
 {
     ulong status;
     status = is_CameraStatus(pcam,
@@ -640,7 +643,7 @@ void thorlabs_cam::get_CameraStatus(void)
  * Note that errors can still be handled, only the dialogue box generated by
  * the Thorlabs driver (on Win systems) is disabled.
  */
-void thorlabs_cam::set_ErrorReport(void)
+void ids_cam::set_ErrorReport(void)
 {
     err = is_SetErrorReport(pcam, IS_DISABLE_ERR_REP);
     if(err != IS_SUCCESS)
@@ -650,7 +653,7 @@ void thorlabs_cam::set_ErrorReport(void)
     }
 }
 
-void thorlabs_cam::get_GainBoost(void)
+void ids_cam::get_GainBoost(void)
 {
     err = is_SetGainBoost(pcam, IS_GET_SUPPORTED_GAINBOOST);
     if(err == IS_SET_GAINBOOST_ON)
@@ -671,7 +674,7 @@ void thorlabs_cam::get_GainBoost(void)
                 "error detecting analogue hardware gain boost feature\n");
 }
 
-void thorlabs_cam::TrackbarHandlerExposure(int i)
+void ids_cam::TrackbarHandlerExposure(int i)
 {
     const double out_min = 0., out_max = 100.;
     double res = map_Linear((double)i, out_min, out_max,
@@ -679,13 +682,13 @@ void thorlabs_cam::TrackbarHandlerExposure(int i)
     (*this).set_ExposureTime(res);
 }
 
-void thorlabs_cam::cast_static_SetTrackbarHandlerExposure(int i, void *ptr)
+void ids_cam::cast_static_SetTrackbarHandlerExposure(int i, void *ptr)
 {
-    thorlabs_cam *cam = static_cast<thorlabs_cam *>(ptr);
+    ids_cam *cam = static_cast<ids_cam *>(ptr);
     (*cam).TrackbarHandlerExposure(i);
 }
 
-void thorlabs_cam::create_TrackbarExposure(void)
+void ids_cam::create_TrackbarExposure(void)
 {
     const std::string trck_name = "Exposure";
     const double out_min = 0., out_max = 100.;
@@ -704,11 +707,11 @@ void thorlabs_cam::create_TrackbarExposure(void)
                     infotbar_win_name,
                     &setting,
                     (int)out_max,
-                    thorlabs_cam::cast_static_SetTrackbarHandlerExposure,
+                    ids_cam::cast_static_SetTrackbarHandlerExposure,
                     this);
 }
 
-void thorlabs_cam::draw_CameraInfo(void)
+void ids_cam::draw_CameraInfo(void)
 {
     infotbar_win_mat.setTo(0);
     const uint16_t lw = 1;
@@ -748,7 +751,7 @@ void thorlabs_cam::draw_CameraInfo(void)
     #undef putText_ARGS
 }
 
-std::string thorlabs_cam::get_CameraInfo(void)
+std::string ids_cam::get_CameraInfo(void)
 {
     std::string out;
     out = "Camera model: " + sensorname +
@@ -762,7 +765,7 @@ std::string thorlabs_cam::get_CameraInfo(void)
     return out;
 }
 
-void thorlabs_cam::identify_CameraAOISettings(void)
+void ids_cam::identify_CameraAOISettings(void)
 {
     if(!sensorname.compare("DCC1240x") ||
         !sensorname.compare("DCC1240M") ||
@@ -864,22 +867,22 @@ void thorlabs_cam::identify_CameraAOISettings(void)
                     "setting AOI is dangerous!", ERR_ARG);
 }
 
-void thorlabs_cam::set_CameraInfoWindowName(const std::string &name)
+void ids_cam::set_CameraInfoWindowName(const std::string &name)
 {
     infotbar_win_name = name;
 }
 
-std::string thorlabs_cam::get_CameraInfoWindowName(void)
+std::string ids_cam::get_CameraInfoWindowName(void)
 {
     return infotbar_win_name;
 }
 
-void thorlabs_cam::show_CameraTrackbars(void)
+void ids_cam::show_CameraTrackbars(void)
 {
     cv::imshow(infotbar_win_name, infotbar_win_mat);
 }
 
-void thorlabs_cam::TrackbarHandlerStartAOIWidth(int i)
+void ids_cam::TrackbarHandlerStartAOIWidth(int i)
 {
     /* Get the current position. */
     assert(i == cv::getTrackbarPos(trck_name_aoi_sw, infotbar_win_name));
@@ -898,13 +901,13 @@ void thorlabs_cam::TrackbarHandlerStartAOIWidth(int i)
     /* Update AOI. */
 }
 
-void thorlabs_cam::cast_static_SetTrackbarHandlerStartAOIWidth(int i, void *ptr)
+void ids_cam::cast_static_SetTrackbarHandlerStartAOIWidth(int i, void *ptr)
 {
-    thorlabs_cam *cam = static_cast<thorlabs_cam *>(ptr);
+    ids_cam *cam = static_cast<ids_cam *>(ptr);
     (*cam).TrackbarHandlerStartAOIWidth(i);
 }
 
-void thorlabs_cam::create_TrackbarStartAOIWidth(void)
+void ids_cam::create_TrackbarStartAOIWidth(void)
 {
     const int out_max = 100;
     static int setting = 0;
@@ -913,19 +916,19 @@ void thorlabs_cam::create_TrackbarStartAOIWidth(void)
                     infotbar_win_name,
                     &setting,
                     out_max,
-                    thorlabs_cam::cast_static_SetTrackbarHandlerStartAOIWidth,
+                    ids_cam::cast_static_SetTrackbarHandlerStartAOIWidth,
                     this);
 }
 
-void thorlabs_cam::cast_static_set_MouseEvent(const int event,
+void ids_cam::cast_static_set_MouseEvent(const int event,
                                         const int x, const int y,
                                         const int flags, void *udata)
 {
-    thorlabs_cam *ptr = static_cast<thorlabs_cam *>(udata);
+    ids_cam *ptr = static_cast<ids_cam *>(udata);
     (*ptr).set_MouseEvent(event, x, y, flags);
 }
 
-void thorlabs_cam::set_MouseEvent(const int event,
+void ids_cam::set_MouseEvent(const int event,
                             const int x, const int y,
                             const int flags)
 {

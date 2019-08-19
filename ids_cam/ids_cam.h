@@ -1,5 +1,5 @@
-#ifndef __IGYBA_THORLABS_CAM_H__
-#define __IGYBA_THORLABS_CAM_H__
+#ifndef __IGYBA_IDS_CAM_H__
+#define __IGYBA_IDS_CAM_H__
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -8,13 +8,9 @@
 #include "../src/header.hpp"
 #include "../grabber/src/grabber_class.h"
 
-#ifdef ISLINUX
- #include "ueye.h"
-#elif defined(ISWIN32) || defined(ISWIN64)
- #include "uc480.h"
-#endif
+#include "ueye.h"
 
-class thorlabs_cam : public grabber
+class ids_cam : public grabber
 {
 private:
 
@@ -82,7 +78,6 @@ private:
                       trck_name_aoi_sh = "start height",
                       trck_name_aoi_wh = "AOI height";
 
-//  bool get_Image(cv::IplImage *ipl_im);
     void handle_Error(const uchar err);
     cv::Mat get_Mat(void);
     void show_Image(const char *win_name);
@@ -105,8 +100,8 @@ private:
 
 public:
 
-    thorlabs_cam(void);
-    ~thorlabs_cam(void);
+    ids_cam(void);
+    ~ids_cam(void);
     void init_Camera(void);
     void set_ColourMode(void);
     void set_ExitMode(void);

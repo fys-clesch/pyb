@@ -1774,9 +1774,9 @@ extern "C" {
 #include <windows.h>
 
 #ifdef USE_DEPRECATED_FUNCTIONS
-#define idsdeprecated 
+#define idsdeprecated
 #else
-#define idsdeprecated deprecated
+#define idsdeprecated (deprecated)
 #endif
 
 #if defined (_MSC_VER) || defined (__BORLANDC__) || defined (_WIN32_WCE)
@@ -1789,7 +1789,7 @@ extern "C" {
     #define IDSEXPDEP extern  __declspec(dllimport idsdeprecated) INT __cdecl
     #define IDSEXPUL  extern  __declspec(dllimport) ULONG __cdecl
   #elif !defined (_IDS_EXPORT) && !defined (_FALC_EXPORT)   // using the DLL, not creating one
-    #define IDSEXP    extern "C" __declspec(dllimport) INT __cdecl 
+    #define IDSEXP    extern "C" __declspec(dllimport) INT __cdecl
     #define IDSEXPDEP extern "C" __declspec(dllimport idsdeprecated) INT __cdecl
     #define IDSEXPUL  extern "C" __declspec(dllimport) ULONG __cdecl
   #elif defined (_IDS_VBSTD) || defined (_FALC_VBSTD)     // for creating stdcall dll
@@ -4507,7 +4507,7 @@ typedef struct S_IO_GPIO_CONFIGURATION
  * \brief Defines used by is_IO(), \ref is_IO.
  */
 #define IO_LED_STATE_1                      0 // Bit 0
-#define IO_LED_STATE_2                      1 // 
+#define IO_LED_STATE_2                      1 //
 #define IO_LED_ENABLE                       2 // after cam start up default: blink off, blink x times off
 #define IO_LED_DISABLE                      3 // blink off, blink x times off
 #define IO_LED_BLINK_ENABLE                 4 // no retrun value

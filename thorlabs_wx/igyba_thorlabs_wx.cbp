@@ -210,6 +210,9 @@
 		<Unit filename="../grabber/src/grabber_class.h" />
 		<Unit filename="../grabber/src/test.cpp" />
 		<Unit filename="../grabber/src/test.h" />
+		<Unit filename="../ids_cam/ids_cam.cpp" />
+		<Unit filename="../ids_cam/ids_cam.h" />
+		<Unit filename="../ids_cam/ueye.h" />
 		<Unit filename="../minime_pp/src/fifo_class.cpp" />
 		<Unit filename="../minime_pp/src/fifo_class.h" />
 		<Unit filename="../minime_pp/src/fit_fun_profile.cpp" />
