@@ -201,9 +201,8 @@
 			<Add option="-pedantic" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
+			<Add option="-std=c++11" />
 			<Add option="-fopenmp" />
-			<Add option="-std=gnu++11" />
-			<Add option="-DUSING_WX" />
 			<Add option="-DUSE_DEPRECATED_FUNCTIONS" />
 		</Compiler>
 		<Linker>
