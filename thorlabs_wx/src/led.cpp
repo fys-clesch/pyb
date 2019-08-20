@@ -2,7 +2,7 @@
  * Purpose:     wxLed implementation
  * Author:      Thomas Monjalon
  * Created:     09/06/2005
- * Revision:    09/06/2005
+ * Revision:    2019-08-20 CS
  * Licence:     wxWidgets
  */
 
@@ -13,9 +13,13 @@ BEGIN_EVENT_TABLE(wxLed, wxWindow)
     EVT_PAINT(wxLed::OnPaint)
 END_EVENT_TABLE()
 
-wxLed::wxLed(wxWindow *parent, wxWindowID id, wxColour disableColour,
-            wxColour onColour, wxColour offColour, const wxPoint &pos,
-            const wxSize &size)
+wxLed::wxLed(wxWindow *parent,
+             wxWindowID id,
+             wxColour disableColour,
+             wxColour onColour,
+             wxColour offColour,
+             const wxPoint &pos,
+             const wxSize &size)
 {
     Create(parent, id, disableColour, onColour, offColour, pos, size);
 }
@@ -29,9 +33,13 @@ wxLed::~wxLed()
     delete m_bitmap;
 }
 
-bool wxLed::Create(wxWindow *parent, wxWindowID id, wxColour disableColour,
-                wxColour onColour, wxColour offColour,
-                const wxPoint &pos, const wxSize &size)
+bool wxLed::Create(wxWindow *parent,
+                   wxWindowID id,
+                   wxColour disableColour,
+                   wxColour onColour,
+                   wxColour offColour,
+                   const wxPoint &pos,
+                   const wxSize &size)
 {
     if(!wxWindow::Create(parent, id, wxDefaultPosition, wxDefaultSize))
         return false;
@@ -161,7 +169,7 @@ void wxLed::SetBitmap(wxString color)
         xpm [i] = xpmData + i * WX_LED_XPM_COLS;
     // width height num_colors chars_per_pixel
     sprintf(xpm [0], "%d %d %d 1", WX_LED_WIDTH, WX_LED_HEIGHT, WX_LED_COLORS);
-    // colors
+    // colours
     strncpy(xpm [1], "  c None", WX_LED_XPM_COLS);
     strncpy(xpm [2], "- c #C0C0C0", WX_LED_XPM_COLS);
     strncpy(xpm [3], "_ c #F8F8F8", WX_LED_XPM_COLS);

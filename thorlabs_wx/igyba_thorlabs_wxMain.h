@@ -6,8 +6,6 @@
  * Copyright: Clemens Schäfermeier (clemens@fh-muenster.de)
  * License:
  *
- * http://zetcode.com/gui/wxwidgets/layoutmanagement/
- * http://docs.wxwidgets.org/trunk/overview_helloworld.html
  **************************************************************/
 
 #ifndef IGYBA_THORLABS_WXMAIN_H
@@ -264,8 +262,12 @@ private:
 
 public:
 
-    igyba_thorlabs_wxFrame(int argc, wchar_t **argv, wxWindow *parent,
-                            wxWindowID id = -1);
+    igyba_thorlabs_wxFrame(wxWindow* parent,
+                           wxWindowID id = -1);
+    igyba_thorlabs_wxFrame(int argc,
+                           wchar_t **argv,
+                           wxWindow *parent,
+                           wxWindowID id = -1);
     virtual ~igyba_thorlabs_wxFrame(void);
 
 };

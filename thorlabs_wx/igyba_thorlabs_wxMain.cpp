@@ -84,8 +84,10 @@ BEGIN_EVENT_TABLE(igyba_thorlabs_wxFrame, wxFrame)
     EVT_COMMAND_SCROLL(ID_SLIDER_STD_DEV, igyba_thorlabs_wxFrame::OnSliderStdDevCmdScroll)
 END_EVENT_TABLE()
 
-igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
-                                            wxWindow *parent, wxWindowID id)
+igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc,
+                                               wchar_t **argv,
+                                               wxWindow *parent,
+                                               wxWindowID id)
 {
     /* global pointer */
     itw1ptr = static_cast<igyba_thorlabs_wxFrame *>(this);
@@ -413,8 +415,13 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc, wchar_t **argv,
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnAbout);
     Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnCloseMainFrame);
     //*)
+
+//    Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&testFrame::OnQuit);
+//    Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&testFrame::OnAbout);
+
     thread_Cam = std::thread(igyba_thorlabs_wxFrame::schedule_CamThread,
-                            m_argc, mb_argv);
+                             m_argc,
+                             mb_argv);
     event_Cam.signal();
     LedMain->Enable();
 }
@@ -533,8 +540,11 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
 
     iprint(stdout, "%s read:\n", PROJECT_NAME.c_str());
         for(int i = 0; i < argc; ++i)
-            iprint(stdout, "  argv[%i] = '%s'\n%c", i, argv[i],
-                    (i == argc - 1) ? '\n' : ' ');
+            iprint(stdout,
+                   "  argv[%i] = '%s'\n%c",
+                   i,
+                   argv[i],
+                   (i == argc - 1) ? '\n' : ' ');
 
     (*itw1ptr).t_cam.init_Camera();
 
@@ -552,9 +562,9 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
     if((*itw1ptr).t_cam.caught_Error())
     {
         error_msg("error(s) in the camera initialisation detected. " \
-                    "messages sent to 'stderr'.\n" \
-                    "is the camera connected?\nexiting.",
-                    ERR_ARG);
+                  "messages sent to 'stderr'.\n" \
+                  "is the camera connected?\nexiting.",
+                  ERR_ARG);
         return EXIT_FAILURE;
     }
     else if(!(*itw1ptr).t_cam.get_Image())
@@ -1130,7 +1140,7 @@ void igyba_thorlabs_wxFrame::OnAbout(wxCommandEvent &event)
     __GNUC_MINOR__ << "." <<
     __GNUC_PATCHLEVEL__ <<
     "\n- " + get_wxBuildInfo() +
-    "\n(C) " + author + ", 2016, clemens@fh-muenster.de";
+    "\n(C) " + author + ", 2019, clemens@fh-muenster.de";
     wxMessageBox(msg, "Nice to see you here!");
 
     wxAboutDialogInfo info;
@@ -1138,7 +1148,7 @@ void igyba_thorlabs_wxFrame::OnAbout(wxCommandEvent &event)
     version = "igyba " + PROJECT_MAJ_VERSION + "." + PROJECT_MIN_VERSION;
     info.SetName(version);
     info.SetDescription("This program does something great.");
-    info.SetCopyright("(C) 2016," + author + "<clemens@fh-muenster.de>");
+    info.SetCopyright("(C) 2019," + author + "<clemens@fh-muenster.de>");
 }
 
 void igyba_thorlabs_wxFrame::OnButtonIncExpTimeClick(wxCommandEvent& event)
