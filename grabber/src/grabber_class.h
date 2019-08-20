@@ -4,13 +4,14 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgcodecs/imgcodecs.hpp>
 
 #include "../../src/header.hpp"
 #include "../../viewer_pp/src/viewer_class.h"
 #include "../../minime_pp/src/minime_class.h"
 #include "../../src/threadhand_class.h"
 
-#define DRAW_NOT_FINITE_SIGN_ATOM 0 /**< toggles between a sign to visualize
+#define DRAW_NOT_FINITE_SIGN_ATOM 0 /**< toggles between a sign to visualise
 that the calculated moment is not finite */
 
 class grabber

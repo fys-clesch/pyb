@@ -975,16 +975,16 @@ void grabber::save_Image(const save_Im_type mtype,
     iprint(stdout, "storing to '%s' . ", str.c_str());
     fflush(stdout);
     if(mtype == save_Im_type::RGB)
-        imwrite(str, rgb);
+        cv::imwrite(str, rgb);
     else if(mtype == save_Im_type::WORK)
-        imwrite(str, work);
+        cv::imwrite(str, work);
     else if(mtype == save_Im_type::FP_IN)
-        imwrite(str, fp_in);
+        cv::imwrite(str, fp_in);
     else
         error_msg("wrong enumerator", ERR_ARG);
 
     draw_Info();
-    imwrite(strc, tbar_win_mat);
+    cv::imwrite(strc, tbar_win_mat);
     iprint(stdout, "done\n");
 }
 

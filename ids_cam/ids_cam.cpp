@@ -183,7 +183,7 @@ void ids_cam::init_Camera(void)
     dpix_size = pix_size * 1e-8 * 1e6; /**< Into meters then into um. */
     dpix_size_atm.store(dpix_size, std::memory_order_relaxed);
 
-    err = is_GetBoardInfo(pcam, &b_info);
+    err = is_GetCameraInfo(pcam, &b_info);
     if(err != IS_SUCCESS)
     {
         error_msg("error getting board info", ERR_ARG);

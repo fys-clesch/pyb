@@ -45,11 +45,13 @@
 					<Add library="wxbase31u" />
 					<Add library="opencv_highgui411" />
 					<Add library="opencv_imgproc411" />
+					<Add library="opencv_videoio411" />
+					<Add library="opencv_imgcodecs411" />
 					<Add library="opencv_core411" />
 					<Add library="freeglut" />
 					<Add library="glu32" />
 					<Add library="opengl32" />
-					<Add library="uc480_64" />
+					<Add library="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/lib/uEye_api_64.lib" />
 					<Add directory="C:/wxWidgets/lib/gcc_x64_dll" />
 				</Linker>
 			</Target>
@@ -202,6 +204,7 @@
 			<Add option="-fopenmp" />
 			<Add option="-std=gnu++11" />
 			<Add option="-DUSING_WX" />
+			<Add option="-DUSE_DEPRECATED_FUNCTIONS" />
 		</Compiler>
 		<Linker>
 			<Add option="-fopenmp" />

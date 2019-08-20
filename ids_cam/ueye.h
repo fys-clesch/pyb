@@ -5659,7 +5659,7 @@ typedef enum E_POWER_DELIVERY_PROFILES
 
 
 #ifdef __cplusplus
-};
+}
 #endif  /* __cplusplus */
 
 #pragma pack(pop)
