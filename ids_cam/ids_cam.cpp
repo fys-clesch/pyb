@@ -228,25 +228,41 @@ void ids_cam::init_Camera(void)
             "              inc / ms", exp_time_inc);
 
     if(color_mod == IS_CM_MONO8 ||
-        color_mod == IS_CM_SENSOR_RAW8)
+       color_mod == IS_CM_SENSOR_RAW8)
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC1, 0.);
-    else if(color_mod == IS_CM_MONO12 ||
+    else if(color_mod == IS_CM_MONO10 ||
+            color_mod == IS_CM_MONO12 ||
             color_mod == IS_CM_MONO16 ||
+            color_mod == IS_CM_SENSOR_RAW10 ||
             color_mod == IS_CM_SENSOR_RAW12 ||
             color_mod == IS_CM_SENSOR_RAW16 ||
-            color_mod == IS_CM_BGR555_PACKED ||
-            color_mod == IS_CM_BGR565_PACKED)
+            color_mod == IS_CM_BGR5_PACKED || /* (5 5 5 1) bits */
+            color_mod == IS_CM_BGR565_PACKED) /* (5 6 5) bits */
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_16UC1, 0.);
+    else if(color_mod == IS_CM_UYVY_PACKED ||
+            color_mod == IS_CM_UYVY_MONO_PACKED ||
+            color_mod == IS_CM_UYVY_BAYER_PACKED ||
+            color_mod == IS_CM_CBYCRY_PACKED)
+        im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC2, 0.);
     else if(color_mod == IS_CM_RGB8_PACKED ||
-            color_mod == IS_CM_BGR8_PACKED)
+            color_mod == IS_CM_BGR8_PACKED ||
+            color_mod == IS_CM_RGB8_PLANAR)
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC3, 0.);
     else if(color_mod == IS_CM_RGBA8_PACKED ||
             color_mod == IS_CM_BGRA8_PACKED ||
             color_mod == IS_CM_RGBY8_PACKED ||
             color_mod == IS_CM_BGRY8_PACKED ||
-            color_mod == IS_CM_RGB10V2_PACKED ||
-            color_mod == IS_CM_BGR10V2_PACKED)
+            color_mod == IS_CM_RGB10_PACKED || /* (10 10 10 2) bits */
+            color_mod == IS_CM_BGR10_PACKED) /* (10 10 10 2) bits */
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC4, 0.);
+    else if(color_mod == IS_CM_RGB10_UNPACKED ||
+            color_mod == IS_CM_BGR10_UNPACKED ||
+            color_mod == IS_CM_RGB12_UNPACKED ||
+            color_mod == IS_CM_BGR12_UNPACKED)
+        im_p = cv::Mat(cv::Size(im_width, im_height), CV_16UC3, 0.);
+    else if(color_mod == IS_CM_RGBA12_UNPACKED ||
+            color_mod == IS_CM_BGRA12_UNPACKED)
+        im_p = cv::Mat(cv::Size(im_width, im_height), CV_16UC4, 0.);
     else
     {
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC1, 0.);
