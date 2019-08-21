@@ -11,7 +11,7 @@
 #ifdef ISLINUX
  #include "ueye.h"
 #elif defined(ISWIN32) || defined(ISWIN64)
-  #include "uc480.h"
+ #include "uc480.h"
 #endif
 
 class thorlabs_cam : public grabber

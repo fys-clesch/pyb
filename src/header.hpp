@@ -1,8 +1,6 @@
 #ifndef __IGYBA_HEADER_HPP__
 #define __IGYBA_HEADER_HPP__
 
-/* Definitions from other header files to declare types in the functions
-of this header. */
 #include <stdio.h>
 #include <stdarg.h>
 #include <string>
@@ -37,6 +35,7 @@ of this header. */
 #define SHOW_WAIT_KEY 0
 #define SHOW_MOUSE_CB 0
 #define USE_CURSES 0
+#define USE_IDS_DRIVER 1
 
 constexpr unsigned int FILENAME_MAX1 = FILENAME_MAX + 1;
 

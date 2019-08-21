@@ -9,12 +9,12 @@ ifndef STATIC
 endif
 
 ifeq ($(DEBUG), 1)
- CFLAGS = -O0 -g -Wall -Wextra -pedantic -std=gnu++11 -fopenmp
+ CFLAGS = -O0 -g -Wall -Wextra -pedantic -std=gnu++11 -fopenmp -DUSE_DEPRECATED_FUNCTIONS
 else
  ifeq ($(STATIC), 1)
-  CFLAGS = -O3 -Wall -Wextra -pedantic -std=gnu++11 -fopenmp -DIGYBA_NDEBUG -DNDEBUG -DFREEGLUT_STATIC
+  CFLAGS = -O3 -Wall -Wextra -pedantic -std=gnu++11 -fopenmp -DIGYBA_NDEBUG -DNDEBUG -DUSE_DEPRECATED_FUNCTIONS -DFREEGLUT_STATIC
  else
-  CFLAGS = -O3 -Wall -Wextra -pedantic -std=gnu++11 -fopenmp -DIGYBA_NDEBUG -DNDEBUG
+  CFLAGS = -O3 -Wall -Wextra -pedantic -std=gnu++11 -fopenmp -DIGYBA_NDEBUG -DNDEBUG -DUSE_DEPRECATED_FUNCTIONS
  endif
 endif
 

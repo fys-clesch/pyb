@@ -4,21 +4,18 @@
 ids_cam::ids_cam(void)
 {
     /* SENSORINFO */
-    s_info = SENSORINFO{
-        0,
-        "", '\0',
-        0, 0,
-        0, 0, 0, 0, 0,
-        #if defined(ISWIN32) || defined(ISWIN64)
-        0,
-        #endif
-        0, ""};
+    s_info = SENSORINFO{0,
+                        "",
+                        '\0',
+                        0, 0,
+                        false, false, false, false, false,
+                        0,
+                        '\0',
+                        ""};
     /* BOARDINFO */
-    b_info = BOARDINFO{
-        "", "", "", "",
-        '\0', '\0',
-        ""
-        };
+    b_info = BOARDINFO{"", "", "", "",
+                       '\0', '\0',
+                       ""};
     /* HCAM */
     pcam = (HCAM)NULL;
     /* int */
@@ -152,7 +149,7 @@ void ids_cam::init_Camera(void)
     if(caught_Error())
     {
         error_msg("error in the camera initialisation detected.\n" \
-                "is the camera connected?\nexiting.", ERR_ARG);
+                 "is the camera connected?\nexiting.", ERR_ARG);
         exit(EXIT_FAILURE);
     }
 
@@ -173,7 +170,7 @@ void ids_cam::init_Camera(void)
 
     #ifdef ISLINUX
     warn_msg("pixel size not available on linux library 'ueye' yet. " \
-            "relying on the identification of the sensor name.", ERR_ARG);
+             "relying on the identification of the sensor name.", ERR_ARG);
     #elif defined(ISWIN32) || defined(ISWIN64)
     pix_size = s_info.wPixelSize;
     #endif
@@ -196,36 +193,36 @@ void ids_cam::init_Camera(void)
     get_GainBoost();
     #define PR_C "%-23s: "
     iprint(stdout,
-            PR_C "%s\n" \
-            PR_C "%s\n" \
-            PR_C "%s\n" \
-            PR_C "%i\n" \
-            PR_C "%i\n" \
-            PR_C "%.2g\n" \
-            PR_C "%i\n" \
-            PR_C "%.2g\n" \
-            PR_C "%s\n" \
-            PR_C "%u\n" \
-            PR_C "%g\n" \
-            PR_C "%g\n" \
-            PR_C "%g\n" \
-            PR_C "%g\n",
-            "camera ID", b_info.ID,
-            "serial #", b_info.SerNo,
-            "date", b_info.Date,
-            "pixel size / 1e-8 m", pix_size,
-            "width / pixel", im_width,
-            "      / um", im_width * dpix_size,
-            "height / pixel", im_height,
-            "       / um", im_height * dpix_size,
-            "colour mode", color_mod_init == IS_COLORMODE_MONOCHROME ?
-            ("MONOCHROME") : color_mod_init == IS_COLORMODE_BAYER ?
-            ("BAYER") : ("CBYCRY"),
-            "pixel clock / MHz", pix_clock,
-            "exposure time set / ms", exp_time,
-            "              max / ms", exp_time_max,
-            "              min / ms", exp_time_min,
-            "              inc / ms", exp_time_inc);
+           PR_C "%s\n" \
+           PR_C "%s\n" \
+           PR_C "%s\n" \
+           PR_C "%i\n" \
+           PR_C "%i\n" \
+           PR_C "%.2g\n" \
+           PR_C "%i\n" \
+           PR_C "%.2g\n" \
+           PR_C "%s\n" \
+           PR_C "%u\n" \
+           PR_C "%g\n" \
+           PR_C "%g\n" \
+           PR_C "%g\n" \
+           PR_C "%g\n",
+           "camera ID", b_info.ID,
+           "serial #", b_info.SerNo,
+           "date", b_info.Date,
+           "pixel size / 1e-8 m", pix_size,
+           "width / pixel", im_width,
+           "      / um", im_width * dpix_size,
+           "height / pixel", im_height,
+           "       / um", im_height * dpix_size,
+           "colour mode", color_mod_init == IS_COLORMODE_MONOCHROME ?
+           ("MONOCHROME") : color_mod_init == IS_COLORMODE_BAYER ?
+           ("BAYER") : ("CBYCRY"),
+           "pixel clock / MHz", pix_clock,
+           "exposure time set / ms", exp_time,
+           "              max / ms", exp_time_max,
+           "              min / ms", exp_time_min,
+           "              inc / ms", exp_time_inc);
 
     if(color_mod == IS_CM_MONO8 ||
        color_mod == IS_CM_SENSOR_RAW8)
@@ -267,7 +264,7 @@ void ids_cam::init_Camera(void)
     {
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC1, 0.);
         warn_msg("can't find right colour mode. " \
-                "setting Mat format to CV_8UC1.", ERR_ARG);
+                 "setting Mat format to CV_8UC1.", ERR_ARG);
     }
 }
 
@@ -278,8 +275,8 @@ void ids_cam::set_ColourMode(void)
         error_msg("error setting colour mode", ERR_ARG);
     if(color_mod_test != is_SetColorMode(pcam, IS_GET_COLOR_MODE))
         iprint(stderr,
-                "error setting colour mode to %u\n",
-                color_mod_test);
+               "error setting colour mode to %u\n",
+               color_mod_test);
 }
 
 /* Set to auto-release camera and memory if camera is disconnected on-the-fly. */
@@ -302,7 +299,11 @@ void ids_cam::set_Display(void)
 void ids_cam::alloc_ImageMem(void)
 {
     err = is_AllocImageMem(pcam,
-                            im_width, im_height, bits_p_pix, &im_mem, &memID);
+                           im_width,
+                           im_height,
+                           bits_p_pix,
+                           &im_mem,
+                           &memID);
     if(err != IS_SUCCESS)
     {
         error_msg("error allocating image memory", ERR_ARG);
@@ -311,9 +312,10 @@ void ids_cam::alloc_ImageMem(void)
 }
 
 /* Reads out properties of the allocated image memory. */
-void ids_cam::inquire_ImageMem(int *res_pt nx, int *res_pt ny,
-                                    int *res_pt bits_p_pix,
-                                    int *res_pt pixel_bit_pitch)
+void ids_cam::inquire_ImageMem(int *res_pt nx,
+                               int *res_pt ny,
+                               int *res_pt bits_p_pix,
+                               int *res_pt pixel_bit_pitch)
 {
     int xo, yo, bppo, pbpo;
     err = is_InquireImageMem(pcam, im_mem, memID, &xo, &yo, &bppo, &pbpo);
@@ -323,14 +325,14 @@ void ids_cam::inquire_ImageMem(int *res_pt nx, int *res_pt ny,
         err_break = true;
     }
     iprint(stdout,
-            "%s: %i\n" \
-            "%s: %i\n" \
-            "%s: %i\n" \
-            "%s: %i\n",
-            "x / entries", xo,
-            "y / entries", yo,
-            "bpp", bppo,
-            "pbb", pbpo);
+           "%s: %i\n" \
+           "%s: %i\n" \
+           "%s: %i\n" \
+           "%s: %i\n",
+           "x / entries", xo,
+           "y / entries", yo,
+           "bpp", bppo,
+           "pbb", pbpo);
     if(nx)
         *nx = xo;
     if(ny)
@@ -420,7 +422,8 @@ void ids_cam::handle_Error(const uchar err)
         error_msg("an IO request from the uc480 driver failed", ERR_ARG);
     else if(err == IS_CAPTURE_RUNNING)
         warn_msg("capture operation in progress must be " \
-                "terminated before starting another one", ERR_ARG);
+                 "terminated before starting another one",
+                 ERR_ARG);
     else
         warn_msg("unspecified error / warning during image capture", ERR_ARG);
 }
@@ -491,9 +494,9 @@ void ids_cam::get_ExposureTime(void)
            time;
     uint32_t ncaps;
     err = is_Exposure(pcam,
-                    IS_EXPOSURE_CMD_GET_CAPS,
-                    (void *)&ncaps,
-                    sizeof(ncaps));
+                      IS_EXPOSURE_CMD_GET_CAPS,
+                      (void *)&ncaps,
+                      sizeof(ncaps));
     if(err != IS_SUCCESS)
     {
         error_msg("error getting exposure function modes", ERR_ARG);
@@ -522,9 +525,9 @@ void ids_cam::get_ExposureTime(void)
     }
 
     err = is_Exposure(pcam,
-                    IS_EXPOSURE_CMD_GET_EXPOSURE,
-                    (void *)&time,
-                    sizeof(time));
+                      IS_EXPOSURE_CMD_GET_EXPOSURE,
+                      (void *)&time,
+                      sizeof(time));
     if(err != IS_SUCCESS)
     {
         error_msg("error getting exposure time", ERR_ARG);
@@ -532,9 +535,9 @@ void ids_cam::get_ExposureTime(void)
     }
     exp_time = time;
     err = is_Exposure(pcam,
-                    IS_EXPOSURE_CMD_GET_EXPOSURE_RANGE,
-                    (void *)rng,
-                    sizeof(rng));
+                      IS_EXPOSURE_CMD_GET_EXPOSURE_RANGE,
+                      (void *)rng,
+                      sizeof(rng));
     if(err != IS_SUCCESS)
     {
         error_msg("error getting exposure time range", ERR_ARG);
@@ -558,9 +561,9 @@ void ids_cam::set_ExposureTime(double time)
         time = exp_time_min;
 
     err = is_Exposure(pcam,
-                    IS_EXPOSURE_CMD_SET_EXPOSURE,
-                    (void *)&time,
-                    sizeof(time));
+                      IS_EXPOSURE_CMD_SET_EXPOSURE,
+                      (void *)&time,
+                      sizeof(time));
     if(err != IS_SUCCESS)
     {
         error_msg("error setting exposure time", ERR_ARG);
@@ -587,9 +590,9 @@ void ids_cam::exchange_ExposureTimeAtomic(void)
             time = exp_time_min;
 
         err = is_Exposure(pcam,
-                        IS_EXPOSURE_CMD_SET_EXPOSURE,
-                        (void *)&time,
-                        sizeof(time));
+                          IS_EXPOSURE_CMD_SET_EXPOSURE,
+                          (void *)&time,
+                          sizeof(time));
         if(err != IS_SUCCESS)
         {
             error_msg("error setting exposure time", ERR_ARG);
@@ -612,9 +615,9 @@ void ids_cam::set_ExposureTimeAtomic(double time)
 }
 
 void ids_cam::get_ExposureTimesAtomic(double *res_pt time,
-                                        double *res_pt min_time,
-                                        double *res_pt max_time,
-                                        double *res_pt inc_time)
+                                      double *res_pt min_time,
+                                      double *res_pt max_time,
+                                      double *res_pt inc_time)
 {
     *time = exp_time_atm.load(std::memory_order_acquire);
     *min_time = exp_time_min_atm.load(std::memory_order_acquire);
@@ -626,8 +629,8 @@ void ids_cam::get_CameraStatus(void)
 {
     ulong status;
     status = is_CameraStatus(pcam,
-                            IS_LAST_CAPTURE_ERROR,
-                            IS_GET_STATUS);
+                             IS_LAST_CAPTURE_ERROR,
+                             IS_GET_STATUS);
     switch(status)
     {
     case IS_BAD_STRUCTURE_SIZE:
@@ -677,17 +680,17 @@ void ids_cam::get_GainBoost(void)
         err = is_SetGainBoost(pcam, IS_GET_GAINBOOST);
         if(err == IS_SET_GAINBOOST_ON)
             iprint(stdout,
-                    "analogue hardware gain boost feature available and switched on\n");
+                   "analogue hardware gain boost feature available and switched on\n");
         else
             iprint(stdout,
-                    "analogue hardware gain boost feature available and switched off\n");
+                   "analogue hardware gain boost feature available and switched off\n");
     }
     else if(err == IS_SET_GAINBOOST_OFF)
         iprint(stdout,
-                "analogue hardware gain boost feature not available\n");
+               "analogue hardware gain boost feature not available\n");
     else
         iprint(stdout,
-                "error detecting analogue hardware gain boost feature\n");
+               "error detecting analogue hardware gain boost feature\n");
 }
 
 void ids_cam::TrackbarHandlerExposure(int i)
@@ -720,11 +723,11 @@ void ids_cam::create_TrackbarExposure(void)
      * and the function that is called whenever the trackbar is moved.
      */
     cv::createTrackbar(trck_name,
-                    infotbar_win_name,
-                    &setting,
-                    (int)out_max,
-                    ids_cam::cast_static_SetTrackbarHandlerExposure,
-                    this);
+                       infotbar_win_name,
+                       &setting,
+                       (int)out_max,
+                       ids_cam::cast_static_SetTrackbarHandlerExposure,
+                       this);
 }
 
 void ids_cam::draw_CameraInfo(void)
@@ -748,18 +751,18 @@ void ids_cam::draw_CameraInfo(void)
     cv::putText(infotbar_win_mat, info, putText_ARGS);
     sy -= 20.;
     info = "(start / end) width: (" +
-    convert_Int2Str(im_aoi_width_start) + ", " +
-    convert_Int2Str(im_aoi_width) + ") pixel";
+           convert_Int2Str(im_aoi_width_start) + ", " +
+           convert_Int2Str(im_aoi_width) + ") pixel";
     cv::putText(infotbar_win_mat, info, putText_ARGS);
     sy -= 20.;
     info = "(start / end) height: (" +
-    convert_Int2Str(im_aoi_height_start) + ", " +
-    convert_Int2Str(im_aoi_height) + ") pixel";
+           convert_Int2Str(im_aoi_height_start) + ", " +
+           convert_Int2Str(im_aoi_height) + ") pixel";
     cv::putText(infotbar_win_mat, info, putText_ARGS);
     sy -= 20.;
     info = "sensor area: (" +
-    convert_Int2Str(sensor_aa_width) + " * " +
-    convert_Int2Str(sensor_aa_height) + ") um^2";
+           convert_Int2Str(sensor_aa_width) + " * " +
+           convert_Int2Str(sensor_aa_height) + ") um^2";
     cv::putText(infotbar_win_mat, info, putText_ARGS);
     sy -= 20.;
     info = "camera model: " + sensorname;
@@ -771,26 +774,26 @@ std::string ids_cam::get_CameraInfo(void)
 {
     std::string out;
     out = "Camera model: " + sensorname +
-    "\nSensor area: (" +
-    convert_Int2Str(sensor_aa_width) + " * " +
-    convert_Int2Str(sensor_aa_height) + ") um^2\n" +
-    "Pixel count: " +
-    convert_Int2Str(im_aoi_width) + " * " +
-    convert_Int2Str(im_aoi_height) +
-    "\nPixel pitch: " + convert_Double2Str(dpix_size) + " um / pix";
+          "\nSensor area: (" +
+          convert_Int2Str(sensor_aa_width) + " * " +
+          convert_Int2Str(sensor_aa_height) + ") um^2\n" +
+          "Pixel count: " +
+          convert_Int2Str(im_aoi_width) + " * " +
+          convert_Int2Str(im_aoi_height) +
+          "\nPixel pitch: " + convert_Double2Str(dpix_size) + " um / pix";
     return out;
 }
 
 void ids_cam::identify_CameraAOISettings(void)
 {
     if(!sensorname.compare("DCC1240x") ||
-        !sensorname.compare("DCC1240M") ||
-        !sensorname.compare("DCC1240C") ||
-        !sensorname.compare("DCC1240N") ||
-        !sensorname.compare("DCC3240x") ||
-        !sensorname.compare("DCC3240M") ||
-        !sensorname.compare("DCC3240C") ||
-        !sensorname.compare("DCC3240N"))
+       !sensorname.compare("DCC1240M") ||
+       !sensorname.compare("DCC1240C") ||
+       !sensorname.compare("DCC1240N") ||
+       !sensorname.compare("DCC3240x") ||
+       !sensorname.compare("DCC3240M") ||
+       !sensorname.compare("DCC3240C") ||
+       !sensorname.compare("DCC3240N"))
     {
         /* Sensor is
         e2v EV76C560ABT (monochrome) or
@@ -880,7 +883,7 @@ void ids_cam::identify_CameraAOISettings(void)
     }
     else
         error_msg("error identifying the sensor name. " \
-                    "setting AOI is dangerous!", ERR_ARG);
+                  "setting AOI is dangerous!", ERR_ARG);
 }
 
 void ids_cam::set_CameraInfoWindowName(const std::string &name)
@@ -929,24 +932,27 @@ void ids_cam::create_TrackbarStartAOIWidth(void)
     static int setting = 0;
 
     cv::createTrackbar(trck_name_aoi_sw,
-                    infotbar_win_name,
-                    &setting,
-                    out_max,
-                    ids_cam::cast_static_SetTrackbarHandlerStartAOIWidth,
-                    this);
+                       infotbar_win_name,
+                       &setting,
+                       out_max,
+                       ids_cam::cast_static_SetTrackbarHandlerStartAOIWidth,
+                       this);
 }
 
 void ids_cam::cast_static_set_MouseEvent(const int event,
-                                        const int x, const int y,
-                                        const int flags, void *udata)
+                                         const int x,
+                                         const int y,
+                                         const int flags,
+                                         void *udata)
 {
     ids_cam *ptr = static_cast<ids_cam *>(udata);
     (*ptr).set_MouseEvent(event, x, y, flags);
 }
 
 void ids_cam::set_MouseEvent(const int event,
-                            const int x, const int y,
-                            const int flags)
+                             const int x,
+                             const int y,
+                             const int flags)
 {
     if(flags & cv::EVENT_FLAG_SHIFTKEY)
     {
@@ -973,8 +979,8 @@ void ids_cam::set_MouseEvent(const int event,
             set_RectRoi(cv::Rect_<int>(sx, sy, sw, sh));
             set_MouseDrag(false);
             if(sw <= 25 || sh <= 25 ||
-                sx + abs(sw) >= (int)get_nCols() ||
-                sy + abs(sh) >= (int)get_nRows())
+               sx + abs(sw) >= (int)get_nCols() ||
+               sy + abs(sh) >= (int)get_nRows())
                 set_RoiActive(false);
             else
                 set_RoiActive(true);

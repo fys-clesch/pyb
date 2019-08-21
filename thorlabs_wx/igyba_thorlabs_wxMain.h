@@ -28,15 +28,24 @@
 #include <wx/tglbtn.h>
 //*)
 
-#include "../thorlabs_cam/thorlabs_cam.h"
+#include "../src/header.hpp"
+#if USE_IDS_DRIVER
+ #include "../ids_cam/ids_cam.h"
+#else
+ #include "../thorlabs_cam/thorlabs_cam.h"
+#endif
 
 class igyba_thorlabs_wxFrame : public wxFrame
 {
 
 private:
 
-    thorlabs_cam t_cam;
-//    ids_cam i_cam;
+    #if USE_IDS_DRIVER
+     ids_cam
+    #else
+     thorlabs_cam
+    #endif
+    t_cam;
 
     char **mb_argv;
 
