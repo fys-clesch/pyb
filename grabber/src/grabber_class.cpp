@@ -1220,7 +1220,8 @@ void grabber::show_Intro(void)
     }
     sx = wwidth - 80.;
     sy = wheight - 25.;
-    cv::putText(img, "20161031 RC4", putText_ARGS);
+    std::string outs = PROJECT_YEAR + PROJECT_MONTH + PROJECT_DAY;
+    cv::putText(img, outs.c_str(), putText_ARGS);
     sy = wheight - 5.;
     cv::putText(img, "GPLv3", putText_ARGS);
 

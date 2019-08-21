@@ -2,39 +2,9 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="igyba_thorlabs_wxMain.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="307" topLine="0" />
-		</Cursor>
-	</File>
 	<File name="..\src\auxf.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="5197" topLine="199" />
-		</Cursor>
-	</File>
-	<File name="..\viewer_pp\src\viewer_class.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="41064" topLine="1301" />
-		</Cursor>
-	</File>
-	<File name="..\grabber\src\grabber_class.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="216" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Makefile" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="336" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\grabber\src\test.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="396" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\ids_cam\ueye.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="90734" topLine="1902" />
 		</Cursor>
 	</File>
 	<File name="..\minime_pp\src\fifo_class.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -42,49 +12,39 @@
 			<Cursor1 position="320" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\thorlabs_cam\thorlabs_cam.cpp" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="igyba_thorlabs_wxMain.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1964" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\ids_cam\ids_cam.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="264" topLine="0" />
+			<Cursor1 position="39242" topLine="556" />
 		</Cursor>
 	</File>
 	<File name="..\grabber\src\grabber_class.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="43573" topLine="1251" />
+			<Cursor1 position="42229" topLine="1204" />
 		</Cursor>
 	</File>
-	<File name="..\minime_pp\src\minimizer_s.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\thorlabs_cam\thorlabs_cam.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="6970" topLine="227" />
+			<Cursor1 position="1964" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\ids_cam\ids_cam.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="815" zoom_1="0" zoom_2="0">
+	<File name="..\grabber\src\test.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="329" topLine="0" />
+			<Cursor1 position="941" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\ids_cam\ueye.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="103495" topLine="2162" />
+		</Cursor>
+	</File>
+	<File name="..\thorlabs_cam\uc480.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="91468" topLine="1894" />
 		</Cursor>
 	</File>
 	<File name="..\src\threadhand_class.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="216" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\minime_pp\src\minime_propagation_class.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="302" topLine="6" />
-		</Cursor>
-	</File>
-	<File name="src\led.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="534" topLine="2" />
-		</Cursor>
-	</File>
-	<File name="..\src\header.hpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1023" topLine="15" />
 		</Cursor>
 	</File>
 	<File name="..\thorlabs_cam\thorlabs_cam.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -94,27 +54,67 @@
 	</File>
 	<File name="..\viewer_pp\src\viewer_class.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3129" topLine="97" />
+			<Cursor1 position="88" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\grabber\src\test.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\minime_pp\src\minime_propagation_class.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="941" topLine="0" />
+			<Cursor1 position="302" topLine="6" />
 		</Cursor>
 	</File>
-	<File name="..\thorlabs_cam\uc480.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\minime_pp\src\minimizer_s.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="91468" topLine="1894" />
+			<Cursor1 position="6970" topLine="227" />
 		</Cursor>
 	</File>
-	<File name="igyba_thorlabs_wxMain.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\led.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1134" topLine="28" />
+			<Cursor1 position="124" topLine="2" />
+		</Cursor>
+	</File>
+	<File name="..\grabber\src\test.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="396" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\grabber\src\grabber_class.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="216" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\src\header.hpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1616" topLine="51" />
+		</Cursor>
+	</File>
+	<File name="..\viewer_pp\src\viewer_class.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\ids_cam\ids_cam.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="815" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="12867" topLine="379" />
+		</Cursor>
+	</File>
+	<File name="..\ids_cam\ids_cam.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2373" topLine="62" />
 		</Cursor>
 	</File>
 	<File name="igyba_thorlabs_wxApp.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="157" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="igyba_thorlabs_wxMain.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="968" topLine="19" />
+		</Cursor>
+	</File>
+	<File name="Makefile" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="336" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

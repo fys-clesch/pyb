@@ -660,8 +660,9 @@ void viewer::print_String(const char *s)
         glutBitmapCharacter(GLUT_BITMAP_8_BY_13, s[i]);
 }
 
-void viewer::print_Level(const double *res_pt pos_z, const double *res_pt vmax,
-                        const uint prpr)
+void viewer::print_Level(const double *res_pt pos_z,
+                         const double *res_pt vmax,
+                         const uint prpr)
 {
     double val = (*vmax) * (*pos_z);
     char c[32],
@@ -672,11 +673,11 @@ void viewer::print_Level(const double *res_pt pos_z, const double *res_pt vmax,
 }
 
 void viewer::print_LevelColorbox(const double *res_pt vmin,
-                                const double *res_pt vmax,
-                                const uint prpr,
-                                const double xl,
-                                const double ymin,
-                                const double ymax)
+                                 const double *res_pt vmax,
+                                 const uint prpr,
+                                 const double xl,
+                                 const double ymin,
+                                 const double ymax)
 {
     char c[32],
          cf[12];
@@ -808,13 +809,15 @@ loaded into the viewer memory.
  * This function is thread safe, as it does not access any class members.
  */
 void viewer::calc_DrawingData(const double *res_pt const m_in,
-                            const bool noisy,
-                            double *res_pt max_val_out,
-                            double *res_pt min_val_out,
-                            double *res_pt max_norm_out,
-                            double *res_pt min_norm_out,
-                            const uint row_in, const uint col_in,
-                            double *res_pt data_out, double *res_pt rgb_out)
+                              const bool noisy,
+                              double *res_pt max_val_out,
+                              double *res_pt min_val_out,
+                              double *res_pt max_norm_out,
+                              double *res_pt min_norm_out,
+                              const uint row_in,
+                              const uint col_in,
+                              double *res_pt data_out,
+                              double *res_pt rgb_out)
 {
     *max_val_out = -DBL_MAX;
     *min_val_out = DBL_MAX;
@@ -1061,11 +1064,11 @@ formatted properly elsewhere before.
  * to prevent data races.
  */
 void viewer::set_DrawingData(const double *res_pt max_val_out,
-                            const double *res_pt min_val_out,
-                            const double *res_pt max_norm_out,
-                            const double *res_pt min_norm_out,
-                            const double *res_pt data_out,
-                            const double *res_pt rgb_out)
+                             const double *res_pt min_val_out,
+                             const double *res_pt max_norm_out,
+                             const double *res_pt min_norm_out,
+                             const double *res_pt data_out,
+                             const double *res_pt rgb_out)
 {
     max_val = *max_val_out;
     min_val = *min_val_out;
@@ -1123,9 +1126,9 @@ void viewer::launch_FreeglutTest(int argc, char **argv)
     glutVisibilityFunc(check_Visibility);
     glutWindowStatusFunc(check_WindowState);
     (*vwr).win_sub = glutCreateSubWindow((*vwr).win_main,
-                                        5, 5,
-                                        (*vwr).win_width / 4,
-                                        (*vwr).win_height / 4);
+                                         5, 5,
+                                         (*vwr).win_width / 4,
+                                         (*vwr).win_height / 4);
     glutDisplayFunc(set_SubDisplay);
     (*vwr).store_IsRunning(true);
     glutMainLoop();
@@ -1282,11 +1285,13 @@ void viewer::TrackballHandler(const int mode, const int button,
                 glGetDoublev(GL_MODELVIEW_MATRIX, modlview);
                 glGetDoublev(GL_PROJECTION_MATRIX, prjction);
                 glReadPixels(x, ny, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &wz);
-                gluUnProject(wx, wy, wz, modlview, prjction, vwprt,
-                                &(*dv1p).wc[0], &(*dv1p).wc[1], &(*dv1p).wc[2]);
+                gluUnProject(wx, wy, wz,
+                             modlview, prjction, vwprt,
+                             &(*dv1p).wc[0], &(*dv1p).wc[1], &(*dv1p).wc[2]);
                 #ifndef IGYBA_NDEBUG
-                iprint(stdout, "wx: %g, wy: %g, wz: %g\n",
-                        (*dv1p).wc[0], (*dv1p).wc[1], (*dv1p).wc[2]);
+                iprint(stdout,
+                       "wx: %g, wy: %g, wz: %g\n",
+                       (*dv1p).wc[0], (*dv1p).wc[1], (*dv1p).wc[2]);
                 #endif
                 (*dv1p).store_UpdateAnimate(true);
             }

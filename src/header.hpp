@@ -60,6 +60,9 @@ constexpr unsigned int FILENAME_MAX1 = FILENAME_MAX + 1;
 const std::string PROJECT_NAME = "igyba";
 const std::string PROJECT_MAJ_VERSION = "2";
 const std::string PROJECT_MIN_VERSION = "0";
+const std::string PROJECT_YEAR = "2019";
+const std::string PROJECT_MONTH = "08";
+const std::string PROJECT_DAY = "21";
 
 /* Type definitions. */
 typedef unsigned int uint;

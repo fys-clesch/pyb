@@ -1129,21 +1129,21 @@ void igyba_thorlabs_wxFrame::OnAbout(wxCommandEvent &event)
              author;
     author << "Clemens Sch\x00E4" << "fermeier";
     msg << "Called " + PROJECT_NAME + " " +
-    PROJECT_MAJ_VERSION + "." + PROJECT_MIN_VERSION + "\n" +
-    "Build with tons of key strokes. And with\n" +
-    "- OpenCV " <<
-    CV_MAJOR_VERSION << "." <<
-    CV_MINOR_VERSION << "." <<
-    CV_SUBMINOR_VERSION <<
-    "\n- freeglut " \
-    "2.0." << FREEGLUT_VERSION_2_0 <<
-    "\n- OpenMP" \
-    "\n- gcc " <<
-    __GNUC__ << "." <<
-    __GNUC_MINOR__ << "." <<
-    __GNUC_PATCHLEVEL__ <<
-    "\n- " + get_wxBuildInfo() +
-    "\n(C) " + author + ", 2019, clemens@fh-muenster.de";
+           PROJECT_MAJ_VERSION + "." + PROJECT_MIN_VERSION + "\n" +
+           "Build with tons of key strokes. And with\n" +
+           "- OpenCV " <<
+           CV_MAJOR_VERSION << "." <<
+           CV_MINOR_VERSION << "." <<
+           CV_SUBMINOR_VERSION <<
+           "\n- freeglut " \
+           "2.0." << FREEGLUT_VERSION_2_0 <<
+           "\n- OpenMP" \
+           "\n- gcc " <<
+           __GNUC__ << "." <<
+           __GNUC_MINOR__ << "." <<
+           __GNUC_PATCHLEVEL__ <<
+           "\n- " + get_wxBuildInfo() +
+           "\n(C) " + author + ", " + PROJECT_YEAR + ", clemens@fh-muenster.de";
     wxMessageBox(msg, "Nice to see you here!");
 
     wxAboutDialogInfo info;

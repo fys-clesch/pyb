@@ -81,12 +81,12 @@ private:
     std::string file_name; /**< Attention, the use of it is across threads! */
 
     static const double cwhite[4],
-                  cblack[4],
-                  ctrans[4],
-                  cgrey_trans[4],
-                  cred[4],
-                  cgreen[4],
-                  cblue[4];
+                        cblack[4],
+                        ctrans[4],
+                        cgrey_trans[4],
+                        cred[4],
+                        cgreen[4],
+                        cblue[4];
 
     static const float light_amb[4],
                        light_diff[4],
@@ -117,12 +117,17 @@ private:
 
     static void KeyboardHandler(const uchar key, const int x, const int y);
     static void ArrowKeysHandler(const int a_keys, const int x, const int y);
-    static void TrackballHandler(const int mode, const int button,
-                                const int state, const int x, const int y);
+    static void TrackballHandler(const int mode,
+                                 const int button,
+                                 const int state,
+                                 const int x,
+                                 const int y);
     static void MotionHandler(const int x, const int y);
     static void PassiveMotionHandler(const int x, const int y);
-    static void MouseHandler(const int button, const int state,
-                            const int x, const int y);
+    static void MouseHandler(const int button,
+                             const int state,
+                             const int x,
+                             const int y);
 
     static void animate_View(void);
     static void check_Visibility(const int vis);
@@ -137,22 +142,25 @@ private:
     void reset_MemberVariables(const bool make_free = false);
     void fill_DrawingData(const double *res_pt const m_in, const bool noisy);
     void print_BlockString2d(const char *s,
-                        const uint lw,
-                        double sx, double sy,
-                        const double ix, const double iy);
+                             const uint lw,
+                             double sx,
+                             double sy,
+                             const double ix,
+                             const double iy);
     void print_String(const char *s);
     void display_MapView(const bool init);
     void display_3dView(const bool init);
     void draw_Colorbox(void);
     void draw_CoordinateOverview(void);
     void print_Level(const double *res_pt pos_z,
-                    const double *res_pt vmax,
-                    const uint prpr);
+                     const double *res_pt vmax,
+                     const uint prpr);
     void print_LevelColorbox(const double *res_pt vmin,
-                            const double *res_pt vmax,
-                            const uint prpr,
-                            const double xl,
-                            const double ymin, const double ymax);
+                             const double *res_pt vmax,
+                             const uint prpr,
+                             const double xl,
+                             const double ymin,
+                             const double ymax);
     void init_Main(int argc, char **argv);
 
     void reset_DrawingControls(void);
@@ -183,7 +191,7 @@ private:
     bool load_UpdateAnimate(void);
     bool exchange_SaveScreen(void);
     void save_Screenshot(const std::string &fname = "",
-                    const std::string &fmt = "png");
+                         const std::string &fmt = "png");
 
 public:
 
@@ -205,20 +213,21 @@ public:
                                 const bool threading = false);
     bool load_IsRunning(void);
     static void calc_DrawingData(const double *res_pt const m_in,
-                            const bool noisy,
-                            double *res_pt max_val_out,
-                            double *res_pt min_val_out,
-                            double *res_pt max_norm_out,
-                            double *res_pt min_norm_out,
-                            const uint row_in, const uint col_in,
-                            double *res_pt data_out,
-                            double *res_pt rgb_out);
+                                 const bool noisy,
+                                 double *res_pt max_val_out,
+                                 double *res_pt min_val_out,
+                                 double *res_pt max_norm_out,
+                                 double *res_pt min_norm_out,
+                                 const uint row_in,
+                                 const uint col_in,
+                                 double *res_pt data_out,
+                                 double *res_pt rgb_out);
     void set_DrawingData(const double *res_pt max_val_out,
-                    const double *res_pt min_val_out,
-                    const double *res_pt max_norm_out,
-                    const double *res_pt min_norm_out,
-                    const double *res_pt data_out,
-                    const double *res_pt rgb_out);
+                         const double *res_pt min_val_out,
+                         const double *res_pt max_norm_out,
+                         const double *res_pt min_norm_out,
+                         const double *res_pt data_out,
+                         const double *res_pt rgb_out);
     void store_FilledMemory(const bool b);
     void alloc_DataFromFile(const std::string &fname);
     void fill_DataFromFile(const std::string &fname);

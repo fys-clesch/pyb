@@ -115,7 +115,7 @@
 				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="tes test" />
+				<Option parameters="test test" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O3" />

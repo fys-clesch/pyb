@@ -149,7 +149,7 @@ void ids_cam::init_Camera(void)
     if(caught_Error())
     {
         error_msg("error in the camera initialisation detected.\n" \
-                 "is the camera connected?\nexiting.", ERR_ARG);
+                  "is the camera connected?\nexiting.", ERR_ARG);
         exit(EXIT_FAILURE);
     }
 
@@ -224,8 +224,7 @@ void ids_cam::init_Camera(void)
            "              min / ms", exp_time_min,
            "              inc / ms", exp_time_inc);
 
-    if(color_mod == IS_CM_MONO8 ||
-       color_mod == IS_CM_SENSOR_RAW8)
+    if(color_mod == IS_CM_MONO8 || color_mod == IS_CM_SENSOR_RAW8)
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC1, 0.);
     else if(color_mod == IS_CM_MONO10 ||
             color_mod == IS_CM_MONO12 ||
@@ -383,6 +382,7 @@ void ids_cam::set_ImageSize(void)
 bool ids_cam::get_Image(cv::Mat &img)
 {
     err = is_FreezeVideo(pcam, IS_WAIT);
+
     if(err == IS_SUCCESS)
     {
         /** @todo cv::Mat(int rows, int cols, int type, void* data, size_t step = cv::AUTO_STEP) */
@@ -397,11 +397,13 @@ bool ids_cam::get_Image(cv::Mat &img)
 bool ids_cam::get_Image(void)
 {
     err = is_FreezeVideo(pcam, IS_WAIT);
+    printf("here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
     if(err == IS_SUCCESS) /** @todo cv::Mat(int rows, int cols, int type, void* data, size_t step = AUTO_STEP) */
     {
         im_p.data = (uchar *)im_mem;
         return true;
     }
+    printf("here????\n");
     handle_Error(err);
     return false;
 }
@@ -419,7 +421,7 @@ void ids_cam::handle_Error(const uchar err)
     else if(err == IS_TRANSFER_ERROR)
         warn_msg("transfer error", ERR_ARG);
     else if(err == IS_IO_REQUEST_FAILED)
-        error_msg("an IO request from the uc480 driver failed", ERR_ARG);
+        error_msg("an IO request from the ueye driver failed", ERR_ARG);
     else if(err == IS_CAPTURE_RUNNING)
         warn_msg("capture operation in progress must be " \
                  "terminated before starting another one",
@@ -797,7 +799,7 @@ void ids_cam::identify_CameraAOISettings(void)
     {
         /* Sensor is
         e2v EV76C560ABT (monochrome) or
-        e2v EV76C560ACT (color) or
+        e2v EV76C560ACT (colour) or
         e2v EV76C661ABT (NIR). */
         im_min_width = 16;
         im_inc_width = 4;
@@ -881,9 +883,25 @@ void ids_cam::identify_CameraAOISettings(void)
         if(!pix_size)
             pix_size = 465;
     }
+    else if(!sensorname.compare("UI125xML-C"))
+    {
+        /* Sensor is E2V EV76C570ACT. */
+        im_min_width = 16;
+        im_inc_width = 4;
+        im_min_height = 4;
+        im_inc_height = 2;
+        sensor_aa_width = 7200;
+        sensor_aa_height = 5400;
+        if(!pix_size)
+            pix_size = 450;
+    }
     else
-        error_msg("error identifying the sensor name. " \
-                  "setting AOI is dangerous!", ERR_ARG);
+    {
+        std::string outs = "error identifying the sensor name (" +
+                            sensorname +
+                            "). setting AOI is dangerous!";
+        error_msg(outs.c_str(), ERR_ARG);
+    }
 }
 
 void ids_cam::set_CameraInfoWindowName(const std::string &name)
