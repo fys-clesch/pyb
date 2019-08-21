@@ -11,7 +11,7 @@
 #ifdef ISLINUX
  #include "ueye.h"
 #elif defined(ISWIN32) || defined(ISWIN64)
- #include "uc480.h"
+  #include "uc480.h"
 #endif
 
 class thorlabs_cam : public grabber
@@ -38,10 +38,10 @@ private:
              im_min_height, /**< AOI minimum height */
              im_inc_width, /**< AOI step size in width */
              im_inc_height, /**< AOI step size in height */
-             im_aoi_width, /**< full AOI width */
-             im_aoi_height, /**< full AOI height */
-             im_aoi_width_start, /**< start position (in pixel) of the AOI */
-             im_aoi_height_start, /**< start position (in pixel) of the AOI */
+             im_aoi_width, /**< Full AOI width */
+             im_aoi_height, /**< Full AOI height */
+             im_aoi_width_start, /**< Start position (in pixel) of the AOI */
+             im_aoi_height_start, /**< Start position (in pixel) of the AOI */
              sensor_aa_width, /**< Exact active width of the sensor in um */
              sensor_aa_height; /**< Exact active height of the sensor in um */
 

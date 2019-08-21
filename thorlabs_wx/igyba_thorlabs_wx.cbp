@@ -22,6 +22,7 @@
 					<Add option="-D__WXMSW__" />
 					<Add option="-DWXUSINGDLL" />
 					<Add option="-DwxUSE_UNICODE" />
+					<Add option="-DUSE_DEPRECATED_FUNCTIONS" />
 					<Add directory="C:/wxWidgets/lib/gcc_x64_dll/mswu" />
 					<Add directory="C:/wxWidgets/include" />
 				</Compiler>
@@ -203,7 +204,6 @@
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
 			<Add option="-fopenmp" />
-			<Add option="-DUSE_DEPRECATED_FUNCTIONS" />
 		</Compiler>
 		<Linker>
 			<Add option="-fopenmp" />

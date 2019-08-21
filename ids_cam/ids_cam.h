@@ -21,37 +21,37 @@ private:
     BOARDINFO b_info;
 
     int err,
-        memID; /**< grabber memory - buffer ID */
+        memID; /**< Grabber memory - buffer ID */
 
-    char *im_mem; /**< pointer to buffer */
+    char *im_mem; /**< Pointer to buffer */
 
     uint32_t im_width,
-             im_max_width, /**< initial or maximal width */
+             im_max_width, /**< Initial or maximal width */
              im_height,
-             im_max_height, /**< initial or maximal height */
+             im_max_height, /**< Initial or maximal height */
              pix_clock,
              im_min_width, /**< AOI minimum width */
              im_min_height, /**< AOI minimum height */
              im_inc_width, /**< AOI step size in width */
              im_inc_height, /**< AOI step size in height */
-             im_aoi_width, /**< full AOI width */
-             im_aoi_height, /**< full AOI height */
-             im_aoi_width_start, /**< start position (in pixel) of the AOI */
-             im_aoi_height_start, /**< start position (in pixel) of the AOI */
-             sensor_aa_width, /**< exact active width of the sensor in um */
-             sensor_aa_height; /**< exact active height of the sensor in um */
+             im_aoi_width, /**< Full AOI width */
+             im_aoi_height, /**< Full AOI height */
+             im_aoi_width_start, /**< Start position (in pixel) of the AOI */
+             im_aoi_height_start, /**< Start position (in pixel) of the AOI */
+             sensor_aa_width, /**< Exact active width of the sensor in um */
+             sensor_aa_height; /**< Exact active height of the sensor in um */
 
-    uint16_t pix_size, /**< pixel size encoded in an integer */
-             bits_p_pix, /**< the total number of bits occupied at one pixel.
-                              not all may be used,
+    uint16_t pix_size, /**< Pixel size encoded in an integer */
+             bits_p_pix, /**< The total number of bits occupied at one pixel.
+                              Not all may be used,
                               even when the value is e.g. 32 */
              color_mod, /**< control the colour mode of the images */
              color_mod_test,
              color_mod_init;
 
-    double dpix_size, /**< pixel size in um */
+    double dpix_size, /**< Pixel size in um */
            fps,
-           exp_time, /**< exposure time in ms */
+           exp_time, /**< Exposure time in ms */
            exp_time_min,
            exp_time_max,
            exp_time_inc;
