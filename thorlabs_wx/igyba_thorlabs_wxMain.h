@@ -29,6 +29,7 @@
 //*)
 
 #include "../thorlabs_cam/thorlabs_cam.h"
+#include "../ids_cam/ids_cam.h"
 
 class igyba_thorlabs_wxFrame : public wxFrame
 {

@@ -412,12 +412,9 @@ igyba_thorlabs_wxFrame::igyba_thorlabs_wxFrame(int argc,
     Connect(ID_BUTTON_DEC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonDecGroundliftClick);
     Connect(ID_BUTTON_INC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnButtonIncGroundliftClick);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnQuit);
-    Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnAbout);
+    Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(igyba_thorlabs_wxFrame::OnAbout));
     Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&igyba_thorlabs_wxFrame::OnCloseMainFrame);
     //*)
-
-//    Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&testFrame::OnQuit);
-//    Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&testFrame::OnAbout);
 
     thread_Cam = std::thread(igyba_thorlabs_wxFrame::schedule_CamThread,
                              m_argc,
@@ -467,14 +464,20 @@ void igyba_thorlabs_wxFrame::update_TextAOI(void)
         out << "Selecting AOI...";
     else
     {
-        int sx, sy, sw, sh;
-        t_cam.get_RectRoi(&sx, &sy, &sw, &sh);
+        int sx,
+            sy,
+            sw,
+            sh;
+        t_cam.get_RectRoi(&sx,
+                          &sy,
+                          &sw,
+                          &sh);
         out << "AOI width (start / span): (" <<
-            sx << ", " <<
-            sw << ") pixel\n" <<
-            "AOI height (start / span): (" <<
-            sy << ", " <<
-            sh << ") pixel";
+               sx << ", " <<
+               sw << ") pixel\n" <<
+               "AOI height (start / span): (" <<
+               sy << ", " <<
+               sh << ") pixel";
     }
     TextCtrlAOI->SetLabel(out);
 }
@@ -556,8 +559,10 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
     (*itw1ptr).t_cam.alloc_ImageMem();
     (*itw1ptr).t_cam.set_ImageMem();
     (*itw1ptr).t_cam.set_ImageSize();
-    (*itw1ptr).t_cam.inquire_ImageMem((int *)NULL, (int *)NULL,
-                            (int *)NULL, (int *)NULL);
+    (*itw1ptr).t_cam.inquire_ImageMem((int *)NULL,
+                                      (int *)NULL,
+                                      (int *)NULL,
+                                      (int *)NULL);
 
     if((*itw1ptr).t_cam.caught_Error())
     {
@@ -570,7 +575,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
     else if(!(*itw1ptr).t_cam.get_Image())
     {
         error_msg("can't get an image from thorlabs_cam instance. good bye.",
-                    ERR_ARG);
+                  ERR_ARG);
         return EXIT_FAILURE;
     }
 
@@ -590,8 +595,8 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
     cv::namedWindow((*itw1ptr).t_cam.get_MainWindowName(), cv::WINDOW_NORMAL | cv::WINDOW_KEEPRATIO);
 
     cv::setMouseCallback((*itw1ptr).t_cam.get_MainWindowName(),
-                    cast_static_set_MouseEvent,
-                    itw1ptr);
+                         cast_static_set_MouseEvent,
+                         itw1ptr);
 
     /* Camera slider bars */
     init_SliderExpTime();
@@ -603,9 +608,11 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
     (*itw1ptr).t_cam.show_Im_RGB();
 
     std::thread thread_Viewer(grabber::schedule_Viewer, argc, argv);
+
     std::thread thread_Copy(grabber::copy_DataToViewer);
-    std::thread thread_Minime(grabber::schedule_Minime, wavelen_um,
-                            (*itw1ptr).t_cam.get_PixelPitch());
+    std::thread thread_Minime(grabber::schedule_Minime,
+                              wavelen_um,
+                              (*itw1ptr).t_cam.get_PixelPitch());
 
     LedMain->SwitchOn();
     ButtonQuit->Enable();
@@ -618,8 +625,8 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
             if(!(*itw1ptr).t_cam.get_Image((*itw1ptr).t_cam.temp_in))
             {
                 warn_msg("can't get an image from thorlabs_cam instance. " \
-                            "using last successfully captured image.",
-                            ERR_ARG);
+                         "using last successfully captured image.",
+                         ERR_ARG);
                 (*itw1ptr).t_cam.increment_lost_Frames();
             }
             else
@@ -631,7 +638,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
         (*itw1ptr).t_cam.exchange_Atomics();
         (*itw1ptr).t_cam.exchange_ExposureTimeAtomic();
         c_btn_state = btn_state.exchange(NONE_BTN,
-                                        std::memory_order_acquire);
+                                         std::memory_order_acquire);
         switch(c_btn_state)
         {
             case REMOVE_AOI:
@@ -644,39 +651,33 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
                 (*itw1ptr).t_cam.unset_Background();
                 break;
             case SAVE_RGB_BTN:
-                (*itw1ptr).t_cam.save_Image(
-                    (*itw1ptr).t_cam.save_Im_type::RGB,
-                    fname_img_out.ToStdString());
+                (*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.save_Im_type::RGB,
+                                            fname_img_out.ToStdString());
                 break;
             case SAVE_WORK_BTN:
-                (*itw1ptr).t_cam.save_Image(
-                    (*itw1ptr).t_cam.save_Im_type::WORK,
-                    fname_img_out.ToStdString());
+                (*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.save_Im_type::WORK,
+                                            fname_img_out.ToStdString());
                 break;
             case SAVE_FP_BTN:
-                (*itw1ptr).t_cam.save_Image(
-                    (*itw1ptr).t_cam.save_Im_type::FP_IN,
-                    fname_img_out.ToStdString());
+                (*itw1ptr).t_cam.save_Image((*itw1ptr).t_cam.save_Im_type::FP_IN,
+                                            fname_img_out.ToStdString());
                 break;
             case STORE_RGB_BTN:
-                (*itw1ptr).t_cam.store_Image(
-                    (*itw1ptr).t_cam.save_Im_type::RGB,
-                    fname_dat_out.ToStdString());
+                (*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.save_Im_type::RGB,
+                                             fname_dat_out.ToStdString());
                 break;
             case STORE_WORK_BTN:
-                (*itw1ptr).t_cam.store_Image(
-                    (*itw1ptr).t_cam.save_Im_type::WORK,
-                    fname_dat_out.ToStdString());
+                (*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.save_Im_type::WORK,
+                                             fname_dat_out.ToStdString());
                 break;
             case STORE_FP_BTN:
-                (*itw1ptr).t_cam.store_Image(
-                    (*itw1ptr).t_cam.save_Im_type::FP_IN,
-                    fname_dat_out.ToStdString());
+                (*itw1ptr).t_cam.store_Image((*itw1ptr).t_cam.save_Im_type::FP_IN,
+                                             fname_dat_out.ToStdString());
                 break;
             case RESIZE_CAM_WINDOW:
                 cv::resizeWindow((*itw1ptr).t_cam.get_MainWindowName(),
-                                (*itw1ptr).t_cam.get_Width(),
-                                (*itw1ptr).t_cam.get_Height());
+                                 (*itw1ptr).t_cam.get_Width(),
+                                 (*itw1ptr).t_cam.get_Height());
                 break;
             case TOGGLE_SMOOTHING:
                 (*itw1ptr).t_cam.toggle_Smoothing();
@@ -692,9 +693,8 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
                 (*itw1ptr).t_cam.toggle_Grabbing();
                 break;
             case MAKE_GNUPLOT:
-                (*itw1ptr).t_cam.gnuplot_Image(
-                    (*itw1ptr).t_cam.save_Im_type::WORK,
-                    fname_gnu_out.ToStdString());
+                (*itw1ptr).t_cam.gnuplot_Image((*itw1ptr).t_cam.save_Im_type::WORK,
+                                               fname_gnu_out.ToStdString());
                 break;
             case CLOSE_CAM_WINDOW:
                 /** @todo If the GUI holds on 'waiting for camera ...', then
@@ -823,7 +823,10 @@ thread.
  * \return void
  *
  */
-void igyba_thorlabs_wxFrame::set_MouseEvent(const int event, const int x, const int y, const int flags)
+void igyba_thorlabs_wxFrame::set_MouseEvent(const int event,
+                                            const int x,
+                                            const int y,
+                                            const int flags)
 {
     if(flags & cv::EVENT_FLAG_SHIFTKEY || load_SelectRoi())
     {
@@ -1396,8 +1399,10 @@ void igyba_thorlabs_wxFrame::OnButtonIncGroundliftClick(wxCommandEvent& event)
     {
         SliderGroundlift->SetValue(curval + 1);
         const double res = map_Linear((double)(curval + 1),
-                            out_min, out_max,
-                            0., gl_max);
+                                      out_min,
+                                      out_max,
+                                      0.,
+                                      gl_max);
         t_cam.set_GroundliftAtomic(res);
         update_TextGroundlift(res);
     }
@@ -1437,8 +1442,10 @@ void igyba_thorlabs_wxFrame::OnButtonDecStdDevClick(wxCommandEvent& event)
     {
         SliderStdDev->SetValue(curval - 1);
         const double res = map_Linear((double)(curval - 1),
-                            out_min, out_max,
-                            gb_min, gb_max);
+                                      out_min,
+                                      out_max,
+                                      gb_min,
+                                      gb_max);
         t_cam.set_GaussBlurAtomic(res);
         update_TextStdDev(res);
     }
@@ -1460,8 +1467,10 @@ void igyba_thorlabs_wxFrame::OnButtonIncStdDevClick(wxCommandEvent& event)
     {
         SliderStdDev->SetValue(curval + 1);
         const double res = map_Linear((double)(curval + 1),
-                            out_min, out_max,
-                            gb_min, gb_max);
+                                      out_min,
+                                      out_max,
+                                      gb_min,
+                                      gb_max);
         t_cam.set_GaussBlurAtomic(res);
         update_TextStdDev(res);
     }
@@ -1493,7 +1502,8 @@ void igyba_thorlabs_wxFrame::OnButtonIncKernelSizeClick(wxCommandEvent& event)
 
 void igyba_thorlabs_wxFrame::OnButtonMinimeClick(wxCommandEvent& event)
 {
-    if(wxMessageBox("Start fit routine?", "Please confirm",
+    if(wxMessageBox("Start fit routine?",
+                    "Please confirm",
                     wxICON_QUESTION | wxYES_NO) != wxYES)
         return;
     else
@@ -1543,7 +1553,9 @@ void igyba_thorlabs_wxFrame::OnToggleButtonViewerRotationToggle(wxCommandEvent& 
     t_cam.toggle_ViewerRotation();
 }
 
-/** \brief The operation is ordered to happen before an acquire operation, serving as a synchronization point for other accesses to memory that may have visible side effects on the loading thread.
+/** \brief The operation is ordered to happen before an acquire operation, serving as a
+ * synchronisation point for other accesses to memory that may have visible side effects
+ * on the loading thread.
  *
  * \param void
  * \return void
@@ -1569,7 +1581,8 @@ void igyba_thorlabs_wxFrame::store_SelectRoi(const bool b)
     select_roi.store(b, std::memory_order_release);
 }
 
-/** \brief The operation is ordered to happen once all accesses to memory in the releasing thread (that have visible side effects on the loading thread) have happened.
+/** \brief The operation is ordered to happen once all accesses to memory in the releasing
+ * thread (that have visible side effects on the loading thread) have happened.
  *
  * \param void
  * \return void
