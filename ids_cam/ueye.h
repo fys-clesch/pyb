@@ -8,8 +8,8 @@
 *            definition of exported API functions and constants
 *//***************************************************************************/
 
-#ifndef __IDS_HEADER__
-#define __IDS_HEADER__
+#ifndef __IDS_492_HEADER__
+#define __IDS_492_HEADER__
 
 #pragma pack(push, 8)
 
@@ -5664,4 +5664,4 @@ typedef enum E_POWER_DELIVERY_PROFILES
 
 #pragma pack(pop)
 
-#endif  // #ifndef __IDS_HEADER__
+#endif

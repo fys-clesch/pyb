@@ -170,8 +170,8 @@ void grabber::init_Mats(void)
                     load_WorkRoiCols(),
                     mat_typ);
     work_roi_tflip.create(load_WorkRoiCols(),
-                        load_WorkRoiRows(),
-                        mat_typ);
+                          load_WorkRoiRows(),
+                          mat_typ);
     bground.create(in_rows, in_cols, mat_typ);
     rgb.create(in_rows, in_cols, CV_8UC3);
     temp_CV_32FC3.create(in_rows, in_cols, CV_32FC3);
@@ -184,11 +184,11 @@ void grabber::init_Mats(void)
                                     load_WorkRoiCols(),
                                     0xDEADBEAF);
     work_roi_arr_tflip_buf = alloc_matrix(load_WorkRoiCols(),
-                                        load_WorkRoiRows(),
-                                        0xDEADBEAF);
+                                          load_WorkRoiRows(),
+                                          0xDEADBEAF);
     gldata_buf = alloc_3matrix(load_WorkRoiRows(),
-                                load_WorkRoiCols(),
-                                0xDEADBEAF);
+                               load_WorkRoiCols(),
+                               0xDEADBEAF);
 }
 
 void grabber::set_Pix2UmScale(const double scl)
@@ -209,7 +209,8 @@ void grabber::set_Background(void)
     }
 
     if(bground.type() != mat_typ)
-        error_msg("trying to subtract a background image with a different Mat type", ERR_ARG);
+        error_msg("trying to subtract a background image with a different Mat type",
+                  ERR_ARG);
     else
         bground_in = true;
 }
@@ -255,7 +256,7 @@ void grabber::update_Mats_RgbAndFp(void)
             cv::cvtColor(in, rgb, cv::COLOR_GRAY2BGR, 3);
             if(rgb.type() != CV_8UC3)
                 error_msg("Mat should be CV_8UC3. performance issues.",
-                            ERR_ARG);
+                          ERR_ARG);
         }
         else
         {
@@ -295,10 +296,11 @@ void grabber::produce_Mat_Work(void)
     }
     if(blur_appl)
     {
-        cv::GaussianBlur(work, work,
-                    gaussblur_sze,
-                    gaussblur_sigma_x,
-                    gaussblur_sigma_x);
+        cv::GaussianBlur(work,
+                         work,
+                         gaussblur_sze,
+                         gaussblur_sigma_x,
+                         gaussblur_sigma_x);
         if(groundlift_sub != 0.)
             for(uint i = 0; i < unx; ++i)
             {
@@ -332,7 +334,7 @@ void grabber::produce_Mat_Work(void)
     assert((int)unxm == work_roi.rows && (int)unym == work_roi.cols);
     assert((int)unym == work_roi_tflip.rows && (int)unxm == work_roi_tflip.cols);
     #endif
-    /** @todo If there's a bottleneck here, a parallelization can be introduced.
+    /** @todo If there's a bottleneck here, a parallelisation can be introduced.
      * One processor runs the normal matrix, the other one the flipped one.
      * 2015-04-21: Implemented the following OpenMP section, but couldn't
      * profile it with gprof - meaningless results. In addition, a (one) spurious
@@ -382,7 +384,9 @@ void grabber::produce_Mat_Work(void)
  * \param void
  * \return void
  *
- * The code doesn't account for interleaving pixels.
+ * The code doesn't account for interleaving pixels. Also, the code is merely
+ * used for testing or debugging, as it is a naive implementation of second
+ * moment calculation.
  */
 void grabber::get_Moments_own(void)
 {
@@ -405,10 +409,14 @@ void grabber::get_Moments_own(void)
     {
         warn_msg("norm is 0.", ERR_ARG);
         const double fscl = 1.5;
-        putText(rgb, "norm is 0., no output",
+        putText(rgb,
+                "norm is 0., no output",
                 cv::Point2d(.5 * in_cols, .5 * in_rows),
-                cv::FONT_HERSHEY_SIMPLEX, fscl,
-                cv::Scalar_<double>(255., 0., 0.), 1, cv::LINE_AA);
+                cv::FONT_HERSHEY_SIMPLEX,
+                fscl,
+                cv::Scalar_<double>(255., 0., 0.),
+                1,
+                cv::LINE_AA);
     }
     else
     {
@@ -483,8 +491,7 @@ void grabber::get_Moments_own(void)
  * \param void
  * \return void
  *
- * Calculation is done via calling OpenCV's 'moments' function. It might
- * be slower than 'get_Moments_own'.
+ * Calculation is done via calling OpenCV's 'moments' function.
  */
 void grabber::get_Moments(void)
 {
@@ -512,9 +519,8 @@ void grabber::get_Moments(void)
 
     eigen(covar, eigenv);
 
-    const double eig[2] = {
-        sqrt(eigenv.at<double>(0)),
-        sqrt(eigenv.at<double>(1))};
+    const double eig[2] = {sqrt(eigenv.at<double>(0)),
+                           sqrt(eigenv.at<double>(1))};
 
     if(eig[0] != 0. && eig[1] != 0.)
     {
@@ -531,28 +537,28 @@ void grabber::draw_Moments(const bool chatty)
 {
     if(chatty)
             iprint(stdout,
-                    "\ntheta / deg: %g\n" \
-                    "centroid / pix: (%g, %g)\n" \
-                    "covariance / pix^2: [[%g, %g], [%g, %g]]\n" \
-                    "eigenvalues / pix: %g, %g\n" \
-                    "beam radius along window axis / um: %g, %g\n" \
-                    "beam correlation / 1: %g\n" \
-                    "eccentricity / 1: %g\n",
-                    ell_theta,
-                    centroid.x, centroid.y,
-                    covar.at<double>(0, 0), covar.at<double>(0, 1),
-                    covar.at<double>(1, 0), covar.at<double>(1, 1),
-                    sqrt(eigenv.at<double>(0)), sqrt(eigenv.at<double>(1)),
-                    beam_parameter.at<double>(0), beam_parameter.at<double>(1),
-                    beam_parameter.at<double>(2),
-                    ell_ecc);
+                   "\ntheta / deg: %g\n" \
+                   "centroid / pix: (%g, %g)\n" \
+                   "covariance / pix^2: [[%g, %g], [%g, %g]]\n" \
+                   "eigenvalues / pix: %g, %g\n" \
+                   "beam radius along window axis / um: %g, %g\n" \
+                   "beam correlation / 1: %g\n" \
+                   "eccentricity / 1: %g\n",
+                   ell_theta,
+                   centroid.x, centroid.y,
+                   covar.at<double>(0, 0), covar.at<double>(0, 1),
+                   covar.at<double>(1, 0), covar.at<double>(1, 1),
+                   sqrt(eigenv.at<double>(0)), sqrt(eigenv.at<double>(1)),
+                   beam_parameter.at<double>(0), beam_parameter.at<double>(1),
+                   beam_parameter.at<double>(2),
+                   ell_ecc);
 
     const cv::Scalar_<double> clr_ell(100., 100., 255.);
     uint16_t lw = 2;
     static cv::Mat scl_sqrt_eigenv(eigenv.size(), eigenv.depth());
     sqrt(eigenv, scl_sqrt_eigenv);
     const cv::Size_<double> minmaj_ax = cv::Size_<double>(scl_sqrt_eigenv.at<double>(0),
-                                                scl_sqrt_eigenv.at<double>(1));
+                                                          scl_sqrt_eigenv.at<double>(1));
     /* The square root of the eigenvalues, multiplied by the pixel to
      * micro meter factor, gives the measure of the major and minor axis of
      * the shown ellipse. However, this measure does not match the beam radius
@@ -574,8 +580,8 @@ void grabber::draw_Moments(const bool chatty)
         #else
         cv::circle(rgb, p, in_cols / 6, clr_ell, 4, cv::LINE_AA);
         const static cv::Point pl = cv::Point(p.x - in_cols / 16, in_rows / 2.4),
-                           pr = cv::Point(p.x + in_cols / 16, pl.y),
-                           pfrown = cv::Point(p.x, in_rows / 1.6);
+                               pr = cv::Point(p.x + in_cols / 16, pl.y),
+                               pfrown = cv::Point(p.x, in_rows / 1.6);
         cv::circle(rgb, pl, 3., clr_ell, 4, cv::LINE_AA);
         cv::circle(rgb, pr, 3., clr_ell, 4, cv::LINE_AA);
         const cv::Size sfrown = cv::Size(in_cols / 9, in_cols / 18);
@@ -586,16 +592,16 @@ void grabber::draw_Moments(const bool chatty)
     {
         const uint shiftp = 15;
         const static cv::Point p = cv::Point(in_cols >> 1, in_rows >> 1),
-                           pl = cv::Point(p.x - in_cols / 16, in_rows / 2.4),
-                           pl0 = cv::Point(pl.x - shiftp, pl.y - shiftp),
-                           pl1 = cv::Point(pl.x - shiftp, pl.y + shiftp),
-                           pl2 = cv::Point(pl.x + shiftp, pl.y - shiftp),
-                           pl3 = cv::Point(pl.x + shiftp, pl.y + shiftp),
-                           pr = cv::Point(p.x + in_cols / 16, pl.y),
-                           pr0 = cv::Point(pr.x - shiftp, pr.y - shiftp),
-                           pr1 = cv::Point(pr.x - shiftp, pr.y + shiftp),
-                           pr2 = cv::Point(pr.x + shiftp, pr.y - shiftp),
-                           pr3 = cv::Point(pr.x + shiftp, pr.y + shiftp);
+                               pl = cv::Point(p.x - in_cols / 16, in_rows / 2.4),
+                               pl0 = cv::Point(pl.x - shiftp, pl.y - shiftp),
+                               pl1 = cv::Point(pl.x - shiftp, pl.y + shiftp),
+                               pl2 = cv::Point(pl.x + shiftp, pl.y - shiftp),
+                               pl3 = cv::Point(pl.x + shiftp, pl.y + shiftp),
+                               pr = cv::Point(p.x + in_cols / 16, pl.y),
+                               pr0 = cv::Point(pr.x - shiftp, pr.y - shiftp),
+                               pr1 = cv::Point(pr.x - shiftp, pr.y + shiftp),
+                               pr2 = cv::Point(pr.x + shiftp, pr.y - shiftp),
+                               pr3 = cv::Point(pr.x + shiftp, pr.y + shiftp);
         cv::circle(rgb, p, in_cols / 6, clr_ell, 4, cv::LINE_AA);
         cv::line(rgb, pl0, pl3, clr_ell, 4, cv::LINE_AA);
         cv::line(rgb, pl1, pl2, clr_ell, 4, cv::LINE_AA);
@@ -604,15 +610,15 @@ void grabber::draw_Moments(const bool chatty)
         const uint mh = 35,
                    mw = 20;
         const static cv::Point pmouth = cv::Point(p.x, in_rows / 1.75),
-                           pf0 = cv::Point(pmouth.x, pmouth.y),
-                           pf1 = cv::Point(pf0.x + mw, pf0.y + mh),
-                           pf2 = cv::Point(pf1.x + mw, pf1.y - mh),
-                           pf3 = cv::Point(pf2.x + mw, pf2.y + mh),
-                           pf4 = cv::Point(pf3.x + mw, pf3.y - mh),
-                           pf1m = cv::Point(pf0.x - mw, pf0.y + mh),
-                           pf2m = cv::Point(pf1m.x - mw, pf1m.y - mh),
-                           pf3m = cv::Point(pf2m.x - mw, pf2m.y + mh),
-                           pf4m = cv::Point(pf3m.x - mw, pf3m.y - mh);
+                               pf0 = cv::Point(pmouth.x, pmouth.y),
+                               pf1 = cv::Point(pf0.x + mw, pf0.y + mh),
+                               pf2 = cv::Point(pf1.x + mw, pf1.y - mh),
+                               pf3 = cv::Point(pf2.x + mw, pf2.y + mh),
+                               pf4 = cv::Point(pf3.x + mw, pf3.y - mh),
+                               pf1m = cv::Point(pf0.x - mw, pf0.y + mh),
+                               pf2m = cv::Point(pf1m.x - mw, pf1m.y - mh),
+                               pf3m = cv::Point(pf2m.x - mw, pf2m.y + mh),
+                               pf4m = cv::Point(pf3m.x - mw, pf3m.y - mh);
         cv::rectangle(rgb, pf0, pf1, clr_ell, 4, cv::LINE_AA);
         cv::rectangle(rgb, pf1, pf2, clr_ell, 4, cv::LINE_AA);
         cv::rectangle(rgb, pf2, pf3, clr_ell, 4, cv::LINE_AA);
@@ -634,7 +640,7 @@ void grabber::draw_Moments(const bool chatty)
         else
             cen_draw = centroid;
         cv::ellipse(rgb, cen_draw, minmaj_ax, ell_theta, 0., 360.,
-                clr_ell, lw, cv::LINE_AA);
+                    clr_ell, lw, cv::LINE_AA);
         cv::circle(rgb, cen_draw, 1., clr_ell, lw, cv::LINE_AA);
     }
 
@@ -712,8 +718,8 @@ void grabber::draw_Info(void)
     if(pval != 0xDEADDEAD)
     {
         infos = "(" + convert_Int2Str(px_mouse) + ", " +
-        convert_Int2Str(py_mouse) + "): " +
-        convert_Double2Str(pval);
+                convert_Int2Str(py_mouse) + "): " +
+                convert_Double2Str(pval);
         putText(rgb, infos, putText_ARGS);
     }
     else
@@ -736,8 +742,10 @@ void grabber::draw_Info(void)
     putText(rgb, infos, putText_ARGS);
     fscl = .45;
     #ifndef IGYBA_NDEBUG
-    iprint(stdout, "# pixels at %g: %u\n",
-                   max_pval, count_nz);
+    iprint(stdout,
+           "# pixels at %g: %u\n",
+           max_pval,
+           count_nz);
     #endif
     /* Information regarding the blurring. */
     if(blur_appl)
@@ -780,13 +788,13 @@ void grabber::draw_Info(void)
     else
     {
         infos = "(start / span) AOI width: (" +
-        convert_Int2Str(roi_rect.x) + ", " +
-        convert_Int2Str(roi_rect.width) + ") pixel";
+                convert_Int2Str(roi_rect.x) + ", " +
+                convert_Int2Str(roi_rect.width) + ") pixel";
         putText(tbar_win_mat, infos, putText_ARGS);
         sy -= 20.;
         infos = "(start / span) AOI height: (" +
-        convert_Int2Str(roi_rect.y) + ", " +
-        convert_Int2Str(roi_rect.height) + ") pixel";
+                convert_Int2Str(roi_rect.y) + ", " +
+                convert_Int2Str(roi_rect.height) + ") pixel";
         putText(tbar_win_mat, infos, putText_ARGS);
     }
     #undef putText_ARGS
@@ -837,8 +845,9 @@ void grabber::draw_InfoWxVersion(void)
     putText(rgb, infos, putText_ARGS);
     fscl = .45;
     #ifndef IGYBA_NDEBUG
-    iprint(stdout, "# pixels at %g: %u\n",
-                   max_pval, count_nz);
+    iprint(stdout,
+           "# pixels at %g: %u\n",
+           max_pval, count_nz);
     #endif
     #undef putText_ARGS
 }
@@ -852,8 +861,9 @@ void grabber::draw_RoiRectangle(void)
 }
 
 void grabber::set_MouseEvent(const int event,
-                            const int x, const int y,
-                            const int flags)
+                             const int x,
+                             const int y,
+                             const int flags)
 {
     if(flags & cv::EVENT_FLAG_SHIFTKEY)
     {
@@ -872,14 +882,15 @@ void grabber::set_MouseEvent(const int event,
         else if(event == cv::EVENT_LBUTTONUP && mouse_drag)
         {
             end_roi = cv::Point_<int>(x, y);
-            roi_rect = cv::Rect_<int>(start_roi.x, start_roi.y,
-                                    x - start_roi.x,
-                                    y - start_roi.y);
+            roi_rect = cv::Rect_<int>(start_roi.x,
+                                      start_roi.y,
+                                      x - start_roi.x,
+                                      y - start_roi.y);
             mouse_drag = false;
             if(roi_rect.width <= 25 || roi_rect.height <= 25 ||
-                roi_rect.x + abs(roi_rect.width) >= (int)in_cols ||
-                roi_rect.y + abs(roi_rect.height) >= (int)in_rows)
-                roi_on = false;
+               roi_rect.x + abs(roi_rect.width) >= (int)in_cols ||
+               roi_rect.y + abs(roi_rect.height) >= (int)in_rows)
+               roi_on = false;
             else
                 roi_on = true;
         }
@@ -923,8 +934,10 @@ void grabber::set_MouseEvent(const int event,
 }
 
 void grabber::cast_static_set_MouseEvent(const int event,
-                                        const int x, const int y,
-                                        const int flags, void *udata)
+                                         const int x,
+                                         const int y,
+                                         const int flags,
+                                         void *udata)
 {
     grabber *ptr = static_cast<grabber *>(udata);
     (*ptr).set_MouseEvent(event, x, y, flags);
@@ -956,8 +969,8 @@ cv::Mat grabber::get_Mat_private(const save_Im_type mtype)
 }
 
 void grabber::save_Image(const save_Im_type mtype,
-                        const std::string &fname,
-                        const std::string &fmt)
+                         const std::string &fname,
+                         const std::string &fmt)
 {
     std::string str, strc;
     if(fname.empty())
@@ -989,7 +1002,7 @@ void grabber::save_Image(const save_Im_type mtype,
 }
 
 void grabber::store_Image(const save_Im_type mtype,
-                        const std::string &fname)
+                          const std::string &fname)
 {
     std::string str;
     if(fname.empty())
@@ -1022,9 +1035,9 @@ void grabber::store_Image(const save_Im_type mtype,
             {
                 const cv::Vec3b m = rgb.at<cv::Vec3b>(i, j);
                 fprintf(writefile,
-                            "%u %u %hhu %hhu %hhu%s",
-                            i, j, m[0], m[1], m[2],
-                            j < (uint)rgb.cols - 1 ? "\n" : "\n\n");
+                        "%u %u %hhu %hhu %hhu%s",
+                        i, j, m[0], m[1], m[2],
+                        j < (uint)rgb.cols - 1 ? "\n" : "\n\n");
             }
     else if(mtype == save_Im_type::WORK)
         for(uint i = 0; i < (uint)work.rows; i++)
@@ -1032,9 +1045,9 @@ void grabber::store_Image(const save_Im_type mtype,
             const float *const m = work.ptr<float>(i);
             for(uint j = 0; j < (uint)work.cols; j++)
                 fprintf(writefile,
-                            "%g%c",
-                            m[j],
-                            j < (uint)work.cols - 1 ? ' ' : '\n');
+                        "%g%c",
+                        m[j],
+                        j < (uint)work.cols - 1 ? ' ' : '\n');
         }
     else if(mtype == save_Im_type::FP_IN)
         for(uint i = 0; i < (uint)fp_in.rows; i++)
@@ -1042,9 +1055,9 @@ void grabber::store_Image(const save_Im_type mtype,
             const float *const m = fp_in.ptr<float>(i);
             for(uint j = 0; j < (uint)fp_in.cols; j++)
                 fprintf(writefile,
-                            "%g%c",
-                            m[j],
-                            j < (uint)fp_in.cols - 1 ? ' ' : '\n');
+                        "%g%c",
+                        m[j],
+                        j < (uint)fp_in.cols - 1 ? ' ' : '\n');
         }
     else
         error_msg("wrong enumerator", ERR_ARG);
@@ -1078,7 +1091,7 @@ void grabber::show_Help(void)
         cv::Size textSize = cv::getTextSize(text, font, fscl, lw, &baseline);
         /* Centre the text. */
         cv::Point textOrg((img.cols - textSize.width) >> 1,
-                        (img.rows + textSize.height) >> 1);
+                          (img.rows + textSize.height) >> 1);
 
         sx = textOrg.x;
         sy = 15.;
@@ -1165,7 +1178,7 @@ void grabber::show_Help(void)
 
     sx = sxstart1;
     sy = wheight - 10.;
-    putText(img, "clesch@fysik.dtu.dk takes the blame.", putText_ARGS);
+    putText(img, "clemens@fh-muenster.de takes the blame.", putText_ARGS);
 
     imshow(win_title, img);
     while(true)
@@ -1219,10 +1232,10 @@ void grabber::show_Intro(void)
         for(uint i = 0; i < 200; i++)
         {
             const cv::Point p2(rng.gaussian(30.) + wwidth * .5,
-                            rng.gaussian(30.) + wheight * .5);
+                               rng.gaussian(30.) + wheight * .5);
             const cv::Scalar_<uint16_t> color = cv::Scalar(rng.uniform(0, 255),
-                                                    rng.uniform(0, 255),
-                                                    rng.uniform(0, 255));
+                                                           rng.uniform(0, 255),
+                                                           rng.uniform(0, 255));
             line(img, p1, p2, color, lw, lt);
             p1 = p2;
         }
@@ -1260,7 +1273,7 @@ void grabber::show_HelpOnCurses(void)
 #endif
     nodelay(stdscr, TRUE);
     noecho();
-    /** colours available:
+    /** Colours available:
      * COLOR_BLACK, COLOR_RED, COLOR_BLUE, COLOR_GREEN, COLOR_CYAN, COLOR_MAGENTA, COLOR_YELLOW, COLOR_WHITE
      */
     const int nwidth = 100, nheight = 50; /* owidth = COLS, oheight = LINES */
@@ -1291,7 +1304,7 @@ void grabber::draw_Crossline(void)
     cv::Point2d pt1, pt2;
     cv::LineIterator lit(work, pt1, pt2)
     #ifndef IGYBA_NDEBUG
-                 , lit2 = lit;
+                   , lit2 = lit;
     #else
     ;
     #endif
@@ -1426,8 +1439,8 @@ called by the copy thread.
  */
 void grabber::fill_DataForViewer(const uint nrows, const uint ncols)
 {
-    if(!beau.load_FilledMemory()) /**< This has to be done only when
-         i.e. after the memory is allocated and filled. */
+    if(!beau.load_FilledMemory()) /**< This has to be done only once when
+         e.g. after the memory is allocated and filled. */
         beau.init_Colorbox();
 
     double max_v,
@@ -1437,11 +1450,12 @@ void grabber::fill_DataForViewer(const uint nrows, const uint ncols)
            *data_buf = gldata_buf,
            *rgb_buf = alloc_3mat(nrows, ncols);
 
-    viewer::calc_DrawingData(work_roi_arr_tflip_buf, true,
-                            &max_v, &min_v,
-                            &max_norm, &min_norm,
-                            nrows, ncols,
-                            data_buf, rgb_buf);
+    viewer::calc_DrawingData(work_roi_arr_tflip_buf,
+                             true,
+                             &max_v, &min_v,
+                             &max_norm, &min_norm,
+                             nrows, ncols,
+                             data_buf, rgb_buf);
     /* Tell the viewer that it can wait for new data. */
     beau.store_NewDataAvailable(true);
     /* Check if the viewer is alive... */
@@ -1451,7 +1465,7 @@ void grabber::fill_DataForViewer(const uint nrows, const uint ncols)
         {
             /* Then set the fresh data over. */
             beau.set_DrawingData(&max_v, &min_v, &max_norm, &min_norm,
-                                    data_buf, rgb_buf);
+                                 data_buf, rgb_buf);
             beau.store_FilledMemory(true);
             beau.store_NewDataAvailable(false);
             /* Let the viewer run again. */
@@ -1520,7 +1534,7 @@ void grabber::toggle_Smoothing(void)
 }
 
 double grabber::get_GaussBlurRangeAtomic(double *res_pt gb_min,
-                                        double *res_pt gb_max)
+                                         double *res_pt gb_max)
 {
     *gb_min = gaussblur_min_atm.load(std::memory_order_relaxed);
     *gb_max = gaussblur_max_atm.load(std::memory_order_relaxed);
@@ -1534,8 +1548,10 @@ void grabber::set_GaussBlurAtomic(const double val)
 
 void grabber::TrackbarHandlerBlur(int i)
 {
-    const double out_min = 0., out_max = 50.;
-    double res = map_Linear((double)i, out_min, out_max,
+    const double out_min = 0.,
+                 out_max = 50.;
+    double res = map_Linear((double)i,
+                            out_min, out_max,
                             gaussblur_min, gaussblur_max);
     gaussblur_sigma_x = res;
 }
@@ -1556,11 +1572,11 @@ void grabber::create_TrackbarBlur(void)
     assert(setting <= 50);
 
     cv::createTrackbar(trck_name,
-                    tbar_win_name,
-                    &setting,
-                    (int)out_max,
-                    grabber::cast_static_SetTrackbarHandlerBlur,
-                    this);
+                       tbar_win_name,
+                       &setting,
+                       (int)out_max,
+                       grabber::cast_static_SetTrackbarHandlerBlur,
+                       this);
 }
 
 uint grabber::get_KernelSizeAtomic(uint *res_pt sze_min, uint *res_pt sze_max)
@@ -1594,11 +1610,11 @@ void grabber::create_TrackbarBlurSize(void)
     static int setting = (gaussblur_sze.width - 1) >> 1;
 
     cv::createTrackbar(trck_name,
-                    tbar_win_name,
-                    &setting,
-                    out_max,
-                    grabber::cast_static_SetTrackbarHandlerBlurSize,
-                    this);
+                       tbar_win_name,
+                       &setting,
+                       out_max,
+                       grabber::cast_static_SetTrackbarHandlerBlurSize,
+                       this);
 }
 
 void grabber::set_GroundliftAtomic(const double val)
@@ -1624,21 +1640,24 @@ void grabber::create_TrackbarGroundlift(void)
     const std::string trck_name = "Groundlift";
     const double out_min = 0., out_max = 50.;
 
-    double res = map_Linear(groundlift_sub, 0., groundlift_max,
-                            out_min, out_max);
+    double res = map_Linear(groundlift_sub,
+                            0.,
+                            groundlift_max,
+                            out_min,
+                            out_max);
     static int setting = res;
     assert(setting <= 50);
 
     cv::createTrackbar(trck_name,
-                    tbar_win_name,
-                    &setting,
-                    out_max,
-                    grabber::cast_static_SetTrackbarHandlerGroundlift,
-                    this);
+                       tbar_win_name,
+                       &setting,
+                       out_max,
+                       grabber::cast_static_SetTrackbarHandlerGroundlift,
+                       this);
 }
 
 void grabber::get_GroundliftRangeAtomic(double *res_pt gl_current,
-                                double *res_pt gl_max)
+                                        double *res_pt gl_max)
 {
     *gl_current = groundlift_sub_atm.load(std::memory_order_relaxed);
     *gl_max = groundlift_max_atm.load(std::memory_order_relaxed);

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1566315552 source:c:\users\schaecl\documents\github\igyba\grabber\src\grabber_class.cpp
+1566378529 source:c:\users\schaecl\documents\github\igyba\grabber\src\grabber_class.cpp
 	"grabber_class.h"
 	<assert.h>
 	"curses.h"
@@ -1694,7 +1694,7 @@
 1544373608 c:\wxwidgets\include\wx\univ\theme.h
 	"wx/string.h"
 
-1566375947 c:\users\schaecl\documents\github\igyba\thorlabs_wx\igyba_thorlabs_wxmain.h
+1566378820 c:\users\schaecl\documents\github\igyba\thorlabs_wx\igyba_thorlabs_wxmain.h
 	<wx/button.h>
 	<wx/frame.h>
 	<wx/gbsizer.h>
@@ -1710,6 +1710,7 @@
 	<wx/textctrl.h>
 	<wx/tglbtn.h>
 	"../thorlabs_cam/thorlabs_cam.h"
+	"../ids_cam/ids_cam.h"
 
 1544373608 c:\wxwidgets\include\wx\gbsizer.h
 	"wx/sizer.h"
@@ -2249,4 +2250,200 @@
 1566375947 source:c:\users\schaecl\documents\github\igyba\thorlabs_wx\src\led.cpp
 	<wx/led.h>
 	<string.h>
+
+1566377462 source:c:\users\schaecl\documents\github\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
+	"igyba_thorlabs_wxMain.h"
+	<wx/msgdlg.h>
+	<wx/filedlg.h>
+	<wx/aboutdlg.h>
+	<wx/bitmap.h>
+	<wx/icon.h>
+	<wx/image.h>
+	<wx/intl.h>
+	<wx/settings.h>
+	<wx/string.h>
+
+1544373608 c:\wxwidgets\include\wx\msgdlg.h
+	"wx/defs.h"
+	"wx/dialog.h"
+	"wx/stockitem.h"
+	"wx/generic/msgdlgg.h"
+	"wx/msw/msgdlg.h"
+	"wx/motif/msgdlg.h"
+	"wx/gtk/msgdlg.h"
+	"wx/osx/msgdlg.h"
+	"wx/qt/msgdlg.h"
+
+1544373608 c:\wxwidgets\include\wx\dialog.h
+	"wx/toplevel.h"
+	"wx/containr.h"
+	"wx/sharedptr.h"
+	"wx/univ/dialog.h"
+	"wx/msw/dialog.h"
+	"wx/motif/dialog.h"
+	"wx/gtk/dialog.h"
+	"wx/gtk1/dialog.h"
+	"wx/osx/dialog.h"
+	"wx/qt/dialog.h"
+
+1544373608 c:\wxwidgets\include\wx\sharedptr.h
+	"wx/defs.h"
+	"wx/atomic.h"
+
+1544373608 c:\wxwidgets\include\wx\atomic.h
+	"wx/defs.h"
+	"wx/msw/wrapwin.h"
+	"libkern/OSAtomic.h"
+	<atomic.h>
+	"wx/thread.h"
+
+1544373608 c:\wxwidgets\include\wx\univ\dialog.h
+
+1544373608 c:\wxwidgets\include\wx\msw\dialog.h
+	"wx/panel.h"
+
+1544373608 c:\wxwidgets\include\wx\motif\dialog.h
+
+1544373608 c:\wxwidgets\include\wx\gtk\dialog.h
+
+1544373608 c:\wxwidgets\include\wx\gtk1\dialog.h
+
+1544373608 c:\wxwidgets\include\wx\osx\dialog.h
+	"wx/panel.h"
+
+1544373608 c:\wxwidgets\include\wx\qt\dialog.h
+	"wx/dialog.h"
+
+1544373608 c:\wxwidgets\include\wx\stockitem.h
+	"wx/defs.h"
+	"wx/chartype.h"
+	"wx/string.h"
+	"wx/accel.h"
+
+1544373608 c:\wxwidgets\include\wx\generic\msgdlgg.h
+
+1544373608 c:\wxwidgets\include\wx\msw\msgdlg.h
+
+1544373608 c:\wxwidgets\include\wx\motif\msgdlg.h
+
+1544373608 c:\wxwidgets\include\wx\gtk\msgdlg.h
+
+1544373608 c:\wxwidgets\include\wx\osx\msgdlg.h
+
+1544373608 c:\wxwidgets\include\wx\qt\msgdlg.h
+	"wx/msgdlg.h"
+
+1544373608 c:\wxwidgets\include\wx\filedlg.h
+	"wx/defs.h"
+	"wx/dialog.h"
+	"wx/arrstr.h"
+	"wx/generic/filedlgg.h"
+	"wx/msw/filedlg.h"
+	"wx/motif/filedlg.h"
+	"wx/gtk/filedlg.h"
+	"wx/gtk1/filedlg.h"
+	"wx/osx/filedlg.h"
+	"wx/qt/filedlg.h"
+
+1544373608 c:\wxwidgets\include\wx\generic\filedlgg.h
+	"wx/listctrl.h"
+	"wx/datetime.h"
+	"wx/filefn.h"
+	"wx/artprov.h"
+	"wx/filedlg.h"
+	"wx/generic/filectrlg.h"
+
+1544373608 c:\wxwidgets\include\wx\listctrl.h
+	"wx/defs.h"
+	"wx/listbase.h"
+	"wx/msw/listctrl.h"
+	"wx/qt/listctrl.h"
+	"wx/generic/listctrl.h"
+
+1544373608 c:\wxwidgets\include\wx\listbase.h
+	"wx/colour.h"
+	"wx/font.h"
+	"wx/gdicmn.h"
+	"wx/event.h"
+	"wx/control.h"
+	"wx/itemattr.h"
+	"wx/systhemectrl.h"
+
+1544373608 c:\wxwidgets\include\wx\itemattr.h
+
+1544373608 c:\wxwidgets\include\wx\systhemectrl.h
+	"wx/defs.h"
+
+1544373608 c:\wxwidgets\include\wx\msw\listctrl.h
+	"wx/textctrl.h"
+	"wx/dynarray.h"
+	"wx/vector.h"
+
+1544373608 c:\wxwidgets\include\wx\qt\listctrl.h
+	"wx/textctrl.h"
+
+1544373608 c:\wxwidgets\include\wx\generic\listctrl.h
+	"wx/containr.h"
+	"wx/scrolwin.h"
+	"wx/textctrl.h"
+
+1544373608 c:\wxwidgets\include\wx\artprov.h
+	"wx/string.h"
+	"wx/bitmap.h"
+	"wx/icon.h"
+	"wx/iconbndl.h"
+
+1544373608 c:\wxwidgets\include\wx\generic\filectrlg.h
+	"wx/containr.h"
+	"wx/listctrl.h"
+	"wx/filectrl.h"
+	"wx/filename.h"
+
+1544373608 c:\wxwidgets\include\wx\filectrl.h
+	"wx/defs.h"
+	"wx/string.h"
+	"wx/event.h"
+	"wx/gtk/filectrl.h"
+	"wx/generic/filectrlg.h"
+
+1544373608 c:\wxwidgets\include\wx\gtk\filectrl.h
+	"wx/control.h"
+	"wx/filectrl.h"
+
+1544373608 c:\wxwidgets\include\wx\filename.h
+	"wx/arrstr.h"
+	"wx/filefn.h"
+	"wx/datetime.h"
+	"wx/intl.h"
+	"wx/longlong.h"
+	"wx/file.h"
+
+1544373608 c:\wxwidgets\include\wx\file.h
+	"wx/defs.h"
+	"wx/string.h"
+	"wx/filefn.h"
+	"wx/convauto.h"
+
+1544373608 c:\wxwidgets\include\wx\convauto.h
+	"wx/strconv.h"
+	"wx/fontenc.h"
+
+1544373608 c:\wxwidgets\include\wx\msw\filedlg.h
+
+1544373608 c:\wxwidgets\include\wx\motif\filedlg.h
+
+1544373608 c:\wxwidgets\include\wx\gtk\filedlg.h
+	"wx/gtk/filectrl.h"
+
+1544373608 c:\wxwidgets\include\wx\gtk1\filedlg.h
+	"wx/generic/filedlgg.h"
+
+1544373608 c:\wxwidgets\include\wx\osx\filedlg.h
+
+1544373608 c:\wxwidgets\include\wx\qt\filedlg.h
+
+1544373608 c:\wxwidgets\include\wx\aboutdlg.h
+	"wx/defs.h"
+	"wx/app.h"
+	"wx/icon.h"
 

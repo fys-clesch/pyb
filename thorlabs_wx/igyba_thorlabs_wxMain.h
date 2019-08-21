@@ -1,9 +1,9 @@
 /***************************************************************
  * Name:      igyba_thorlabs_wxMain.h
  * Purpose:   Defines Application Frame
- * Author:    Clemens Schäfermeier (clemens@fh-muenster.de)
+ * Author:    Clemens Sch\"afermeier (clemens@fh-muenster.de)
  * Created:   2015-04-03
- * Copyright: Clemens Schäfermeier (clemens@fh-muenster.de)
+ * Copyright: Clemens Sch\"afermeier (clemens@fh-muenster.de)
  * License:
  *
  **************************************************************/
@@ -29,7 +29,7 @@
 //*)
 
 #include "../thorlabs_cam/thorlabs_cam.h"
-#include "../ids_cam/ids_cam.h"
+//#include "../ids_cam/ids_cam.h"
 
 class igyba_thorlabs_wxFrame : public wxFrame
 {
@@ -37,6 +37,7 @@ class igyba_thorlabs_wxFrame : public wxFrame
 private:
 
     thorlabs_cam t_cam;
+//    ids_cam i_cam;
 
     char **mb_argv;
 

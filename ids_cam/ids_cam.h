@@ -68,7 +68,7 @@ private:
          supp_fine_inc_exp_time;
 
     cv::Mat im_p,
-        infotbar_win_mat;
+            infotbar_win_mat;
 
     std::string infotbar_win_name,
                 sensorname;
@@ -95,7 +95,9 @@ private:
     void TrackbarHandlerStartAOIWidth(int i);
     static void cast_static_SetTrackbarHandlerStartAOIWidth(int i, void *ptr);
     void create_TrackbarStartAOIWidth(void);
-    void set_MouseEvent(const int event, const int x, const int y,
+    void set_MouseEvent(const int event,
+                        const int x,
+                        const int y,
                         const int flags);
 
 public:
@@ -109,9 +111,10 @@ public:
     void alloc_ImageMem(void);
     void set_ImageMem(void);
     void set_ImageSize(void);
-    void inquire_ImageMem(int *res_pt nx, int *res_pt ny,
-                int *res_pt bits_p_pix,
-                int *res_pt pixel_bit_pitch);
+    void inquire_ImageMem(int *res_pt nx,
+                          int *res_pt ny,
+                          int *res_pt bits_p_pix,
+                          int *res_pt pixel_bit_pitch);
     bool caught_Error(void);
     void show_CameraTrackbars(void);
     double get_PixelPitch(void);
@@ -119,18 +122,19 @@ public:
     bool get_Image(cv::Mat &img);
     bool get_Image(void);
     static void cast_static_set_MouseEvent(const int event,
-                                            const int x, const int y,
-                                            const int flags,
-                                            void *u);
+                                           const int x,
+                                           const int y,
+                                           const int flags,
+                                           void *u);
     int get_Width(void);
     int get_Height(void);
     void create_TrackbarExposure(void);
     void draw_CameraInfo(void);
     /* The following functions are accessed by wxWidgets. */
     void get_ExposureTimesAtomic(double *res_pt time,
-                            double *res_pt min_time,
-                            double *res_pt max_time,
-                            double *res_pt inc_time);
+                                 double *res_pt min_time,
+                                 double *res_pt max_time,
+                                 double *res_pt inc_time);
     void set_ExposureTimeAtomic(double time);
     void exchange_ExposureTimeAtomic(void);
     std::string get_CameraInfo(void);

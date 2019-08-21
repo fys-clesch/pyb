@@ -8,8 +8,8 @@
 *            definition of exported API functions and constants
 *//***************************************************************************/
 
-#ifndef __IDS_HEADER__
-#define __IDS_HEADER__
+#ifndef __IDS_382_HEADER__
+#define __IDS_382_HEADER__
 
 #pragma pack(push, 8)
 
@@ -3643,4 +3643,4 @@ IDSEXP is_Configuration(UINT nCommand, void* pParam, UINT cbSizeOfParam);
 
 #pragma pack(pop)
 
-#endif  // #ifndef __IDS_HEADER__
+#endif

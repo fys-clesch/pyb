@@ -574,7 +574,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
     }
     else if(!(*itw1ptr).t_cam.get_Image())
     {
-        error_msg("can't get an image from thorlabs_cam instance. good bye.",
+        error_msg("can't get an image from camera instance. good bye.",
                   ERR_ARG);
         return EXIT_FAILURE;
     }
@@ -624,7 +624,7 @@ int igyba_thorlabs_wxFrame::launch_Cam(int argc, char **argv)
         {
             if(!(*itw1ptr).t_cam.get_Image((*itw1ptr).t_cam.temp_in))
             {
-                warn_msg("can't get an image from thorlabs_cam instance. " \
+                warn_msg("can't get an image from camera instance. " \
                          "using last successfully captured image.",
                          ERR_ARG);
                 (*itw1ptr).t_cam.increment_lost_Frames();

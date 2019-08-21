@@ -27,15 +27,15 @@ void get_Moments(const cv::Mat &im, cv::Mat &out, const double scale, const bool
     const cv::Point2d centroid = cv::Point2d(cen[0], cen[1]);
     cv::Mat eig,
         covar = (cv::Mat_<double>(2, 2) << mom.m20 / mom.m00 - POW2(cen[0]),
-                mom.m11 / mom.m00 - cen[0] * cen[1],
-                mom.m11 / mom.m00 - cen[0] * cen[1],
-                mom.m02 / mom.m00 - POW2(cen[1]));
+                 mom.m11 / mom.m00 - cen[0] * cen[1],
+                 mom.m11 / mom.m00 - cen[0] * cen[1],
+                 mom.m02 / mom.m00 - POW2(cen[1]));
     eigen(covar, eig);
 
     cv::Mat beampar = (cv::Mat_<double>(3, 1) <<
-                    2. * sqrt(covar.at<double>(0, 0)),
-                    2. * sqrt(covar.at<double>(1, 1)),
-                    4. * covar.at<double>(0, 1));
+                       2. * sqrt(covar.at<double>(0, 0)),
+                       2. * sqrt(covar.at<double>(1, 1)),
+                       4. * covar.at<double>(0, 1));
     beampar.at<double>(2) /= (beampar.at<double>(0) * beampar.at<double>(1));
 
     sqrt(eig, eig);
@@ -145,7 +145,7 @@ void get_Moments_own(const cv::Mat &im, cv::Mat &out, const double scale, const 
 
         cv::Point2d centroid = cv::Point2d(cen[0], cen[1]);
         cv::Mat covar = (cv::Mat_<double>(2, 2) << rxx, rxy, rxy, ryy),
-            eig;
+                eig;
         /* The eigenvalues of the covariance matrix give
          * the variance along the principal (or main) axis:
          */
@@ -162,9 +162,9 @@ void get_Moments_own(const cv::Mat &im, cv::Mat &out, const double scale, const 
         }
         /* These are the parameters along the global axes: */
         cv::Mat beampar = (cv::Mat_<double>(3, 1) <<
-                        2. * sqrt(rxx),
-                        2. * sqrt(ryy),
-                        4. * rxy);
+                           2. * sqrt(rxx),
+                           2. * sqrt(ryy),
+                           4. * rxy);
         beampar.at<double>(2) /= (beampar.at<double>(0) * beampar.at<double>(1));
 
         double theta = 0., ecc = 0.,
@@ -182,15 +182,15 @@ void get_Moments_own(const cv::Mat &im, cv::Mat &out, const double scale, const 
                 ecc = sqrt(1. - temp);
         }
         draw_Moments(out, beampar, centroid, eig, covar,
-                    theta, scale, ecc, chatty);
+                     theta, scale, ecc, chatty);
     }
 }
 
 void draw_Moments(cv::Mat &out, const cv::Mat &beampar,
-                const cv::Point2d &centroid, const cv::Mat &eig,
-                const cv::Mat &covar, const double &theta, const double &scale,
-                const double &ecc,
-                const bool chatty)
+                  const cv::Point2d &centroid, const cv::Mat &eig,
+                  const cv::Mat &covar, const double &theta, const double &scale,
+                  const double &ecc,
+                  const bool chatty)
 {
     const cv::Scalar_<double> clr_ell(100., 100., 255.);
     uint16_t lw = 2;
@@ -202,32 +202,32 @@ void draw_Moments(cv::Mat &out, const cv::Mat &beampar,
             theta, 0., 360., clr_ell, lw, cv::LINE_AA);
     circle(out, centroid, 1., clr_ell, lw, cv::LINE_AA);
     line(out, centroid, cv::Point2d(eig.at<double>(0) + centroid.x, centroid.y),
-        cv::Scalar(0, 255, 50), 2);
+         cv::Scalar(0, 255, 50), 2);
     line(out, centroid,
-        cv::Point2d(beampar.at<double>(0) + centroid.x, centroid.y),
-        cv::Scalar(255, 0, 50));
+         cv::Point2d(beampar.at<double>(0) + centroid.x, centroid.y),
+         cv::Scalar(255, 0, 50));
 
     beampar *= scale;
 
     if(chatty)
         iprint(stdout,
-                "\ntheta / deg: %g\n" \
-                "centroid / pix: (%g, %g)\n" \
-                "covar / pix^2: [[%g, %g], [%g, %g]]\n" \
-                "eigen / scl: %g, %g\n" \
-                "beampar / scl: [(%g, %g), %g]\n" \
-                "beampar over eigen: (%g, %g)\n" \
-                "ecc / 1: %g\n",
-                theta,
-                centroid.x, centroid.y,
-                covar.at<double>(0, 0), covar.at<double>(0, 1),
-                covar.at<double>(1, 0), covar.at<double>(1, 1),
-                eig.at<double>(0) * scale, eig.at<double>(1) * scale,
-                beampar.at<double>(0), beampar.at<double>(1),
-                beampar.at<double>(2),
-                beampar.at<double>(0) / (eig.at<double>(0) * scale),
-                beampar.at<double>(1) / (eig.at<double>(1) * scale),
-                ecc);
+               "\ntheta / deg: %g\n" \
+               "centroid / pix: (%g, %g)\n" \
+               "covar / pix^2: [[%g, %g], [%g, %g]]\n" \
+               "eigen / scl: %g, %g\n" \
+               "beampar / scl: [(%g, %g), %g]\n" \
+               "beampar over eigen: (%g, %g)\n" \
+               "ecc / 1: %g\n",
+               theta,
+               centroid.x, centroid.y,
+               covar.at<double>(0, 0), covar.at<double>(0, 1),
+               covar.at<double>(1, 0), covar.at<double>(1, 1),
+               eig.at<double>(0) * scale, eig.at<double>(1) * scale,
+               beampar.at<double>(0), beampar.at<double>(1),
+               beampar.at<double>(2),
+               beampar.at<double>(0) / (eig.at<double>(0) * scale),
+               beampar.at<double>(1) / (eig.at<double>(1) * scale),
+               ecc);
     {
         /* Test if the beam parameter along the global axes
          * can be transformed into the main axes:
@@ -239,12 +239,12 @@ void draw_Moments(cv::Mat &out, const cv::Mat &beampar,
                      beampar.at<double>(1) *
                      beampar.at<double>(2) / 4.;
         cv::Mat covar_ = (cv::Mat_<double>(2, 2) << rxx, rxy, rxy, ryy),
-            eig_;
+                eig_;
         if(chatty)
             iprint(stdout,
-                    "covar from beampar / pix^2: [[%g, %g], [%g, %g]]\n",
-                    covar_.at<double>(0, 0), covar_.at<double>(0, 1),
-                    covar_.at<double>(1, 0), covar_.at<double>(1, 1));
+                   "covar from beampar / pix^2: [[%g, %g], [%g, %g]]\n",
+                   covar_.at<double>(0, 0), covar_.at<double>(0, 1),
+                   covar_.at<double>(1, 0), covar_.at<double>(1, 1));
     }
     double temp = 1. / 32. * out.rows;
     const double incy = 1. / 32. * out.rows,
@@ -254,53 +254,56 @@ void draw_Moments(cv::Mat &out, const cv::Mat &beampar,
     const cv::Scalar_<double> clr_txt(0., 255., 0.);
     lw = 1;
     cv::putText(out, "theta / deg: " + convert_Double2Str(theta),
-            cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
+                cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
     temp += incy;
     cv::putText(out, "eccentric / 1: " + convert_Double2Str(ecc),
-            cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
+                cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
     temp += incy;
     cv::putText(out, "centroid / pix: (" +
-            convert_Double2Str(centroid.x) + ", " +
-            convert_Double2Str(centroid.y) + ")",
-            cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
+                convert_Double2Str(centroid.x) + ", " +
+                convert_Double2Str(centroid.y) + ")",
+                cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
     temp += incy;
     eig *= scale;
     cv::putText(out, "eigen / um: " +
-            convert_Double2Str(eig.at<double>(0))  + ", " +
-            convert_Double2Str(eig.at<double>(1)),
-            cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
+                convert_Double2Str(eig.at<double>(0))  + ", " +
+                convert_Double2Str(eig.at<double>(1)),
+                cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
     temp += incy;
     cv::putText(out, "covar / pix^2: [[" +
-            convert_Double2Str(covar.at<double>(0, 0)) + ", " +
-            convert_Double2Str(covar.at<double>(0, 1)) + "], [" +
-            convert_Double2Str(covar.at<double>(1, 0)) + ", " +
-            convert_Double2Str(covar.at<double>(1, 1)) + "]]",
-            cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
+                convert_Double2Str(covar.at<double>(0, 0)) + ", " +
+                convert_Double2Str(covar.at<double>(0, 1)) + "], [" +
+                convert_Double2Str(covar.at<double>(1, 0)) + ", " +
+                convert_Double2Str(covar.at<double>(1, 1)) + "]]",
+                cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
     temp += incy;
     cv::putText(out, "beampar / um: [(" +
-            convert_Double2Str(beampar.at<double>(0)) + ", " +
-            convert_Double2Str(beampar.at<double>(1)) + "), " +
-            convert_Double2Str(beampar.at<double>(2)) + "]",
-            cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
+                convert_Double2Str(beampar.at<double>(0)) + ", " +
+                convert_Double2Str(beampar.at<double>(1)) + "), " +
+                convert_Double2Str(beampar.at<double>(2)) + "]",
+                cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
     temp += incy;
     cv::putText(out, "beampar / eigen: (" +
-            convert_Double2Str(beampar.at<double>(0) /
-                                (eig.at<double>(0) * scale)) + ", " +
-            convert_Double2Str(beampar.at<double>(1) /
-                                (eig.at<double>(1) * scale)) + ")",
-            cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
+                convert_Double2Str(beampar.at<double>(0) /
+                                   (eig.at<double>(0) * scale)) + ", " +
+                convert_Double2Str(beampar.at<double>(1) /
+                                   (eig.at<double>(1) * scale)) + ")",
+                cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA);
     temp += incy;
     const cv::Scalar_<double> clr_w(0., 255., 0.);
     if(out.cols < sqrt(covar.at<double>(0, 0)))
-        cv::putText(out, "covar[0] > cols",
-                cv::Point2d(sx, temp), font, fscl, clr_w, lw, cv::LINE_AA);
+        cv::putText(out,
+                    "covar[0] > cols",
+                    cv::Point2d(sx, temp), font, fscl, clr_w, lw, cv::LINE_AA);
     temp += incy;
     if(out.rows < sqrt(covar.at<double>(1, 1)))
-        cv::putText(out, "covar[1] > rows",
-                cv::Point2d(sx, temp), font, fscl, clr_w, lw, cv::LINE_AA);
+        cv::putText(out,
+                    "covar[1] > rows",
+                    cv::Point2d(sx, temp), font, fscl, clr_w, lw, cv::LINE_AA);
 }
 
-void set_MouseEvent(const int event, const int x, const int y,
+void set_MouseEvent(const int event,
+                    const int x, const int y,
                     const int flags, void *udata)
 {
     if(event == cv::EVENT_MOUSEMOVE || (event == cv::EVENT_LBUTTONDOWN && flags == cv::EVENT_FLAG_CTRLKEY))
@@ -313,8 +316,9 @@ void set_MouseEvent(const int event, const int x, const int y,
             {
                 cv::Vec<uint8_t, 3> intrgb = im.at< cv::Vec<uint8_t, 3> >(y, x);
                 uint intw = (intrgb[0] + intrgb[1] + intrgb[2]) / 3;
-                iprint(stdout, "  val: (%u, %u, %u) = %u, pos: (%i, %i)\n",
-                        intrgb[0], intrgb[1], intrgb[2], intw, x, y);
+                iprint(stdout,
+                       "  val: (%u, %u, %u) = %u, pos: (%i, %i)\n",
+                       intrgb[0], intrgb[1], intrgb[2], intw, x, y);
             }
             else if(el_typ == CV_8S)
             {
@@ -327,36 +331,41 @@ void set_MouseEvent(const int event, const int x, const int y,
             {
                 cv::Vec<uint16_t, 3> intrgb = im.at< cv::Vec<uint16_t, 3> >(y, x);
                 uint32_t intw = (intrgb[0] + intrgb[1] + intrgb[2]) / 3;
-                iprint(stdout, "  val: (%u, %u, %u) = %u, pos: (%i, %i)\n",
-                        intrgb[0], intrgb[1], intrgb[2], intw, x, y);
+                iprint(stdout,
+                       "  val: (%u, %u, %u) = %u, pos: (%i, %i)\n",
+                       intrgb[0], intrgb[1], intrgb[2], intw, x, y);
             }
             else if(el_typ == CV_16S)
             {
                 cv::Vec<int16_t, 3> intrgb = im.at< cv::Vec<int16_t, 3> >(y, x);
                 int32_t intw = (intrgb[0] + intrgb[1] + intrgb[2]) / 3;
-                iprint(stdout, "  val: (%i, %i, %i) = %i, pos: (%i, %i)\n",
-                        intrgb[0], intrgb[1], intrgb[2], intw, x, y);
+                iprint(stdout,
+                       "  val: (%i, %i, %i) = %i, pos: (%i, %i)\n",
+                       intrgb[0], intrgb[1], intrgb[2], intw, x, y);
             }
             else if(el_typ == CV_32S)
             {
                 cv::Vec<int32_t, 3> intrgb = im.at< cv::Vec<int32_t, 3> >(y, x);
                 long int intw = (intrgb[0] + intrgb[1] + intrgb[2]) / 3;
-                iprint(stdout, "  val: (%i, %i, %i) = %li, pos: (%i, %i)\n",
-                        intrgb[0], intrgb[1], intrgb[2], intw, x, y);
+                iprint(stdout,
+                       "  val: (%i, %i, %i) = %li, pos: (%i, %i)\n",
+                       intrgb[0], intrgb[1], intrgb[2], intw, x, y);
             }
             else if(el_typ == CV_32F)
             {
                 cv::Vec<float, 3> intrgb = im.at<cv::Vec <float, 3> >(y, x);
                 double intw = (intrgb[0] + intrgb[1] + intrgb[2]) / 3.;
-                iprint(stdout, "  val: (%g, %g, %g) = %g, pos: (%i, %i)\n",
-                        intrgb[0], intrgb[1], intrgb[2], intw, x, y);
+                iprint(stdout,
+                       "  val: (%g, %g, %g) = %g, pos: (%i, %i)\n",
+                       intrgb[0], intrgb[1], intrgb[2], intw, x, y);
             }
             else if(el_typ == CV_64F)
             {
                 cv::Vec<double, 3> intrgb = im.at<cv::Vec <double, 3> >(y, x);
                 double intw = (intrgb[0] + intrgb[1] + intrgb[2]) / 3.;
-                iprint(stdout, "  val: (%g, %g, %g) = %g, pos: (%i, %i)\n",
-                        intrgb[0], intrgb[1], intrgb[2], intw, x, y);
+                iprint(stdout,
+                       "  val: (%g, %g, %g) = %g, pos: (%i, %i)\n",
+                       intrgb[0], intrgb[1], intrgb[2], intw, x, y);
             }
             else
                 iprint(stderr, "'%s': unrecognised format\n", __func__);
@@ -497,7 +506,7 @@ void test_pic2(void)
     cv::imread("elohtyp.jpg", cv::IMREAD_UNCHANGED);
 //  cv::imread("elohtypx.jpg", cv::CV_LOAD_IMAGE_UNCHANGED);
     cv::Mat im_mom,
-        im_mom_o;
+            im_mom_o;
     get_Moments(im2, im_mom);
     cv::imshow("draw_moments", im_mom);
     cv::moveWindow("draw_moments", 0, 0);
