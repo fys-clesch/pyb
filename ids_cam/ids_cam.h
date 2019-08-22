@@ -85,7 +85,7 @@ private:
     void get_Fps(void);
     void get_ExposureTime(void);
     void set_ExposureTime(double time);
-    void set_ErrorReport(void);
+    void disable_ErrorReport(void);
     void get_CameraStatus(void);
     void get_GainBoost(void);
     void identify_CameraAOISettings(void);
