@@ -392,7 +392,7 @@ void fifo::plot_Data(const double *res_pt data,
             "set colorbox user origin .8, .6 size .04, .3\n"
             "set cntrlabel onecolor\n"
             "%cset contour base\n"
-            "%cset cntrparam 8\n"
+            "%cset cntrparam levels 8\n"
             "set ticslevel .2\n"
             "set grid x, y, z\n"
             "set xtics offset -.4, -.2\n"
@@ -441,14 +441,16 @@ void fifo::plot_Data(const double *res_pt data,
     const int i = system(syscall.c_str());
     if(i)
         warn_msg("\ngnuplot command returned '1' -- the plotting went wrong!",
-                ERR_ARG);
+                 ERR_ARG);
     else
     {
         if(file_name.empty())
             iprint(stdout, "plotted 'plot/%s'\n", timebuf.c_str());
         else
-            iprint(stdout, "plotted '%s%s'\n",
-                    file_name.c_str(), file_name_suffix.c_str());
+            iprint(stdout,
+                   "plotted '%s%s'\n",
+                   file_name.c_str(),
+                   file_name_suffix.c_str());
     }
 
     remove(tmpdat.c_str());
@@ -594,8 +596,8 @@ void fifo::plot_Data(const cv::Mat &mdata,
 
     if(!plot_title.empty())
         fprintf(gnufile,
-            "set title '%s'\n",
-            plot_title.c_str());
+                "set title '%s'\n",
+                plot_title.c_str());
 
     std::string timebuf;
     if(file_name.empty())
@@ -628,16 +630,19 @@ void fifo::plot_Data(const cv::Mat &mdata,
         if(file_name.empty())
             iprint(stdout, "plotted 'plot/%s'\n", timebuf.c_str());
         else
-            iprint(stdout, "plotted '%s%s'\n",
-                    file_name.c_str(), file_name_suffix.c_str());
+            iprint(stdout,
+                   "plotted '%s%s'\n",
+                   file_name.c_str(),
+                   file_name_suffix.c_str());
     }
 
     remove(tmpdat.c_str());
     remove(cmdtmp.c_str());
 }
 
-void fifo::write_MatToFile(const cv::Mat &mat, const std::string &fname,
-                        const bool use_bin)
+void fifo::write_MatToFile(const cv::Mat &mat,
+                           const std::string &fname,
+                           const bool use_bin)
 {
     std::string fname_n;
 
@@ -665,6 +670,7 @@ void fifo::write_MatToFile(const cv::Mat &mat, const std::string &fname,
                mat_rows = mat.rows,
                mat_cols = mat.cols;
 
+    /* Some handy definitions for the loops. */
     #define IJ_FOR_LOOP \
     for(uint i = 0; i < mat_rows; ++i) \
         for(uint j = 0; j < mat_cols; ++j)
@@ -857,11 +863,11 @@ void fifo::write_MatToFile(const cv::Mat &mat, const std::string &fname,
  *
  */
 void fifo::plot_BeamWidthsFit(const double *res_pt data_x,
-                            const double *res_pt data_y,
-                            const double *res_pt z_pnts_mm,
-                            const double *res_pt res_x,
-                            const double *res_pt res_y,
-                            const double lambda_um)
+                              const double *res_pt data_y,
+                              const double *res_pt z_pnts_mm,
+                              const double *res_pt res_x,
+                              const double *res_pt res_y,
+                              const double lambda_um)
 {
     std::string fname_tmp = std::tmpnam(nullptr);
     fname_tmp.erase(std::remove(fname_tmp.begin(), fname_tmp.end(), '/'),
@@ -941,7 +947,7 @@ void fifo::plot_BeamWidthsFit(const double *res_pt data_x,
     const int i = system(syscall.c_str());
     if(i)
         warn_msg("\ngnuplot command returned '1' -- the plotting went wrong!",
-                ERR_ARG);
+                 ERR_ARG);
     else
     {
         if(file_name.empty())

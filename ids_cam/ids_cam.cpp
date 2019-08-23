@@ -48,6 +48,9 @@ ids_cam::ids_cam(void)
     exp_time_inc_atm.store(0., std::memory_order_relaxed); /* 6 */
     /* uint32_t */
     pix_clock =
+    pix_clock_min =
+    pix_clock_max =
+    pix_clock_inc =
     im_width =
     im_max_width =
     im_height =
@@ -61,7 +64,7 @@ ids_cam::ids_cam(void)
     im_aoi_width =
     im_aoi_height =
     im_aoi_width_start =
-    im_aoi_height_start = 0; /* 15 */
+    im_aoi_height_start = 0; /* 18 */
     /* string */
     infotbar_win_name  = "camera information window";
     /* Mat */
@@ -1029,6 +1032,18 @@ void ids_cam::identify_CameraAOISettings(void)
         sensor_aa_height = 5400;
         if(!pix_size)
             pix_size = 450;
+    }
+    else if(!sensorname.compare("UI154xLE-M"))
+    {
+        /* Sensor is ON Semiconductor MT9M001STM. */
+        im_min_width = 32;
+        im_inc_width = 4;
+        im_min_height = 4;
+        im_inc_height = 2;
+        sensor_aa_width = 6656;
+        sensor_aa_height = 5325;
+        if(!pix_size)
+            pix_size = 520;
     }
     else
     {

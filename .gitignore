@@ -27,3 +27,7 @@
 
 # Codeblocks
 *.layout
+
+# Program output
+minime_output.txt
+/igyba_wx/plot/*

@@ -572,11 +572,11 @@ void grabber::draw_Moments(const bool chatty)
         cv::Point p = cv::Point(in_cols >> 1, in_rows >> 1);
         #if DRAW_NOT_FINITE_SIGN_ATOM
         cv::Size s = cv::Size(in_cols / 4, in_cols / 16);
-        ellipse(rgb, p, s, 90, 0., 360., clr_ell, lw, cv::LINE_AA);
-        ellipse(rgb, p, s, 0, 0., 360., clr_ell, lw, cv::LINE_AA);
-        ellipse(rgb, p, s, 45, 0., 360., clr_ell, lw, cv::LINE_AA);
-        ellipse(rgb, p, s, -45, 0., 360., clr_ell, lw, cv::LINE_AA);
-        circle(rgb, p, 5., clr_ell, lw, cv::LINE_AA);
+        cv::ellipse(rgb, p, s, 90, 0., 360., clr_ell, lw, cv::LINE_AA);
+        cv::ellipse(rgb, p, s, 0, 0., 360., clr_ell, lw, cv::LINE_AA);
+        cv::ellipse(rgb, p, s, 45, 0., 360., clr_ell, lw, cv::LINE_AA);
+        cv::ellipse(rgb, p, s, -45, 0., 360., clr_ell, lw, cv::LINE_AA);
+        cv::circle(rgb, p, 5., clr_ell, lw, cv::LINE_AA);
         #else
         cv::circle(rgb, p, in_cols / 6, clr_ell, 4, cv::LINE_AA);
         const static cv::Point pl = cv::Point(p.x - in_cols / 16, in_rows / 2.4),

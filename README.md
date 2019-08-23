@@ -1,6 +1,6 @@
 # igyba
 
-Copyright 2015 Clemens Schäfermeier, clemens ( at ) fh-muenster.de
+Copyright 2015--2019 Clemens Schäfermeier, clemens ( at ) fh-muenster.de
 
     This file is part of igyba.
 
@@ -22,7 +22,7 @@ igyba is an open source project for profiling laser beams with CCD or CMOS camer
   - a 3D viewer for live visualization of the input
   - image manipulation and data export
   - a graphical user interface
-  - access to Thorlabs (R) cameras
+  - access to IDS (R) cameras
   - Linux and Windows support
 
 It was written in a modular way, such that other cameras can be implemented along the existing module.
@@ -34,4 +34,3 @@ Projects and libraries used:
   - mingw-std-threads for C++11 thread support on Windows
   - OpenMP for multi core data processing in fit routines
   - gnuplot (if available on the machine) for plotting image captures
-  
