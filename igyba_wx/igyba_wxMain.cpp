@@ -538,7 +538,7 @@ void igyba_wxFrame::update_TextKernelSize(const uint val)
 
 int igyba_wxFrame::launch_Cam(int argc, char **argv)
 {
-    static const std::string main_win_title = "igyba - Thorlabs cameras";
+    static const std::string main_win_title = "igyba - IDS cameras";
     const double wavelen_um = 1.064;
 
     iprint(stdout, "%s read:\n", PROJECT_NAME.c_str());
@@ -550,6 +550,7 @@ int igyba_wxFrame::launch_Cam(int argc, char **argv)
                    (i == argc - 1) ? '\n' : ' ');
 
     (*itw1ptr).t_cam.init_Camera();
+    (*itw1ptr).t_cam.set_PixelClock("min");
 
     (*itw1ptr).t_cam.show_Intro();
 

@@ -181,41 +181,11 @@ void ids_cam::init_Camera(void)
     }
 
     get_PixelClock();
+    get_PixelClockRange();
     get_Fps();
     get_ExposureTime();
     get_GainBoost();
-    #define PR_C "%-23s: "
-    iprint(stdout,
-           PR_C "%s\n" \
-           PR_C "%s\n" \
-           PR_C "%s\n" \
-           PR_C "%i\n" \
-           PR_C "%i\n" \
-           PR_C "%.2g\n" \
-           PR_C "%i\n" \
-           PR_C "%.2g\n" \
-           PR_C "%s\n" \
-           PR_C "%u\n" \
-           PR_C "%g\n" \
-           PR_C "%g\n" \
-           PR_C "%g\n" \
-           PR_C "%g\n",
-           "camera ID", b_info.ID,
-           "serial #", b_info.SerNo,
-           "date", b_info.Date,
-           "pixel size / 1e-8 m", pix_size,
-           "width / pixel", im_width,
-           "      / um", im_width * dpix_size,
-           "height / pixel", im_height,
-           "       / um", im_height * dpix_size,
-           "colour mode", color_mod_init == IS_COLORMODE_MONOCHROME ?
-           ("MONOCHROME") : color_mod_init == IS_COLORMODE_BAYER ?
-           ("BAYER") : ("CBYCRY"),
-           "pixel clock / MHz", pix_clock,
-           "exposure time set / ms", exp_time,
-           "              max / ms", exp_time_max,
-           "              min / ms", exp_time_min,
-           "              inc / ms", exp_time_inc);
+    print_CameraInfos();
 
     if(color_mod == IS_CM_MONO8 || color_mod == IS_CM_SENSOR_RAW8)
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC1, 0.);
@@ -258,6 +228,54 @@ void ids_cam::init_Camera(void)
         warn_msg("can't find right colour mode. " \
                  "setting Mat format to CV_8UC1.", ERR_ARG);
     }
+}
+
+/** \brief Prints infos of the sensor and features to the console.
+ *
+ * \param void
+ * \return void
+ *
+ */
+void ids_cam::print_CameraInfos(void)
+{
+    #define PR_C "%-23s: "
+    iprint(stdout,
+           PR_C "%s\n" \
+           PR_C "%s\n" \
+           PR_C "%s\n" \
+           PR_C "%i\n" \
+           PR_C "%i\n" \
+           PR_C "%.2g\n" \
+           PR_C "%i\n" \
+           PR_C "%.2g\n" \
+           PR_C "%s\n" \
+           PR_C "%u\n" \
+           PR_C "%u\n" \
+           PR_C "%u\n" \
+           PR_C "%u\n" \
+           PR_C "%g\n" \
+           PR_C "%g\n" \
+           PR_C "%g\n" \
+           PR_C "%g\n",
+           "camera ID", b_info.ID,
+           "serial #", b_info.SerNo,
+           "date", b_info.Date,
+           "pixel size / 1e-8 m", pix_size,
+           "width / pixel", im_width,
+           "      / um", im_width * dpix_size,
+           "height / pixel", im_height,
+           "       / um", im_height * dpix_size,
+           "colour mode", color_mod_init == IS_COLORMODE_MONOCHROME ?
+           ("MONOCHROME") : color_mod_init == IS_COLORMODE_BAYER ?
+           ("BAYER") : ("CBYCRY"),
+           "pixel clock / MHz", pix_clock,
+           "pixel clock min / MHz", pix_clock_min,
+           "pixel clock max / MHz", pix_clock_max,
+           "pixel clock inc / MHz", pix_clock_inc,
+           "exposure time set / ms", exp_time,
+           "              max / ms", exp_time_max,
+           "              min / ms", exp_time_min,
+           "              inc / ms", exp_time_inc);
 }
 
 void ids_cam::set_ColourMode(void)
@@ -534,6 +552,36 @@ void ids_cam::set_PixelClock(const int pc)
     {
         warn_msg("error setting pixel clock", ERR_ARG);
         err_break = false;
+    }
+}
+
+void ids_cam::set_PixelClock(const std::string clock)
+{
+    if(!clock.compare("min") || !clock.compare("Min"))
+    {
+        err = is_PixelClock(pcam,
+                    IS_PIXELCLOCK_CMD_SET,
+                    (void*)&pix_clock_min, sizeof(pix_clock_min));
+        if(err != IS_SUCCESS)
+        {
+            warn_msg("error setting pixel clock", ERR_ARG);
+            err_break = false;
+        }
+    }
+    else if(!clock.compare("max") || !clock.compare("Max"))
+    {
+            err = is_PixelClock(pcam,
+                IS_PIXELCLOCK_CMD_SET,
+                (void*)&pix_clock_max, sizeof(pix_clock_max));
+        if(err != IS_SUCCESS)
+        {
+            warn_msg("error setting pixel clock", ERR_ARG);
+            err_break = false;
+        }
+    }
+    else
+    {
+        warn_msg("wrong specifier, accepts only min or max", ERR_ARG);
     }
 }
 

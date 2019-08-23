@@ -180,12 +180,12 @@
 1566398607 source:c:\users\schaecl\documents\github\igyba\viewer_pp\src\viewer_class.cpp
 	"viewer_class.h"
 
-1566221691 source:c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxapp.cpp
+1566551982 source:c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxapp.cpp
 	"igyba_wxApp.h"
 	"igyba_wxMain.h"
 	<wx/image.h>
 
-1566225182 c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxapp.h
+1566549826 c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxapp.h
 	<wx/app.h>
 
 1544373608 c:\wxwidgets\include\wx\app.h
@@ -2221,7 +2221,7 @@
 1544373608 c:\wxwidgets\include\wx\qt\tglbtn.h
 	"wx/tglbtn.h"
 
-1566486948 c:\users\schaecl\documents\github\igyba\ids_cam\ids_cam.h
+1566556882 c:\users\schaecl\documents\github\igyba\ids_cam\ids_cam.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/highgui/highgui_c.h>
@@ -2235,7 +2235,7 @@
 	<stdint.h>
 	<windows.h>
 
-1566549714 source:c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxmain.cpp
+1566556550 source:c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxmain.cpp
 	"igyba_wxMain.h"
 	<wx/msgdlg.h>
 	<wx/filedlg.h>
@@ -2440,11 +2440,17 @@
 
 1544373608 c:\wxwidgets\include\wx\msw\rcdefs.h
 
-1566375947 source:c:\users\schaecl\documents\github\igyba\igyba_wx\src\led.cpp
-	<wx/led.h>
+1566555768 source:c:\users\schaecl\documents\github\igyba\igyba_wx\src\led.cpp
+	"led.h"
 	<string.h>
 
-1566490334 source:c:\users\schaecl\documents\github\igyba\ids_cam\ids_cam.cpp
+1566556865 source:c:\users\schaecl\documents\github\igyba\ids_cam\ids_cam.cpp
 	"ids_cam.h"
 	<assert.h>
+
+1566555799 c:\users\schaecl\documents\github\igyba\igyba_wx\src\led.h
+	<wx/window.h>
+	<wx/bitmap.h>
+	<wx/dcclient.h>
+	<wx/thread.h>
 
