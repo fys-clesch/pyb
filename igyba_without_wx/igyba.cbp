@@ -2,13 +2,13 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="igyba_thorlabs" />
+		<Option title="igyba" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug_Win">
 				<Option platforms="Windows;" />
-				<Option output="bin/igyba_thorlabs" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/igyba" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -35,7 +35,7 @@
 			</Target>
 			<Target title="Debug_Ubu">
 				<Option platforms="Unix;Mac;" />
-				<Option output="bin/igyba_thorlabs" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/igyba" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -58,7 +58,7 @@
 			</Target>
 			<Target title="Release_Win">
 				<Option platforms="Windows;" />
-				<Option output="bin/igyba_thorlabs" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/igyba" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -88,7 +88,7 @@
 			</Target>
 			<Target title="Debug_Win_WO_win">
 				<Option platforms="Windows;" />
-				<Option output="bin/igyba_thorlabs" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/igyba" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -115,7 +115,7 @@
 			</Target>
 			<Target title="Release_Win_Static">
 				<Option platforms="Windows;" />
-				<Option output="bin/igyba_thorlabs" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/igyba" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -202,7 +202,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="README" />
-		<Unit filename="igyba_thorlabs.rc">
+		<Unit filename="igyba_res.rc">
 			<Option compilerVar="WINDRES" />
 			<Option target="Debug_Win" />
 			<Option target="Release_Win" />

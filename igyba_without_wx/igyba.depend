@@ -293,7 +293,7 @@
 
 1424286265 c:\users\clesch\dropbox\dtu\progs\igyba\viewer_pp\src\control.h
 
-1435667792 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs\main.cpp
+1435667792 source:c:\users\clesch\dropbox\dtu\progs\igyba\igyba_without_wx\main.cpp
 	"../src/header.hpp"
 	"../thorlabs_cam/thorlabs_cam.h"
 	"../grabber/src/test.h"
@@ -610,7 +610,7 @@
 
 1424286265 /home/clesch/Dropbox/DTU/progs/igyba/viewer_pp/src/control.h
 
-1425046900 source:/home/clesch/Dropbox/DTU/progs/igyba/thorlabs/main.cpp
+1425046900 source:/home/clesch/Dropbox/DTU/progs/igyba/igyba_without_wx/main.cpp
 	"../src/header.hpp"
 	"../thorlabs_cam/thorlabs_cam.h"
 	"../grabber/src/test.h"
@@ -808,7 +808,7 @@
 
 1424286265 c:\users\cs\dropbox\dtu\progs\igyba\viewer_pp\src\control.h
 
-1435667792 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs\main.cpp
+1435667792 source:c:\users\cs\dropbox\dtu\progs\igyba\igyba_without_wx\main.cpp
 	"../src/header.hpp"
 	"../thorlabs_cam/thorlabs_cam.h"
 	"../grabber/src/test.h"
@@ -913,7 +913,7 @@
 
 1423499920 /home/cs/Dropbox/DTU/progs/igyba/grabber/src/test.h
 
-1435667506 source:c:\users\cs\dropbox\dtu\progs\igyba\thorlabs\igyba_thorlabs.rc
+1435667506 source:c:\users\cs\dropbox\dtu\progs\igyba\igyba_without_wx\igyba_res.rc
 
 1419751505 c:\mingw\mingw64\opencv_static\include\opencv2\core\core.hpp
 	"opencv2/core/types_c.h"
@@ -976,7 +976,7 @@
 1384339462 c:\mingw\mingw64\opencv_static\include\opencv2\imgproc\types_c.h
 	"opencv2/core/core_c.h"
 
-1435667506 source:c:\users\clesch\dropbox\dtu\progs\igyba\thorlabs\igyba_thorlabs.rc
+1435667506 source:c:\users\clesch\dropbox\dtu\progs\igyba\igyba_without_wx\igyba_res.rc
 
 1432629853 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
 	"minime_class.h"

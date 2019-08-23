@@ -26,7 +26,7 @@ FILES_GRABBER = grabber_class.cpp
 FILES_TC = thorlabs_cam.cpp
 RESOURCES = igyba_res.rc
 
-PROJECT = igyba_thorlabs
+PROJECT = igyba
 
 ifdef windir
  delcall = del

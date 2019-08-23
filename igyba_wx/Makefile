@@ -9,12 +9,12 @@ ifndef STATIC
 endif
 
 ifeq ($(DEBUG), 1)
- CFLAGS = -O0 -g -Wall -Wextra -pedantic -std=gnu++11 -fopenmp -DUSE_DEPRECATED_FUNCTIONS
+ CFLAGS = -O0 -g -Wall -Wextra -pedantic -std=c++11 -fopenmp -DUSE_DEPRECATED_FUNCTIONS
 else
  ifeq ($(STATIC), 1)
-  CFLAGS = -O3 -Wall -Wextra -pedantic -std=gnu++11 -fopenmp -DIGYBA_NDEBUG -DNDEBUG -DUSE_DEPRECATED_FUNCTIONS -DFREEGLUT_STATIC
+  CFLAGS = -O3 -Wall -Wextra -pedantic -std=c++11 -fopenmp -DIGYBA_NDEBUG -DNDEBUG -DUSE_DEPRECATED_FUNCTIONS -DFREEGLUT_STATIC
  else
-  CFLAGS = -O3 -Wall -Wextra -pedantic -std=gnu++11 -fopenmp -DIGYBA_NDEBUG -DNDEBUG -DUSE_DEPRECATED_FUNCTIONS
+  CFLAGS = -O3 -Wall -Wextra -pedantic -std=c++11 -fopenmp -DIGYBA_NDEBUG -DNDEBUG -DUSE_DEPRECATED_FUNCTIONS
  endif
 endif
 
@@ -35,13 +35,14 @@ ifdef windir
  binfix = .exe
  pathfix = $(subst /,\,$1)
  OSID = 1
- CAMLIB = -luc480_64
+ CAMLIB = -lueye480_64
  ifeq ($(STATIC), 1)
+  # @todo Update this
   CDIR = -IC:\MinGW\mingw64\opencv_static\x64\mingw\bin -IC:\MinGW\mingw64\opencv_static\include
   LDIR = -LC:\MinGW\mingw64\opencv_static\x64\mingw\staticlib
   # -static
   LFLAGS = -s -fopenmp -lm -static-libgcc -static-libstdc++ -L libgcc_s.a \
-  -lopencv_highgui411 -lopencv_imgproc411 -lopencv_imgcodecs411 -lopencv_videoio411 -lopencv_core411 \
+  -lopencv_highgui411 -lopencv_imgcodecs411 -lopencv_imgproc411 -lopencv_videoio411 -lopencv_core411 \
   -lIlmImf -llibpng -llibjasper -llibjpeg -llibtiff -lzlib \
   -lfreeglut_static -lcomctl32 -lgdi32 -lglu32 -lopengl32 \
   -lole32 -loleaut32 -luuid -lVfw32 -L libwinpthread.a -L libgomp.a -lwinmm
