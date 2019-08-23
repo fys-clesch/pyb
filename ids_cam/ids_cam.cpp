@@ -406,7 +406,7 @@ bool ids_cam::get_Image(cv::Mat &img)
         im_p.copyTo(img);
         return true;
     }
-    handle_Error(err);
+    handle_IDS_Error(err);
     return false;
 }
 
@@ -418,11 +418,11 @@ bool ids_cam::get_Image(void)
         im_p.data = (uchar *)im_mem;
         return true;
     }
-    handle_Error(err);
+    handle_IDS_Error(err);
     return false;
 }
 
-void ids_cam::handle_Error(const uchar err)
+void ids_cam::handle_IDS_Error(const uchar err)
 {
     if(err == IS_OUT_OF_MEMORY)
         error_msg("no memory available", ERR_ARG);
@@ -502,6 +502,47 @@ void ids_cam::get_PixelClock(void)
     }
 }
 
+void ids_cam::get_PixelClockRange(void)
+{
+    unsigned int nRange[3] = {0, 0, 0};
+    err = is_PixelClock(pcam,
+                        IS_PIXELCLOCK_CMD_GET_RANGE,
+                        (void*)nRange,
+                        sizeof(nRange));
+    if(err != IS_SUCCESS)
+    {
+        warn_msg("error getting pixel clock range", ERR_ARG);
+        err_break = false;
+    }
+    pix_clock_min = nRange[0];
+    pix_clock_max = nRange[1];
+    pix_clock_inc = nRange[2];
+}
+
+/** \brief Sets the pixel clock in MHz.
+ *
+ * \param pc const int
+ * \return void
+ *
+ */
+void ids_cam::set_PixelClock(const int pc)
+{
+    err = is_PixelClock(pcam,
+                        IS_PIXELCLOCK_CMD_SET,
+                        (void*)&pc, sizeof(pc));
+    if(err != IS_SUCCESS)
+    {
+        warn_msg("error setting pixel clock", ERR_ARG);
+        err_break = false;
+    }
+}
+
+/** \brief Retrieve frame rate.
+ *
+ * \param void
+ * \return void
+ *
+ */
 void ids_cam::get_Fps(void)
 {
     err = is_GetFramesPerSecond(pcam, &fps);
@@ -512,6 +553,12 @@ void ids_cam::get_Fps(void)
     }
 }
 
+/** \brief Return the pixel pixel pitch in um.
+ *
+ * \param void
+ * \return double
+ *
+ */
 double ids_cam::get_PixelPitch(void)
 {
     return dpix_size;
@@ -723,8 +770,11 @@ void ids_cam::get_GainBoost(void)
 void ids_cam::TrackbarHandlerExposure(int i)
 {
     const double out_min = 0., out_max = 100.;
-    double res = map_Linear((double)i, out_min, out_max,
-                            exp_time_min, exp_time_max);
+    double res = map_Linear((double)i,
+                            out_min,
+                            out_max,
+                            exp_time_min,
+                            exp_time_max);
     (*this).set_ExposureTime(res);
 }
 
@@ -738,8 +788,11 @@ void ids_cam::create_TrackbarExposure(void)
 {
     const std::string trck_name = "Exposure";
     const double out_min = 0., out_max = 100.;
-    double res = map_Linear(exp_time, exp_time_min, exp_time_max,
-                            out_min, out_max);
+    double res = map_Linear(exp_time,
+                            exp_time_min,
+                            exp_time_max,
+                            out_min,
+                            out_max);
     static int setting = res; /* Must be static, as its memory address is stored
     in the cv function. */
     assert(setting <= 100);

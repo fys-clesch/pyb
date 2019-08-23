@@ -29,7 +29,10 @@ private:
              im_max_width, /**< Initial or maximal width */
              im_height,
              im_max_height, /**< Initial or maximal height */
-             pix_clock,
+             pix_clock, /**< Current pixel clock in MHz */
+             pix_clock_min, /**< Minimum pixel clock in MHz */
+             pix_clock_max, /**< Minimum pixel clock in MHz */
+             pix_clock_inc, /**< Pixel clock increment in MHz */
              im_min_width, /**< AOI minimum width */
              im_min_height, /**< AOI minimum height */
              im_inc_width, /**< AOI step size in width */
@@ -39,7 +42,8 @@ private:
              im_aoi_width_start, /**< Start position (in pixel) of the AOI */
              im_aoi_height_start, /**< Start position (in pixel) of the AOI */
              sensor_aa_width, /**< Exact active width of the sensor in um */
-             sensor_aa_height; /**< Exact active height of the sensor in um */
+             sensor_aa_height, /**< Exact active height of the sensor in um */
+             used_bandwidth; /** The approximate bandwidth in MByte / s */
 
     uint16_t pix_size, /**< Pixel size encoded in an integer */
              bits_p_pix, /**< The total number of bits occupied at one pixel.
@@ -78,10 +82,13 @@ private:
                       trck_name_aoi_sh = "start height",
                       trck_name_aoi_wh = "AOI height";
 
-    void handle_Error(const uchar err);
+    void handle_IDS_Error(const uchar err);
     cv::Mat get_Mat(void);
     void show_Image(const char *win_name);
+    void get_UsedBandwidth(void);
     void get_PixelClock(void);
+    void get_PixelClockRange(void);
+    void set_PixelClock(const int pc);
     void get_Fps(void);
     void get_ExposureTime(void);
     void set_ExposureTime(double time);
