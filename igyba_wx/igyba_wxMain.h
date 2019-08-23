@@ -1,5 +1,5 @@
 /***************************************************************
- * Name:      igyba_thorlabs_wxMain.h
+ * Name:      igyba_wxMain.h
  * Purpose:   Defines Application Frame
  * Author:    Clemens Sch\"afermeier (clemens@fh-muenster.de)
  * Created:   2015-04-03
@@ -8,10 +8,10 @@
  *
  **************************************************************/
 
-#ifndef IGYBA_THORLABS_WXMAIN_H
-#define IGYBA_THORLABS_WXMAIN_H
+#ifndef IGYBA_WXMAIN_H
+#define IGYBA_WXMAIN_H
 
-//(*Headers(igyba_thorlabs_wxFrame)
+//(*Headers(igyba_wxFrame)
 #include <wx/button.h>
 #include <wx/frame.h>
 #include <wx/gbsizer.h>
@@ -35,7 +35,7 @@
  #include "../thorlabs_cam/thorlabs_cam.h"
 #endif
 
-class igyba_thorlabs_wxFrame : public wxFrame
+class igyba_wxFrame : public wxFrame
 {
 
 private:
@@ -82,7 +82,7 @@ private:
         REMOVE_AOI
     };
 
-        //(*Handlers(igyba_thorlabs_wxFrame)
+        //(*Handlers(igyba_wxFrame)
         void OnQuit(wxCommandEvent &event);
         void OnAbout(wxCommandEvent &event);
         void OnButtonSaveImgRGBClick(wxCommandEvent& event);
@@ -120,7 +120,7 @@ private:
         void OnButtonViewerScreenshotClick(wxCommandEvent& event);
         //*)
 
-        //(*Identifiers(igyba_thorlabs_wxFrame)
+        //(*Identifiers(igyba_wxFrame)
         static const long ID_BUTTON_SAVE_IMG_RGB;
         static const long ID_BUTTON_SAVE_IMG_WORK;
         static const long ID_BUTTON_SAVE_IMG_FP;
@@ -178,7 +178,7 @@ private:
         static const long ID_STATUSBAR_MAIN;
         //*)
 
-        //(*Declarations(igyba_thorlabs_wxFrame)
+        //(*Declarations(igyba_wxFrame)
         wxButton* ButtonDecExpTime;
         wxButton* ButtonDecGroundlift;
         wxButton* ButtonDecKernelSize;
@@ -272,14 +272,14 @@ private:
 
 public:
 
-    igyba_thorlabs_wxFrame(wxWindow* parent,
-                           wxWindowID id = -1);
-    igyba_thorlabs_wxFrame(int argc,
-                           wchar_t **argv,
-                           wxWindow *parent,
-                           wxWindowID id = -1);
-    virtual ~igyba_thorlabs_wxFrame(void);
+    igyba_wxFrame(wxWindow* parent,
+                  wxWindowID id = -1);
+    igyba_wxFrame(int argc,
+                  wchar_t **argv,
+                  wxWindow *parent,
+                  wxWindowID id = -1);
+    virtual ~igyba_wxFrame(void);
 
 };
 
-#endif // IGYBA_THORLABS_WXMAIN_H
+#endif // IGYBA_WXMAIN_H

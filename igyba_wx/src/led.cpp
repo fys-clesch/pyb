@@ -6,7 +6,7 @@
  * Licence:     wxWidgets
  */
 
-#include <wx/led.h>
+#include "led.h"
 #include <string.h>
 
 BEGIN_EVENT_TABLE(wxLed, wxWindow)

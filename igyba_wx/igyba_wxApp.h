@@ -1,21 +1,21 @@
 /***************************************************************
- * Name:      igyba_thorlabs_wxApp.h
+ * Name:      igyba_wxApp.h
  * Purpose:   Defines Application Class
- * Author:    Clemens Schäfermeier (clesch@fysik.dtu.dk)
+ * Author:    Clemens Schäfermeier (clemens@fh-muenster.de)
  * Created:   2015-04-03
  * Copyright: Clemens Schäfermeier ()
  * License:
  **************************************************************/
 
-#ifndef IGYBA_THORLABS_WXAPP_H
-#define IGYBA_THORLABS_WXAPP_H
+#ifndef IGYBA_WXAPP_H
+#define IGYBA_WXAPP_H
 
 #include <wx/app.h>
 
-class igyba_thorlabs_wxApp : public wxApp
+class igyba_wxApp : public wxApp
 {
     public:
         virtual bool OnInit(void);
 };
 
-#endif // IGYBA_THORLABS_WXAPP_H
+#endif // IGYBA_WXAPP_H

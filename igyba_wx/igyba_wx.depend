@@ -180,12 +180,12 @@
 1566398607 source:c:\users\schaecl\documents\github\igyba\viewer_pp\src\viewer_class.cpp
 	"viewer_class.h"
 
-1566221691 source:c:\users\schaecl\documents\github\igyba\thorlabs_wx\igyba_thorlabs_wxapp.cpp
-	"igyba_thorlabs_wxApp.h"
-	"igyba_thorlabs_wxMain.h"
+1566221691 source:c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxapp.cpp
+	"igyba_wxApp.h"
+	"igyba_wxMain.h"
 	<wx/image.h>
 
-1566225182 c:\users\schaecl\documents\github\igyba\thorlabs_wx\igyba_thorlabs_wxapp.h
+1566225182 c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxapp.h
 	<wx/app.h>
 
 1544373608 c:\wxwidgets\include\wx\app.h
@@ -1676,7 +1676,7 @@
 1544373608 c:\wxwidgets\include\wx\univ\theme.h
 	"wx/string.h"
 
-1566393349 c:\users\schaecl\documents\github\igyba\thorlabs_wx\igyba_thorlabs_wxmain.h
+1566549867 c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxmain.h
 	<wx/button.h>
 	<wx/frame.h>
 	<wx/gbsizer.h>
@@ -2235,8 +2235,8 @@
 	<stdint.h>
 	<windows.h>
 
-1566398979 source:c:\users\schaecl\documents\github\igyba\thorlabs_wx\igyba_thorlabs_wxmain.cpp
-	"igyba_thorlabs_wxMain.h"
+1566549714 source:c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxmain.cpp
+	"igyba_wxMain.h"
 	<wx/msgdlg.h>
 	<wx/filedlg.h>
 	<wx/aboutdlg.h>
@@ -2431,7 +2431,7 @@
 	"wx/app.h"
 	"wx/icon.h"
 
-1565947722 source:c:\users\schaecl\documents\github\igyba\thorlabs_wx\resource.rc
+1566550358 source:c:\users\schaecl\documents\github\igyba\igyba_wx\resource.rc
 	"wx/msw/wx.rc"
 
 1544373608 c:\wxwidgets\include\wx\msw\wx.rc
@@ -2440,7 +2440,11 @@
 
 1544373608 c:\wxwidgets\include\wx\msw\rcdefs.h
 
-1566375947 source:c:\users\schaecl\documents\github\igyba\thorlabs_wx\src\led.cpp
+1566375947 source:c:\users\schaecl\documents\github\igyba\igyba_wx\src\led.cpp
 	<wx/led.h>
 	<string.h>
+
+1566490334 source:c:\users\schaecl\documents\github\igyba\ids_cam\ids_cam.cpp
+	"ids_cam.h"
+	<assert.h>
 

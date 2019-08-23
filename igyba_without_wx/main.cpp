@@ -32,8 +32,11 @@ int main(int argc, char **argv)
 {
     iprint(stdout, "%s read:\n", PROJECT_NAME.c_str());
         for(int i = 0; i < argc; i++)
-            iprint(stdout, "  argv[%i] = '%s'\n%c", i, argv[i],
-                    (i == argc - 1) ? '\n' : ' ');
+            iprint(stdout,
+                   "  argv[%i] = '%s'\n%c",
+                   i,
+                   argv[i],
+                   (i == argc - 1) ? '\n' : ' ');
 
     thorlabs_cam t_cam;
     t_cam.init_Camera();
@@ -52,15 +55,15 @@ int main(int argc, char **argv)
     if(t_cam.caught_Error())
     {
         error_msg("error(s) in the camera initialisation detected. " \
-                    "messages sent to 'stderr'.\n" \
-                    "is the camera connected?\nexiting.",
-                    ERR_ARG);
+                  "messages sent to 'stderr'.\n" \
+                  "is the camera connected?\nexiting.",
+                  ERR_ARG);
         return EXIT_FAILURE;
     }
     else if(!t_cam.get_Image())
     {
         error_msg("can't get an image from thorlabs_cam instance. good bye.",
-                    ERR_ARG);
+                  ERR_ARG);
         return EXIT_FAILURE;
     }
 
@@ -78,7 +81,8 @@ int main(int argc, char **argv)
                 CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO);
 
     setMouseCallback(t_cam.get_MainWindowName(),
-                    t_cam.cast_static_set_MouseEvent, &t_cam);
+                     t_cam.cast_static_set_MouseEvent,
+                     &t_cam);
     /* Camera track bars. */
     t_cam.create_TrackbarExposure();
     /* Image processing track bars. */
@@ -91,7 +95,8 @@ int main(int argc, char **argv)
     std::thread thread_Viewer(grabber::schedule_Viewer, argc, argv);
     std::thread thread_Copy(grabber::copy_DataToViewer);
     std::thread thread_Minime(grabber::schedule_Minime,
-                            1.064, t_cam.get_PixelPitch());
+                              1.064,
+                              t_cam.get_PixelPitch());
 
     uint32_t kctrl = 0;
     for(;;)
@@ -101,7 +106,7 @@ int main(int argc, char **argv)
             if(!t_cam.get_Image(t_cam.in))
             {
                 error_msg("can't get an image from thorlabs_cam instance",
-                            ERR_ARG);
+                          ERR_ARG);
                 break;
             }
             t_cam.increment_Frames();
@@ -135,7 +140,7 @@ int main(int argc, char **argv)
                 break;
             case '0': // 1048624
                 resizeWindow(t_cam.get_MainWindowName(),
-                                t_cam.get_Width(), t_cam.get_Height());
+                             t_cam.get_Width(), t_cam.get_Height());
                 break;
             case 'o': // 1048603
                 t_cam.toggle_Smoothing();

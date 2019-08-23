@@ -24,3 +24,6 @@
 *.exe
 *.out
 *.app
+
+# Codeblocks
+*.layout
