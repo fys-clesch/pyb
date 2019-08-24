@@ -299,7 +299,7 @@ igyba_wxFrame::igyba_wxFrame(int argc,
     StaticBoxSizerExpTime->Add(GridBagSizerExpTime, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerCamera->Add(StaticBoxSizerExpTime, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
     StaticBoxSizerCamInfo = new wxStaticBoxSizer(wxHORIZONTAL, PanelCamera, _("Information"));
-    TextCtrlCamInfo = new wxTextCtrl(PanelCamera, ID_TEXTCTRL_CAM_INFO, _("Loading..."), wxDefaultPosition, wxSize(-1,50), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_CAM_INFO"));
+    TextCtrlCamInfo = new wxTextCtrl(PanelCamera, ID_TEXTCTRL_CAM_INFO, _("Loading..."), wxDefaultPosition, wxSize(-1,90), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_CAM_INFO"));
     TextCtrlCamInfo->SetMaxLength(512);
     TextCtrlCamInfo->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
     StaticBoxSizerCamInfo->Add(TextCtrlCamInfo, 1, wxALL|wxEXPAND, 5);
@@ -404,6 +404,7 @@ igyba_wxFrame::igyba_wxFrame(int argc,
     Connect(ID_TOGGLEBUTTON_BACKGROUND,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnToggleButtonBackgroundToggle);
     Connect(ID_BUTTON_DEC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonDecExpTimeClick);
     Connect(ID_BUTTON_INC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonIncExpTimeClick);
+    Connect(ID_TEXTCTRL_CAM_INFO,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&igyba_wxFrame::OnTextCtrlCamInfoText);
     Connect(ID_TOGGLEBUTTON_SMOOTHING,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnToggleButtonSmoothingToggle);
     Connect(ID_BUTTON_DEC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonDecKernelSizeClick);
     Connect(ID_BUTTON_INC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonIncKernelSizeClick);
@@ -415,6 +416,7 @@ igyba_wxFrame::igyba_wxFrame(int argc,
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,wxCommandEventHandler(igyba_wxFrame::OnAbout));
     Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&igyba_wxFrame::OnCloseMainFrame);
     //*)
+    /* Proper way to cast: wxCommandEventHandler(igyba_wxFrame::OnAbout) */
 
     thread_Cam = std::thread(igyba_wxFrame::schedule_CamThread,
                              m_argc,
@@ -1607,4 +1609,9 @@ bool igyba_wxFrame::load_CloseCamState(void)
 bool igyba_wxFrame::load_SelectRoi(void)
 {
     return select_roi.load(std::memory_order_acquire);
+}
+
+void igyba_wxFrame::OnTextCtrlCamInfoText(wxCommandEvent& event)
+{
+
 }

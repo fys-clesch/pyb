@@ -24,5 +24,5 @@ BEGIN
   END
 END
 
-/* this provides the look of the application */
+/* This provides the look of the application */
 #include "wx/msw/wx.rc"
