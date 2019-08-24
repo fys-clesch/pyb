@@ -71,7 +71,7 @@ class grabber
         void toggle_Grabbing(void);
         bool signal_ViewerThreadIfWait(void);
         void gnuplot_Image(const save_Im_type mtype,
-                            const std::string &fname = "");
+                           const std::string &fname = "");
         void get_Moments(void);
         void draw_Moments(const bool chatty = true);
         void draw_Info(void);
@@ -90,8 +90,10 @@ class grabber
                                                void *u);
         /* accessed by wxWidgets */
         bool get_RoiActive(void);
-        void get_RectRoi(int *res_pt sx, int *res_pt sy,
-                        int *res_pt rw, int *res_pt rh);
+        void get_RectRoi(int *res_pt sx,
+                         int *res_pt sy,
+                         int *res_pt rw,
+                         int *res_pt rh);
         uint get_KernelSizeAtomic(uint *res_pt sze_min, uint *res_pt sze_max);
         void get_GroundliftRangeAtomic(double *res_pt gl_current,
                                        double *res_pt gl_max);
@@ -169,18 +171,18 @@ class grabber
         constexpr static uint16_t mat_typ = CV_32FC1;
 
         cv::Mat fp_in, /**< A floating point copy of the input. */
-            bground, /**< A background matrix of floating point type. */
-            work, /**< The matrix that is to be worked on. */
-            work_roi, /**< A copy of 'work' but with a specific AOI. */
-            work_roi_tflip, /**< Similar to 'work_roi' but flipped. */
-            rgb, /**< The input in RGB format. To be drawn on. */
-            temp_CV_32FC3,
-            temp_CV_32FC1,
-            temp_CV_16UC3,
-            covar,
-            eigenv,
-            beam_parameter,
-            tbar_win_mat;
+                bground, /**< A background matrix of floating point type. */
+                work, /**< The matrix that is to be worked on. */
+                work_roi, /**< A copy of 'work' but with a specific AOI. */
+                work_roi_tflip, /**< Similar to 'work_roi' but flipped. */
+                rgb, /**< The input in RGB format. To be drawn on. */
+                temp_CV_32FC3,
+                temp_CV_32FC1,
+                temp_CV_16UC3,
+                covar,
+                eigenv,
+                beam_parameter,
+                tbar_win_mat;
 
         cv::Point2d centroid;
 
@@ -211,7 +213,9 @@ class grabber
         void fill_DataForViewer(const uint nrows, const uint ncols);
         void produce_Mat_Work(void);
         void get_Moments_own(void);
-        void set_MouseEvent(const int event, const int x, const int y,
+        void set_MouseEvent(const int event,
+                            const int x,
+                            const int y,
                             const int flags);
         void show_HelpOnCurses(void);
         cv::Mat get_Mat_private(const save_Im_type mtype);

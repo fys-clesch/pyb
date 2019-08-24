@@ -19,14 +19,12 @@
 /** @todo add Zernike fit to cope with a tilted background */
 
 #include "../src/header.hpp"
-#include "../thorlabs_cam/thorlabs_cam.h"
+#include "../ids_cam/ids_cam.h"
 #ifndef IGYBA_NDEBUG
-#include "../grabber/src/test.h"
+ #include "../grabber/src/test.h"
 #endif
 
-using namespace cv;
-
-static const std::string main_win_title = "igyba - Thorlabs cameras";
+static const std::string main_win_title = "igyba - IDS cameras";
 
 int main(int argc, char **argv)
 {
@@ -38,9 +36,9 @@ int main(int argc, char **argv)
                    argv[i],
                    (i == argc - 1) ? '\n' : ' ');
 
-    thorlabs_cam t_cam;
+    ids_cam t_cam;
     t_cam.init_Camera();
-
+    t_cam.set_PixelClock("min");
     t_cam.show_Intro();
     t_cam.show_Help();
 
@@ -72,17 +70,17 @@ int main(int argc, char **argv)
     t_cam.update_Mats_RgbAndFp();
     t_cam.set_MainWindowName(main_win_title);
     /* Track bar setup. */
-    namedWindow(t_cam.get_TrackbarWindowName(), CV_WINDOW_AUTOSIZE);
+    cv::namedWindow(t_cam.get_TrackbarWindowName(), cv::WINDOW_AUTOSIZE);
     t_cam.show_Trackbars();
-    namedWindow(t_cam.get_CameraInfoWindowName(), CV_WINDOW_AUTOSIZE);
+    namedWindow(t_cam.get_CameraInfoWindowName(), cv::WINDOW_AUTOSIZE);
     t_cam.show_CameraTrackbars();
     /* Main window setup. */
-    namedWindow(t_cam.get_MainWindowName(),
-                CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO);
+    cv::namedWindow(t_cam.get_MainWindowName(),
+                    cv::WINDOW_NORMAL | cv::WINDOW_KEEPRATIO);
 
-    setMouseCallback(t_cam.get_MainWindowName(),
-                     t_cam.cast_static_set_MouseEvent,
-                     &t_cam);
+    cv::setMouseCallback(t_cam.get_MainWindowName(),
+                         t_cam.cast_static_set_MouseEvent,
+                         &t_cam);
     /* Camera track bars. */
     t_cam.create_TrackbarExposure();
     /* Image processing track bars. */
@@ -139,8 +137,9 @@ int main(int argc, char **argv)
                 t_cam.show_Help();
                 break;
             case '0': // 1048624
-                resizeWindow(t_cam.get_MainWindowName(),
-                             t_cam.get_Width(), t_cam.get_Height());
+                cv::resizeWindow(t_cam.get_MainWindowName(),
+                                 t_cam.get_Width(),
+                                 t_cam.get_Height());
                 break;
             case 'o': // 1048603
                 t_cam.toggle_Smoothing();
@@ -171,17 +170,17 @@ int main(int argc, char **argv)
                 t_cam.show_Trackbars();
 //              Mat im_mom_o;
 //              get_Moments_own(t_cam.get_Mat_private(t_cam.WORK),
-//                                  im_mom_o, t_cam.get_PixelPitch(), false);
-//              get_Moments(t_cam.get_Mat_private(t_cam.WORK),
 //                              im_mom_o, t_cam.get_PixelPitch(), false);
-//              imshow("draw_moments_own", im_mom_o);
+//              cv::get_Moments(t_cam.get_Mat_private(t_cam.WORK),
+//                              im_mom_o, t_cam.get_PixelPitch(), false);
+//              cv::imshow("draw_moments_own", im_mom_o);
         }
 
         #if SHOW_WAIT_KEY
         iprint(stdout, "kctrl: %u\n", kctrl);
         #endif
 
-        kctrl = waitKey(20);
+        kctrl = cv::waitKey(20);
         if(kctrl == 27 || kctrl == 1048603)
             break;
 
@@ -191,9 +190,9 @@ int main(int argc, char **argv)
             break;
     }
 
-    destroyWindow(t_cam.get_TrackbarWindowName());
-    destroyWindow(t_cam.get_CameraInfoWindowName());
-    destroyWindow(t_cam.get_MainWindowName());
+    cv::destroyWindow(t_cam.get_TrackbarWindowName());
+    cv::destroyWindow(t_cam.get_CameraInfoWindowName());
+    cv::destroyWindow(t_cam.get_MainWindowName());
 
     iprint(stdout, "i made %lu turns\n", t_cam.get_Frames());
 

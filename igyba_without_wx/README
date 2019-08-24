@@ -12,56 +12,4 @@ shift + s : saves the image that is worked on, i.e. a floating point matrix
 Requires
 ========
 
-fftw3, freeglut, OpenCV
-
-Linux
-=====
-
-Built from source or install it via the repository, e.g. on Ubuntu via
-sudo apt-get install fftw3 opencv freeglut ...
-Linking is done as:
-- See the Code::Blocks dependence
-
-Windows
-=======
-
-OpenCV
-------
-
-In short (assuming you have a compiler like mingw64):
-- Download OpenCV and CMake
-- Add CMake to your path
-- Configure OpenCV with CMake for MinGW make
-- Generate the build
-- use mingw32-make in the folder where the binaries are to be build
-- invoke mingw32-make install
-- collect all the stuff from the install folder
-- if you like, call mingw32-make clean
-
-fftw
-----
-
-1) Build fftw from source via MSYS. The routine follows the typical ./configure ./make procedure. You'll find the build files in the local folder of MSYS.
-Just copy and paste them from there into the global include, lib and bin folder if you like. The *.dll goes into the bin, the .a (if any) goes into the lib and the header has to be copied
-into the include folder.
-
-2) Download the binaries from http://www.fftw.org/.
-The *.dll goes into the bin folder of your compiler. The GL folder goes into the include folder of your compiler.
-When using mingw64 as a compiler suite for Windows, make sure that the GL folder sits in e.g. mingw64\x86_64-w64-mingw32\include
-and not mingw64\include.
-The *.a finally goes into mingw64\x86_64-w64-mingw32\lib (again, assuming the mingw64 suite) folder.
-
-Linking should be done as follows:
--lfreeglut -glu32 -opengl32
-Please notice than when building freeglut from source, you have to rename the first linker to -lglut.
-
-
-freeglut
---------
-
-pdcurses
---------
-
-On Linux: Be sure that the X libraries are installed. Then call
-./configure -x-libraries=/usr/lib/x86_64-linux-gnu/
-followed by the common make procedure
+freeglut, OpenCV

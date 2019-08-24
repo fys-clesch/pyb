@@ -5,8 +5,12 @@ void test_pic1(void);
 void test_pic2(void);
 void test_pic3(void);
 void test_vid(void);
-void draw_Moments(cv::Mat &out, const cv::Mat &beampar,
-                const cv::Point2d &centroid, const cv::Mat &eig,
-                const cv::Mat &covar, const double &theta, const double &scale,
-                const double &ecc,
-                const bool chatty);
+void draw_Moments(cv::Mat &out,
+                  const cv::Mat &beampar,
+                  const cv::Point2d &centroid,
+                  const cv::Mat &eig,
+                  const cv::Mat &covar,
+                  const double &theta,
+                  const double &scale,
+                  const double &ecc,
+                  const bool chatty);

@@ -15,7 +15,7 @@
 #include <wx/button.h>
 #include <wx/frame.h>
 #include <wx/gbsizer.h>
-#include <wx/led.h>
+#include "src/led.h"
 #include <wx/menu.h>
 #include <wx/notebook.h>
 #include <wx/panel.h>

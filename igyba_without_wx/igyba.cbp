@@ -17,20 +17,26 @@
 					<Add option="-pg" />
 					<Add option="-g" />
 					<Add option="-fopenmp" />
-					<Add directory="C:/MinGW/mingw64/opencv/x64/mingw/bin" />
-					<Add directory="C:/MinGW/mingw64/opencv/include" />
+					<Add option="-DUSE_DEPRECATED_FUNCTIONS" />
+					<Add directory="C:/Libraries/OpenCV/include" />
+					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
 					<Add option="-fopenmp" />
-					<Add library="opencv_highgui2411" />
-					<Add library="opencv_imgproc2411" />
-					<Add library="opencv_core2411" />
-					<Add library="uc480_64" />
+					<Add library="opencv_highgui411" />
+					<Add library="opencv_imgproc411" />
+					<Add library="opencv_imgcodecs411" />
+					<Add library="opencv_videoio411" />
+					<Add library="opencv_core411" />
+					<Add library="C:/Program Files/IDS/uEye/Develop/Lib/uEye_api_64.lib" />
 					<Add library="freeglut" />
 					<Add library="glu32" />
 					<Add library="opengl32" />
-					<Add directory="C:/MinGW/mingw64/opencv/x64/mingw/lib" />
+					<Add directory="C:/Libraries/OpenCV/x64/mingw/lib" />
+					<Add directory="C:/Libraries/OpenCV/x64/mingw/bin" />
+					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/lib" />
+					<Add directory="C:/Libraries/freeglut/bin" />
 				</Linker>
 			</Target>
 			<Target title="Debug_Ubu">
@@ -56,7 +62,7 @@
 					<Add library="glut" />
 				</Linker>
 			</Target>
-			<Target title="Release_Win">
+			<Target title="Debug_Win_wo_Terminal">
 				<Option platforms="Windows;" />
 				<Option output="bin/igyba" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
@@ -64,95 +70,30 @@
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
-					<Add option="-O3" />
 					<Add option="-pg" />
 					<Add option="-g" />
 					<Add option="-fopenmp" />
-					<Add option="-DIGYBA_NDEBUG" />
-					<Add option="-DNDEBUG" />
-					<Add directory="C:/MinGW/mingw64/opencv/x64/mingw/bin" />
-					<Add directory="C:/MinGW/mingw64/opencv/include" />
+					<Add option="-DUSE_DEPRECATED_FUNCTIONS" />
+					<Add directory="C:/Libraries/OpenCV/include" />
+					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
 					<Add option="-fopenmp" />
-					<Add library="uc480_64" />
-					<Add library="freeglut" />
-					<Add library="glu32" />
-					<Add library="opengl32" />
-					<Add library="opencv_highgui2411" />
-					<Add library="opencv_imgproc2411" />
-					<Add library="opencv_core2411" />
-					<Add directory="C:/MinGW/mingw64/opencv/x64/mingw/lib" />
-				</Linker>
-			</Target>
-			<Target title="Debug_Win_WO_win">
-				<Option platforms="Windows;" />
-				<Option output="bin/igyba" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/" />
-				<Option type="1" />
-				<Option compiler="gcc" />
-				<Option projectLinkerOptionsRelation="2" />
-				<Compiler>
-					<Add option="-g" />
-					<Add option="-fopenmp" />
-					<Add directory="C:/MinGW/mingw64/opencv/x64/mingw/bin" />
-					<Add directory="C:/MinGW/mingw64/opencv/include" />
-				</Compiler>
-				<Linker>
-					<Add option="-fopenmp" />
 					<Add option="-mwindows" />
-					<Add library="opencv_highgui2411" />
-					<Add library="opencv_imgproc2411" />
-					<Add library="opencv_core2411" />
-					<Add library="uc480_64" />
+					<Add library="opencv_highgui411" />
+					<Add library="opencv_imgproc411" />
+					<Add library="opencv_imgcodecs411" />
+					<Add library="opencv_videoio411" />
+					<Add library="opencv_core411" />
+					<Add library="C:/Program Files/IDS/uEye/Develop/Lib/uEye_api_64.lib" />
 					<Add library="freeglut" />
 					<Add library="glu32" />
 					<Add library="opengl32" />
-					<Add library="gdi32" />
-					<Add directory="C:/MinGW/mingw64/opencv/x64/mingw/lib" />
-				</Linker>
-			</Target>
-			<Target title="Release_Win_Static">
-				<Option platforms="Windows;" />
-				<Option output="bin/igyba" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/" />
-				<Option type="1" />
-				<Option compiler="gcc" />
-				<Option projectLinkerOptionsRelation="2" />
-				<Compiler>
-					<Add option="-O3" />
-					<Add option="-fopenmp" />
-					<Add option="-DIGYBA_NDEBUG" />
-					<Add option="-DNDEBUG" />
-					<Add option="-DFREEGLUT_STATIC" />
-					<Add directory="C:/MinGW/mingw64/opencv_static/x64/mingw/bin" />
-					<Add directory="C:/MinGW/mingw64/opencv_static/include" />
-				</Compiler>
-				<Linker>
-					<Add option="-s" />
-					<Add option="-fopenmp" />
-					<Add option="-static-libgcc" />
-					<Add option="-static-libstdc++" />
-					<Add library="uc480_64" />
-					<Add library="opencv_highgui2411" />
-					<Add library="opencv_imgproc2411" />
-					<Add library="opencv_core2411" />
-					<Add library="IlmImf" />
-					<Add library="liblibpng" />
-					<Add library="liblibjasper" />
-					<Add library="liblibjpeg" />
-					<Add library="liblibtiff" />
-					<Add library="zlib" />
-					<Add library="freeglut_static" />
-					<Add library="comctl32" />
-					<Add library="gdi32" />
-					<Add library="glu32" />
-					<Add library="opengl32" />
-					<Add library="winpthread" />
-					<Add library="gomp" />
-					<Add library="winmm" />
-					<Add directory="C:/MinGW/mingw64/opencv_static/x64/mingw/staticlib" />
+					<Add directory="C:/Libraries/OpenCV/x64/mingw/lib" />
+					<Add directory="C:/Libraries/OpenCV/x64/mingw/bin" />
+					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/lib" />
+					<Add directory="C:/Libraries/freeglut/bin" />
 				</Linker>
 			</Target>
 		</Build>
@@ -164,12 +105,11 @@
 		</Compiler>
 		<Unit filename="../grabber/src/grabber_class.cpp" />
 		<Unit filename="../grabber/src/grabber_class.h" />
-		<Unit filename="../grabber/src/test.cpp">
-			<Option target="Debug_Win" />
-			<Option target="Debug_Ubu" />
-			<Option target="Debug_Win_WO_win" />
-		</Unit>
+		<Unit filename="../grabber/src/test.cpp" />
 		<Unit filename="../grabber/src/test.h" />
+		<Unit filename="../ids_cam/ids_cam.cpp" />
+		<Unit filename="../ids_cam/ids_cam.h" />
+		<Unit filename="../ids_cam/ueye.h" />
 		<Unit filename="../minime_pp/src/fifo_class.cpp" />
 		<Unit filename="../minime_pp/src/fifo_class.h" />
 		<Unit filename="../minime_pp/src/fit_fun_profile.cpp" />
@@ -205,9 +145,7 @@
 		<Unit filename="igyba_res.rc">
 			<Option compilerVar="WINDRES" />
 			<Option target="Debug_Win" />
-			<Option target="Release_Win" />
-			<Option target="Debug_Win_WO_win" />
-			<Option target="Release_Win_Static" />
+			<Option target="Debug_Win_wo_Terminal" />
 		</Unit>
 		<Unit filename="main.cpp" />
 		<Extensions>

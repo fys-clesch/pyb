@@ -409,14 +409,14 @@ void grabber::get_Moments_own(void)
     {
         warn_msg("norm is 0.", ERR_ARG);
         const double fscl = 1.5;
-        putText(rgb,
-                "norm is 0., no output",
-                cv::Point2d(.5 * in_cols, .5 * in_rows),
-                cv::FONT_HERSHEY_SIMPLEX,
-                fscl,
-                cv::Scalar_<double>(255., 0., 0.),
-                1,
-                cv::LINE_AA);
+        cv::putText(rgb,
+                    "norm is 0., no output",
+                    cv::Point2d(.5 * in_cols, .5 * in_rows),
+                    cv::FONT_HERSHEY_SIMPLEX,
+                    fscl,
+                    cv::Scalar_<double>(255., 0., 0.),
+                    1,
+                    cv::LINE_AA);
     }
     else
     {
@@ -656,42 +656,42 @@ void grabber::draw_Moments(const bool chatty)
 
     #define putText_ARGS cv::Point2d(sx, temp), font, fscl, clr_txt, lw, cv::LINE_AA
     infos = "theta / deg: " + convert_Double2Str(ell_theta);
-    putText(rgb, infos, putText_ARGS);
+    cv::putText(rgb, infos, putText_ARGS);
     temp += incy;
     infos = "eccentric / 1: " + convert_Double2Str(ell_ecc);
-    putText(rgb, infos, putText_ARGS);
+    cv::putText(rgb, infos, putText_ARGS);
     temp += incy;
     infos = "centroid / pix: (" +
             convert_Double2Str(centroid.x) + ", " +
             convert_Double2Str(centroid.y) + ")";
-    putText(rgb, infos, putText_ARGS);
+    cv::putText(rgb, infos, putText_ARGS);
     temp += incy;
     infos = "covariance / pix^2: [[" +
             convert_Double2Str(covar.at<double>(0, 0)) + ", " +
             convert_Double2Str(covar.at<double>(0, 1)) + "], [" +
             convert_Double2Str(covar.at<double>(1, 0)) + ", " +
             convert_Double2Str(covar.at<double>(1, 1)) + "]]";
-    putText(rgb, infos, putText_ARGS);
+    cv::putText(rgb, infos, putText_ARGS);
     temp += incy;
-    putText(rgb, "> beam radius", putText_ARGS);
+    cv::putText(rgb, "> beam radius", putText_ARGS);
     temp += incy;
     infos = "main axes / um: " +
             convert_Double2Str(scl_sqrt_eigenv.at<double>(0)) + ", " +
             convert_Double2Str(scl_sqrt_eigenv.at<double>(1));
-    putText(rgb, infos, putText_ARGS);
+    cv::putText(rgb, infos, putText_ARGS);
     temp += incy;
     infos = "global axes / um: " +
             convert_Double2Str(beam_parameter.at<double>(0)) + ", " +
             convert_Double2Str(beam_parameter.at<double>(1));
-    putText(rgb, infos, putText_ARGS);
+    cv::putText(rgb, infos, putText_ARGS);
 
     clr_txt = cv::Scalar_<double>(255., 0., 0.);
     temp += incy;
     if(in_cols <= sqrt(covar.at<double>(0, 0)))
-        putText(rgb, "sqrt(covar[0, 0]) > columns", putText_ARGS);
+        cv::putText(rgb, "sqrt(covar[0, 0]) > columns", putText_ARGS);
     temp += incy;
     if(in_rows <= sqrt(covar.at<double>(1, 1)))
-        putText(rgb, "sqrt(covar[1, 1]) > rows", putText_ARGS);
+        cv::putText(rgb, "sqrt(covar[1, 1]) > rows", putText_ARGS);
     #undef putText_ARGS
 }
 
@@ -720,10 +720,10 @@ void grabber::draw_Info(void)
         infos = "(" + convert_Int2Str(px_mouse) + ", " +
                 convert_Int2Str(py_mouse) + "): " +
                 convert_Double2Str(pval);
-        putText(rgb, infos, putText_ARGS);
+        cv::putText(rgb, infos, putText_ARGS);
     }
     else
-        putText(rgb, "out of focus", putText_ARGS);
+        cv::putText(rgb, "out of focus", putText_ARGS);
     draw_RoiRectangle();
     /* Information regarding too high pixel values. */
     const double minval = max_pval,
@@ -739,7 +739,7 @@ void grabber::draw_Info(void)
     sy = in_rows >> 1;
     fscl = .6;
     infos = "# pixels at max: " + convert_Int2Str(count_nz);
-    putText(rgb, infos, putText_ARGS);
+    cv::putText(rgb, infos, putText_ARGS);
     fscl = .45;
     #ifndef IGYBA_NDEBUG
     iprint(stdout,
@@ -761,41 +761,41 @@ void grabber::draw_Info(void)
 
         sx = 10.;
         sy = tbar_win_mat.rows - 10.;
-        putText(tbar_win_mat, blur_info, putText_ARGS);
+        cv::putText(tbar_win_mat, blur_info, putText_ARGS);
         sy -= 20.;
-        putText(tbar_win_mat, lift_info, putText_ARGS);
+        cv::putText(tbar_win_mat, lift_info, putText_ARGS);
     }
     else
     {
         sx = 10.;
         sy = tbar_win_mat.rows - 10;
-        putText(tbar_win_mat, "no blurring", putText_ARGS);
+        cv::putText(tbar_win_mat, "no blurring", putText_ARGS);
     }
     /* Information regarding the background correction. */
     sy = tbar_win_mat.rows - 10. - 2. * 20.;
     if(bground_appl)
-        putText(tbar_win_mat, "background correction applied", putText_ARGS);
+        cv::putText(tbar_win_mat, "background correction applied", putText_ARGS);
     else if(bground_in)
-        putText(tbar_win_mat, "background loaded, not applied", putText_ARGS);
+        cv::putText(tbar_win_mat, "background loaded, not applied", putText_ARGS);
     else
-        putText(tbar_win_mat, "no background correction", putText_ARGS);
+        cv::putText(tbar_win_mat, "no background correction", putText_ARGS);
     /* Information regarding the ROI. */
     sy = tbar_win_mat.rows - 10. - 3. * 20.;
     if(!roi_on && !mouse_drag)
-        putText(tbar_win_mat, "no ROI selected", putText_ARGS);
+        cv::putText(tbar_win_mat, "no ROI selected", putText_ARGS);
     else if(mouse_drag)
-        putText(tbar_win_mat, "selecting ROI...", putText_ARGS);
+        cv::putText(tbar_win_mat, "selecting ROI...", putText_ARGS);
     else
     {
         infos = "(start / span) AOI width: (" +
                 convert_Int2Str(roi_rect.x) + ", " +
                 convert_Int2Str(roi_rect.width) + ") pixel";
-        putText(tbar_win_mat, infos, putText_ARGS);
+        cv::putText(tbar_win_mat, infos, putText_ARGS);
         sy -= 20.;
         infos = "(start / span) AOI height: (" +
                 convert_Int2Str(roi_rect.y) + ", " +
                 convert_Int2Str(roi_rect.height) + ") pixel";
-        putText(tbar_win_mat, infos, putText_ARGS);
+        cv::putText(tbar_win_mat, infos, putText_ARGS);
     }
     #undef putText_ARGS
 }
@@ -823,10 +823,10 @@ void grabber::draw_InfoWxVersion(void)
         infos = "(" + convert_Int2Str(px_mouse) + ", " +
         convert_Int2Str(py_mouse) + "): " +
         convert_Double2Str(pval);
-        putText(rgb, infos, putText_ARGS);
+        cv::putText(rgb, infos, putText_ARGS);
     }
     else
-        putText(rgb, "out of focus", putText_ARGS);
+        cv::putText(rgb, "out of focus", putText_ARGS);
     draw_RoiRectangle();
     /* Information regarding too high pixel values. */
     const double minval = max_pval,
@@ -842,7 +842,7 @@ void grabber::draw_InfoWxVersion(void)
     sy = in_rows >> 1;
     fscl = .6;
     infos = "# pixels at max: " + convert_Int2Str(count_nz);
-    putText(rgb, infos, putText_ARGS);
+    cv::putText(rgb, infos, putText_ARGS);
     fscl = .45;
     #ifndef IGYBA_NDEBUG
     iprint(stdout,
@@ -1095,95 +1095,95 @@ void grabber::show_Help(void)
 
         sx = textOrg.x;
         sy = 15.;
-        putText(img, text, putText_ARGS);
+        cv::putText(img, text, putText_ARGS);
         sy = 20.;
-        line(img, cv::Point(sx, sy), cv::Point(sx + 280., sy), clr_txt, lw, lt);
+        cv::line(img, cv::Point(sx, sy), cv::Point(sx + 280., sy), clr_txt, lw, lt);
     }
     sx = sxstart1;
     sy = 45.;
-    putText(img, "Keys that are supposed to work:", putText_ARGS);
+    cv::putText(img, "Keys that are supposed to work:", putText_ARGS);
 
     #define TO_NEXT_KEY sy += syinc2; sx = sxstart1;
     sy += 20.;
-    putText(img, " 'r':", putText_ARGS);
+    cv::putText(img, " 'r':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "saves the image that's grabbed when pressing 'r' and", putText_ARGS);
+    cv::putText(img, "saves the image that's grabbed when pressing 'r' and", putText_ARGS);
     sy += syinc1;
-    putText(img, "subtracts it from the proceeding captures", putText_ARGS);
+    cv::putText(img, "subtracts it from the proceeding captures", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " 'R':", putText_ARGS);
+    cv::putText(img, " 'R':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "if a background correction is applied, this removes it", putText_ARGS);
+    cv::putText(img, "if a background correction is applied, this removes it", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " 's':", putText_ARGS);
+    cv::putText(img, " 's':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "save the image that's currently displayed to the active directory", putText_ARGS);
+    cv::putText(img, "save the image that's currently displayed to the active directory", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " 'S':", putText_ARGS);
+    cv::putText(img, " 'S':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "save the 'WORK' matrix as an image", putText_ARGS);
+    cv::putText(img, "save the 'WORK' matrix as an image", putText_ARGS);
     sy += syinc1;
-    putText(img, "to the active directory", putText_ARGS);
+    cv::putText(img, "to the active directory", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " 'o':", putText_ARGS);
+    cv::putText(img, " 'o':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "toggles between a blurring of the acquired data", putText_ARGS);
+    cv::putText(img, "toggles between a blurring of the acquired data", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " 'X':", putText_ARGS);
+    cv::putText(img, " 'X':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "switches on the OpenGL rendering", putText_ARGS);
+    cv::putText(img, "switches on the OpenGL rendering", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " 'F':", putText_ARGS);
+    cv::putText(img, " 'F':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "starts a fitting procedure.", putText_ARGS);
+    cv::putText(img, "starts a fitting procedure.", putText_ARGS);
     sy += syinc1;
-    putText(img, "be sure that the input looks at least like a Gaussian.", putText_ARGS);
+    cv::putText(img, "be sure that the input looks at least like a Gaussian.", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " 'p':", putText_ARGS);
+    cv::putText(img, " 'p':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "toggle pause", putText_ARGS);
+    cv::putText(img, "toggle pause", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " 'P':", putText_ARGS);
+    cv::putText(img, " 'P':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "plots the 'WORK' matrix via gnuplot", putText_ARGS);
+    cv::putText(img, "plots the 'WORK' matrix via gnuplot", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " '1':", putText_ARGS);
+    cv::putText(img, " '1':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "save the 'RGB' matrix as an int-valued data file - (x y R G B) format", putText_ARGS);
+    cv::putText(img, "save the 'RGB' matrix as an int-valued data file - (x y R G B) format", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " '2':", putText_ARGS);
+    cv::putText(img, " '2':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "save the 'WORK' matrix as a fp-valued data file - matrix format", putText_ARGS);
+    cv::putText(img, "save the 'WORK' matrix as a fp-valued data file - matrix format", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " '3':", putText_ARGS);
+    cv::putText(img, " '3':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "save the 'FP_IN' matrix as a fp-valued data file - matrix format", putText_ARGS);
+    cv::putText(img, "save the 'FP_IN' matrix as a fp-valued data file - matrix format", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " '0':", putText_ARGS);
+    cv::putText(img, " '0':", putText_ARGS);
     sx = sxstart2;
-    putText(img, "reset the window size to the image size", putText_ARGS);
+    cv::putText(img, "reset the window size to the image size", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " 'F1':", putText_ARGS);
+    cv::putText(img, " 'F1':", putText_ARGS);
     sx = sxstart3;
-    putText(img, "display this beautiful help text. press 'F1' if it's enough.", putText_ARGS);
+    cv::putText(img, "display this beautiful help text. press 'F1' if it's enough.", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " 'Esc':", putText_ARGS);
+    cv::putText(img, " 'Esc':", putText_ARGS);
     sx = sxstart3;
-    putText(img, "gets you out of here", putText_ARGS);
+    cv::putText(img, "gets you out of here", putText_ARGS);
     TO_NEXT_KEY
-    putText(img, " 'Shift':", putText_ARGS);
+    cv::putText(img, " 'Shift':", putText_ARGS);
     sx = sxstart3;
-    putText(img, "drag the mouse and specify a ROI. draw a small ROI to get rid of it.", putText_ARGS);
+    cv::putText(img, "drag the mouse and specify a ROI. draw a small ROI to get rid of it.", putText_ARGS);
     #undef TO_NEXT_KEY
 
     sx = sxstart1;
     sy = wheight - 10.;
-    putText(img, "clemens@fh-muenster.de takes the blame.", putText_ARGS);
+    cv::putText(img, "clemens@fh-muenster.de takes the blame.", putText_ARGS);
 
-    imshow(win_title, img);
+    cv::imshow(win_title, img);
     while(true)
     {
-        uint32_t kctrl = cv::waitKey(0);
+        int kctrl = cv::waitKeyEx(0);
         if(kctrl == 7340032 || kctrl == 1114046) /**< The latter happens on some
             builds of OpenCV. */
             break;
