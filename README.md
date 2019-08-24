@@ -31,6 +31,8 @@ Projects and libraries used:
   - OpenCV for linear algebra and data structuring
   - freeglut for visualization in OpenGL
   - wxWidgets for the GUI
-  - mingw-std-threads for C++11 thread support on Windows
+  - mingw-std-threads for C++11 thread support on Windows (in case of Win32 threads)
   - OpenMP for multi core data processing in fit routines
   - gnuplot (if available on the machine) for plotting image captures
+
+At the moment, only the Windows part has been extensively tested.
