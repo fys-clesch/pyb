@@ -118,6 +118,7 @@ private:
         void OnToggleButtonViewerAnimationToggle(wxCommandEvent& event);
         void OnToggleButtonViewerRotationToggle(wxCommandEvent& event);
         void OnButtonViewerScreenshotClick(wxCommandEvent& event);
+        void OnTextCtrlCamInfoText(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(igyba_wxFrame)
