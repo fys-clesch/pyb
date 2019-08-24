@@ -15,7 +15,6 @@
 #include <wx/button.h>
 #include <wx/frame.h>
 #include <wx/gbsizer.h>
-#include "src/led.h"
 #include <wx/menu.h>
 #include <wx/notebook.h>
 #include <wx/panel.h>
@@ -27,6 +26,7 @@
 #include <wx/textctrl.h>
 #include <wx/tglbtn.h>
 //*)
+#include "src/led.h"
 
 #include "../src/header.hpp"
 #if USE_IDS_DRIVER
@@ -250,13 +250,15 @@ private:
     void update_TextGroundlift(const double val = -1.);
     void update_TextStdDev(const double val = -1.);
     void update_TextKernelSize(const uint val = 0);
-    void set_MouseEvent(const int event, const int x, const int y,
+    void set_MouseEvent(const int event,
+                        const int x,
+                        const int y,
                         const int flags);
 
     static void cast_static_set_MouseEvent(const int event,
-                                            const int x, const int y,
-                                            const int flags,
-                                            void *u);
+                                           const int x, const int y,
+                                           const int flags,
+                                           void *u);
     static void schedule_CamThread(int argc, char **argv);
 
     static wxString get_wxBuildInfo(void);

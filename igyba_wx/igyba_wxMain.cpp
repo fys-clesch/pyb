@@ -146,9 +146,9 @@ igyba_wxFrame::igyba_wxFrame(int argc,
 
     Create(parent, wxID_ANY, _("igyba 4 fingers"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     {
-        wxIcon FrameIcon;
-        FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("icon.ico"))));
-        SetIcon(FrameIcon);
+    	wxIcon FrameIcon;
+    	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("icon.ico"))));
+    	SetIcon(FrameIcon);
     }
     BoxSizerMain = new wxBoxSizer(wxHORIZONTAL);
     PanelMain = new wxPanel(this, ID_PANEL_MAIN, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_MAIN"));
