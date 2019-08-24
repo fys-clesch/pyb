@@ -91,7 +91,7 @@
 													<tooltip>Plot current processed image data</tooltip>
 													<handler function="OnButtonGnuplotClick" entry="EVT_BUTTON" />
 												</object>
-												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<flag>wxALL|wxEXPAND</flag>
 												<border>5</border>
 											</object>
 											<object class="sizeritem">
@@ -104,12 +104,12 @@
 															<bg>wxSYS_COLOUR_MENU</bg>
 															<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER</style>
 														</object>
-														<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxALL|wxEXPAND</flag>
 														<border>5</border>
 														<option>1</option>
 													</object>
 												</object>
-												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<flag>wxALL|wxEXPAND</flag>
 												<border>5</border>
 											</object>
 										</object>
@@ -134,7 +134,7 @@
 																		<tooltip>Toggle 3D live plot for the current AOI</tooltip>
 																		<handler function="OnToggleButtonViewerToggle" entry="EVT_TOGGLEBUTTON" />
 																	</object>
-																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																	<flag>wxALL|wxEXPAND</flag>
 																	<border>5</border>
 																</object>
 																<object class="sizeritem">
@@ -172,7 +172,7 @@
 																			<border>5</border>
 																		</object>
 																	</object>
-																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																	<flag>wxALL|wxEXPAND</flag>
 																	<border>5</border>
 																</object>
 																<object class="sizeritem">
@@ -189,7 +189,7 @@
 																			<border>5</border>
 																		</object>
 																	</object>
-																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																	<flag>wxALL|wxEXPAND</flag>
 																	<border>5</border>
 																</object>
 															</object>
@@ -208,7 +208,7 @@
 																		<tooltip>Start a fitting routine for the current AOI</tooltip>
 																		<handler function="OnButtonMinimeClick" entry="EVT_BUTTON" />
 																	</object>
-																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																	<flag>wxALL|wxEXPAND</flag>
 																	<border>5</border>
 																</object>
 															</object>
@@ -216,7 +216,7 @@
 														<label>Minime</label>
 													</object>
 												</object>
-												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<flag>wxALL|wxEXPAND</flag>
 												<option>1</option>
 											</object>
 										</object>
@@ -234,7 +234,7 @@
 													<tooltip>Resizes the camera display window</tooltip>
 													<handler function="OnButtonResizeCamWinClick" entry="EVT_BUTTON" />
 												</object>
-												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<flag>wxALL|wxEXPAND</flag>
 												<border>5</border>
 											</object>
 											<object class="sizeritem">
@@ -249,7 +249,7 @@
 															<bg>wxSYS_COLOUR_MENU</bg>
 															<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxTE_CENTRE|wxSTATIC_BORDER</style>
 														</object>
-														<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxALL|wxEXPAND</flag>
 														<border>5</border>
 														<option>1</option>
 													</object>
@@ -263,7 +263,7 @@
 														<border>5</border>
 													</object>
 												</object>
-												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<flag>wxALL|wxEXPAND</flag>
 												<border>5</border>
 											</object>
 										</object>
@@ -271,7 +271,7 @@
 									<label>AOI &amp;&amp; Window</label>
 								</object>
 							</object>
-							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<flag>wxALL|wxEXPAND</flag>
 							<option>1</option>
 						</object>
 						<object class="sizeritem">
@@ -284,14 +284,14 @@
 										<tooltip>Toggle frame grabbing</tooltip>
 										<handler function="OnToggleButtonFrameGrabToggle" entry="EVT_TOGGLEBUTTON" />
 									</object>
-									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED</flag>
 									<border>5</border>
 								</object>
 								<object class="sizeritem">
 									<object class="wxStaticLine" name="ID_STATICLINE2" variable="StaticLine2" member="yes">
 										<size>10,-1</size>
 									</object>
-									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED</flag>
 									<border>5</border>
 								</object>
 								<object class="sizeritem">
@@ -315,7 +315,7 @@
 												<on_or_off>0</on_or_off>
 												<enabled>0</enabled>
 											</object>
-											<flag>wxALL|wxSHAPED|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED|wxFIXED_MINSIZE</flag>
 											<border>5</border>
 										</object>
 										<object class="sizeritem">
@@ -333,12 +333,12 @@
 									<border>5</border>
 								</object>
 							</object>
-							<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED</flag>
 							<border>5</border>
 						</object>
 					</object>
 				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxALL|wxEXPAND</flag>
 			</object>
 			<object class="sizeritem">
 				<object class="wxNotebook" name="ID_NOTEBOOK_CAM_IMG" variable="NotebookCamImg" member="yes">
@@ -353,7 +353,7 @@
 										<tooltip>Toggle background subtraction</tooltip>
 										<handler function="OnToggleButtonBackgroundToggle" entry="EVT_TOGGLEBUTTON" />
 									</object>
-									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxEXPAND</flag>
 									<border>5</border>
 								</object>
 								<object class="sizeritem">
@@ -364,7 +364,7 @@
 											<object class="wxStaticText" name="ID_STATICTEXT_EXP_TIME_DISP" variable="StaticTextExpTimeDisp" member="yes">
 												<label>Time / ms</label>
 											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALL|wxEXPAND</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -411,7 +411,7 @@
 											<option>1</option>
 										</object>
 									</object>
-									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED</flag>
 									<border>5</border>
 								</object>
 								<object class="sizeritem">
@@ -421,16 +421,16 @@
 											<object class="wxTextCtrl" name="ID_TEXTCTRL_CAM_INFO" variable="TextCtrlCamInfo" member="yes">
 												<value>Loading...</value>
 												<maxlength>512</maxlength>
-												<size>-1,50</size>
+												<size>-1,80</size>
 												<bg>wxSYS_COLOUR_MENU</bg>
 												<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER</style>
 											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALL|wxEXPAND</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
 									</object>
-									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxEXPAND</flag>
 									<border>5</border>
 								</object>
 							</object>
@@ -449,7 +449,7 @@
 										<tooltip>Toggle smoothing and groundlift</tooltip>
 										<handler function="OnToggleButtonSmoothingToggle" entry="EVT_TOGGLEBUTTON" />
 									</object>
-									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxEXPAND</flag>
 									<border>5</border>
 								</object>
 								<object class="sizeritem">
@@ -460,7 +460,7 @@
 											<object class="wxStaticText" name="ID_STATICTEXT_KERNEL_SIZE" variable="StaticTextKernelSize" member="yes">
 												<label>Size / pixel</label>
 											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALL|wxEXPAND</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -483,6 +483,7 @@
 													<object class="wxSlider" name="ID_SLIDER_KERNEL_SIZE" variable="SliderKernelSize" member="yes">
 														<size>150,-1</size>
 														<enabled>0</enabled>
+														<tooltip>Changes the kernel size of a Gaussian filter</tooltip>
 													</object>
 													<col>1</col>
 													<row>0</row>
@@ -509,7 +510,7 @@
 											<option>1</option>
 										</object>
 									</object>
-									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED</flag>
 									<border>5</border>
 								</object>
 								<object class="sizeritem">
@@ -520,7 +521,7 @@
 											<object class="wxStaticText" name="ID_STATICTEXT_STD_DEV" variable="StaticTextStdDev" member="yes">
 												<label>Width / pixel</label>
 											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALL|wxEXPAND</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -543,6 +544,7 @@
 													<object class="wxSlider" name="ID_SLIDER_STD_DEV" variable="SliderStdDev" member="yes">
 														<size>150,-1</size>
 														<enabled>0</enabled>
+														<tooltip>Changes the standard deviation of a Gaussian filter</tooltip>
 													</object>
 													<col>1</col>
 													<row>0</row>
@@ -569,7 +571,7 @@
 											<option>1</option>
 										</object>
 									</object>
-									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED</flag>
 									<border>5</border>
 								</object>
 								<object class="sizeritem">
@@ -580,7 +582,7 @@
 											<object class="wxStaticText" name="ID_STATICTEXT_GROUNDLIFT" variable="StaticTextGroundlift" member="yes">
 												<label>Lift / counts</label>
 											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALL|wxEXPAND</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -603,6 +605,7 @@
 													<object class="wxSlider" name="ID_SLIDER_GROUNDLIFT" variable="SliderGroundlift" member="yes">
 														<size>150,-1</size>
 														<enabled>0</enabled>
+														<tooltip>All pixel below this value are set to 0</tooltip>
 													</object>
 													<col>1</col>
 													<row>0</row>
@@ -629,7 +632,7 @@
 											<option>1</option>
 										</object>
 									</object>
-									<flag>wxALL|wxSHAPED|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED</flag>
 									<border>5</border>
 								</object>
 							</object>
@@ -637,7 +640,7 @@
 						<label>Image manipulation</label>
 					</object>
 				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<option>1</option>
 			</object>
 		</object>

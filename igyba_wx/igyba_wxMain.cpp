@@ -299,7 +299,7 @@ igyba_wxFrame::igyba_wxFrame(int argc,
     StaticBoxSizerExpTime->Add(GridBagSizerExpTime, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerCamera->Add(StaticBoxSizerExpTime, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
     StaticBoxSizerCamInfo = new wxStaticBoxSizer(wxHORIZONTAL, PanelCamera, _("Information"));
-    TextCtrlCamInfo = new wxTextCtrl(PanelCamera, ID_TEXTCTRL_CAM_INFO, _("Loading..."), wxDefaultPosition, wxSize(-1,50), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_CAM_INFO"));
+    TextCtrlCamInfo = new wxTextCtrl(PanelCamera, ID_TEXTCTRL_CAM_INFO, _("Loading..."), wxDefaultPosition, wxSize(-1,80), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_CAM_INFO"));
     TextCtrlCamInfo->SetMaxLength(512);
     TextCtrlCamInfo->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
     StaticBoxSizerCamInfo->Add(TextCtrlCamInfo, 1, wxALL|wxEXPAND, 5);
@@ -321,6 +321,7 @@ igyba_wxFrame::igyba_wxFrame(int argc,
     GridBagSizerKernelSize->Add(ButtonDecKernelSize, wxGBPosition(0, 0), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     SliderKernelSize = new wxSlider(PanelImgManip, ID_SLIDER_KERNEL_SIZE, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_KERNEL_SIZE"));
     SliderKernelSize->Disable();
+    SliderKernelSize->SetToolTip(_("Changes the kernel size of a Gaussian filter"));
     GridBagSizerKernelSize->Add(SliderKernelSize, wxGBPosition(0, 1), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     ButtonIncKernelSize = new wxButton(PanelImgManip, ID_BUTTON_INC_KERNEL_SIZE, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_KERNEL_SIZE"));
     ButtonIncKernelSize->Disable();
@@ -336,6 +337,7 @@ igyba_wxFrame::igyba_wxFrame(int argc,
     GridBagSizerStdDev->Add(ButtonDecStdDev, wxGBPosition(0, 0), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     SliderStdDev = new wxSlider(PanelImgManip, ID_SLIDER_STD_DEV, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_STD_DEV"));
     SliderStdDev->Disable();
+    SliderStdDev->SetToolTip(_("Changes the standard deviation of a Gaussian filter"));
     GridBagSizerStdDev->Add(SliderStdDev, wxGBPosition(0, 1), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     ButtonIncStdDev = new wxButton(PanelImgManip, ID_BUTTON_INC_STD_DEV, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_STD_DEV"));
     ButtonIncStdDev->Disable();
@@ -351,6 +353,7 @@ igyba_wxFrame::igyba_wxFrame(int argc,
     GridBagSizerGroundlift->Add(ButtonDecGroundlift, wxGBPosition(0, 0), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     SliderGroundlift = new wxSlider(PanelImgManip, ID_SLIDER_GROUNDLIFT, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_GROUNDLIFT"));
     SliderGroundlift->Disable();
+    SliderGroundlift->SetToolTip(_("All pixel below this value are set to 0"));
     GridBagSizerGroundlift->Add(SliderGroundlift, wxGBPosition(0, 1), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     ButtonIncGroundlift = new wxButton(PanelImgManip, ID_BUTTON_INC_GROUNDLIFT, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_GROUNDLIFT"));
     ButtonIncGroundlift->Disable();
