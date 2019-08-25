@@ -187,7 +187,7 @@
 					<Add directory="C:/Libraries/OpenCV_static/x64/mingw/staticlib" />
 				</Linker>
 			</Target>
-			<Target title="Release_Linux">
+			<Target title="Debug_Linux">
 				<Option platforms="Unix;Mac;" />
 				<Option output="bin/igyba_wx" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
@@ -196,22 +196,24 @@
 				<Option parameters="test test" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
-					<Add option="-O3" />
+					<Add option="-pg" />
+					<Add option="-g" />
 					<Add option="`wx-config --cflags`" />
-					<Add option="-DIGYBA_NDEBUG" />
-					<Add option="-DNDEBUG" />
-					<Add directory="/usr/include/wx-3.0/" />
+					<Add option="-DUSE_DEPRECATED_FUNCTIONS" />
+					<Add directory="/usr/include/wx-3.0" />
 				</Compiler>
 				<Linker>
-					<Add option="-s" />
+					<Add option="-pg" />
 					<Add option="`wx-config --libs`" />
 					<Add library="opencv_highgui" />
+					<Add library="opencv_imgcodecs" />
 					<Add library="opencv_imgproc" />
+					<Add library="opencv_videoio" />
 					<Add library="opencv_core" />
-					<Add library="freeglut" />
-					<Add library="glu32" />
-					<Add library="opengl32" />
-					<Add library="uc480_64" />
+					<Add library="GL" />
+					<Add library="GLU" />
+					<Add library="glut" />
+					<Add library="ueye_api" />
 				</Linker>
 			</Target>
 		</Build>
