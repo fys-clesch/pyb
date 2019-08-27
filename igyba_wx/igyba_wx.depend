@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1566587800 source:c:\users\schaecl\documents\github\igyba\grabber\src\grabber_class.cpp
+1566835440 source:c:\users\schaecl\documents\github\igyba\grabber\src\grabber_class.cpp
 	"grabber_class.h"
 	<assert.h>
 	"curses.h"
 
-1566637513 c:\users\schaecl\documents\github\igyba\grabber\src\grabber_class.h
+1566835440 c:\users\schaecl\documents\github\igyba\grabber\src\grabber_class.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/imgproc/imgproc.hpp>
@@ -14,7 +14,7 @@
 	"../../minime_pp/src/minime_class.h"
 	"../../src/threadhand_class.h"
 
-1566503701 c:\users\schaecl\documents\github\igyba\src\header.hpp
+1566398950 c:\users\schaecl\documents\github\igyba\src\header.hpp
 	<stdio.h>
 	<stdarg.h>
 	<string>
@@ -22,7 +22,7 @@
 	<iomanip>
 	<sstream>
 
-1566503701 c:\users\schaecl\documents\github\igyba\viewer_pp\src\viewer_class.h
+1566398714 c:\users\schaecl\documents\github\igyba\viewer_pp\src\viewer_class.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<stdlib.h>
@@ -40,7 +40,7 @@
 	"../../src/header.hpp"
 	"../../src/threadhand_class.h"
 
-1566326376 c:\users\schaecl\documents\github\igyba\src\threadhand_class.h
+1566225089 c:\users\schaecl\documents\github\igyba\src\threadhand_class.h
 	<thread>
 	<condition_variable>
 	<mutex>
@@ -50,7 +50,7 @@
 	"mingw.mutex.h"
 	"mingw.condition_variable.h"
 
-1566036347 c:\users\schaecl\documents\github\igyba\src\mingw.thread.h
+1565947722 c:\users\schaecl\documents\github\igyba\src\mingw.thread.h
 	<windows.h>
 	<functional>
 	<memory>
@@ -58,14 +58,14 @@
 	<system_error>
 	<process.h>
 
-1566326376 c:\users\schaecl\documents\github\igyba\src\mingw.mutex.h
+1566225088 c:\users\schaecl\documents\github\igyba\src\mingw.mutex.h
 
-1566036347 c:\users\schaecl\documents\github\igyba\src\mingw.condition_variable.h
+1565947722 c:\users\schaecl\documents\github\igyba\src\mingw.condition_variable.h
 	<atomic>
 	<assert.h>
 	<condition_variable>
 
-1566326376 c:\users\schaecl\documents\github\igyba\minime_pp\src\minime_class.h
+1566225045 c:\users\schaecl\documents\github\igyba\minime_pp\src\minime_class.h
 	<stdlib.h>
 	<math.h>
 	<float.h>
@@ -75,7 +75,7 @@
 	"../../src/header.hpp"
 	"fifo_class.h"
 
-1566587800 c:\users\schaecl\documents\github\igyba\minime_pp\src\fifo_class.h
+1566576324 c:\users\schaecl\documents\github\igyba\minime_pp\src\fifo_class.h
 	<string.h>
 	<stdlib.h>
 	<cstdio>
@@ -88,56 +88,56 @@
 	<sys/stat.h>
 	<dir.h>
 
-1566503701 source:c:\users\schaecl\documents\github\igyba\grabber\src\test.cpp
+1566379444 source:c:\users\schaecl\documents\github\igyba\grabber\src\test.cpp
 	"grabber_class.h"
 	"test.h"
 
-1566642743 c:\users\schaecl\documents\github\igyba\grabber\src\test.h
+1566835440 c:\users\schaecl\documents\github\igyba\grabber\src\test.h
 
-1566587800 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\fifo_class.cpp
+1566576190 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\fifo_class.cpp
 	"fifo_class.h"
 
-1566326376 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\fit_fun_profile.cpp
+1566225044 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\fit_fun_profile.cpp
 	"minime_class.h"
 	"funcs.h"
 	"minimizer_s.h"
 
-1566326376 c:\users\schaecl\documents\github\igyba\minime_pp\src\funcs.h
+1566225045 c:\users\schaecl\documents\github\igyba\minime_pp\src\funcs.h
 
-1566326376 c:\users\schaecl\documents\github\igyba\minime_pp\src\minimizer_s.h
+1566225045 c:\users\schaecl\documents\github\igyba\minime_pp\src\minimizer_s.h
 
-1566326376 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\funcs.cpp
+1566225045 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\funcs.cpp
 	"minime_class.h"
 	"funcs.h"
 
-1566326376 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\gabe_class.cpp
+1566225045 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\gabe_class.cpp
 	"gabe_class.h"
 	"funcs.h"
 
-1566326376 c:\users\schaecl\documents\github\igyba\minime_pp\src\gabe_class.h
+1566225045 c:\users\schaecl\documents\github\igyba\minime_pp\src\gabe_class.h
 	"../../src/header.hpp"
 	<math.h>
 	<float.h>
 
-1566326376 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\minime_profile_class.cpp
+1566225045 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\minime_profile_class.cpp
 	"minime_class.h"
 
-1566326376 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\minime_propagation_class.cpp
+1566225045 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\minime_propagation_class.cpp
 	"minime_class.h"
 
-1566326376 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\minimizer_s.cpp
+1566225045 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\minimizer_s.cpp
 	"minime_class.h"
 	"minimizer_s.h"
 	"random.h"
 	<assert.h>
 
-1566036347 c:\users\schaecl\documents\github\igyba\minime_pp\src\random.h
+1565947722 c:\users\schaecl\documents\github\igyba\minime_pp\src\random.h
 
-1566326376 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\random.cpp
+1566225045 source:c:\users\schaecl\documents\github\igyba\minime_pp\src\random.cpp
 	<time.h>
 	"random.h"
 
-1566326376 source:c:\users\schaecl\documents\github\igyba\src\auxf.cpp
+1566225089 source:c:\users\schaecl\documents\github\igyba\src\auxf.cpp
 	<math.h>
 	<float.h>
 	<assert.h>
@@ -148,14 +148,14 @@
 	<sys/stat.h>
 	"header.hpp"
 
-1566326376 source:c:\users\schaecl\documents\github\igyba\src\threadhand_class.cpp
+1566225089 source:c:\users\schaecl\documents\github\igyba\src\threadhand_class.cpp
 	"threadhand_class.h"
 
-1566503701 source:c:\users\schaecl\documents\github\igyba\thorlabs_cam\thorlabs_cam.cpp
+1566470335 source:c:\users\schaecl\documents\github\igyba\thorlabs_cam\thorlabs_cam.cpp
 	"thorlabs_cam.h"
 	<assert.h>
 
-1566503701 c:\users\schaecl\documents\github\igyba\thorlabs_cam\thorlabs_cam.h
+1566470334 c:\users\schaecl\documents\github\igyba\thorlabs_cam\thorlabs_cam.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/highgui/highgui_c.h>
@@ -164,28 +164,28 @@
 	"ueye.h"
 	"uc480.h"
 
-1566503701 c:\users\schaecl\documents\github\igyba\thorlabs_cam\ueye.h
+1566379001 c:\users\schaecl\documents\github\igyba\thorlabs_cam\ueye.h
 	<unistd.h>
 	<stdint.h>
 	<windows.h>
 
-1566326376 c:\users\schaecl\documents\github\igyba\thorlabs_cam\uc480.h
+1566225131 c:\users\schaecl\documents\github\igyba\thorlabs_cam\uc480.h
 	<unistd.h>
 	<stdint.h>
 	<windows.h>
 
-1566326376 source:c:\users\schaecl\documents\github\igyba\viewer_pp\src\draw.cpp
+1566225208 source:c:\users\schaecl\documents\github\igyba\viewer_pp\src\draw.cpp
 	"viewer_class.h"
 
-1566503701 source:c:\users\schaecl\documents\github\igyba\viewer_pp\src\viewer_class.cpp
+1566398607 source:c:\users\schaecl\documents\github\igyba\viewer_pp\src\viewer_class.cpp
 	"viewer_class.h"
 
-1566642944 source:c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxapp.cpp
+1566563229 source:c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxapp.cpp
 	"igyba_wxApp.h"
 	"igyba_wxMain.h"
 	<wx/image.h>
 
-1566587800 c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxapp.h
+1566549826 c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxapp.h
 	<wx/app.h>
 
 1544373608 c:\wxwidgets\include\wx\app.h
@@ -1676,11 +1676,10 @@
 1544373608 c:\wxwidgets\include\wx\univ\theme.h
 	"wx/string.h"
 
-1566637122 c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxmain.h
+1566835440 c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxmain.h
 	<wx/button.h>
 	<wx/frame.h>
 	<wx/gbsizer.h>
-	"src/led.h"
 	<wx/menu.h>
 	<wx/notebook.h>
 	<wx/panel.h>
@@ -1691,6 +1690,7 @@
 	<wx/statusbr.h>
 	<wx/textctrl.h>
 	<wx/tglbtn.h>
+	"src/led.h"
 	"../src/header.hpp"
 	"../ids_cam/ids_cam.h"
 	"../thorlabs_cam/thorlabs_cam.h"
@@ -2221,7 +2221,7 @@
 1544373608 c:\wxwidgets\include\wx\qt\tglbtn.h
 	"wx/tglbtn.h"
 
-1566587800 c:\users\schaecl\documents\github\igyba\ids_cam\ids_cam.h
+1566556882 c:\users\schaecl\documents\github\igyba\ids_cam\ids_cam.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/highgui/highgui_c.h>
@@ -2229,13 +2229,13 @@
 	"../grabber/src/grabber_class.h"
 	"ueye.h"
 
-1566503701 c:\users\schaecl\documents\github\igyba\ids_cam\ueye.h
+1566393581 c:\users\schaecl\documents\github\igyba\ids_cam\ueye.h
 	<unistd.h>
 	<wchar.h>
 	<stdint.h>
 	<windows.h>
 
-1566587800 source:c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxmain.cpp
+1566835440 source:c:\users\schaecl\documents\github\igyba\igyba_wx\igyba_wxmain.cpp
 	"igyba_wxMain.h"
 	<wx/msgdlg.h>
 	<wx/filedlg.h>
@@ -2431,7 +2431,7 @@
 	"wx/app.h"
 	"wx/icon.h"
 
-1566587800 source:c:\users\schaecl\documents\github\igyba\igyba_wx\resource.rc
+1566835440 source:c:\users\schaecl\documents\github\igyba\igyba_wx\resource.rc
 	"wx/msw/wx.rc"
 
 1544373608 c:\wxwidgets\include\wx\msw\wx.rc
@@ -2440,15 +2440,15 @@
 
 1544373608 c:\wxwidgets\include\wx\msw\rcdefs.h
 
-1566637436 source:c:\users\schaecl\documents\github\igyba\igyba_wx\src\led.cpp
+1566835440 source:c:\users\schaecl\documents\github\igyba\igyba_wx\src\led.cpp
 	"led.h"
 	<string.h>
 
-1566587800 source:c:\users\schaecl\documents\github\igyba\ids_cam\ids_cam.cpp
+1566575208 source:c:\users\schaecl\documents\github\igyba\ids_cam\ids_cam.cpp
 	"ids_cam.h"
 	<assert.h>
 
-1566587800 c:\users\schaecl\documents\github\igyba\igyba_wx\src\led.h
+1566555799 c:\users\schaecl\documents\github\igyba\igyba_wx\src\led.h
 	<wx/window.h>
 	<wx/bitmap.h>
 	<wx/dcclient.h>

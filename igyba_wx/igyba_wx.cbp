@@ -149,6 +149,7 @@
 					<Add option="-s" />
 					<Add option="-static-libstdc++" />
 					<Add option="-static-libgcc" />
+					<Add option="-Wl,-Bstatic -lpthread -Wl,-Bstatic -lgomp" />
 					<Add library="wxmsw31u_richtext" />
 					<Add library="wxmsw31u_xrc" />
 					<Add library="wxmsw31u_aui" />
