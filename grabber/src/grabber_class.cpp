@@ -1476,7 +1476,7 @@ void grabber::fill_DataForViewer(const uint nrows, const uint ncols)
 }
 
 /** \brief The thread launched before starting the main loop to copy the data
-constantly to the viewer memory.
+ * constantly to the viewer memory.
  *
  * \param void
  * \return void

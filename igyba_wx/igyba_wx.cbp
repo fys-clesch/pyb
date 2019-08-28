@@ -136,20 +136,20 @@
 					<Add option="-DIGYBA_NDEBUG" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DFREEGLUT_STATIC" />
-					<Add directory="C:/Libraries/wxWidgets/lib/gcc_x64_dll/mswu" />
-					<Add directory="C:/Libraries/wxWidgets/include" />
+					<Add directory="C:/Libraries/wxWidgets_static/lib/gcc_x64_lib/mswu" />
+					<Add directory="C:/Libraries/wxWidgets_static/include" />
 					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/include" />
 					<Add directory="C:/Libraries/OpenCV_static/include" />
 				</Compiler>
 				<ResourceCompiler>
-					<Add directory="C:/Libraries/wxWidgets/lib/gcc_x64_dll/mswu" />
-					<Add directory="C:/Libraries/wxWidgets/include" />
+					<Add directory="C:/Libraries/wxWidgets_static/lib/gcc_x64_lib/mswu" />
+					<Add directory="C:/Libraries/wxWidgets_static/include" />
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
 					<Add option="-static-libstdc++" />
 					<Add option="-static-libgcc" />
-					<Add option="-Wl,-Bstatic -lpthread -Wl,-Bstatic -lgomp" />
+					<Add option="-Wl,-Bstatic -lpthread -Wl,-Bstatic -lgomp -Wl,-Bstatic -lwinpthread" />
 					<Add library="wxmsw31u_richtext" />
 					<Add library="wxmsw31u_xrc" />
 					<Add library="wxmsw31u_aui" />
@@ -161,6 +161,8 @@
 					<Add library="wxmsw31u_html" />
 					<Add library="wxmsw31u_core" />
 					<Add library="wxbase31u" />
+					<Add library="wxpng" />
+					<Add library="wxzlib" />
 					<Add library="opencv_highgui411" />
 					<Add library="opencv_imgcodecs411" />
 					<Add library="opencv_imgproc411" />
@@ -178,12 +180,18 @@
 					<Add library="zlib" />
 					<Add library="liblibwebp" />
 					<Add library="comdlg32" />
+					<Add library="comctl32" />
 					<Add library="gdi32" />
 					<Add library="winmm" />
-					<Add library="ole32" />
-					<Add library="oleaut32" />
 					<Add library="uuid" />
-					<Add directory="C:/Libraries/wxWidgets/lib/gcc_x64_dll" />
+					<Add library="ole32" />
+					<Add library="oleacc" />
+					<Add library="oleaut32" />
+					<Add library="shlwapi" />
+					<Add library="uxtheme" />
+					<Add library="version" />
+					<Add library="winspool" />
+					<Add directory="C:/Libraries/wxWidgets_static/lib/gcc_x64_lib" />
 					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/lib" />
 					<Add directory="C:/Libraries/OpenCV_static/x64/mingw/staticlib" />
 				</Linker>
