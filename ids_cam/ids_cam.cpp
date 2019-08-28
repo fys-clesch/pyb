@@ -34,11 +34,10 @@ ids_cam::ids_cam(void)
     supp_fine_inc_exp_time =
     err_break = false; /* 3 */
     /* uint16_t */
-    color_mod =
-    color_mod_test = IS_CM_SENSOR_RAW8;
+    color_mod = IS_CM_SENSOR_RAW8;
     color_mod_init =
     bits_p_pix =
-    pix_size = 0; /* 5 */
+    pix_size = 0; /* 4 */
     /* atomic<double> */
     fps_atm.store(0., std::memory_order_relaxed);
     dpix_size_atm.store(0., std::memory_order_relaxed);
@@ -173,7 +172,7 @@ void ids_cam::init_Camera(void)
 
     identify_CameraAOISettings();
 
-    dpix_size = pix_size * 1e-8 * 1e6; /**< Into meters then into um. */
+    dpix_size = pix_size * 1e-8 * 1e6; /**< Convert into meters then into um. */
     dpix_size_atm.store(dpix_size, std::memory_order_relaxed);
 
     err = is_GetCameraInfo(pcam, &b_info);
@@ -243,6 +242,9 @@ void ids_cam::print_CameraInfos(void)
 {
     #define PR_C "%-23s: "
     iprint(stdout,
+           "\n"
+           "Camera information\n"
+           "------------------\n"
            PR_C "%s\n" \
            PR_C "%s\n" \
            PR_C "%s\n" \
@@ -286,10 +288,10 @@ void ids_cam::set_ColourMode(void)
     err = is_SetColorMode(pcam, color_mod);
     if(err != IS_SUCCESS)
         error_msg("error setting colour mode", ERR_ARG);
-    if(color_mod_test != is_SetColorMode(pcam, IS_GET_COLOR_MODE))
+    if(color_mod != is_SetColorMode(pcam, IS_GET_COLOR_MODE))
         iprint(stderr,
                "error setting colour mode to %u\n",
-               color_mod_test);
+               color_mod);
 }
 
 /** \brief Set to auto-release camera and memory if camera is disconnected on-the-fly.
@@ -344,9 +346,10 @@ void ids_cam::alloc_ImageMem(void)
  * \param nx int *res_pt Number of entries in x direction.
  * \param ny int *res_pt Number of entries in x direction.
  * \param bits_p_pix int *res_pt Bits per pixel.
- * \param pixel_bit_pitch int *res_pt Pitch between each pixel measured in bits.
+ * \param pixel_bit_pitch int *res_pt Row increment of the image memory.
  * \return void
  *
+ * If NULL pointers are supplied, the inquired values are not copied.
  */
 void ids_cam::inquire_ImageMem(int *res_pt nx,
                                int *res_pt ny,
@@ -361,14 +364,17 @@ void ids_cam::inquire_ImageMem(int *res_pt nx,
         err_break = true;
     }
     iprint(stdout,
+           "\n" \
+           "Image memory settings\n" \
+           "---------------------\n" \
            "%s: %i\n" \
            "%s: %i\n" \
            "%s: %i\n" \
-           "%s: %i\n",
-           "x / entries", xo,
-           "y / entries", yo,
-           "bpp", bppo,
-           "pbb", pbpo);
+           "%s: %i\n\n",
+           "x / entries   ", xo,
+           "y / entries   ", yo,
+           "Bits per pixel", bppo,
+           "Row increment ", pbpo);
     if(nx)
         *nx = xo;
     if(ny)
@@ -542,7 +548,7 @@ void ids_cam::get_PixelClockRange(void)
 
 /** \brief Sets the pixel clock in MHz.
  *
- * \param pc const int
+ * \param pc const int Pixel clock to set.
  * \return void
  *
  */
@@ -607,7 +613,7 @@ void ids_cam::get_Fps(void)
 /** \brief Return the pixel pixel pitch in um.
  *
  * \param void
- * \return double
+ * \return double Pixel pitch in um
  *
  */
 double ids_cam::get_PixelPitch(void)
@@ -1117,6 +1123,16 @@ void ids_cam::cast_static_set_MouseEvent(const int event,
     (*ptr).set_MouseEvent(event, x, y, flags);
 }
 
+/** \brief The event function that handles the selection and drawing
+ * of the AOI.
+ *
+ * \param event const int Mouse event / state
+ * \param x const int X coordinate of the mouse pointer
+ * \param y const int Y coordinate of the mouse pointer
+ * \param flags const int A flag identifying keyboard input / keystrokes
+ * \return void
+ *
+ */
 void ids_cam::set_MouseEvent(const int event,
                              const int x,
                              const int y,

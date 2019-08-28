@@ -15,7 +15,11 @@
 
 /** @todo Add a mode matching call. */
 
-static igyba_wxFrame *itw1ptr = nullptr;
+static igyba_wxFrame *itw1ptr = nullptr; /**< Only used in schedule_CamThread
+                                              and launch_Cam functions. It gives
+                                              access to the camera member without
+                                              passing it. Declared static to prevent
+                                              from external use. */
 
 //(*IdInit(igyba_wxFrame)
 const long igyba_wxFrame::ID_BUTTON_SAVE_IMG_RGB = wxNewId();
@@ -439,6 +443,8 @@ igyba_wxFrame::~igyba_wxFrame(void)
     #endif
 }
 
+/** Update functions of the GUI. */
+
 void igyba_wxFrame::update_TextExpTime(const double val)
 {
     static double tmin, tmax, tinc;
@@ -540,6 +546,8 @@ void igyba_wxFrame::update_TextKernelSize(const uint val)
     StaticTextKernelSize->SetLabel(out);
 }
 
+/** Camera thread functions. */
+
 int igyba_wxFrame::launch_Cam(int argc, char **argv)
 {
     static const std::string main_win_title = "igyba - IDS cameras";
@@ -597,7 +605,8 @@ int igyba_wxFrame::launch_Cam(int argc, char **argv)
     update_TextCamInfo((*itw1ptr).t_cam.get_CameraInfo());
 
     /* Main window setup */
-    cv::namedWindow((*itw1ptr).t_cam.get_MainWindowName(), cv::WINDOW_NORMAL | cv::WINDOW_KEEPRATIO);
+    cv::namedWindow((*itw1ptr).t_cam.get_MainWindowName(),
+                    cv::WINDOW_NORMAL | cv::WINDOW_KEEPRATIO);
 
     cv::setMouseCallback((*itw1ptr).t_cam.get_MainWindowName(),
                          cast_static_set_MouseEvent,
@@ -893,6 +902,8 @@ void igyba_wxFrame::set_MouseEvent(const int event,
     }
     update_TextAOI();
 }
+
+/** Button, slider and other GUI functions. */
 
 wxString igyba_wxFrame::get_wxBuildInfo(void)
 {

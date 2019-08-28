@@ -49,9 +49,8 @@ class ids_cam : public grabber
                  bits_p_pix, /**< The total number of bits occupied at one pixel.
                                   Not all may be used,
                                   even when the value is e.g. 32 */
-                 color_mod, /**< control the colour mode of the images */
-                 color_mod_test,
-                 color_mod_init;
+                 color_mod, /**< Controls the colour mode of the images. */
+                 color_mod_init; /**< Initial colour mode of the camera. */
 
         double dpix_size, /**< Pixel size in um */
                fps,

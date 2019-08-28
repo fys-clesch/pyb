@@ -10,12 +10,12 @@ void get_Moments(const cv::Mat &im, cv::Mat &out, const double scale, const bool
         cv::Mat im_gray;
         printf("Mat has 3 channels\n");
         cv::cvtColor(im, im_gray, cv::COLOR_BGR2GRAY);
-        mom = moments(im_gray);
+        mom = cv::moments(im_gray);
     }
     else if(im.channels() == 1)
     {
         printf("Mat has 1 channel\n");
-        mom = moments(im);
+        mom = cv::moments(im);
     }
     else
     {
@@ -30,7 +30,7 @@ void get_Moments(const cv::Mat &im, cv::Mat &out, const double scale, const bool
                  mom.m11 / mom.m00 - cen[0] * cen[1],
                  mom.m11 / mom.m00 - cen[0] * cen[1],
                  mom.m02 / mom.m00 - POW2(cen[1]));
-    eigen(covar, eig);
+    cv::eigen(covar, eig);
 
     cv::Mat beampar = (cv::Mat_<double>(3, 1) <<
                        2. * sqrt(covar.at<double>(0, 0)),
@@ -40,7 +40,8 @@ void get_Moments(const cv::Mat &im, cv::Mat &out, const double scale, const bool
 
     sqrt(eig, eig);
 
-    double theta = 0., ecc = 0.,
+    double theta = 0.,
+           ecc = 0.,
            temp = covar.at<double>(0, 0) - covar.at<double>(1, 1);
 
     if(fabs(temp) >= DBL_EPSILON)
@@ -99,7 +100,12 @@ void get_Moments_own(const cv::Mat &im, cv::Mat &out, const double scale, const 
             warn_msg("norm is 0.!", ERR_ARG);
 
         cv::putText(out, "norm is 0., no output",
-                    cv::Point2d(sx, out.rows - 4.), font, fscl, clr_txt, 1, cv::LINE_AA);
+                    cv::Point2d(sx, out.rows - 4.),
+                    font,
+                    fscl,
+                    clr_txt,
+                    1,
+                    cv::LINE_AA);
     }
     else
     {
@@ -167,7 +173,8 @@ void get_Moments_own(const cv::Mat &im, cv::Mat &out, const double scale, const 
                            4. * rxy);
         beampar.at<double>(2) /= (beampar.at<double>(0) * beampar.at<double>(1));
 
-        double theta = 0., ecc = 0.,
+        double theta = 0.,
+               ecc = 0.,
                temp = covar.at<double>(0, 0) - covar.at<double>(1, 1);
 
         if(fabs(temp) >= DBL_EPSILON)
@@ -194,18 +201,18 @@ void draw_Moments(cv::Mat &out, const cv::Mat &beampar,
 {
     const cv::Scalar_<double> clr_ell(100., 100., 255.);
     uint16_t lw = 2;
-    ellipse(out, centroid,
-            cv::Size_<double>(2.* eig.at<double>(0), 2.* eig.at<double>(1)),
-            theta, 0., 360., clr_ell, lw, cv::LINE_AA);
-    ellipse(out, centroid,
-            cv::Size_<double>(eig.at<double>(0), eig.at<double>(1)),
-            theta, 0., 360., clr_ell, lw, cv::LINE_AA);
-    circle(out, centroid, 1., clr_ell, lw, cv::LINE_AA);
-    line(out, centroid, cv::Point2d(eig.at<double>(0) + centroid.x, centroid.y),
-         cv::Scalar(0, 255, 50), 2);
-    line(out, centroid,
-         cv::Point2d(beampar.at<double>(0) + centroid.x, centroid.y),
-         cv::Scalar(255, 0, 50));
+    cv::ellipse(out, centroid,
+                cv::Size_<double>(2.* eig.at<double>(0), 2.* eig.at<double>(1)),
+                theta, 0., 360., clr_ell, lw, cv::LINE_AA);
+    cv::ellipse(out, centroid,
+                cv::Size_<double>(eig.at<double>(0), eig.at<double>(1)),
+                theta, 0., 360., clr_ell, lw, cv::LINE_AA);
+    cv::circle(out, centroid, 1., clr_ell, lw, cv::LINE_AA);
+    cv::line(out, centroid, cv::Point2d(eig.at<double>(0) + centroid.x, centroid.y),
+             cv::Scalar(0, 255, 50), 2);
+    cv::line(out, centroid,
+             cv::Point2d(beampar.at<double>(0) + centroid.x, centroid.y),
+             cv::Scalar(255, 0, 50));
 
     beampar *= scale;
 
@@ -438,7 +445,7 @@ void test_pic1(void)
          channels = im.channels();
     uint8_t *const data = im.data;
     iprint(stdout, "processing a %u x %u image with %u channels with step %u\n",
-            height, width, channels, step);
+           height, width, channels, step);
 
     cv::imshow("Example 1", im);
     cv::moveWindow("Example 1", 0, 0);
