@@ -34,7 +34,7 @@ ids_cam::ids_cam(void)
     supp_fine_inc_exp_time =
     err_break = false; /* 3 */
     /* uint16_t */
-    color_mod = IS_CM_SENSOR_RAW8;
+    pixel_format = IS_CM_SENSOR_RAW8;
     color_mod_init =
     bits_p_pix =
     pix_size = 0; /* 4 */
@@ -70,40 +70,40 @@ ids_cam::ids_cam(void)
     infotbar_win_mat = cv::Mat::zeros(150, 350, CV_8UC3);
 
     /* Set the bits per pixel variable */
-    if(color_mod == IS_CM_MONO8 ||
-       color_mod == IS_CM_SENSOR_RAW8)
+    if(pixel_format == IS_CM_MONO8 ||
+       pixel_format == IS_CM_SENSOR_RAW8)
         bits_p_pix = 8;
-    else if(color_mod == IS_CM_MONO10 ||
-            color_mod == IS_CM_MONO12 ||
-            color_mod == IS_CM_MONO16 ||
-            color_mod == IS_CM_SENSOR_RAW10 ||
-            color_mod == IS_CM_SENSOR_RAW12 ||
-            color_mod == IS_CM_SENSOR_RAW16 ||
-            color_mod == IS_CM_BGR5_PACKED ||
-            color_mod == IS_CM_BGR565_PACKED ||
-            color_mod == IS_CM_UYVY_PACKED ||
-            color_mod == IS_CM_UYVY_MONO_PACKED ||
-            color_mod == IS_CM_UYVY_BAYER_PACKED ||
-            color_mod == IS_CM_CBYCRY_PACKED)
+    else if(pixel_format == IS_CM_MONO10 ||
+            pixel_format == IS_CM_MONO12 ||
+            pixel_format == IS_CM_MONO16 ||
+            pixel_format == IS_CM_SENSOR_RAW10 ||
+            pixel_format == IS_CM_SENSOR_RAW12 ||
+            pixel_format == IS_CM_SENSOR_RAW16 ||
+            pixel_format == IS_CM_BGR5_PACKED ||
+            pixel_format == IS_CM_BGR565_PACKED ||
+            pixel_format == IS_CM_UYVY_PACKED ||
+            pixel_format == IS_CM_UYVY_MONO_PACKED ||
+            pixel_format == IS_CM_UYVY_BAYER_PACKED ||
+            pixel_format == IS_CM_CBYCRY_PACKED)
         bits_p_pix = 16;
-    else if(color_mod == IS_CM_RGB8_PACKED ||
-            color_mod == IS_CM_BGR8_PACKED ||
-            color_mod == IS_CM_RGB8_PLANAR)
+    else if(pixel_format == IS_CM_RGB8_PACKED ||
+            pixel_format == IS_CM_BGR8_PACKED ||
+            pixel_format == IS_CM_RGB8_PLANAR)
         bits_p_pix = 24;
-    else if(color_mod == IS_CM_RGBA8_PACKED ||
-            color_mod == IS_CM_BGRA8_PACKED ||
-            color_mod == IS_CM_RGBY8_PACKED ||
-            color_mod == IS_CM_BGRY8_PACKED ||
-            color_mod == IS_CM_RGB10_PACKED ||
-            color_mod == IS_CM_BGR10_PACKED)
+    else if(pixel_format == IS_CM_RGBA8_PACKED ||
+            pixel_format == IS_CM_BGRA8_PACKED ||
+            pixel_format == IS_CM_RGBY8_PACKED ||
+            pixel_format == IS_CM_BGRY8_PACKED ||
+            pixel_format == IS_CM_RGB10_PACKED ||
+            pixel_format == IS_CM_BGR10_PACKED)
         bits_p_pix = 32;
-    else if(color_mod == IS_CM_RGB10_UNPACKED ||
-            color_mod == IS_CM_BGR10_UNPACKED ||
-            color_mod == IS_CM_RGB12_UNPACKED ||
-            color_mod == IS_CM_BGR12_UNPACKED)
+    else if(pixel_format == IS_CM_RGB10_UNPACKED ||
+            pixel_format == IS_CM_BGR10_UNPACKED ||
+            pixel_format == IS_CM_RGB12_UNPACKED ||
+            pixel_format == IS_CM_BGR12_UNPACKED)
         bits_p_pix = 48;
-    else if(color_mod == IS_CM_RGBA12_UNPACKED ||
-            color_mod == IS_CM_BGRA12_UNPACKED)
+    else if(pixel_format == IS_CM_RGBA12_UNPACKED ||
+            pixel_format == IS_CM_BGRA12_UNPACKED)
         bits_p_pix = 64;
     else
     {
@@ -189,45 +189,46 @@ void ids_cam::init_Camera(void)
     get_GainBoost();
     print_CameraInfos();
 
-    if(color_mod == IS_CM_MONO8 || color_mod == IS_CM_SENSOR_RAW8)
+    /* @todo This should be done in a stand-alone colour mode setter: */
+    if(pixel_format == IS_CM_MONO8 || pixel_format == IS_CM_SENSOR_RAW8)
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC1, 0.);
-    else if(color_mod == IS_CM_MONO10 ||
-            color_mod == IS_CM_MONO12 ||
-            color_mod == IS_CM_MONO16 ||
-            color_mod == IS_CM_SENSOR_RAW10 ||
-            color_mod == IS_CM_SENSOR_RAW12 ||
-            color_mod == IS_CM_SENSOR_RAW16 ||
-            color_mod == IS_CM_BGR5_PACKED || /* (5 5 5 1) bits */
-            color_mod == IS_CM_BGR565_PACKED) /* (5 6 5) bits */
+    else if(pixel_format == IS_CM_MONO10 ||
+            pixel_format == IS_CM_MONO12 ||
+            pixel_format == IS_CM_MONO16 ||
+            pixel_format == IS_CM_SENSOR_RAW10 ||
+            pixel_format == IS_CM_SENSOR_RAW12 ||
+            pixel_format == IS_CM_SENSOR_RAW16 ||
+            pixel_format == IS_CM_BGR5_PACKED || /* (5 5 5 1) bits */
+            pixel_format == IS_CM_BGR565_PACKED) /* (5 6 5) bits */
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_16UC1, 0.);
-    else if(color_mod == IS_CM_UYVY_PACKED ||
-            color_mod == IS_CM_UYVY_MONO_PACKED ||
-            color_mod == IS_CM_UYVY_BAYER_PACKED ||
-            color_mod == IS_CM_CBYCRY_PACKED)
+    else if(pixel_format == IS_CM_UYVY_PACKED ||
+            pixel_format == IS_CM_UYVY_MONO_PACKED ||
+            pixel_format == IS_CM_UYVY_BAYER_PACKED ||
+            pixel_format == IS_CM_CBYCRY_PACKED)
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC2, 0.);
-    else if(color_mod == IS_CM_RGB8_PACKED ||
-            color_mod == IS_CM_BGR8_PACKED ||
-            color_mod == IS_CM_RGB8_PLANAR)
+    else if(pixel_format == IS_CM_RGB8_PACKED ||
+            pixel_format == IS_CM_BGR8_PACKED ||
+            pixel_format == IS_CM_RGB8_PLANAR)
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC3, 0.);
-    else if(color_mod == IS_CM_RGBA8_PACKED ||
-            color_mod == IS_CM_BGRA8_PACKED ||
-            color_mod == IS_CM_RGBY8_PACKED ||
-            color_mod == IS_CM_BGRY8_PACKED ||
-            color_mod == IS_CM_RGB10_PACKED || /* (10 10 10 2) bits */
-            color_mod == IS_CM_BGR10_PACKED) /* (10 10 10 2) bits */
+    else if(pixel_format == IS_CM_RGBA8_PACKED ||
+            pixel_format == IS_CM_BGRA8_PACKED ||
+            pixel_format == IS_CM_RGBY8_PACKED ||
+            pixel_format == IS_CM_BGRY8_PACKED ||
+            pixel_format == IS_CM_RGB10_PACKED || /* (10 10 10 2) bits */
+            pixel_format == IS_CM_BGR10_PACKED) /* (10 10 10 2) bits */
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC4, 0.);
-    else if(color_mod == IS_CM_RGB10_UNPACKED ||
-            color_mod == IS_CM_BGR10_UNPACKED ||
-            color_mod == IS_CM_RGB12_UNPACKED ||
-            color_mod == IS_CM_BGR12_UNPACKED)
+    else if(pixel_format == IS_CM_RGB10_UNPACKED ||
+            pixel_format == IS_CM_BGR10_UNPACKED ||
+            pixel_format == IS_CM_RGB12_UNPACKED ||
+            pixel_format == IS_CM_BGR12_UNPACKED)
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_16UC3, 0.);
-    else if(color_mod == IS_CM_RGBA12_UNPACKED ||
-            color_mod == IS_CM_BGRA12_UNPACKED)
+    else if(pixel_format == IS_CM_RGBA12_UNPACKED ||
+            pixel_format == IS_CM_BGRA12_UNPACKED)
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_16UC4, 0.);
     else
     {
         im_p = cv::Mat(cv::Size(im_width, im_height), CV_8UC1, 0.);
-        warn_msg("can't find right colour mode. " \
+        warn_msg("can't find right colour mode. "
                  "setting Mat format to CV_8UC1.", ERR_ARG);
     }
 }
@@ -270,13 +271,15 @@ void ids_cam::print_CameraInfos(void)
            "      / um", im_width * dpix_size,
            "height / pixel", im_height,
            "       / um", im_height * dpix_size,
-           "colour mode", color_mod_init == IS_COLORMODE_MONOCHROME ?
-           ("MONOCHROME") : color_mod_init == IS_COLORMODE_BAYER ?
-           ("BAYER") : ("CBYCRY"),
-           "pixel clock / MHz", pix_clock,
-           "pixel clock min / MHz", pix_clock_min,
-           "pixel clock max / MHz", pix_clock_max,
-           "pixel clock inc / MHz", pix_clock_inc,
+           "initial colour mode", color_mod_init == IS_COLORMODE_MONOCHROME ? ("MONOCHROME") :
+                                  color_mod_init == IS_COLORMODE_BAYER ? ("BAYER") :
+                                  color_mod_init == IS_COLORMODE_CBYCRY ? ("CBYCRY") :
+                                  color_mod_init == IS_COLORMODE_JPEG ? ("JPEG") :
+                                  ("INVALID"),
+           "pixel clock set/ MHz", pix_clock,
+           "            min / MHz", pix_clock_min,
+           "            max / MHz", pix_clock_max,
+           "            inc / MHz", pix_clock_inc,
            "exposure time set / ms", exp_time,
            "              max / ms", exp_time_max,
            "              min / ms", exp_time_min,
@@ -285,13 +288,13 @@ void ids_cam::print_CameraInfos(void)
 
 void ids_cam::set_ColourMode(void)
 {
-    err = is_SetColorMode(pcam, color_mod);
+    err = is_SetColorMode(pcam, pixel_format);
     if(err != IS_SUCCESS)
         error_msg("error setting colour mode", ERR_ARG);
-    if(color_mod != is_SetColorMode(pcam, IS_GET_COLOR_MODE))
+    if(pixel_format != is_SetColorMode(pcam, IS_GET_COLOR_MODE))
         iprint(stderr,
                "error setting colour mode to %u\n",
-               color_mod);
+               pixel_format);
 }
 
 /** \brief Set to auto-release camera and memory if camera is disconnected on-the-fly.
@@ -345,16 +348,16 @@ void ids_cam::alloc_ImageMem(void)
  *
  * \param nx int *res_pt Number of entries in x direction.
  * \param ny int *res_pt Number of entries in x direction.
- * \param bits_p_pix int *res_pt Bits per pixel.
- * \param pixel_bit_pitch int *res_pt Row increment of the image memory.
+ * \param bits_per_pix int *res_pt Bits per pixel.
+ * \param row_inc int *res_pt Row increment of the image memory.
  * \return void
  *
  * If NULL pointers are supplied, the inquired values are not copied.
  */
 void ids_cam::inquire_ImageMem(int *res_pt nx,
                                int *res_pt ny,
-                               int *res_pt bits_p_pix,
-                               int *res_pt pixel_bit_pitch)
+                               int *res_pt bits_per_pix,
+                               int *res_pt row_inc)
 {
     int xo, yo, bppo, pbpo;
     err = is_InquireImageMem(pcam, im_mem, memID, &xo, &yo, &bppo, &pbpo);
@@ -375,14 +378,19 @@ void ids_cam::inquire_ImageMem(int *res_pt nx,
            "y / entries   ", yo,
            "Bits per pixel", bppo,
            "Row increment ", pbpo);
+    if(bppo != bits_p_pix)
+    {
+        error_msg("inquired bits per pixel are different from the user-set value", ERR_ARG);
+        err_break = true;
+    }
     if(nx)
         *nx = xo;
     if(ny)
         *ny = yo;
-    if(bits_p_pix)
-        *bits_p_pix = bppo;
-    if(pixel_bit_pitch)
-        *pixel_bit_pitch = pbpo;
+    if(bits_per_pix)
+        *bits_per_pix = bppo;
+    if(row_inc)
+        *row_inc = pbpo;
 }
 
 /** \brief Activate image memory.

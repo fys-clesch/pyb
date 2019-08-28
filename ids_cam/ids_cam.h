@@ -49,7 +49,7 @@ class ids_cam : public grabber
                  bits_p_pix, /**< The total number of bits occupied at one pixel.
                                   Not all may be used,
                                   even when the value is e.g. 32 */
-                 color_mod, /**< Controls the colour mode of the images. */
+                 pixel_format, /**< Controls the pixel format of the images. */
                  color_mod_init; /**< Initial colour mode of the camera. */
 
         double dpix_size, /**< Pixel size in um */
@@ -121,8 +121,8 @@ class ids_cam : public grabber
         void set_ImageSize(void);
         void inquire_ImageMem(int *res_pt nx,
                               int *res_pt ny,
-                              int *res_pt bits_p_pix,
-                              int *res_pt pixel_bit_pitch);
+                              int *res_pt bits_per_pix,
+                              int *res_pt row_inc);
         bool caught_Error(void);
         void show_CameraTrackbars(void);
         double get_PixelPitch(void);

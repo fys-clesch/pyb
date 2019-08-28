@@ -760,7 +760,7 @@ int igyba_wxFrame::launch_Cam(int argc, char **argv)
     (*itw1ptr).t_cam.close_ViewerThread();
     thread_Viewer.join();
 
-    /* Wait for second to rest - and maybe to flush memory */
+    /* Wait for second to rest - and maybe to flush memory. */
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
     return EXIT_SUCCESS;
