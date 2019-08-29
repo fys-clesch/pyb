@@ -229,10 +229,6 @@ class grabber
         uint32_t get_nColsROI(void);
         void calculate_BeamRadius(void);
         void launch_Minime(const double wavelengthUm, const double pix2um);
-        static void cast_static_SetTrackbarHandlerBlur(int i, void *ptr);
-        void TrackbarHandlerBlur(int i);
-        static void cast_static_SetTrackbarHandlerBlurSize(int i, void *ptr);
-        void TrackbarHandlerBlurSize(int i);
         static void cast_static_SetTrackbarHandlerGroundlift(int i, void *ptr);
         void TrackbarHandlerGroundlift(int i);
         double get_PixelValue(void);

@@ -1509,39 +1509,6 @@ void grabber::set_GaussBlurAtomic(const double val)
     gaussblur_sigma_x_atm.store(val, std::memory_order_relaxed);
 }
 
-void grabber::TrackbarHandlerBlur(int i)
-{
-    const double out_min = 0.,
-                 out_max = 50.;
-    double res = map_Linear((double)i,
-                            out_min, out_max,
-                            gaussblur_min, gaussblur_max);
-    gaussblur_sigma_x = res;
-}
-
-void grabber::cast_static_SetTrackbarHandlerBlur(int i, void *ptr)
-{
-    grabber *bptr = static_cast<grabber *>(ptr);
-    (*bptr).TrackbarHandlerBlur(i);
-}
-
-void grabber::create_TrackbarBlur(void)
-{
-    const std::string trck_name = "Blur sigma";
-    const double out_min = 0., out_max = 50.;
-
-    double res = map_Linear(1., gaussblur_min, gaussblur_max, out_min, out_max);
-    static int setting = res;
-    assert(setting <= 50);
-
-    cv::createTrackbar(trck_name,
-                       tbar_win_name,
-                       &setting,
-                       (int)out_max,
-                       grabber::cast_static_SetTrackbarHandlerBlur,
-                       this);
-}
-
 uint grabber::get_KernelSizeAtomic(uint *res_pt sze_min, uint *res_pt sze_max)
 {
     *sze_min = gaussblur_sze_min_atm.load(std::memory_order_relaxed);
@@ -1552,32 +1519,6 @@ uint grabber::get_KernelSizeAtomic(uint *res_pt sze_min, uint *res_pt sze_max)
 void grabber::set_KernelSizeAtomic(const uint i)
 {
     gaussblur_sze_atm.store(i, std::memory_order_relaxed);
-}
-
-void grabber::TrackbarHandlerBlurSize(int i)
-{
-    uint res = (i << 1) + 1;
-    gaussblur_sze = cv::Size(res, res);
-}
-
-void grabber::cast_static_SetTrackbarHandlerBlurSize(int i, void *ptr)
-{
-    grabber *bptr = static_cast<grabber *>(ptr);
-    (*bptr).TrackbarHandlerBlurSize(i);
-}
-
-void grabber::create_TrackbarBlurSize(void)
-{
-    const std::string trck_name = "Blur size";
-    const int out_max = (gaussblur_sze_max - 1) >> 1;
-    static int setting = (gaussblur_sze.width - 1) >> 1;
-
-    cv::createTrackbar(trck_name,
-                       tbar_win_name,
-                       &setting,
-                       out_max,
-                       grabber::cast_static_SetTrackbarHandlerBlurSize,
-                       this);
 }
 
 void grabber::set_GroundliftAtomic(const double val)
@@ -1918,7 +1859,7 @@ void grabber::set_RectRoi(const cv::Rect_<int> &val)
 }
 
 void grabber::get_RectRoi(int *res_pt sx, int *res_pt sy,
-                        int *res_pt rw, int *res_pt rh)
+                          int *res_pt rw, int *res_pt rh)
 {
     *sx = roi_rect.x;
     *sy = roi_rect.y;
