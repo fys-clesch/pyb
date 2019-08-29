@@ -10,7 +10,7 @@ gabe::gabe(void)
 
 gabe::~gabe(void)
 {
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     iprint(stdout, "'%s': memory released\n", __func__);
     #endif
 }

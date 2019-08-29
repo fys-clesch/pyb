@@ -423,7 +423,7 @@ void set_MouseEvent(const int event,
             return;
         }
     }
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     else if(event == cv::EVENT_RBUTTONDOWN)
         iprint(stdout, "  r but: (%i, %i)\n", x, y);
     else if(event == cv::EVENT_MBUTTONDOWN)

@@ -117,7 +117,7 @@ grabber::~grabber(void)
 
     g1ptr = nullptr;
 
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     iprint(stdout, "'%s': memory released\n", __func__);
     #endif
 }
@@ -328,7 +328,7 @@ void grabber::produce_Mat_Work(void)
     cv::flip(work_roi.t(), work_roi_tflip, 1);
     unxm = load_WorkRoiRows();
     unym = load_WorkRoiCols();
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     if(roi_on) /**< Attention in the next line. */
         assert((int)unxm == roi_rect.height && (int)unym == roi_rect.width);
     assert((int)unxm == work_roi.rows && (int)unym == work_roi.cols);
@@ -741,7 +741,7 @@ void grabber::draw_Info(void)
     infos = "# pixels at max: " + convert_Int2Str(count_nz);
     cv::putText(rgb, infos, putText_ARGS);
     fscl = .45;
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     iprint(stdout,
            "# pixels at %g: %u\n",
            max_pval,
@@ -844,7 +844,7 @@ void grabber::draw_InfoWxVersion(void)
     infos = "# pixels at max: " + convert_Int2Str(count_nz);
     cv::putText(rgb, infos, putText_ARGS);
     fscl = .45;
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     iprint(stdout,
            "# pixels at %g: %u\n",
            max_pval, count_nz);
@@ -1262,49 +1262,11 @@ void grabber::show_Intro(void)
     #undef putText_ARGS
 }
 
-#if USE_CURSES
-#if !defined(__unix__) || !defined(__LINUX__)
-#include "curses.h"
-void grabber::show_HelpOnCurses(void)
-{
-#ifdef XCURSES
-    Xinitscr(argc, argv);
-#else
-    initscr();
-#endif
-    nodelay(stdscr, TRUE);
-    noecho();
-    /** Colours available:
-     * COLOR_BLACK, COLOR_RED, COLOR_BLUE, COLOR_GREEN, COLOR_CYAN, COLOR_MAGENTA, COLOR_YELLOW, COLOR_WHITE
-     */
-    const int nwidth = 100, nheight = 50; /* owidth = COLS, oheight = LINES */
-    resize_term(nheight, nwidth);
-    if(has_colors())
-    {
-        start_color();
-        uint i = 1;
-        init_pair(i++, COLOR_GREEN, COLOR_BLACK);
-        init_pair(i++, COLOR_GREEN, COLOR_WHITE);
-        init_pair(i++, COLOR_RED, COLOR_BLACK);
-    }
-    while(getch() == ERR)
-    {
-        attrset(COLOR_PAIR(1) | A_NORMAL);
-        mvaddstr(1, 1, "Welcome to the help function of 'pyb'");
-        mvaddstr(2, 1, "---------------------------------------");
-        mvaddstr(4, 1, "Following keys will get you a response:");
-    }
-    clear();
-    endwin();
-}
-#endif
-#endif
-
 void grabber::draw_Crossline(void)
 {
     cv::Point2d pt1, pt2;
     cv::LineIterator lit(work, pt1, pt2)
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
                    , lit2 = lit;
     #else
     ;
@@ -1319,7 +1281,7 @@ void grabber::draw_Crossline(void)
         buf.push_back((float)*ptr);
     }
 
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     for(int i = 0; i < lit2.count; i++, ++lit2)
     {
         float val = work.at<float>(lit2.pos());

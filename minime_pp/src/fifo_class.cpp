@@ -26,7 +26,7 @@ dat_cols(ncols)
 
 fifo::~fifo(void)
 {
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     iprint(stdout, "'%s': memory released\n", __func__);
     #endif
 }
@@ -533,7 +533,6 @@ void fifo::plot_Histogram(const std::string &fname, const uint steps)
     remove(cmdtmp.c_str());
 }
 
-#ifndef __FIFO_NO_OPENCV__
 void fifo::plot_Data(const cv::Mat &mdata,
                     const bool auto_range,
                     const double lo, const double hi)
@@ -844,7 +843,6 @@ void fifo::write_MatToFile(const cv::Mat &mat,
 
     fclose(wfile);
 }
-#endif
 
 /** \brief
  *

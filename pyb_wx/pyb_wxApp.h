@@ -7,8 +7,8 @@
  * License:
  **************************************************************/
 
-#ifndef IGYBA_WXAPP_H
-#define IGYBA_WXAPP_H
+#ifndef PYB_WXAPP_H
+#define PYB_WXAPP_H
 
 #include <wx/app.h>
 
@@ -18,4 +18,4 @@ class pyb_wxApp : public wxApp
         virtual bool OnInit(void);
 };
 
-#endif // IGYBA_WXAPP_H
+#endif // PYB_WXAPP_H

@@ -1,5 +1,5 @@
-#ifndef __IGYBA_HEADER_HPP__
-#define __IGYBA_HEADER_HPP__
+#ifndef __PYB_HEADER_HPP__
+#define __PYB_HEADER_HPP__
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -34,7 +34,6 @@
 #define USE_RESTRICT 1
 #define SHOW_WAIT_KEY 0
 #define SHOW_MOUSE_CB 0
-#define USE_CURSES 0
 
 constexpr unsigned int FILENAME_MAX1 = FILENAME_MAX + 1;
 
@@ -57,11 +56,11 @@ constexpr unsigned int FILENAME_MAX1 = FILENAME_MAX + 1;
 
 /* Project name. */
 const std::string PROJECT_NAME = "pyb";
-const std::string PROJECT_MAJ_VERSION = "2";
+const std::string PROJECT_MAJ_VERSION = "1";
 const std::string PROJECT_MIN_VERSION = "0";
 const std::string PROJECT_YEAR = "2019";
 const std::string PROJECT_MONTH = "08";
-const std::string PROJECT_DAY = "21";
+const std::string PROJECT_DAY = "29";
 
 /* Type definitions. */
 typedef unsigned int uint;

@@ -1,5 +1,5 @@
-#ifndef __IGYBA_IDS_CAM_H__
-#define __IGYBA_IDS_CAM_H__
+#ifndef __PYB_IDS_CAM_H__
+#define __PYB_IDS_CAM_H__
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>

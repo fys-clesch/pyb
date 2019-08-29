@@ -86,7 +86,7 @@ viewer::~viewer(void)
         free(rgbcb);
     }
     dv1p = nullptr;
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     iprint(stdout, "'%s': memory released\n", __func__);
     #endif
 }
@@ -776,7 +776,7 @@ void viewer::fill_DrawingData(const double *res_pt const m_in, const bool noisy)
         }
         else
         {
-            #ifndef IGYBA_NDEBUG
+            #ifndef PYB_NDEBUG
             if(noisy)
                 warn_msg("scaling error", ERR_ARG);
             #endif
@@ -866,7 +866,7 @@ void viewer::calc_DrawingData(const double *res_pt const m_in,
     {
         *min_norm_out = 0.;
         *max_norm_out = 1.;
-        #ifndef IGYBA_NDEBUG
+        #ifndef PYB_NDEBUG
         warn_msg("the input data is too flat", ERR_ARG);
         #endif
         for(uint i = 0; i < row_in * col_in; ++i)
@@ -902,7 +902,7 @@ void viewer::calc_DrawingData(const double *res_pt const m_in,
             memcpy(&rgb_out[idx], def_col, 3 * sizeof(double));
         }
     }
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     if(noisy && scl_err)
         warn_msg("scaling error", ERR_ARG);
     #endif
@@ -937,7 +937,7 @@ void viewer::init_Colorbox(void)
         }
         else
         {
-            #ifndef IGYBA_NDEBUG
+            #ifndef PYB_NDEBUG
             warn_msg("scaling error", ERR_ARG);
             #endif
             memcpy(&rgbcb[idx], def_col, 3 * sizeof(double));
@@ -1169,7 +1169,7 @@ void viewer::KeyboardHandler(const uchar key, const int x, const int y)
             (*dv1p).map_mode = !(*dv1p).map_mode;
             break;
         default:
-            #ifndef IGYBA_NDEBUG
+            #ifndef PYB_NDEBUG
             iprint(stdout, "key: %i, pos (%i, %i)\n", key, x, y);
             #else
             break;
@@ -1260,7 +1260,7 @@ void viewer::ArrowKeysHandler(const int a_keys, const int x, const int y)
             }
             break;
         default:
-            #ifndef IGYBA_NDEBUG
+            #ifndef PYB_NDEBUG
             iprint(stdout, "key %i, pos (%i, %i)\n", a_keys, x, y);
             #else
             break;
@@ -1288,7 +1288,7 @@ void viewer::TrackballHandler(const int mode, const int button,
                 gluUnProject(wx, wy, wz,
                              modlview, prjction, vwprt,
                              &(*dv1p).wc[0], &(*dv1p).wc[1], &(*dv1p).wc[2]);
-                #ifndef IGYBA_NDEBUG
+                #ifndef PYB_NDEBUG
                 iprint(stdout,
                        "wx: %g, wy: %g, wz: %g\n",
                        (*dv1p).wc[0], (*dv1p).wc[1], (*dv1p).wc[2]);
@@ -1348,7 +1348,7 @@ void viewer::TrackballHandler(const int mode, const int button,
                         temp = zoom_min;
 
                     (*dv1p).zoom = temp;
-                    #ifndef IGYBA_NDEBUG
+                    #ifndef PYB_NDEBUG
                     iprint(stdout, "zoom: %g\n", (*dv1p).zoom);
                     #endif
                     startMY = y;
@@ -1363,7 +1363,7 @@ void viewer::TrackballHandler(const int mode, const int button,
 
 void viewer::MotionHandler(const int x, const int y)
 {
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     iprint(stdout, "mouse motion %d, %d\n", x, y);
     #endif
     TrackballHandler(VIEWER_MOUSEMOTION, 0, 0, x, y);
@@ -1372,7 +1372,7 @@ void viewer::MotionHandler(const int x, const int y)
 void viewer::MouseHandler(const int button, const int state,
                         const int x, const int y)
 {
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     iprint(stdout, "b = %d, s = %d, (%d, %d)\n", button, state, x, y);
     #endif
     TrackballHandler(VIEWER_KNOWMOUSEBUTTON, button, state, x, y);

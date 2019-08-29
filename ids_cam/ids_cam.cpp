@@ -132,7 +132,7 @@ ids_cam::~ids_cam(void)
     if(err != IS_SUCCESS)
         warn_msg("error releasing camera handler", ERR_ARG);
 
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     iprint(stdout, "'%s': memory released\n", __func__);
     #endif
 }
@@ -143,7 +143,7 @@ void ids_cam::init_Camera(void)
     err = is_InitCamera(&pcam, NULL);
     if(err != IS_SUCCESS)
         err_break = true;
-    #ifdef IGYBA_NDEBUG
+    #ifdef PYB_NDEBUG
     else
         iprint(stdout, "camera initialised successfully\n");
     #endif
@@ -711,7 +711,7 @@ void ids_cam::set_ExposureTime(double time)
     }
     else
     {
-        #ifndef IGYBA_NDEBUG
+        #ifndef PYB_NDEBUG
         iprint(stdout, "exposure time set to %g ms\n", time);
         #endif
         exp_time = time;
@@ -740,7 +740,7 @@ void ids_cam::exchange_ExposureTimeAtomic(void)
         }
         else
         {
-            #ifndef IGYBA_NDEBUG
+            #ifndef PYB_NDEBUG
             iprint(stdout, "exposure time set to %g ms\n", time);
             #endif
             exp_time = time;

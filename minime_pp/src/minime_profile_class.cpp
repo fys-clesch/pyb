@@ -65,7 +65,7 @@ minime_profile::~minime_profile(void)
         if(bad != nullptr)
             free(bad);
 
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     iprint(stdout, "'%s': memory released\n", __func__);
     #endif
 }
@@ -203,7 +203,7 @@ void minime_profile::fill_DataFromMemory(const double *res_pt data_in,
 {
     if(load_AllocatedMemory())
     {
-        #ifndef IGYBA_NDEBUG
+        #ifndef PYB_NDEBUG
         for(uint i = 0; i < mnm_ntot; ++i)
             if(!std::isfinite(data[i]) || !std::isfinite(data_in[i]))
                 error_msg("data range invalid", ERR_ARG);

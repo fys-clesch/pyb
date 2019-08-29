@@ -8,8 +8,8 @@
  *
  **************************************************************/
 
-#ifndef IGYBA_WXMAIN_H
-#define IGYBA_WXMAIN_H
+#ifndef PYB_WXMAIN_H
+#define PYB_WXMAIN_H
 
 //(*Headers(pyb_wxFrame)
 #include <wx/button.h>
@@ -266,13 +266,13 @@ private:
 public:
 
     pyb_wxFrame(wxWindow* parent,
-                  wxWindowID id = -1);
+                wxWindowID id = -1);
     pyb_wxFrame(int argc,
-                  wchar_t **argv,
-                  wxWindow *parent,
-                  wxWindowID id = -1);
+                wchar_t **argv,
+                wxWindow *parent,
+                wxWindowID id = -1);
     virtual ~pyb_wxFrame(void);
 
 };
 
-#endif // IGYBA_WXMAIN_H
+#endif // PYB_WXMAIN_H

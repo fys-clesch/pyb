@@ -40,7 +40,7 @@ minime_propagation::~minime_propagation(void)
         free(wz_x);
         free(wz_y);
     }
-    #ifndef NDEBUG_IGYBA
+    #ifndef NDEBUG_PYB
     iprint(stdout, "'%s': memory released\n", __func__);
     #endif
 }

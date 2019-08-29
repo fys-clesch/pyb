@@ -438,7 +438,7 @@ pyb_wxFrame::~pyb_wxFrame(void)
     for(int i = 0; i < m_argc; i++)
         free(mb_argv[i]);
     free(mb_argv);
-    #ifndef IGYBA_NDEBUG
+    #ifndef PYB_NDEBUG
     iprint(stdout, "'%s': memory released\n", __func__);
     #endif
 }
@@ -817,10 +817,10 @@ bool pyb_wxFrame::signal_CamThreadIfWait(void)
 }
 
 void pyb_wxFrame::cast_static_set_MouseEvent(const int event,
-                                               const int x,
-                                               const int y,
-                                               const int flags,
-                                               void *udata)
+                                             const int x,
+                                             const int y,
+                                             const int flags,
+                                             void *udata)
 {
     pyb_wxFrame *ptr = static_cast<pyb_wxFrame *>(udata);
     (*ptr).set_MouseEvent(event, x, y, flags);
@@ -838,9 +838,9 @@ void pyb_wxFrame::cast_static_set_MouseEvent(const int event,
  *
  */
 void pyb_wxFrame::set_MouseEvent(const int event,
-                                   const int x,
-                                   const int y,
-                                   const int flags)
+                                 const int x,
+                                 const int y,
+                                 const int flags)
 {
     if(flags & cv::EVENT_FLAG_SHIFTKEY || load_SelectRoi())
     {
@@ -954,8 +954,10 @@ void pyb_wxFrame::OnButtonDecExpTimeClick(wxCommandEvent& event)
     {
         SliderExpTime->SetValue(curval - 1);
         const double res = map_Linear((double)(curval - 1),
-                            out_min, out_max,
-                            tmin, tmax);
+                                      out_min,
+                                      out_max,
+                                      tmin,
+                                      tmax);
         t_cam.set_ExposureTimeAtomic(res);
         update_TextExpTime(res);
     }
