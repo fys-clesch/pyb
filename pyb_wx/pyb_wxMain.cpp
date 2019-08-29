@@ -1,10 +1,10 @@
-#include "igyba_wxMain.h"
+#include "pyb_wxMain.h"
 
 #include <wx/msgdlg.h>
 #include <wx/filedlg.h>
 #include <wx/aboutdlg.h>
 
-//(*InternalHeaders(igyba_wxFrame)
+//(*InternalHeaders(pyb_wxFrame)
 #include <wx/bitmap.h>
 #include <wx/icon.h>
 #include <wx/image.h>
@@ -15,86 +15,86 @@
 
 /** @todo Add a mode matching call. */
 
-static igyba_wxFrame *itw1ptr = nullptr; /**< Only used in schedule_CamThread
+static pyb_wxFrame *itw1ptr = nullptr; /**< Only used in schedule_CamThread
                                               and launch_Cam functions. It gives
                                               access to the camera member without
                                               passing it. Declared static to prevent
                                               from external use. */
 
-//(*IdInit(igyba_wxFrame)
-const long igyba_wxFrame::ID_BUTTON_SAVE_IMG_RGB = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_SAVE_IMG_WORK = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_SAVE_IMG_FP = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_SAVE_DATA_RGB = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_SAVE_DATA_WORK = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_SAVE_DATA_FP = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_GNUPLOT = wxNewId();
-const long igyba_wxFrame::ID_TEXTCTRL_OUTPUT_INFO = wxNewId();
-const long igyba_wxFrame::ID_PANEL_OUTPUT = wxNewId();
-const long igyba_wxFrame::ID_TOGGLEBUTTON_VIEWER = wxNewId();
-const long igyba_wxFrame::ID_TOGGLEBUTTON_VIEWER_ANIMATION = wxNewId();
-const long igyba_wxFrame::ID_TOGGLEBUTTON_MAP_VIEWER = wxNewId();
-const long igyba_wxFrame::ID_TOGGLEBUTTON_VIEWER_ROTATION = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_VIEWER_SCREENSHOT = wxNewId();
-const long igyba_wxFrame::ID_PANEL_VIEWER = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_MINIME = wxNewId();
-const long igyba_wxFrame::ID_PANEL_MINIME = wxNewId();
-const long igyba_wxFrame::ID_NOTEBOOK_THREADS = wxNewId();
-const long igyba_wxFrame::ID_PANEL_THREADS = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_RESIZE_CAM_WIN = wxNewId();
-const long igyba_wxFrame::ID_TEXTCTRL_AOI = wxNewId();
-const long igyba_wxFrame::ID_TOGGLEBUTTON_AOI = wxNewId();
-const long igyba_wxFrame::ID_PANEL_AOI_WIN = wxNewId();
-const long igyba_wxFrame::ID_NOTEBOOK_MAIN = wxNewId();
-const long igyba_wxFrame::ID_TOGGLEBUTTON_FRAMEGRAB = wxNewId();
-const long igyba_wxFrame::ID_STATICLINE2 = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_START = wxNewId();
-const long igyba_wxFrame::ID_LED_MAIN = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_QUIT = wxNewId();
-const long igyba_wxFrame::ID_PANEL_MAIN = wxNewId();
-const long igyba_wxFrame::ID_TOGGLEBUTTON_BACKGROUND = wxNewId();
-const long igyba_wxFrame::ID_STATICTEXT_EXP_TIME_DISP = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_DEC_EXP_TIME = wxNewId();
-const long igyba_wxFrame::ID_SLIDER_EXP_TIME = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_INC_EXP_TIME = wxNewId();
-const long igyba_wxFrame::ID_TEXTCTRL_CAM_INFO = wxNewId();
-const long igyba_wxFrame::ID_PANEL_CAMERA = wxNewId();
-const long igyba_wxFrame::ID_TOGGLEBUTTON_SMOOTHING = wxNewId();
-const long igyba_wxFrame::ID_STATICTEXT_KERNEL_SIZE = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_DEC_KERNEL_SIZE = wxNewId();
-const long igyba_wxFrame::ID_SLIDER_KERNEL_SIZE = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_INC_KERNEL_SIZE = wxNewId();
-const long igyba_wxFrame::ID_STATICTEXT_STD_DEV = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_DEC_STD_DEV = wxNewId();
-const long igyba_wxFrame::ID_SLIDER_STD_DEV = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_INC_STD_DEV = wxNewId();
-const long igyba_wxFrame::ID_STATICTEXT_GROUNDLIFT = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_DEC_GROUNDLIFT = wxNewId();
-const long igyba_wxFrame::ID_SLIDER_GROUNDLIFT = wxNewId();
-const long igyba_wxFrame::ID_BUTTON_INC_GROUNDLIFT = wxNewId();
-const long igyba_wxFrame::ID_PANEL_IMG_MANIP = wxNewId();
-const long igyba_wxFrame::ID_NOTEBOOK_CAM_IMG = wxNewId();
-const long igyba_wxFrame::idMenuQuit = wxNewId();
-const long igyba_wxFrame::idMenuAbout = wxNewId();
-const long igyba_wxFrame::ID_STATUSBAR_MAIN = wxNewId();
+//(*IdInit(pyb_wxFrame)
+const long pyb_wxFrame::ID_BUTTON_SAVE_IMG_RGB = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_SAVE_IMG_WORK = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_SAVE_IMG_FP = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_SAVE_DATA_RGB = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_SAVE_DATA_WORK = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_SAVE_DATA_FP = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_GNUPLOT = wxNewId();
+const long pyb_wxFrame::ID_TEXTCTRL_OUTPUT_INFO = wxNewId();
+const long pyb_wxFrame::ID_PANEL_OUTPUT = wxNewId();
+const long pyb_wxFrame::ID_TOGGLEBUTTON_VIEWER = wxNewId();
+const long pyb_wxFrame::ID_TOGGLEBUTTON_VIEWER_ANIMATION = wxNewId();
+const long pyb_wxFrame::ID_TOGGLEBUTTON_MAP_VIEWER = wxNewId();
+const long pyb_wxFrame::ID_TOGGLEBUTTON_VIEWER_ROTATION = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_VIEWER_SCREENSHOT = wxNewId();
+const long pyb_wxFrame::ID_PANEL_VIEWER = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_MINIME = wxNewId();
+const long pyb_wxFrame::ID_PANEL_MINIME = wxNewId();
+const long pyb_wxFrame::ID_NOTEBOOK_THREADS = wxNewId();
+const long pyb_wxFrame::ID_PANEL_THREADS = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_RESIZE_CAM_WIN = wxNewId();
+const long pyb_wxFrame::ID_TEXTCTRL_AOI = wxNewId();
+const long pyb_wxFrame::ID_TOGGLEBUTTON_AOI = wxNewId();
+const long pyb_wxFrame::ID_PANEL_AOI_WIN = wxNewId();
+const long pyb_wxFrame::ID_NOTEBOOK_MAIN = wxNewId();
+const long pyb_wxFrame::ID_TOGGLEBUTTON_FRAMEGRAB = wxNewId();
+const long pyb_wxFrame::ID_STATICLINE2 = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_START = wxNewId();
+const long pyb_wxFrame::ID_LED_MAIN = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_QUIT = wxNewId();
+const long pyb_wxFrame::ID_PANEL_MAIN = wxNewId();
+const long pyb_wxFrame::ID_TOGGLEBUTTON_BACKGROUND = wxNewId();
+const long pyb_wxFrame::ID_STATICTEXT_EXP_TIME_DISP = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_DEC_EXP_TIME = wxNewId();
+const long pyb_wxFrame::ID_SLIDER_EXP_TIME = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_INC_EXP_TIME = wxNewId();
+const long pyb_wxFrame::ID_TEXTCTRL_CAM_INFO = wxNewId();
+const long pyb_wxFrame::ID_PANEL_CAMERA = wxNewId();
+const long pyb_wxFrame::ID_TOGGLEBUTTON_SMOOTHING = wxNewId();
+const long pyb_wxFrame::ID_STATICTEXT_KERNEL_SIZE = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_DEC_KERNEL_SIZE = wxNewId();
+const long pyb_wxFrame::ID_SLIDER_KERNEL_SIZE = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_INC_KERNEL_SIZE = wxNewId();
+const long pyb_wxFrame::ID_STATICTEXT_STD_DEV = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_DEC_STD_DEV = wxNewId();
+const long pyb_wxFrame::ID_SLIDER_STD_DEV = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_INC_STD_DEV = wxNewId();
+const long pyb_wxFrame::ID_STATICTEXT_GROUNDLIFT = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_DEC_GROUNDLIFT = wxNewId();
+const long pyb_wxFrame::ID_SLIDER_GROUNDLIFT = wxNewId();
+const long pyb_wxFrame::ID_BUTTON_INC_GROUNDLIFT = wxNewId();
+const long pyb_wxFrame::ID_PANEL_IMG_MANIP = wxNewId();
+const long pyb_wxFrame::ID_NOTEBOOK_CAM_IMG = wxNewId();
+const long pyb_wxFrame::idMenuQuit = wxNewId();
+const long pyb_wxFrame::idMenuAbout = wxNewId();
+const long pyb_wxFrame::ID_STATUSBAR_MAIN = wxNewId();
 //*)
 
-BEGIN_EVENT_TABLE(igyba_wxFrame, wxFrame)
-    //(*EventTable(igyba_wxFrame)
+BEGIN_EVENT_TABLE(pyb_wxFrame, wxFrame)
+    //(*EventTable(pyb_wxFrame)
     //*)
-    EVT_COMMAND_SCROLL(ID_SLIDER_EXP_TIME, igyba_wxFrame::OnSliderExpTimeCmdScroll)
-    EVT_COMMAND_SCROLL(ID_SLIDER_GROUNDLIFT, igyba_wxFrame::OnSliderGroundliftCmdScroll)
-    EVT_COMMAND_SCROLL(ID_SLIDER_KERNEL_SIZE, igyba_wxFrame::OnSliderKernelSizeCmdScroll)
-    EVT_COMMAND_SCROLL(ID_SLIDER_STD_DEV, igyba_wxFrame::OnSliderStdDevCmdScroll)
+    EVT_COMMAND_SCROLL(ID_SLIDER_EXP_TIME, pyb_wxFrame::OnSliderExpTimeCmdScroll)
+    EVT_COMMAND_SCROLL(ID_SLIDER_GROUNDLIFT, pyb_wxFrame::OnSliderGroundliftCmdScroll)
+    EVT_COMMAND_SCROLL(ID_SLIDER_KERNEL_SIZE, pyb_wxFrame::OnSliderKernelSizeCmdScroll)
+    EVT_COMMAND_SCROLL(ID_SLIDER_STD_DEV, pyb_wxFrame::OnSliderStdDevCmdScroll)
 END_EVENT_TABLE()
 
-igyba_wxFrame::igyba_wxFrame(int argc,
+pyb_wxFrame::pyb_wxFrame(int argc,
                              wchar_t **argv,
                              wxWindow *parent,
                              wxWindowID id)
 {
     /* global pointer */
-    itw1ptr = static_cast<igyba_wxFrame *>(this);
+    itw1ptr = static_cast<pyb_wxFrame *>(this);
     /* int */
     m_argc = argc; /* 1 */
     /* char ** */
@@ -115,7 +115,7 @@ igyba_wxFrame::igyba_wxFrame(int argc,
     /* atomic<uint32_t> */
     btn_state.store(NONE_BTN, std::memory_order_relaxed); /* 1 */
 
-    //(*Initialize(igyba_wxFrame)
+    //(*Initialize(pyb_wxFrame)
     wxBoxSizer* BoxSizerInnerMain;
     wxBoxSizer* BoxSizerMain;
     wxBoxSizer* BoxSizerThreads;
@@ -148,7 +148,7 @@ igyba_wxFrame::igyba_wxFrame(int argc,
     wxStaticBoxSizer* StaticBoxSizerViewerDispSet;
     wxStaticBoxSizer* StaticBoxSizerViewerOutput;
 
-    Create(parent, wxID_ANY, _("igyba 4 fingers"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
+    Create(parent, wxID_ANY, _("pyb 4 fingers"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     {
     	wxIcon FrameIcon;
     	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("icon.ico"))));
@@ -390,50 +390,50 @@ igyba_wxFrame::igyba_wxFrame(int argc,
     BoxSizerMain->Fit(this);
     BoxSizerMain->SetSizeHints(this);
 
-    Connect(ID_BUTTON_SAVE_IMG_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonSaveImgRGBClick);
-    Connect(ID_BUTTON_SAVE_IMG_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonSaveImgWorkClick);
-    Connect(ID_BUTTON_SAVE_IMG_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonSaveImgFPClick);
-    Connect(ID_BUTTON_SAVE_DATA_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonSaveDataRGBClick);
-    Connect(ID_BUTTON_SAVE_DATA_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonSaveDataWorkClick);
-    Connect(ID_BUTTON_SAVE_DATA_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonSaveDataFPClick);
-    Connect(ID_BUTTON_GNUPLOT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonGnuplotClick);
-    Connect(ID_TOGGLEBUTTON_VIEWER,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnToggleButtonViewerToggle);
-    Connect(ID_TOGGLEBUTTON_VIEWER_ANIMATION,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnToggleButtonViewerAnimationToggle);
-    Connect(ID_TOGGLEBUTTON_MAP_VIEWER,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnToggleButtonMapViewerToggle);
-    Connect(ID_TOGGLEBUTTON_VIEWER_ROTATION,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnToggleButtonViewerRotationToggle);
-    Connect(ID_BUTTON_VIEWER_SCREENSHOT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonViewerScreenshotClick);
-    Connect(ID_BUTTON_MINIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonMinimeClick);
-    Connect(ID_BUTTON_RESIZE_CAM_WIN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonResizeCamWinClick);
-    Connect(ID_TOGGLEBUTTON_AOI,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnToggleButtonAOIToggle);
-    Connect(ID_TOGGLEBUTTON_FRAMEGRAB,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnToggleButtonFrameGrabToggle);
-    Connect(ID_BUTTON_START,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonStartClick);
-    Connect(ID_BUTTON_QUIT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonQuitClick);
-    Connect(ID_TOGGLEBUTTON_BACKGROUND,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnToggleButtonBackgroundToggle);
-    Connect(ID_BUTTON_DEC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonDecExpTimeClick);
-    Connect(ID_BUTTON_INC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonIncExpTimeClick);
-    Connect(ID_TOGGLEBUTTON_SMOOTHING,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnToggleButtonSmoothingToggle);
-    Connect(ID_BUTTON_DEC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonDecKernelSizeClick);
-    Connect(ID_BUTTON_INC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonIncKernelSizeClick);
-    Connect(ID_BUTTON_DEC_STD_DEV,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonDecStdDevClick);
-    Connect(ID_BUTTON_INC_STD_DEV,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonIncStdDevClick);
-    Connect(ID_BUTTON_DEC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonDecGroundliftClick);
-    Connect(ID_BUTTON_INC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&igyba_wxFrame::OnButtonIncGroundliftClick);
-    Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&igyba_wxFrame::OnQuit);
-    Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&igyba_wxFrame::OnAbout);
-    Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&igyba_wxFrame::OnCloseMainFrame);
+    Connect(ID_BUTTON_SAVE_IMG_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgRGBClick);
+    Connect(ID_BUTTON_SAVE_IMG_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgWorkClick);
+    Connect(ID_BUTTON_SAVE_IMG_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgFPClick);
+    Connect(ID_BUTTON_SAVE_DATA_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataRGBClick);
+    Connect(ID_BUTTON_SAVE_DATA_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataWorkClick);
+    Connect(ID_BUTTON_SAVE_DATA_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataFPClick);
+    Connect(ID_BUTTON_GNUPLOT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonGnuplotClick);
+    Connect(ID_TOGGLEBUTTON_VIEWER,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonViewerToggle);
+    Connect(ID_TOGGLEBUTTON_VIEWER_ANIMATION,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonViewerAnimationToggle);
+    Connect(ID_TOGGLEBUTTON_MAP_VIEWER,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonMapViewerToggle);
+    Connect(ID_TOGGLEBUTTON_VIEWER_ROTATION,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonViewerRotationToggle);
+    Connect(ID_BUTTON_VIEWER_SCREENSHOT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonViewerScreenshotClick);
+    Connect(ID_BUTTON_MINIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonMinimeClick);
+    Connect(ID_BUTTON_RESIZE_CAM_WIN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonResizeCamWinClick);
+    Connect(ID_TOGGLEBUTTON_AOI,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonAOIToggle);
+    Connect(ID_TOGGLEBUTTON_FRAMEGRAB,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonFrameGrabToggle);
+    Connect(ID_BUTTON_START,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonStartClick);
+    Connect(ID_BUTTON_QUIT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonQuitClick);
+    Connect(ID_TOGGLEBUTTON_BACKGROUND,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonBackgroundToggle);
+    Connect(ID_BUTTON_DEC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecExpTimeClick);
+    Connect(ID_BUTTON_INC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncExpTimeClick);
+    Connect(ID_TOGGLEBUTTON_SMOOTHING,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonSmoothingToggle);
+    Connect(ID_BUTTON_DEC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecKernelSizeClick);
+    Connect(ID_BUTTON_INC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncKernelSizeClick);
+    Connect(ID_BUTTON_DEC_STD_DEV,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecStdDevClick);
+    Connect(ID_BUTTON_INC_STD_DEV,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncStdDevClick);
+    Connect(ID_BUTTON_DEC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecGroundliftClick);
+    Connect(ID_BUTTON_INC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncGroundliftClick);
+    Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&pyb_wxFrame::OnQuit);
+    Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&pyb_wxFrame::OnAbout);
+    Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&pyb_wxFrame::OnCloseMainFrame);
     //*)
-    /* Proper way to cast: wxCommandEventHandler(igyba_wxFrame::OnAbout) */
+    /* Proper way to cast: wxCommandEventHandler(pyb_wxFrame::OnAbout) */
 
-    thread_Cam = std::thread(igyba_wxFrame::schedule_CamThread,
+    thread_Cam = std::thread(pyb_wxFrame::schedule_CamThread,
                              m_argc,
                              mb_argv);
     event_Cam.signal();
     LedMain->Enable();
 }
 
-igyba_wxFrame::~igyba_wxFrame(void)
+pyb_wxFrame::~pyb_wxFrame(void)
 {
-    //(*Destroy(igyba_wxFrame)
+    //(*Destroy(pyb_wxFrame)
     //*)
     for(int i = 0; i < m_argc; i++)
         free(mb_argv[i]);
@@ -445,7 +445,7 @@ igyba_wxFrame::~igyba_wxFrame(void)
 
 /** Update functions of the GUI. */
 
-void igyba_wxFrame::update_TextExpTime(const double val)
+void pyb_wxFrame::update_TextExpTime(const double val)
 {
     static double tmin, tmax, tinc;
     double time = val;
@@ -460,12 +460,12 @@ void igyba_wxFrame::update_TextExpTime(const double val)
     StaticTextExpTimeDisp->SetLabel(out);
 }
 
-void igyba_wxFrame::update_TextOutputInfo(const wxString &str)
+void pyb_wxFrame::update_TextOutputInfo(const wxString &str)
 {
     TextCtrlOutputInfo->SetLabel(str);
 }
 
-void igyba_wxFrame::update_TextAOI(void)
+void pyb_wxFrame::update_TextAOI(void)
 {
     wxString out;
     if(!t_cam.get_RoiActive() && !t_cam.get_MouseDrag())
@@ -492,7 +492,7 @@ void igyba_wxFrame::update_TextAOI(void)
     TextCtrlAOI->SetLabel(out);
 }
 
-void igyba_wxFrame::update_TextCamInfo(const std::string &str)
+void pyb_wxFrame::update_TextCamInfo(const std::string &str)
 {
     wxString out(str);
     if(out.IsEmpty())
@@ -501,7 +501,7 @@ void igyba_wxFrame::update_TextCamInfo(const std::string &str)
         TextCtrlCamInfo->SetLabel(out);
 }
 
-void igyba_wxFrame::update_TextGroundlift(const double val)
+void pyb_wxFrame::update_TextGroundlift(const double val)
 {
     static double gl_max;
     double gl = val;
@@ -516,7 +516,7 @@ void igyba_wxFrame::update_TextGroundlift(const double val)
     StaticTextGroundlift->SetLabel(out);
 }
 
-void igyba_wxFrame::update_TextStdDev(const double val)
+void pyb_wxFrame::update_TextStdDev(const double val)
 {
     static double gb_min, gb_max;
     double gb = val;
@@ -531,7 +531,7 @@ void igyba_wxFrame::update_TextStdDev(const double val)
     StaticTextStdDev->SetLabel(out);
 }
 
-void igyba_wxFrame::update_TextKernelSize(const uint val)
+void pyb_wxFrame::update_TextKernelSize(const uint val)
 {
     static uint sze_min, sze_max;
     uint sze = val;
@@ -548,9 +548,9 @@ void igyba_wxFrame::update_TextKernelSize(const uint val)
 
 /** Camera thread functions. */
 
-int igyba_wxFrame::launch_Cam(int argc, char **argv)
+int pyb_wxFrame::launch_Cam(int argc, char **argv)
 {
-    static const std::string main_win_title = "igyba - IDS cameras";
+    static const std::string main_win_title = "pyb - IDS cameras";
     const double wavelen_um = 1.064;
 
     iprint(stdout, "%s read:\n", PROJECT_NAME.c_str());
@@ -766,7 +766,7 @@ int igyba_wxFrame::launch_Cam(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 
-void igyba_wxFrame::schedule_CamThread(int argc, char **argv)
+void pyb_wxFrame::schedule_CamThread(int argc, char **argv)
 {
     while(true)
     {
@@ -790,7 +790,7 @@ void igyba_wxFrame::schedule_CamThread(int argc, char **argv)
     }
 }
 
-void igyba_wxFrame::close_CamThread(void)
+void pyb_wxFrame::close_CamThread(void)
 {
     store_CloseCamState(true);
     iprint(stdout, "waiting for camera to close .");
@@ -805,7 +805,7 @@ void igyba_wxFrame::close_CamThread(void)
     iprint(stdout, " done\n");
 }
 
-bool igyba_wxFrame::signal_CamThreadIfWait(void)
+bool pyb_wxFrame::signal_CamThreadIfWait(void)
 {
     if(event_Cam.check())
     {
@@ -816,13 +816,13 @@ bool igyba_wxFrame::signal_CamThreadIfWait(void)
         return false;
 }
 
-void igyba_wxFrame::cast_static_set_MouseEvent(const int event,
+void pyb_wxFrame::cast_static_set_MouseEvent(const int event,
                                                const int x,
                                                const int y,
                                                const int flags,
                                                void *udata)
 {
-    igyba_wxFrame *ptr = static_cast<igyba_wxFrame *>(udata);
+    pyb_wxFrame *ptr = static_cast<pyb_wxFrame *>(udata);
     (*ptr).set_MouseEvent(event, x, y, flags);
 }
 
@@ -837,7 +837,7 @@ void igyba_wxFrame::cast_static_set_MouseEvent(const int event,
  * \return void
  *
  */
-void igyba_wxFrame::set_MouseEvent(const int event,
+void pyb_wxFrame::set_MouseEvent(const int event,
                                    const int x,
                                    const int y,
                                    const int flags)
@@ -905,7 +905,7 @@ void igyba_wxFrame::set_MouseEvent(const int event,
 
 /** Button, slider and other GUI functions. */
 
-wxString igyba_wxFrame::get_wxBuildInfo(void)
+wxString pyb_wxFrame::get_wxBuildInfo(void)
 {
     wxString wxbuild(wxVERSION_STRING);
     #if defined(__WXMSW__)
@@ -923,7 +923,7 @@ wxString igyba_wxFrame::get_wxBuildInfo(void)
 
 /* Buttons etc. */
 
-void igyba_wxFrame::OnToggleButtonBackgroundToggle(wxCommandEvent& event)
+void pyb_wxFrame::OnToggleButtonBackgroundToggle(wxCommandEvent& event)
 {
     if(ToggleButtonBackground->GetValue())
     {
@@ -937,7 +937,7 @@ void igyba_wxFrame::OnToggleButtonBackgroundToggle(wxCommandEvent& event)
     }
 }
 
-void igyba_wxFrame::OnButtonDecExpTimeClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonDecExpTimeClick(wxCommandEvent& event)
 {
     static double tmin, tmax, tinc;
     static bool once = false;
@@ -961,7 +961,7 @@ void igyba_wxFrame::OnButtonDecExpTimeClick(wxCommandEvent& event)
     }
 }
 
-void igyba_wxFrame::OnButtonSaveImgRGBClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonSaveImgRGBClick(wxCommandEvent& event)
 {
     std::string str;
     get_DateAndTime(str);
@@ -983,7 +983,7 @@ void igyba_wxFrame::OnButtonSaveImgRGBClick(wxCommandEvent& event)
     store_ButtonState(SAVE_RGB_BTN);
 }
 
-void igyba_wxFrame::OnButtonSaveImgWorkClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonSaveImgWorkClick(wxCommandEvent& event)
 {
     std::string str;
     get_DateAndTime(str);
@@ -1003,7 +1003,7 @@ void igyba_wxFrame::OnButtonSaveImgWorkClick(wxCommandEvent& event)
     store_ButtonState(SAVE_WORK_BTN);
 }
 
-void igyba_wxFrame::OnButtonSaveImgFPClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonSaveImgFPClick(wxCommandEvent& event)
 {
     std::string str;
     get_DateAndTime(str);
@@ -1023,7 +1023,7 @@ void igyba_wxFrame::OnButtonSaveImgFPClick(wxCommandEvent& event)
     store_ButtonState(SAVE_FP_BTN);
 }
 
-void igyba_wxFrame::OnButtonViewerScreenshotClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonViewerScreenshotClick(wxCommandEvent& event)
 {
     std::string str;
     get_DateAndTime(str);
@@ -1043,7 +1043,7 @@ void igyba_wxFrame::OnButtonViewerScreenshotClick(wxCommandEvent& event)
     t_cam.save_ViewerScreenshot(fname_img_out.ToStdString());
 }
 
-void igyba_wxFrame::OnButtonSaveDataRGBClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonSaveDataRGBClick(wxCommandEvent& event)
 {
     std::string str;
     get_DateAndTime(str);
@@ -1063,7 +1063,7 @@ void igyba_wxFrame::OnButtonSaveDataRGBClick(wxCommandEvent& event)
     store_ButtonState(STORE_RGB_BTN);
 }
 
-void igyba_wxFrame::OnButtonSaveDataWorkClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonSaveDataWorkClick(wxCommandEvent& event)
 {
     std::string str;
     get_DateAndTime(str);
@@ -1083,7 +1083,7 @@ void igyba_wxFrame::OnButtonSaveDataWorkClick(wxCommandEvent& event)
     store_ButtonState(STORE_WORK_BTN);
 }
 
-void igyba_wxFrame::OnButtonSaveDataFPClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonSaveDataFPClick(wxCommandEvent& event)
 {
     std::string str;
     get_DateAndTime(str);
@@ -1103,7 +1103,7 @@ void igyba_wxFrame::OnButtonSaveDataFPClick(wxCommandEvent& event)
     store_ButtonState(STORE_FP_BTN);
 }
 
-void igyba_wxFrame::OnToggleButtonSmoothingToggle(wxCommandEvent& event)
+void pyb_wxFrame::OnToggleButtonSmoothingToggle(wxCommandEvent& event)
 {
     store_ButtonState(TOGGLE_SMOOTHING);
     if(ToggleButtonSmoothing->GetValue())
@@ -1134,12 +1134,12 @@ void igyba_wxFrame::OnToggleButtonSmoothingToggle(wxCommandEvent& event)
     }
 }
 
-void igyba_wxFrame::OnQuit(wxCommandEvent &event)
+void pyb_wxFrame::OnQuit(wxCommandEvent &event)
 {
     Close();
 }
 
-void igyba_wxFrame::OnAbout(wxCommandEvent &event)
+void pyb_wxFrame::OnAbout(wxCommandEvent &event)
 {
     wxString msg,
              author;
@@ -1164,13 +1164,13 @@ void igyba_wxFrame::OnAbout(wxCommandEvent &event)
 
     wxAboutDialogInfo info;
     wxString version;
-    version = "igyba " + PROJECT_MAJ_VERSION + "." + PROJECT_MIN_VERSION;
+    version = "pyb " + PROJECT_MAJ_VERSION + "." + PROJECT_MIN_VERSION;
     info.SetName(version);
     info.SetDescription("This program does something great.");
     info.SetCopyright("(C) 2019," + author + "<clemens@fh-muenster.de>");
 }
 
-void igyba_wxFrame::OnButtonIncExpTimeClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonIncExpTimeClick(wxCommandEvent& event)
 {
     static double tmin, tmax, tinc;
     static bool once = false;
@@ -1194,7 +1194,7 @@ void igyba_wxFrame::OnButtonIncExpTimeClick(wxCommandEvent& event)
     }
 }
 
-void igyba_wxFrame::OnSliderKernelSizeCmdScroll(wxScrollEvent& event)
+void pyb_wxFrame::OnSliderKernelSizeCmdScroll(wxScrollEvent& event)
 {
     uint res = ((uint)SliderKernelSize->GetValue() << 1) + 1;
     assert(res & 1);
@@ -1202,7 +1202,7 @@ void igyba_wxFrame::OnSliderKernelSizeCmdScroll(wxScrollEvent& event)
     update_TextKernelSize(res);
 }
 
-void igyba_wxFrame::OnToggleButtonFrameGrabToggle(wxCommandEvent& event)
+void pyb_wxFrame::OnToggleButtonFrameGrabToggle(wxCommandEvent& event)
 {
     store_ButtonState(TOGGLE_IDLING);
     if(ToggleButtonFrameGrab->GetValue())
@@ -1213,7 +1213,7 @@ void igyba_wxFrame::OnToggleButtonFrameGrabToggle(wxCommandEvent& event)
         ToggleButtonFrameGrab->SetLabel("Idle frame grab");
 }
 
-void igyba_wxFrame::OnToggleButtonViewerToggle(wxCommandEvent& event)
+void pyb_wxFrame::OnToggleButtonViewerToggle(wxCommandEvent& event)
 {
     if(ToggleButtonViewer->GetValue())
     {
@@ -1235,12 +1235,12 @@ void igyba_wxFrame::OnToggleButtonViewerToggle(wxCommandEvent& event)
     }
 }
 
-void igyba_wxFrame::OnButtonStartClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonStartClick(wxCommandEvent& event)
 {
 
 }
 
-void igyba_wxFrame::OnCloseMainFrame(wxCloseEvent& event)
+void pyb_wxFrame::OnCloseMainFrame(wxCloseEvent& event)
 {
     store_ButtonState(CLOSE_CAM_WINDOW);
     close_CamThread();
@@ -1248,7 +1248,7 @@ void igyba_wxFrame::OnCloseMainFrame(wxCloseEvent& event)
     Destroy();
 }
 
-void igyba_wxFrame::OnButtonGnuplotClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonGnuplotClick(wxCommandEvent& event)
 {
     std::string str;
     get_DateAndTime(str);
@@ -1267,12 +1267,12 @@ void igyba_wxFrame::OnButtonGnuplotClick(wxCommandEvent& event)
     store_ButtonState(MAKE_GNUPLOT);
 }
 
-void igyba_wxFrame::OnButtonResizeCamWinClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonResizeCamWinClick(wxCommandEvent& event)
 {
     store_ButtonState(RESIZE_CAM_WINDOW);
 }
 
-void igyba_wxFrame::OnButtonQuitClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonQuitClick(wxCommandEvent& event)
 {
     const wxPoint pt = wxGetMousePosition();
     const int mx = pt.x,
@@ -1286,7 +1286,7 @@ void igyba_wxFrame::OnButtonQuitClick(wxCommandEvent& event)
         return;
 }
 
-void igyba_wxFrame::OnSliderExpTimeCmdScroll(wxScrollEvent& event)
+void pyb_wxFrame::OnSliderExpTimeCmdScroll(wxScrollEvent& event)
 {
     const double out_min = SliderExpTime->GetMin(),
                  out_max = SliderExpTime->GetMax();
@@ -1305,7 +1305,7 @@ void igyba_wxFrame::OnSliderExpTimeCmdScroll(wxScrollEvent& event)
     update_TextExpTime(res);
 }
 
-void igyba_wxFrame::init_SliderExpTime(void)
+void pyb_wxFrame::init_SliderExpTime(void)
 {
     const double out_min = 0.,
                  out_max = 99.;
@@ -1318,7 +1318,7 @@ void igyba_wxFrame::init_SliderExpTime(void)
     SliderExpTime->SetValue(setting);
 }
 
-void igyba_wxFrame::OnSliderGroundliftCmdScroll(wxScrollEvent& event)
+void pyb_wxFrame::OnSliderGroundliftCmdScroll(wxScrollEvent& event)
 {
     const double out_min = SliderGroundlift->GetMin(),
                  out_max = SliderGroundlift->GetMax();
@@ -1336,7 +1336,7 @@ void igyba_wxFrame::OnSliderGroundliftCmdScroll(wxScrollEvent& event)
     update_TextGroundlift(res);
 }
 
-void igyba_wxFrame::init_SliderStdDev(void)
+void pyb_wxFrame::init_SliderStdDev(void)
 {
     const double out_min = 0.,
                  out_max = 99.;
@@ -1349,7 +1349,7 @@ void igyba_wxFrame::init_SliderStdDev(void)
     SliderStdDev->SetValue(setting);
 }
 
-void igyba_wxFrame::init_SliderKernelSize(void)
+void pyb_wxFrame::init_SliderKernelSize(void)
 {
     const uint out_min = 1;
     uint sze_min, sze_max, cur_val,
@@ -1361,7 +1361,7 @@ void igyba_wxFrame::init_SliderKernelSize(void)
 }
 
 
-void igyba_wxFrame::init_SliderGroundlift(void)
+void pyb_wxFrame::init_SliderGroundlift(void)
 {
     const double out_min = 0.,
                  out_max = 99.;
@@ -1374,7 +1374,7 @@ void igyba_wxFrame::init_SliderGroundlift(void)
     SliderGroundlift->SetValue(setting);
 }
 
-void igyba_wxFrame::OnButtonDecGroundliftClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonDecGroundliftClick(wxCommandEvent& event)
 {
     static double gl_max;
     static bool once = false;
@@ -1398,7 +1398,7 @@ void igyba_wxFrame::OnButtonDecGroundliftClick(wxCommandEvent& event)
     }
 }
 
-void igyba_wxFrame::OnButtonIncGroundliftClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonIncGroundliftClick(wxCommandEvent& event)
 {
     static double gl_max;
     static bool once = false;
@@ -1424,7 +1424,7 @@ void igyba_wxFrame::OnButtonIncGroundliftClick(wxCommandEvent& event)
     }
 }
 
-void igyba_wxFrame::OnSliderStdDevCmdScroll(wxScrollEvent& event)
+void pyb_wxFrame::OnSliderStdDevCmdScroll(wxScrollEvent& event)
 {
     const double out_min = SliderStdDev->GetMin(),
              out_max = SliderStdDev->GetMax();
@@ -1442,7 +1442,7 @@ void igyba_wxFrame::OnSliderStdDevCmdScroll(wxScrollEvent& event)
     update_TextStdDev(res);
 }
 
-void igyba_wxFrame::OnButtonDecStdDevClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonDecStdDevClick(wxCommandEvent& event)
 {
     static double gb_min, gb_max;
     static bool once = false;
@@ -1467,7 +1467,7 @@ void igyba_wxFrame::OnButtonDecStdDevClick(wxCommandEvent& event)
     }
 }
 
-void igyba_wxFrame::OnButtonIncStdDevClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonIncStdDevClick(wxCommandEvent& event)
 {
     static double gb_min, gb_max;
     static bool once = false;
@@ -1492,7 +1492,7 @@ void igyba_wxFrame::OnButtonIncStdDevClick(wxCommandEvent& event)
     }
 }
 
-void igyba_wxFrame::OnButtonDecKernelSizeClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonDecKernelSizeClick(wxCommandEvent& event)
 {
     int curval = SliderKernelSize->GetValue();
     if(curval > SliderKernelSize->GetMin())
@@ -1504,7 +1504,7 @@ void igyba_wxFrame::OnButtonDecKernelSizeClick(wxCommandEvent& event)
     }
 }
 
-void igyba_wxFrame::OnButtonIncKernelSizeClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonIncKernelSizeClick(wxCommandEvent& event)
 {
     int curval = SliderKernelSize->GetValue();
     if(curval < SliderKernelSize->GetMax())
@@ -1516,7 +1516,7 @@ void igyba_wxFrame::OnButtonIncKernelSizeClick(wxCommandEvent& event)
     }
 }
 
-void igyba_wxFrame::OnButtonMinimeClick(wxCommandEvent& event)
+void pyb_wxFrame::OnButtonMinimeClick(wxCommandEvent& event)
 {
     if(wxMessageBox("Start fit routine?",
                     "Please confirm",
@@ -1526,7 +1526,7 @@ void igyba_wxFrame::OnButtonMinimeClick(wxCommandEvent& event)
         store_ButtonState(START_MINIME);
 }
 
-void igyba_wxFrame::OnToggleButtonAOIToggle(wxCommandEvent& event)
+void pyb_wxFrame::OnToggleButtonAOIToggle(wxCommandEvent& event)
 {
     if(ToggleButtonAOI->GetValue())
     {
@@ -1542,7 +1542,7 @@ void igyba_wxFrame::OnToggleButtonAOIToggle(wxCommandEvent& event)
     }
 }
 
-void igyba_wxFrame::OnToggleButtonMapViewerToggle(wxCommandEvent& event)
+void pyb_wxFrame::OnToggleButtonMapViewerToggle(wxCommandEvent& event)
 {
     if(ToggleButtonMapViewer->GetValue())
         ToggleButtonMapViewer->SetLabel("Show 3D map");
@@ -1551,7 +1551,7 @@ void igyba_wxFrame::OnToggleButtonMapViewerToggle(wxCommandEvent& event)
     t_cam.toggle_ViewerMap3DMode();
 }
 
-void igyba_wxFrame::OnToggleButtonViewerAnimationToggle(wxCommandEvent& event)
+void pyb_wxFrame::OnToggleButtonViewerAnimationToggle(wxCommandEvent& event)
 {
     if(ToggleButtonViewerAnimation->GetValue())
         ToggleButtonViewerAnimation->SetLabel("Start animation");
@@ -1560,7 +1560,7 @@ void igyba_wxFrame::OnToggleButtonViewerAnimationToggle(wxCommandEvent& event)
     t_cam.toggle_ViewerIdling();
 }
 
-void igyba_wxFrame::OnToggleButtonViewerRotationToggle(wxCommandEvent& event)
+void pyb_wxFrame::OnToggleButtonViewerRotationToggle(wxCommandEvent& event)
 {
     if(ToggleButtonViewerRotation->GetValue())
         ToggleButtonViewerRotation->SetLabel("Stop rotation");
@@ -1577,22 +1577,22 @@ void igyba_wxFrame::OnToggleButtonViewerRotationToggle(wxCommandEvent& event)
  * \return void
  *
  */
-void igyba_wxFrame::store_ButtonState(const uint32_t wxb)
+void pyb_wxFrame::store_ButtonState(const uint32_t wxb)
 {
     btn_state.store(wxb, std::memory_order_release);
 }
 
-void igyba_wxFrame::store_CloseCamState(const bool b)
+void pyb_wxFrame::store_CloseCamState(const bool b)
 {
     close_cam_thread.store(b, std::memory_order_release);
 }
 
-void igyba_wxFrame::store_ForceQuit(const bool b)
+void pyb_wxFrame::store_ForceQuit(const bool b)
 {
     force_quit.store(b, std::memory_order_release);
 }
 
-void igyba_wxFrame::store_SelectRoi(const bool b)
+void pyb_wxFrame::store_SelectRoi(const bool b)
 {
     select_roi.store(b, std::memory_order_release);
 }
@@ -1604,27 +1604,27 @@ void igyba_wxFrame::store_SelectRoi(const bool b)
  * \return void
  *
  */
-uint32_t igyba_wxFrame::load_ButtonState(void)
+uint32_t pyb_wxFrame::load_ButtonState(void)
 {
     return btn_state.load(std::memory_order_acquire);
 }
 
-bool igyba_wxFrame::load_ForceQuit(void)
+bool pyb_wxFrame::load_ForceQuit(void)
 {
     return force_quit.load(std::memory_order_acquire);
 }
 
-bool igyba_wxFrame::load_CloseCamState(void)
+bool pyb_wxFrame::load_CloseCamState(void)
 {
     return close_cam_thread.load(std::memory_order_acquire);
 }
 
-bool igyba_wxFrame::load_SelectRoi(void)
+bool pyb_wxFrame::load_SelectRoi(void)
 {
     return select_roi.load(std::memory_order_acquire);
 }
 
-void igyba_wxFrame::OnTextCtrlCamInfoText(wxCommandEvent& event)
+void pyb_wxFrame::OnTextCtrlCamInfoText(wxCommandEvent& event)
 {
 
 }

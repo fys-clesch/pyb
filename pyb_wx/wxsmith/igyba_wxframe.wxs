@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
-	<object class="wxFrame" name="igyba_wxFrame">
-		<title>igyba 4 fingers</title>
+	<object class="wxFrame" name="pyb_wxFrame">
+		<title>pyb 4 fingers</title>
 		<icon>icon.ico</icon>
 		<id_arg>0</id_arg>
 		<handler function="OnCloseMainFrame" entry="EVT_CLOSE" />

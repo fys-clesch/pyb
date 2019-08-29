@@ -68,8 +68,8 @@ grabber::grabber(void)
     start_roi =
     end_roi = cv::Point_<int>(0, 0);  /* 2 */
     /* string */
-    main_win_name = "igyba - main window";
-    tbar_win_name = "igyba - trackbar window"; /* 2 */
+    main_win_name = "pyb - main window";
+    tbar_win_name = "pyb - trackbar window"; /* 2 */
     /* uint */
     gaussblur_sze_min = 1;
     gaussblur_sze_max = 61; /* 2 */
@@ -1085,7 +1085,7 @@ void grabber::show_Help(void)
     cv::Mat img(cv::Size(wwidth, wheight), CV_8UC3, cv::Scalar::all(0));
     {
         static const std::string text =
-        "Welcome to the help function of 'igyba'";
+        "Welcome to the help function of 'pyb'";
 
         int baseline = 0;
         cv::Size textSize = cv::getTextSize(text, font, fscl, lw, &baseline);
@@ -1205,7 +1205,7 @@ void grabber::show_Intro(void)
     cv::namedWindow(win_title, cv::WINDOW_AUTOSIZE);
     cv::Mat img(cv::Size(wwidth, wheight), CV_8UC3, cv::Scalar::all(0.));
     {
-        static const std::string text = "igyba -- igyba gets your beam analysed";
+        static const std::string text = "pyb -- profile your beam";
 
         int baseline = 0;
         cv::Size textSize = cv::getTextSize(text, font, fscl, lw, &baseline);
@@ -1290,7 +1290,7 @@ void grabber::show_HelpOnCurses(void)
     while(getch() == ERR)
     {
         attrset(COLOR_PAIR(1) | A_NORMAL);
-        mvaddstr(1, 1, "Welcome to the help function of 'igyba'");
+        mvaddstr(1, 1, "Welcome to the help function of 'pyb'");
         mvaddstr(2, 1, "---------------------------------------");
         mvaddstr(4, 1, "Following keys will get you a response:");
     }

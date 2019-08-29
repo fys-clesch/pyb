@@ -1,5 +1,5 @@
 /***************************************************************
- * Name:      igyba_wxApp.h
+ * Name:      pyb_wxApp.h
  * Purpose:   Defines Application Class
  * Author:    Clemens Schäfermeier (clemens@fh-muenster.de)
  * Created:   2015-04-03
@@ -12,7 +12,7 @@
 
 #include <wx/app.h>
 
-class igyba_wxApp : public wxApp
+class pyb_wxApp : public wxApp
 {
     public:
         virtual bool OnInit(void);

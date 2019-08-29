@@ -380,7 +380,8 @@ void ids_cam::inquire_ImageMem(int *res_pt nx,
            "Row increment ", pbpo);
     if(bppo != bits_p_pix)
     {
-        error_msg("inquired bits per pixel are different from the user-set value", ERR_ARG);
+        error_msg("inquired bits per pixel are different from the user-set value",
+                  ERR_ARG);
         err_break = true;
     }
     if(nx)

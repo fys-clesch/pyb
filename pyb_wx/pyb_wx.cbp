@@ -2,13 +2,13 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="igyba_wx" />
+		<Option title="pyb_wx" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug_Windows">
 				<Option platforms="Windows;" />
-				<Option output="bin/igyba_wx" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/pyb_wx" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -64,7 +64,7 @@
 			</Target>
 			<Target title="Release_Windows">
 				<Option platforms="Windows;" />
-				<Option output="bin/igyba_wx" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/pyb_wx" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -120,7 +120,7 @@
 			</Target>
 			<Target title="Release_Windows_Static">
 				<Option platforms="Windows;" />
-				<Option output="bin/igyba_wx" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/pyb_wx" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -198,7 +198,7 @@
 			</Target>
 			<Target title="Debug_Linux">
 				<Option platforms="Unix;Mac;" />
-				<Option output="bin/igyba_wx" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/pyb_wx" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -261,31 +261,27 @@
 		<Unit filename="../src/header.hpp" />
 		<Unit filename="../src/threadhand_class.cpp" />
 		<Unit filename="../src/threadhand_class.h" />
-		<Unit filename="../thorlabs_cam/thorlabs_cam.cpp" />
-		<Unit filename="../thorlabs_cam/thorlabs_cam.h" />
-		<Unit filename="../thorlabs_cam/uc480.h" />
-		<Unit filename="../thorlabs_cam/ueye.h" />
 		<Unit filename="../viewer_pp/src/draw.cpp" />
 		<Unit filename="../viewer_pp/src/viewer_class.cpp" />
 		<Unit filename="../viewer_pp/src/viewer_class.h" />
 		<Unit filename="Makefile" />
-		<Unit filename="igyba_wxApp.cpp" />
-		<Unit filename="igyba_wxApp.h" />
-		<Unit filename="igyba_wxMain.cpp" />
-		<Unit filename="igyba_wxMain.h" />
+		<Unit filename="pyb_wxApp.cpp" />
+		<Unit filename="pyb_wxApp.h" />
+		<Unit filename="pyb_wxMain.cpp" />
+		<Unit filename="pyb_wxMain.h" />
 		<Unit filename="resource.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
 		<Unit filename="src/led.cpp" />
-		<Unit filename="wxsmith/igyba_wxframe.wxs" />
+		<Unit filename="wxsmith/pyb_wxframe.wxs" />
 		<Extensions>
 			<code_completion />
 			<envvars />
 			<debugger />
 			<wxsmith version="1">
-				<gui name="wxWidgets" src="igyba_wxApp.cpp" main="igyba_wxFrame" init_handlers="necessary" language="CPP" />
+				<gui name="wxWidgets" src="pyb_wxApp.cpp" main="pyb_wxFrame" init_handlers="necessary" language="CPP" />
 				<resources>
-					<wxFrame wxs="wxsmith/igyba_wxframe.wxs" src="igyba_wxMain.cpp" hdr="igyba_wxMain.h" fwddecl="0" i18n="1" name="igyba_wxFrame" language="CPP" />
+					<wxFrame wxs="wxsmith/pyb_wxframe.wxs" src="pyb_wxMain.cpp" hdr="pyb_wxMain.h" fwddecl="0" i18n="1" name="pyb_wxFrame" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

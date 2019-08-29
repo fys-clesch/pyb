@@ -35,7 +35,6 @@
 #define SHOW_WAIT_KEY 0
 #define SHOW_MOUSE_CB 0
 #define USE_CURSES 0
-#define USE_IDS_DRIVER 1
 
 constexpr unsigned int FILENAME_MAX1 = FILENAME_MAX + 1;
 
@@ -57,7 +56,7 @@ constexpr unsigned int FILENAME_MAX1 = FILENAME_MAX + 1;
 #endif
 
 /* Project name. */
-const std::string PROJECT_NAME = "igyba";
+const std::string PROJECT_NAME = "pyb";
 const std::string PROJECT_MAJ_VERSION = "2";
 const std::string PROJECT_MIN_VERSION = "0";
 const std::string PROJECT_YEAR = "2019";

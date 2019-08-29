@@ -14,16 +14,15 @@ else
     CFLAGS := -O3 -Wall -Wextra -pedantic -std=c++11 -fopenmp -DIGYBA_NDEBUG -DNDEBUG -DUSE_DEPRECATED_FUNCTIONS # Whitespace
 endif
 
-FILES_MAIN = igyba_wxApp.cpp igyba_wxMain.cpp src/led.cpp
+FILES_MAIN = pyb_wxApp.cpp pyb_wxMain.cpp src/led.cpp
 FILES_EXT = auxf.cpp threadhand_class.cpp
 FILES_MINIME = minime_profile_class.cpp minime_propagation_class.cpp fifo_class.cpp fit_fun_profile.cpp funcs.cpp gabe_class.cpp minimizer_s.cpp random.cpp
 FILES_VIEWER = draw.cpp viewer_class.cpp
 FILES_GRABBER = grabber_class.cpp
-FILES_TC = thorlabs_cam.cpp
 FILES_IC = ids_cam.cpp
 RESOURCES = resource.rc
 
-PROJECT = igyba_wx
+PROJECT = pyb_wx
 
 ifdef windir
     delcall = del
@@ -91,8 +90,6 @@ MINIME_SDIR = ../minime_pp/src
 MINIME_ODIR = obj/minime_pp
 GRABBER_SDIR = ../grabber/src
 GRABBER_ODIR = obj/grabber
-TC_SDIR = ../thorlabs_cam
-TC_ODIR = obj/thorlabs_cam
 IC_SDIR = ../ids_cam
 IC_ODIR = obj/ids_cam
 
@@ -102,7 +99,6 @@ _OBJECTS_EXT = $(patsubst %.cpp, %.o, $(FILES_EXT))
 _OBJECTS_VIEWER = $(patsubst %.cpp, %.o, $(FILES_VIEWER))
 _OBJECTS_MINIME = $(patsubst %.cpp, %.o, $(FILES_MINIME))
 _OBJECTS_GRABBER = $(patsubst %.cpp, %.o, $(FILES_GRABBER))
-_OBJECTS_TC = $(patsubst %.cpp, %.o, $(FILES_TC))
 _OBJECTS_IC = $(patsubst %.cpp, %.o, $(FILES_IC))
 
 # Combine the source- and the file names
@@ -110,7 +106,6 @@ SOURCE_EXT = $(addprefix $(EXT_SDIR)/, $(FILES_EXT))
 SOURCE_VIEWER = $(addprefix $(VIEWER_SDIR)/, $(FILES_VIEWER))
 SOURCE_MINIME = $(addprefix $(MINIME_SDIR)/, $(FILES_MINIME))
 SOURCE_GRABBER = $(addprefix $(GRABBER_SDIR)/, $(FILES_GRABBER))
-SOURCE_TC = $(addprefix $(TC_SDIR)/, $(FILES_TC))
 SOURCE_IC = $(addprefix $(IC_SDIR)/, $(FILES_IC))
 
 # Combine the object- and the file names
@@ -119,12 +114,10 @@ OBJECTS_EXT = $(addprefix $(EXT_ODIR)/, $(_OBJECTS_EXT))
 OBJECTS_VIEWER = $(addprefix $(VIEWER_ODIR)/, $(_OBJECTS_VIEWER))
 OBJECTS_MINIME = $(addprefix $(MINIME_ODIR)/, $(_OBJECTS_MINIME))
 OBJECTS_GRABBER = $(addprefix $(GRABBER_ODIR)/, $(_OBJECTS_GRABBER))
-OBJECTS_TC = $(addprefix $(TC_ODIR)/, $(_OBJECTS_TC))
 OBJECTS_IC = $(addprefix $(IC_ODIR)/, $(_OBJECTS_IC))
 
 # Add the objects all up
 OBJECTS_ALL = $(OBJECTS_MAIN) \
-              $(OBJECTS_TC) \
               $(OBJECTS_IC) \
               $(OBJECTS_GRABBER) \
               $(OBJECTS_VIEWER) \
@@ -169,9 +162,6 @@ $(MINIME_ODIR)/%.o: $(MINIME_SDIR)/%.cpp $(EXT_SDIR)/header.hpp
 $(GRABBER_ODIR)/%.o: $(GRABBER_SDIR)/%.cpp $(EXT_SDIR)/header.hpp
 	$(CXX) $(CFLAGS) $(CDIR) -c $< -o $@
 
-$(TC_ODIR)/%.o: $(TC_SDIR)/%.cpp $(EXT_SDIR)/header.hpp
-	$(CXX) $(CFLAGS) $(CDIR) -c $< -o $@
-
 $(IC_ODIR)/%.o: $(IC_SDIR)/%.cpp $(EXT_SDIR)/header.hpp
 	$(CXX) $(CFLAGS) $(CDIR) -c $< -o $@
 
@@ -185,8 +175,6 @@ $(OBJECTS_VIEWER): | $(VIEWER_ODIR)
 $(OBJECTS_MINIME): | $(MINIME_ODIR)
 
 $(OBJECTS_GRABBER): | $(GRABBER_ODIR)
-
-$(OBJECTS_TC): | $(TC_ODIR)
 
 $(OBJECTS_IC): | $(IC_ODIR)
 
@@ -203,9 +191,6 @@ $(MINIME_ODIR):
 	mkdir $(call pathfix, $@)
 
 $(GRABBER_ODIR):
-	mkdir $(call pathfix, $@)
-
-$(TC_ODIR):
 	mkdir $(call pathfix, $@)
 
 $(IC_ODIR):

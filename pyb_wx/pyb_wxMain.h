@@ -1,5 +1,5 @@
 /***************************************************************
- * Name:      igyba_wxMain.h
+ * Name:      pyb_wxMain.h
  * Purpose:   Defines Application Frame
  * Author:    Clemens Sch\"afermeier (clemens@fh-muenster.de)
  * Created:   2015-04-03
@@ -11,7 +11,7 @@
 #ifndef IGYBA_WXMAIN_H
 #define IGYBA_WXMAIN_H
 
-//(*Headers(igyba_wxFrame)
+//(*Headers(pyb_wxFrame)
 #include <wx/button.h>
 #include <wx/frame.h>
 #include <wx/gbsizer.h>
@@ -28,24 +28,14 @@
 //*)
 #include "src/led.h"
 
-#include "../src/header.hpp"
-#if USE_IDS_DRIVER
- #include "../ids_cam/ids_cam.h"
-#else
- #include "../thorlabs_cam/thorlabs_cam.h"
-#endif
+#include "../ids_cam/ids_cam.h"
 
-class igyba_wxFrame : public wxFrame
+class pyb_wxFrame : public wxFrame
 {
 
 private:
 
-    #if USE_IDS_DRIVER
-     ids_cam
-    #else
-     thorlabs_cam
-    #endif
-    t_cam;
+    ids_cam t_cam;
 
     char **mb_argv;
 
@@ -82,7 +72,7 @@ private:
         REMOVE_AOI
     };
 
-        //(*Handlers(igyba_wxFrame)
+        //(*Handlers(pyb_wxFrame)
         void OnQuit(wxCommandEvent &event);
         void OnAbout(wxCommandEvent &event);
         void OnButtonSaveImgRGBClick(wxCommandEvent& event);
@@ -121,7 +111,7 @@ private:
         void OnTextCtrlCamInfoText(wxCommandEvent& event);
         //*)
 
-        //(*Identifiers(igyba_wxFrame)
+        //(*Identifiers(pyb_wxFrame)
         static const long ID_BUTTON_SAVE_IMG_RGB;
         static const long ID_BUTTON_SAVE_IMG_WORK;
         static const long ID_BUTTON_SAVE_IMG_FP;
@@ -179,7 +169,7 @@ private:
         static const long ID_STATUSBAR_MAIN;
         //*)
 
-        //(*Declarations(igyba_wxFrame)
+        //(*Declarations(pyb_wxFrame)
         wxButton* ButtonDecExpTime;
         wxButton* ButtonDecGroundlift;
         wxButton* ButtonDecKernelSize;
@@ -275,13 +265,13 @@ private:
 
 public:
 
-    igyba_wxFrame(wxWindow* parent,
+    pyb_wxFrame(wxWindow* parent,
                   wxWindowID id = -1);
-    igyba_wxFrame(int argc,
+    pyb_wxFrame(int argc,
                   wchar_t **argv,
                   wxWindow *parent,
                   wxWindowID id = -1);
-    virtual ~igyba_wxFrame(void);
+    virtual ~pyb_wxFrame(void);
 
 };
 
