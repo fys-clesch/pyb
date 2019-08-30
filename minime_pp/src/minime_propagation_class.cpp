@@ -18,11 +18,11 @@ minime_propagation::minime_propagation(void)
 void minime_propagation::print_Members(void)
 {
     iprint(stdout,
-        "      Wavelength: %g\n"
-        "     Use gnuplot: %u\n"
-        "    Total points: %u\n"
-        "Arrays allocated: %u\n",
-        lambda, do_gnuplot, mnm_ntot, allocd_vec);
+           "      Wavelength: %g\n"
+           "     Use gnuplot: %u\n"
+           "    Total points: %u\n"
+           "Arrays allocated: %u\n",
+           lambda, do_gnuplot, mnm_ntot, allocd_vec);
 
     iprint(stdout, "zpnt wz_x wz_y:\n");
     for(uint i = 0; i < mnm_ntot; ++i)
@@ -56,7 +56,7 @@ void minime_propagation::set_Plotting(const bool do_it)
 }
 
 double minime_propagation::get_BeamWidth(const uint n, const double z0,
-                                        const double w0)
+                                         const double w0)
 {
     constexpr double pisq = M_PI * M_PI;
     const double zoff = (zpnt[n] - z0) * 1e3,
@@ -79,7 +79,7 @@ void minime_propagation::fill_DataFromFile(const std::string &fname)
 
     if(tmp_cols != 3)
         error_msg("wrong number of rows in the file storing the beam radii",
-                    ERR_ARG);
+                  ERR_ARG);
 
     mnm_ntot = tmp_rows;
     tmp_data = alloc_mat(mnm_ntot, tmp_cols);

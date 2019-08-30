@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="1">
+    <builddir>pyb-cppcheck-build-dir</builddir>
+    <platform>Unspecified</platform>
+    <analyze-all-vs-configs>true</analyze-all-vs-configs>
+    <includedir>
+        <dir name="C:/Libraries/freeglut/x86_64-w64-mingw32/include/"/>
+        <dir name="C:/Libraries/wxWidgets/include/"/>
+    </includedir>
+    <paths>
+        <dir name="C:/Users/schaecl/Documents/github/igyba"/>
+    </paths>
+</project>

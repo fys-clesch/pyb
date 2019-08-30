@@ -34,7 +34,8 @@ ids_cam::ids_cam(void)
     supp_fine_inc_exp_time =
     err_break = false; /* 3 */
     /* uint16_t */
-    pixel_format = IS_CM_SENSOR_RAW8;
+//    pixel_format = IS_CM_SENSOR_RAW8;
+    pixel_format = IS_CM_MONO8;
     color_mod_init =
     bits_p_pix =
     pix_size = 0; /* 4 */
@@ -63,7 +64,8 @@ ids_cam::ids_cam(void)
     im_aoi_width =
     im_aoi_height =
     im_aoi_width_start =
-    im_aoi_height_start = 0; /* 18 */
+    im_aoi_height_start =
+    used_bandwidth = 0; /* 19 */
     /* string */
     infotbar_win_name  = "camera information window";
     /* Mat */
@@ -1082,44 +1084,6 @@ std::string ids_cam::get_CameraInfoWindowName(void)
 void ids_cam::show_CameraTrackbars(void)
 {
     cv::imshow(infotbar_win_name, infotbar_win_mat);
-}
-
-void ids_cam::TrackbarHandlerStartAOIWidth(int i)
-{
-    /* Get the current position. */
-    assert(i == cv::getTrackbarPos(trck_name_aoi_sw, infotbar_win_name));
-    /* Calculate the new one. */
-    i -= i % im_inc_width;
-    /* Set the new one. */
-    if(i > 0)
-    {
-        im_aoi_width_start = i;
-        cv::setTrackbarPos(trck_name_aoi_sw, infotbar_win_name, im_aoi_width_start);
-    }
-    /* Set the new total width. */
-    const uint max_sze = im_max_width - im_aoi_width_start;
-    if(im_aoi_width > max_sze)
-        cv::setTrackbarPos(trck_name_aoi_ww, infotbar_win_name, max_sze);
-    /* Update AOI. */
-}
-
-void ids_cam::cast_static_SetTrackbarHandlerStartAOIWidth(int i, void *ptr)
-{
-    ids_cam *cam = static_cast<ids_cam *>(ptr);
-    (*cam).TrackbarHandlerStartAOIWidth(i);
-}
-
-void ids_cam::create_TrackbarStartAOIWidth(void)
-{
-    const int out_max = 100;
-    static int setting = 0;
-
-    cv::createTrackbar(trck_name_aoi_sw,
-                       infotbar_win_name,
-                       &setting,
-                       out_max,
-                       ids_cam::cast_static_SetTrackbarHandlerStartAOIWidth,
-                       this);
 }
 
 void ids_cam::cast_static_set_MouseEvent(const int event,

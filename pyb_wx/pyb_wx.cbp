@@ -230,7 +230,7 @@
 			<Add option="-pedantic" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
-			<Add option="-std=c++11" />
+			<Add option="-std=c++14" />
 			<Add option="-fopenmp" />
 		</Compiler>
 		<Linker>

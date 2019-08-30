@@ -199,7 +199,7 @@ void minime_profile::alloc_DataFromMemory(const uint nrows, const uint ncols,
 }
 
 void minime_profile::fill_DataFromMemory(const double *res_pt data_in,
-                                const uchar *res_pt const bad_in)
+                                         const uchar *res_pt const bad_in)
 {
     if(load_AllocatedMemory())
     {
@@ -291,9 +291,10 @@ void minime_profile::get_CentroidBeamRadius(double *res_pt cen_x,
 }
 
 void minime_profile::get_CentroidBeamCovariance(double *res_pt cen_x,
-                                        double *res_pt cen_y,
-                                        double *res_pt wxx, double *res_pt wyy,
-                                        double *res_pt wxy)
+                                                double *res_pt cen_y,
+                                                double *res_pt wxx,
+                                                double *res_pt wyy,
+                                                double *res_pt wxy)
 {
     double cx = 0., cy = 0., msum = 0.,
            *work = alloc_mat(mnm_rows, mnm_cols);
@@ -366,9 +367,9 @@ void minime_profile::get_CentroidBeamCovariance(double *res_pt cen_x,
  *
  */
 void minime_profile::get_GaussBeamMultinormal(const double wxz, const double wyz,
-                                    const double corr,
-                                    const double x_off, const double y_off,
-                                    double *out)
+                                              const double corr,
+                                              const double x_off, const double y_off,
+                                              double *out)
 {
     const double sx = wxz,
                  sxx = sx * sx,
@@ -405,11 +406,11 @@ void minime_profile::get_GaussBeamMultinormal(const double wxz, const double wyz
 }
 
 void minime_profile::get_GaussBeamMultinormalCovar(const double sxx,
-                                                const double syy,
-                                                const double sxy,
-                                                const double x_off,
-                                                const double y_off,
-                                                double *out)
+                                                   const double syy,
+                                                   const double sxy,
+                                                   const double x_off,
+                                                   const double y_off,
+                                                   double *out)
 {
     const double t_n = sxx * syy - sxy * sxy,
                  t_oy_xy = y_off * sxy,
@@ -421,7 +422,7 @@ void minime_profile::get_GaussBeamMultinormalCovar(const double sxx,
         const double norm = 2. / (M_PI * sqrt(t_n));
         #pragma omp parallel num_threads(2) \
         firstprivate(norm, sxx, syy, sxy, \
-                    t_n, t_oy_xy, t_oy_xx, t_ox_xy, t_ox_yy) \
+                     t_n, t_oy_xy, t_oy_xx, t_ox_xy, t_ox_yy) \
         shared(out)
         {
             #pragma omp for schedule(static)

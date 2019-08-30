@@ -80,8 +80,8 @@ double centroid_yb(const double *res_pt m, const uchar *res_pt bad, const uint r
  * var_bwd is the sigma bandwidth.
  */
 uint find_Bad(const char *res_pt target_bright, const char *res_pt target_dark,
-            const bool to_bin, const double var_bwd, const bool noisy,
-            const uint row, const uint col)
+              const bool to_bin, const double var_bwd, const bool noisy,
+              const uint row, const uint col)
 {
     fifo ff1(row, col);
 
@@ -102,10 +102,11 @@ uint find_Bad(const char *res_pt target_bright, const char *res_pt target_dark,
            min_dark = mean_dark - var_bwd * var_dark;
 
     if(noisy)
-        iprint(stdout, "%g * var_bright: %g\nmean_bright: %g\n " \
-                "%g * var_dark: %g\nmean_dark: %g\n",
-                var_bwd, var_bwd * var_bright, mean_bright,
-                var_bwd, var_bwd * var_dark, mean_dark);
+        iprint(stdout,
+               "%g * var_bright: %g\nmean_bright: %g\n " \
+               "%g * var_dark: %g\nmean_dark: %g\n",
+               var_bwd, var_bwd * var_bright, mean_bright,
+               var_bwd, var_bwd * var_dark, mean_dark);
 
     const std::string badfile = "bad/badfile.dat";
     create_dir(badfile.c_str());
@@ -124,9 +125,9 @@ uint find_Bad(const char *res_pt target_bright, const char *res_pt target_dark,
         for(uint y = 0; y < col; y++)
         {
             if(m_bright[x * col + y] < min_bright ||
-                m_bright[x * col + y] > max_bright ||
-                m_dark[x * col + y] < min_dark ||
-                m_dark[x * col + y] > max_dark)
+               m_bright[x * col + y] > max_bright ||
+               m_dark[x * col + y] < min_dark ||
+               m_dark[x * col + y] > max_dark)
             {
                 fprintf(writefile, "0");
                 i++;
@@ -157,15 +158,17 @@ uint find_Bad(const char *res_pt target_bright, const char *res_pt target_dark,
         free(bin_dark);
     }
 
-    iprint(stdout, "found %u bad pixels. %g %% are the good ones.\n",
-            i, (1. - (double) i / (row * col)) * 100.);
+    iprint(stdout,
+           "found %u bad pixels. %g %% are the good ones.\n",
+           i,
+           (1. - (double) i / (row * col)) * 100.);
     return i;
 }
 
 /* inif: textfile with storage place of (background) pics to be averaged */
 void startracker(const std::string &inif, const uint pics,
-                const std::string &fout,
-                const uint row, const uint col)
+                 const std::string &fout,
+                 const uint row, const uint col)
 {
     const uint ntot = row * col;
     fifo ff1(row, col);
@@ -206,8 +209,8 @@ void startracker(const std::string &inif, const uint pics,
  * use_bessel_corr = 1: with Bessel's correction
  */
 double sd_vardev(const double *res_pt m, double *res_pt mean, const bool out_var,
-                const bool use_bessel_corr, const bool noisy,
-                const uint row, const uint col)
+                 const bool use_bessel_corr, const bool noisy,
+                 const uint row, const uint col)
 {
     uint j, i,
          ntot = row * col;
@@ -248,8 +251,8 @@ double sd_vardev(const double *res_pt m, double *res_pt mean, const bool out_var
  * maxcount: highest digit to count (i.e. 2^14 = 16384).
  */
 void mem_histo(const double *res_pt target, const double maxcount,
-            const uint steps, const std::string &fname,
-            const uint row, const uint col)
+               const uint steps, const std::string &fname,
+               const uint row, const uint col)
 {
     uint *histo = alloc_uintvector(steps, 0);
 

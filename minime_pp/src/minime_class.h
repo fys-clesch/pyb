@@ -113,10 +113,10 @@ class minime
             }
             return m;
         }
-    };
+};
 
-    class minime_profile : protected minime
-    {
+class minime_profile : protected minime
+{
     private:
 
         double lambda, /**< Wavelength in micrometer. */
@@ -188,10 +188,10 @@ class minime
         void fit_GaussEllip(void);
         void fill_DataFromFile(const std::string &fname,
                                const std::string &bad_fname = "");
-    };
+};
 
-    class minime_propagation : protected minime
-    {
+class minime_propagation : protected minime
+{
     private:
 
         double lambda; /**< Wavelength in micrometer. */

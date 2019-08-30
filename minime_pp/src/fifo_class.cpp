@@ -1,27 +1,27 @@
 #include "fifo_class.h"
 
-fifo::fifo(void)
+fifo::fifo(void) : ax_x_title(""),
+                   ax_y_title(""),
+                   ax_z_title(""),
+                   plot_title(""),
+                   file_name(""),
+                   file_name_suffix("")
 {
     dat_rows =
     dat_cols = 0;
-    ax_x_title = "";
-    ax_y_title = "";
-    ax_z_title = "";
-    plot_title = "";
-    file_name = "";
-    file_name_suffix = "";
     use_contours = false;
 }
 
 fifo::fifo(const uint nrows, const uint ncols) : dat_rows(nrows),
-dat_cols(ncols)
+                                                 dat_cols(ncols),
+                                                 ax_x_title(""),
+                                                 ax_y_title(""),
+                                                 ax_z_title(""),
+                                                 plot_title(""),
+                                                 file_name(""),
+                                                 file_name_suffix("")
 {
-    ax_x_title = "";
-    ax_y_title = "";
-    ax_z_title = "";
-    plot_title = "";
-    file_name = "";
-    file_name_suffix = "";
+    use_contours = false;
 }
 
 fifo::~fifo(void)
@@ -37,8 +37,9 @@ void fifo::set_Dimensions(const uint nrows, const uint ncols)
     dat_cols = ncols;
 }
 
-void fifo::set_AxisTitles(const std::string &xtitle, const std::string &ytitle,
-                        const std::string &ztitle)
+void fifo::set_AxisTitles(const std::string &xtitle,
+                          const std::string &ytitle,
+                          const std::string &ztitle)
 {
     ax_x_title = xtitle;
     ax_y_title = ytitle;
@@ -66,7 +67,7 @@ void fifo::set_UseContours(const bool set_it)
 }
 
 void fifo::print_HistogramFromUintFile(const std::string &target,
-                                    const uint maxcount)
+                                       const uint maxcount)
 {
     uint *histo = alloc_uintvector(maxcount, 0);
 
@@ -101,9 +102,9 @@ void fifo::print_HistogramFromUintFile(const std::string &target,
 }
 
 void fifo::load_BeamProfileFilesToDoubleMemory(const std::string &inif,
-                                            double *res_pt ccdtensor,
-                                            const bool read_z_pos,
-                                            double *res_pt z_pos)
+                                               double *res_pt ccdtensor,
+                                               const bool read_z_pos,
+                                               double *res_pt z_pos)
 {
     FILE *readfile = fopen(inif.c_str(), "r");
     if(readfile == NULL)
@@ -120,8 +121,8 @@ void fifo::load_BeamProfileFilesToDoubleMemory(const std::string &inif,
         {
             uintfile2double(fname, pic, dat_rows, dat_cols);
             memcpy(&ccdtensor[i * dat_rows * dat_cols],
-                    pic,
-                    dat_rows * dat_cols * sizeof(double));
+                   pic,
+                   dat_rows * dat_cols * sizeof(double));
             ++i;
         }
     else
@@ -129,8 +130,8 @@ void fifo::load_BeamProfileFilesToDoubleMemory(const std::string &inif,
         {
             uintfile2double(fname, pic, dat_rows, dat_cols);
             memcpy(&ccdtensor[i * dat_rows * dat_cols],
-                    pic,
-                    dat_rows * dat_cols * sizeof(double));
+                   pic,
+                   dat_rows * dat_cols * sizeof(double));
             ++i;
         }
     iprint(stdout, "%u CCD profiles smoothly loaded into memory\n", i);
@@ -166,13 +167,13 @@ void fifo::write_Data_g(const std::string &fname, const uchar format,
             for(x = 0 + x_co; x < dat_rows - x_co; x++)
                 for(y = 0 + y_co; y < dat_cols - y_co; y++)
                     fprintf(wfile, "%u %u %.*g\n", x, y,
-                                print_prec, data[x * dat_cols + y]);
+                            print_prec, data[x * dat_cols + y]);
             break;
         case(1): /* xyz with tabs. */
             for(x = 0 + x_co; x < dat_rows - x_co; x++)
                 for(y = 0 + y_co; y < dat_cols - y_co; y++)
                     fprintf(wfile, "%u\t%u\t%.*g\n", x, y,
-                                print_prec, data[x * dat_cols + y]);
+                            print_prec, data[x * dat_cols + y]);
             break;
         case(2): /* Matrix without last linefeed. */
             for(x = 0 + x_co; x < dat_rows - x_co; x++)
@@ -206,7 +207,7 @@ void fifo::write_Data_g(const std::string &fname, const uchar format,
                         tsp[x * (dat_cols + 1) + y] = x - 1;
                     else
                         tsp[x * (dat_cols + 1) + y] = (float)data[(x - 1) *
-                        dat_cols + y - 1];
+                                                      dat_cols + y - 1];
 
             write_Bin_float(fname, tsp, (dat_rows + 1) * (dat_cols + 1));
             free(tsp);
@@ -242,7 +243,7 @@ void fifo::write_Data_g(const std::string &fname, const uchar format,
                         tdp[x * (dat_cols + 1) + y] = x - 1;
                     else
                         tdp[x * (dat_cols + 1) + y] = data[(x - 1) *
-                        dat_cols + y - 1];
+                                                      dat_cols + y - 1];
 
             write_Bin_double(fname, tdp, (dat_rows + 1) * (dat_cols + 1));
             free(tdp);
@@ -276,7 +277,8 @@ void fifo::write_Bin_float(const std::string &fname, const float *res_pt data,
     fclose(outfile);
 }
 
-void fifo::write_Bin_double(const std::string &fname, const double *res_pt data,
+void fifo::write_Bin_double(const std::string &fname,
+                            const double *res_pt data,
                             const uint nrowscols)
 {
     uint nn;
@@ -298,8 +300,9 @@ void fifo::write_Bin_double(const std::string &fname, const double *res_pt data,
     fclose(outfile);
 }
 
-void fifo::write_Bin_uint(const std::string &fname, const uint *res_pt data,
-                        const uint nrowscols)
+void fifo::write_Bin_uint(const std::string &fname,
+                          const uint *res_pt data,
+                          const uint nrowscols)
 {
     uint nn;
     if(nrowscols == 0)
@@ -318,8 +321,8 @@ void fifo::write_Bin_uint(const std::string &fname, const uint *res_pt data,
 }
 
 void fifo::write_Bin_int32(const std::string &fname,
-                        const int32_t *res_pt data,
-                        const uint nrowscols)
+                           const int32_t *res_pt data,
+                           const uint nrowscols)
 {
     uint nn;
     if(nrowscols == 0)
@@ -358,8 +361,9 @@ void fifo::write_Bin_uint16(const std::string &fname,
 }
 
 void fifo::plot_Data(const double *res_pt data,
-                    const bool auto_range,
-                    const double lo, const double hi)
+                     const bool auto_range,
+                     const double lo,
+                     const double hi)
 {
     std::string fname_tmp = std::tmpnam(nullptr);
     /* If any forward or backward slashes appear in the temp name,
@@ -535,7 +539,8 @@ void fifo::plot_Histogram(const std::string &fname, const uint steps)
 
 void fifo::plot_Data(const cv::Mat &mdata,
                     const bool auto_range,
-                    const double lo, const double hi)
+                    const double lo,
+                    const double hi)
 {
     if(mdata.channels() != 1 && mdata.channels() != 3)
     {

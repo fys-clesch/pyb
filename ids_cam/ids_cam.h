@@ -97,9 +97,6 @@ class ids_cam : public grabber
         static void cast_static_SetTrackbarHandlerExposure(int i, void *ptr);
         void TrackbarHandlerExposure(int i);
         void set_CameraInfoWindowName(const std::string &name);
-        void TrackbarHandlerStartAOIWidth(int i);
-        static void cast_static_SetTrackbarHandlerStartAOIWidth(int i, void *ptr);
-        void create_TrackbarStartAOIWidth(void);
         void set_MouseEvent(const int event,
                             const int x,
                             const int y,

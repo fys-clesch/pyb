@@ -32,45 +32,44 @@
 
 class pyb_wxFrame : public wxFrame
 {
+    private:
 
-private:
+        ids_cam t_cam;
 
-    ids_cam t_cam;
+        char **mb_argv;
 
-    char **mb_argv;
+        int m_argc;
 
-    int m_argc;
+        threadhand event_Cam;
 
-    threadhand event_Cam;
+        std::thread thread_Cam;
 
-    std::thread thread_Cam;
+        std::atomic<bool> close_cam_thread,
+                          select_roi,
+                          force_quit;
 
-    std::atomic<bool> close_cam_thread,
-                      select_roi,
-                      force_quit;
+        std::atomic<uint32_t> btn_state;
 
-    std::atomic<uint32_t> btn_state;
+        wxString fname_img_out,
+                 fname_dat_out,
+                 fname_gnu_out,
+                 dirname_bin;
 
-    wxString fname_img_out,
-             fname_dat_out,
-             fname_gnu_out,
-             dirname_bin;
-
-    enum wx_button_clicked
-    {
-        ERROR_BTN, NONE_BTN,
-        SAVE_RGB_BTN, SAVE_WORK_BTN, SAVE_FP_BTN,
-        STORE_RGB_BTN, STORE_WORK_BTN, STORE_FP_BTN,
-        ACQ_SET_BACKGROUND, UNSET_BACKGROUND,
-        TOGGLE_IDLING,
-        MAKE_GNUPLOT,
-        TOGGLE_SMOOTHING,
-        START_VIEWER,
-        START_MINIME,
-        RESIZE_CAM_WINDOW,
-        CLOSE_CAM_WINDOW,
-        REMOVE_AOI
-    };
+        enum wx_button_clicked
+        {
+            ERROR_BTN, NONE_BTN,
+            SAVE_RGB_BTN, SAVE_WORK_BTN, SAVE_FP_BTN,
+            STORE_RGB_BTN, STORE_WORK_BTN, STORE_FP_BTN,
+            ACQ_SET_BACKGROUND, UNSET_BACKGROUND,
+            TOGGLE_IDLING,
+            MAKE_GNUPLOT,
+            TOGGLE_SMOOTHING,
+            START_VIEWER,
+            START_MINIME,
+            RESIZE_CAM_WINDOW,
+            CLOSE_CAM_WINDOW,
+            REMOVE_AOI
+        };
 
         //(*Handlers(pyb_wxFrame)
         void OnQuit(wxCommandEvent &event);
@@ -227,51 +226,51 @@ private:
 
         DECLARE_EVENT_TABLE()
 
-    int launch_Cam(int argc, char **argv);
-    void close_CamThread(void);
-    bool signal_CamThreadIfWait(void);
-    void init_SliderExpTime(void);
-    void init_SliderGroundlift(void);
-    void init_SliderStdDev(void);
-    void init_SliderKernelSize(void);
-    void update_TextExpTime(const double val = -1.);
-    void update_TextOutputInfo(const wxString &str);
-    void update_TextAOI(void);
-    void update_TextCamInfo(const std::string &str);
-    void update_TextGroundlift(const double val = -1.);
-    void update_TextStdDev(const double val = -1.);
-    void update_TextKernelSize(const uint val = 0);
-    void set_MouseEvent(const int event,
-                        const int x,
-                        const int y,
-                        const int flags);
+        int launch_Cam(int argc, char **argv);
+        void close_CamThread(void);
+        bool signal_CamThreadIfWait(void);
+        void init_SliderExpTime(void);
+        void init_SliderGroundlift(void);
+        void init_SliderStdDev(void);
+        void init_SliderKernelSize(void);
+        void update_TextExpTime(const double val = -1.);
+        void update_TextOutputInfo(const wxString &str);
+        void update_TextAOI(void);
+        void update_TextCamInfo(const std::string &str);
+        void update_TextGroundlift(const double val = -1.);
+        void update_TextStdDev(const double val = -1.);
+        void update_TextKernelSize(const uint val = 0);
+        void set_MouseEvent(const int event,
+                            const int x,
+                            const int y,
+                            const int flags);
 
-    static void cast_static_set_MouseEvent(const int event,
-                                           const int x, const int y,
-                                           const int flags,
-                                           void *u);
-    static void schedule_CamThread(int argc, char **argv);
+        static void cast_static_set_MouseEvent(const int event,
+                                               const int x, const int y,
+                                               const int flags,
+                                               void *u);
+        static void schedule_CamThread(int argc, char **argv);
 
-    static wxString get_wxBuildInfo(void);
+        static wxString get_wxBuildInfo(void);
 
-    void store_ButtonState(const uint32_t wxb);
-    uint32_t load_ButtonState(void);
-    void store_CloseCamState(const bool b);
-    bool load_CloseCamState(void);
-    void store_SelectRoi(const bool b);
-    bool load_SelectRoi(void);
-    void store_ForceQuit(const bool b);
-    bool load_ForceQuit(void);
+        void store_ButtonState(const uint32_t wxb);
+        uint32_t load_ButtonState(void);
+        void store_CloseCamState(const bool b);
+        bool load_CloseCamState(void);
+        void store_SelectRoi(const bool b);
+        bool load_SelectRoi(void);
+        void store_ForceQuit(const bool b);
+        bool load_ForceQuit(void);
 
-public:
+    public:
 
-    pyb_wxFrame(wxWindow* parent,
-                wxWindowID id = -1);
-    pyb_wxFrame(int argc,
-                wchar_t **argv,
-                wxWindow *parent,
-                wxWindowID id = -1);
-    virtual ~pyb_wxFrame(void);
+        pyb_wxFrame(wxWindow* parent,
+                    wxWindowID id = -1);
+        pyb_wxFrame(int argc,
+                    wchar_t **argv,
+                    wxWindow *parent,
+                    wxWindowID id = -1);
+        virtual ~pyb_wxFrame(void);
 
 };
 

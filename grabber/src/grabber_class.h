@@ -21,7 +21,7 @@ class grabber
         enum class save_Im_type : char {RGB = 1, WORK, FP_IN, IN};
 
         cv::Mat in,
-            temp_in;
+                temp_in;
 
         grabber(void);
         ~grabber(void);
@@ -38,7 +38,6 @@ class grabber
         void set_PixelValue(const double val);
         double get_PixelValueWork(const int x, const int y);
         void copy_MousePosition(const int px, const int py);
-        void show_Help(void);
         void show_Intro(void);
         void update_Mats_RgbAndFp(void);
         void set_Pix2UmScale(const double scl);
@@ -51,8 +50,6 @@ class grabber
         std::string get_TrackbarWindowName(void);
         void show_Trackbars(void);
         std::string get_MainWindowName(void);
-        void create_TrackbarBlur(void);
-        void create_TrackbarBlurSize(void);
         void create_TrackbarGroundlift(void);
         void show_Im_RGB(void);
         static void schedule_Viewer(int argc, char **argv);
@@ -217,7 +214,6 @@ class grabber
                             const int x,
                             const int y,
                             const int flags);
-        void show_HelpOnCurses(void);
         cv::Mat get_Mat_private(const save_Im_type mtype);
         void draw_Crossline(void);
         void apply_RemoveBase(const double thresh = 0.);
