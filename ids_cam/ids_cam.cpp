@@ -34,7 +34,6 @@ ids_cam::ids_cam(void)
     supp_fine_inc_exp_time =
     err_break = false; /* 3 */
     /* uint16_t */
-//    pixel_format = IS_CM_SENSOR_RAW8;
     pixel_format = IS_CM_MONO8;
     color_mod_init =
     bits_p_pix =
@@ -295,8 +294,9 @@ void ids_cam::set_ColourMode(void)
         error_msg("error setting colour mode", ERR_ARG);
     if(pixel_format != is_SetColorMode(pcam, IS_GET_COLOR_MODE))
         iprint(stderr,
-               "error setting colour mode to %u\n",
-               pixel_format);
+               "error setting colour mode to %u, using %u instead\n",
+               pixel_format,
+               is_SetColorMode(pcam, IS_GET_COLOR_MODE));
 }
 
 /** \brief Set to auto-release camera and memory if camera is disconnected on-the-fly.

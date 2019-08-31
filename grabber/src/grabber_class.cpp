@@ -1090,7 +1090,7 @@ void grabber::show_Intro(void)
         sy = 15.;
         cv::putText(img, text, putText_ARGS);
         sy = 20.;
-        cv::line(img, cv::Point(sx, sy), cv::Point(sx + 300., sy), clr_txt, lw, lt);
+        cv::line(img, cv::Point(sx, sy), cv::Point(sx + textSize.width, sy), clr_txt, lw, lt);
     }
     sx = wwidth - 80.;
     sy = wheight - 25.;
