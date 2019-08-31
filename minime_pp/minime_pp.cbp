@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="minime_pp" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/minime_pp" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add option="-O0" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/minime_pp" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-DNDEBUG_IGYBA" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="Release_static">
+				<Option output="bin/minime_pp" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-DNDEBUG_IGYBA" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-static" />
+					<Add option="-static-libgcc" />
+					<Add option="-static-libstdc++" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-pedantic" />
+			<Add option="-std=c++11" />
+			<Add option="-Wextra" />
+			<Add option="-Wall" />
+			<Add option="-fopenmp" />
+			<Add option="-D__FIFO_NO_OPENCV__" />
+		</Compiler>
+		<Linker>
+			<Add option="-fopenmp" />
+		</Linker>
+		<Unit filename="../src/auxf.cpp" />
+		<Unit filename="../src/header.hpp" />
+		<Unit filename="../src/mingw.thread.h" />
+		<Unit filename="Makefile" />
+		<Unit filename="src/fifo_class.cpp" />
+		<Unit filename="src/fifo_class.h" />
+		<Unit filename="src/fit_fun_profile.cpp" />
+		<Unit filename="src/fit_fun_propagation.cpp" />
+		<Unit filename="src/funcs.cpp" />
+		<Unit filename="src/funcs.h" />
+		<Unit filename="src/gabe_class.cpp" />
+		<Unit filename="src/gabe_class.h" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/minime_class.h" />
+		<Unit filename="src/minime_profile_class.cpp" />
+		<Unit filename="src/minime_propagation_class.cpp" />
+		<Unit filename="src/minimizer_s.cpp" />
+		<Unit filename="src/minimizer_s.h" />
+		<Unit filename="src/random.cpp" />
+		<Unit filename="src/random.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

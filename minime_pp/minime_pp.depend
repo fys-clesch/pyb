@@ -1,0 +1,1227 @@
+# depslib dependency file v1.0
+1422378082 source:c:\users\cs\dropbox\dtu\progs\igyba\src\auxf.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<errno.h>
+	<assert.h>
+	<fenv.h>
+	"header.h"
+	<dir.h>
+	<Windows.h>
+	<sys/stat.h>
+
+1430323546 h>
+
+1423159081 c:\users\cs\dropbox\dtu\progs\igyba\src\header.h
+
+1424113184 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\array_ops.cpp
+	"minime_class.h"
+	"array_ops.h"
+	"funcs.h"
+	"tofile.h"
+
+1425048777 
+
+1423924265 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime.h
+	<stdlib.h>
+	<math.h>
+	<assert.h>
+	<float.h>
+	<math.h>
+	<unistd.h>
+	<time.h>
+	<string.h>
+	"../../src/header.hpp"
+	<sys/stat.h>
+	<dir.h>
+	<Windows.h>
+
+1424625840 >
+
+1424113197 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\array_ops.h
+
+1429363640 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\funcs.h
+
+1424115291 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\tofile.h
+
+1424352523 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\ccd_test.cpp
+	"minime_class.h"
+	"fifo_class.h"
+	"CCD_test.h"
+	"funcs.h"
+
+1422110781 h"
+
+1424187717 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\ccd_test.h
+
+1405773183 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fromfile.h
+
+1424286761 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fit_single_mem.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1430845689 _s.h"
+
+1423173261 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fit_single_mem.h
+
+1424114831 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\toplot.h
+
+1429426820 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.h
+
+1424344007 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fromfile.cpp
+	"minime_class.h"
+	"funcs.h"
+	"fromfile.h"
+
+1425150133 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\funcs.cpp
+	"minime_class.h"
+	"funcs.h"
+
+1432583078 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\main.cpp
+	"minime_class.h"
+	"minimizer_s.h"
+
+1432380518 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.cpp
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+
+1424952968 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\random.h
+
+1430831034 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\random.cpp
+	<time.h>
+	"random.h"
+
+1424192230 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\tofile.cpp
+	"minime_class.h"
+
+1432577155 ass.h"
+
+1424116168 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\toplot.cpp
+	"minime_class.h"
+	"toplot.h"
+
+1432576316 source:c:\users\cs\dropbox\dtu\progs\igyba\src\auxf.cpp
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+
+1429118300 p"
+
+1429363970 c:\users\cs\dropbox\dtu\progs\igyba\src\header.hpp
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+
+1432576316 source:/home/cs/Dropbox/DTU/progs/igyba/src/auxf.cpp
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<errno.h>
+	<assert.h>
+	<fenv.h>
+	"header.hpp"
+	<dir.h>
+	<Windows.h>
+	<sys/stat.h>
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	"header.hpp"
+	<dir.h>
+	<Windows.h>
+	<sys/stat.h>
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	"header.hpp"
+	<dir.h>
+	<Windows.h>
+	<sys/stat.h>
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+
+1429363970 /home/cs/Dropbox/DTU/progs/igyba/src/header.hpp
+	<stdio.h>
+	<stdio.h>
+	<stdio.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+
+1423389451 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/array_ops.cpp
+	"minime.h"
+	"array_ops.h"
+	"funcs.h"
+	"tofile.h"
+
+1423389585 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/minime.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	<time.h>
+	<assert.h>
+	<unistd.h>
+	<omp.h>
+	<limits.h>
+	<float.h>
+	"../../src/header.hpp"
+	<sys/stat.h>
+	<dir.h>
+	<Windows.h>
+
+1423389465 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/array_ops.h
+
+1429363640 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/funcs.h
+	<string>
+	<string>
+
+1423210517 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/tofile.h
+
+1424190798 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/CCD_test.cpp
+	"minime.h"
+	"CCD_test.h"
+	"array_ops.h"
+	"funcs.h"
+	"tofile.h"
+	"fromfile.h"
+	"minime_class.h"
+	"CCD_test.h"
+	"funcs.h"
+	"fromfile.h"
+
+1424187717 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/CCD_test.h
+
+1405776783 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/fromfile.h
+
+1424193208 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/fit_single_mem.cpp
+	"minime.h"
+	"fit_single_mem.h"
+	"funcs.h"
+	"array_ops.h"
+	"toplot.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1423173261 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/fit_single_mem.h
+
+1424114831 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/toplot.h
+
+1429426820 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/minimizer_s.h
+
+1424115400 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/fromfile.cpp
+	"minime.h"
+	"funcs.h"
+	"fromfile.h"
+	"minime_class.h"
+	"funcs.h"
+	"fromfile.h"
+
+1425146533 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/funcs.cpp
+	"minime.h"
+	"array_ops.h"
+	"funcs.h"
+	"minime_class.h"
+	"funcs.h"
+	"minime_class.h"
+	"funcs.h"
+	"minime_class.h"
+	"funcs.h"
+	"minime_class.h"
+	"funcs.h"
+	"minime_class.h"
+	"funcs.h"
+	"minime_class.h"
+	"funcs.h"
+
+1432581444 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/main.cpp
+	"minime.h"
+	"funcs.h"
+	"fromfile.h"
+	"CCD_test.h"
+	"fit_single_mem.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"funcs.h"
+	"fromfile.h"
+	"CCD_test.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"minimizer_s.h"
+
+1432380518 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/minimizer_s.cpp
+	"minime.h"
+	"minimizer_s.h"
+	"random.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+
+1424949368 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/random.h
+
+1430831034 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/random.cpp
+	"minime.h"
+	"random.h"
+	<time.h>
+	"random.h"
+	<time.h>
+	"random.h"
+	<time.h>
+	"random.h"
+	<time.h>
+	"random.h"
+	<time.h>
+	"random.h"
+	<time.h>
+	"random.h"
+
+1424192230 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/tofile.cpp
+	"minime.h"
+	"tofile.h"
+	"minime_class.h"
+
+1424116168 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/toplot.cpp
+	"minime.h"
+	"toplot.h"
+	"tofile.h"
+	"minime_class.h"
+	"toplot.h"
+
+1423922756 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\array_ops.cpp
+	"minime.h"
+	"array_ops.h"
+	"funcs.h"
+	"tofile.h"
+
+1423922869 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime.h
+	<math.h>
+	<assert.h>
+	<float.h>
+	<math.h>
+	<unistd.h>
+	<time.h>
+	"../../src/header.hpp"
+	<sys/stat.h>
+	<dir.h>
+	<Windows.h>
+
+1439025199 c:\users\clesch\dropbox\dtu\progs\igyba\src\header.hpp
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+
+1423389465 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\array_ops.h
+
+1429363640 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\funcs.h
+
+1423210517 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\tofile.h
+
+1423922759 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\ccd_test.cpp
+	"minime.h"
+	"CCD_test.h"
+	"array_ops.h"
+	"funcs.h"
+	"tofile.h"
+	"fromfile.h"
+
+1405772988 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\ccd_test.h
+
+1405773183 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fromfile.h
+
+1423922767 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_single_mem.cpp
+	"minime.h"
+	"fit_single_mem.h"
+	"funcs.h"
+	"array_ops.h"
+	"toplot.h"
+	"minimizer_s.h"
+
+1423173261 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_single_mem.h
+
+1405878983 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\toplot.h
+
+1429426820 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.h
+
+1422110781 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fromfile.cpp
+	"minime.h"
+	"funcs.h"
+	"fromfile.h"
+
+1425150133 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\funcs.cpp
+	"minime_class.h"
+	"funcs.h"
+
+1439023888 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\main.cpp
+	<iostream>
+	"minime_class.h"
+	"minimizer_s.h"
+
+1432380518 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minimizer_s.cpp
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+
+1424952968 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\random.h
+
+1430831034 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\random.cpp
+	<time.h>
+	"random.h"
+
+1423389451 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\tofile.cpp
+	"minime.h"
+	"tofile.h"
+
+1423680302 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\toplot.cpp
+	<time.h>
+	"minime.h"
+	"toplot.h"
+	"tofile.h"
+
+1439025333 source:c:\users\clesch\dropbox\dtu\progs\igyba\src\auxf.cpp
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+
+1429118300 source:/home/clesch/Dropbox/DTU/progs/igyba/src/auxf.cpp
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	"header.hpp"
+	<dir.h>
+	<Windows.h>
+	<sys/stat.h>
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+
+1429363970 /home/clesch/Dropbox/DTU/progs/igyba/src/header.hpp
+	<stdio.h>
+	<stdio.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+
+1432583668 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+
+1429969028 s.h"
+
+1429364304 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.cpp
+	"minime_class.h"
+
+1432581483 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/minime_class.h
+	<stdlib.h>
+	<math.h>
+	<assert.h>
+	<float.h>
+	<math.h>
+	<unistd.h>
+	<time.h>
+	<string.h>
+	"../../src/header.hpp"
+	<sys/stat.h>
+	<dir.h>
+	<Windows.h>
+	<stdlib.h>
+	<math.h>
+	<assert.h>
+	<float.h>
+	<math.h>
+	<time.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+	<stdlib.h>
+	<math.h>
+	<assert.h>
+	<float.h>
+	<math.h>
+	<time.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<time.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+
+1430316244 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/minime_class.cpp
+	"minime_class.h"
+	"minime_class.h"
+	"minime_class.h"
+	"minime_class.h"
+	"minime_class.h"
+
+1429426917 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1430320491 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\gabe_class.cpp
+	"gabe_class.h"
+	"funcs.h"
+
+1430833697 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\gabe_class.h
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+
+1432584282 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.cpp
+	"fifo_class.h"
+
+1430831341 c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.h
+	<string.h>
+	<stdlib.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<algorithm>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+
+1424358701 /header.hpp"
+
+1424629440 c:\users\cs\dropbox\dtu\progs\igyba\src\mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1438087123 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.cpp
+	"fifo_class.h"
+
+1438086466 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fifo_class.h
+	<string.h>
+	<stdlib.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<algorithm>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+
+1424629440 c:\users\clesch\dropbox\dtu\progs\igyba\src\mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1429369918 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1439020106 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.h
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+
+1430320491 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\gabe_class.cpp
+	"gabe_class.h"
+	"funcs.h"
+
+1430833697 c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\gabe_class.h
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+
+1429364304 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_class.cpp
+	"minime_class.h"
+
+1430845244 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/fifo_class.cpp
+	"fifo_class.h"
+	"fifo_class.h"
+	"fifo_class.h"
+	"fifo_class.h"
+	"fifo_class.h"
+
+1430831341 /home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/fifo_class.h
+	<string.h>
+	<stdlib.h>
+	<time.h>
+	<string>
+	<cstdio>
+	<chrono>
+	<thread>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+	<string.h>
+	<stdlib.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+	<string.h>
+	<stdlib.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+	<string.h>
+	<stdlib.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<algorithm>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+	<string.h>
+	<stdlib.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<algorithm>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+
+1424625840 /home/clesch/Dropbox/DTU/progs/igyba/src/mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1429368143 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/fit_fun.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1430844504 /home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/minime_class.h
+	<stdlib.h>
+	<math.h>
+	<assert.h>
+	<float.h>
+	<math.h>
+	<time.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+
+1429363640 /home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/funcs.h
+	<string>
+
+1429426820 /home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/minimizer_s.h
+
+1425146533 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/funcs.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minime_class.h"
+	"funcs.h"
+	"minime_class.h"
+	"funcs.h"
+	"minime_class.h"
+	"funcs.h"
+	"minime_class.h"
+	"funcs.h"
+
+1430320491 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/gabe_class.cpp
+	"gabe_class.h"
+	"funcs.h"
+	"gabe_class.h"
+	"funcs.h"
+	"gabe_class.h"
+	"funcs.h"
+	"gabe_class.h"
+	"funcs.h"
+	"gabe_class.h"
+	"funcs.h"
+
+1430833697 /home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/gabe_class.h
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+
+1430845502 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/main.cpp
+	"minime_class.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"minimizer_s.h"
+
+1429364304 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/minime_class.cpp
+	"minime_class.h"
+	"minime_class.h"
+	"minime_class.h"
+
+1430839798 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/minimizer_s.cpp
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+
+1424949368 /home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/random.h
+
+1430831034 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/random.cpp
+	<time.h>
+	"random.h"
+	<time.h>
+	"random.h"
+	<time.h>
+	"random.h"
+	<time.h>
+	"random.h"
+	<time.h>
+	"random.h"
+
+1432577208 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/fifo_class.cpp
+	"fifo_class.h"
+	"fifo_class.h"
+	"fifo_class.h"
+	"fifo_class.h"
+	"fifo_class.h"
+
+1430831341 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/fifo_class.h
+	<string.h>
+	<stdlib.h>
+	<time.h>
+	<string>
+	<cstdio>
+	<chrono>
+	<thread>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+	<string.h>
+	<stdlib.h>
+	<time.h>
+	<string>
+	<cstdio>
+	<chrono>
+	<thread>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+	<string.h>
+	<stdlib.h>
+	<sys/time.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+	<string.h>
+	<stdlib.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<algorithm>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+	<string.h>
+	<stdlib.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<algorithm>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+
+1424625840 /home/cs/Dropbox/DTU/progs/igyba/src/mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1424960866 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/fit_fun.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1430320491 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/gabe_class.cpp
+	"gabe_class.h"
+	"funcs.h"
+	"gabe_class.h"
+	"funcs.h"
+	"gabe_class.h"
+	"funcs.h"
+	"gabe_class.h"
+	"funcs.h"
+	"gabe_class.h"
+	"funcs.h"
+
+1430833697 /home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/gabe_class.h
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+
+1432581516 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1432583937 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_propagation.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1432581516 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/fit_fun_profile.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1432576642 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/fit_fun_propagation.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1432577155 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/minime_propagation_class.cpp
+	"minime_class.h"
+	"minime_class.h"
+
+1432581430 source:/home/cs/Dropbox/DTU/progs/igyba/minime_pp/src/minime_profile_class.cpp
+	"minime_class.h"
+	"minime_class.h"
+
+1438087304 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_profile.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1439020136 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\fit_fun_propagation.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1438086195 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_profile_class.cpp
+	"minime_class.h"
+
+1439025237 source:c:\users\clesch\dropbox\dtu\progs\igyba\minime_pp\src\minime_propagation_class.cpp
+	"minime_class.h"
+
+1430831772 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/fit_fun_profile.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1430845689 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/fit_fun_propagation.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1430833970 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/minime_profile_class.cpp
+	"minime_class.h"
+	"minime_class.h"
+
+1430844761 source:/home/clesch/Dropbox/DTU/progs/igyba/minime_pp/src/minime_propagation_class.cpp
+	"minime_class.h"
+	"minime_class.h"
+
+1432581744 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime_profile_class.cpp
+	"minime_class.h"
+
+1432577155 source:c:\users\cs\dropbox\dtu\progs\igyba\minime_pp\src\minime_propagation_class.cpp
+	"minime_class.h"
+
