@@ -1,13 +1,15 @@
 CC = g++
 
-CFLAGS = -O0 -g -Wall -Wextra -pedantic -std=c++11 -fopenmp -D__FIFO_NO_OPENCV__
+CFLAGS = -O0 -g -Wall -Wextra -pedantic -std=c++14 -fopenmp
 LFLAGS = -lm -static-libstdc++ -static-libgcc
 
 FILES = main.cpp fifo_class.cpp \
-fit_fun_profile.cpp fit_fun_propagation.cpp funcs.cpp gabe_class.cpp \
-minime_profile_class.cpp minime_propagation_class.cpp minimizer_s.cpp random.cpp
+        fit_fun_profile.cpp fit_fun_propagation.cpp funcs.cpp gabe_class.cpp \
+        minime_profile_class.cpp minime_propagation_class.cpp minimizer_s.cpp \
+        random.cpp
 
 EXTFILES = auxf.cpp
+
 PROJECT = minime
 
 ifdef windir
@@ -15,6 +17,7 @@ ifdef windir
  binfix = .exe
  pathfix = $(subst /,\,$1)
  OSID = 1
+ CDIR = -IC:\Libraries\OpenCV\include
 else
  ifeq ($(shell uname), Linux)
   delcall = rm -f
@@ -31,6 +34,7 @@ endif
 ODIR = obj
 SDIR = src
 EXTSDIR = ../src
+LDIR = C:/Libraries/OpenCV/include
 
 _OBJECTS = $(patsubst %.cpp, %.o, $(FILES)) $(patsubst %.cpp, %.o, $(EXTFILES))
 
@@ -46,10 +50,10 @@ $(PROJECT): $(OBJECTS)
 	$(CC) -fopenmp -o $@ $^ $(LFLAGS)
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(SDIR)/$(PROJECT)_class.h Makefile
-	$(CC) $(CFLAGS) -c $< -o $@ $(LFLAGS)
+	$(CC) $(CFLAGS) $(CDIR) -c $< -o $@ $(LFLAGS)
 
 $(ODIR)/%.o: $(EXTSDIR)/%.cpp $(EXTSDIR)/header.hpp Makefile
-	$(CC) $(CFLAGS) -c $< -o $@ $(LFLAGS)
+	$(CC) $(CFLAGS) $(CDIR) -c $< -o $@ $(LFLAGS)
 
 $(OBJECTS): | $(ODIR)
 

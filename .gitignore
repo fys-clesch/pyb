@@ -33,3 +33,4 @@ CppCheckResults.xml
 minime_output.txt
 /pyb_wx/plot/*
 /pyb_wx/pyb-cppcheck-build-dir/*
+/minime_pp/plot/*
