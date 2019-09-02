@@ -3,7 +3,7 @@
 #include "random.h"
 #include <assert.h>
 
-constexpr static uint MAXEQ = 60, /**< used in gaussj */
+constexpr static uint MAXEQ = 60, /**< Used in gaussj */
                       MAXPARAM = 8;
 
 constexpr static double SIM_TOLMIN = 10e-9,
@@ -19,7 +19,7 @@ constexpr static double SIM_TOLMIN = 10e-9,
                         MAR_LAMMIN = -18.,
                         MAR_LAMMAX = 12.,
                         MAR_BRENTTOL = 1e-2,
-                        MAR_DERIV_H = 1e-4, /**< decreasing this might cause
+                        MAR_DERIV_H = 1e-4, /**< Decreasing this might cause
                         trouble when computing the Hessian */
                         SQRT_EPSILON = 1e-8;
 
@@ -36,15 +36,19 @@ static void swap_pset(pset *p1, pset *p2);
 static double get_span(const pset *p);
 static int check_equal(double x1, double x2);
 static int ptcompare(const void *p1, const void *p2);
-static void status(const pset *res_pt ptp, const char *res_pt meth,
-                const char *res_pt text);
+static void status(const pset *res_pt ptp,
+                   const char *res_pt meth,
+                   const char *res_pt text);
 static void rndperm(int *p, const uint n);
-static void startvectors(const uint n, pset x[MAXPARAM + 1],
-                        const uint irandom);
+static void startvectors(const uint n,
+                         pset x[MAXPARAM + 1],
+                         const uint irandom);
 static int gaussj(double *res_pt a, const uint n, double *res_pt b);
 static double ssq(pset *pp);
-static double amotry(pset p[MAXPARAM], pset *psump, const uint ihi,
-                    const double fac);
+static double amotry(pset p[MAXPARAM],
+                     pset *psump,
+                     const uint ihi,
+                     const double fac);
 static void amoeba(pset p[MAXPARAM], const double ftol, const bool noisy);
 static void simplex(pset *p0, double startlen, double tol, const bool noisy);
 static double fminbr(double a, double b, double (*f) (double x), double tol);
@@ -54,7 +58,6 @@ static void manymarquardt(pset *ptp, const bool noisy);
 static double hessian(pset *p);
 void covar(pset *p, const bool tofile);
 
-/* Global but static definitions. */
 struct lmar
 {
     double a[MAXPARAM * MAXPARAM], /* Hessian for mar */
@@ -75,10 +78,12 @@ struct mini_struct
          funcp_nout,
          dat_pnts;
     parameter *pa_io;
-    void (*funcp)(double *, double *); /* 1. parameter is input, 2. one is
+    void (*funcp)(double *, double *); /**< 1. parameter is input, 2. one is
     output per reference. */
     FILE *fp;
 };
+
+/* Global but static definitions. */
 
 static mini_struct min_s;
 static lmar lmar_c;
@@ -113,7 +118,8 @@ double get_span(const pset *p)
         {
             dist = 0.;
             for(uint k = 0; k < min_s.nparm; k++)
-                dist += (p[i].parm[k] - p[j].parm[k]) * (p[i].parm[k] - p[j].parm[k]);
+                dist += (p[i].parm[k] - p[j].parm[k]) *
+                        (p[i].parm[k] - p[j].parm[k]);
             dist = sqrt(dist);
             if(dist > max)
                 max = dist;
@@ -180,9 +186,9 @@ void rndperm(int *p, const uint n)
  * Zentrum). x[i][j] ist die j-te Komponente des i-ten Vektors. Alle
  * Vektoren haben die Laenge 1, das Skalarprodukt zwischen je 2
  * verschiedenen Vektoren hat den Wert -1/n, und der Abstand zwischen je
- * 2 Vektoren betraegt sqrt(2+2/n). Falls irandom==1,
+ * 2 Vektoren betraegt sqrt(2 + 2 / n). Falls irandom == 1,
  * werden die Koordinaten mit einer Zufallspermutation vertauscht, und
- * mit 50% Wahrscheinlichkeit der ganze Simplex invertiert, um im statistischen
+ * mit 50 % Wahrscheinlichkeit der ganze Simplex invertiert, um im statistischen
  * Mittel wirklich alle Raumrichtungen gleich zu behandeln.
  */
 void startvectors(const uint n, pset x[MAXPARAM + 1], const uint irandom)
@@ -440,6 +446,15 @@ void amoeba(pset p[MAXPARAM], const double ftol, const bool noisy)
     }
 }
 
+/** \brief Final simplex evaluation of the parameter set.
+ *
+ * \param p0 pset*
+ * \param startlen double
+ * \param tol double
+ * \param noisy const bool
+ * \return void
+ *
+ */
 void simplex(pset *p0, double startlen, double tol, const bool noisy)
 {
     pset p[MAXPARAM + 1],
@@ -460,14 +475,22 @@ void simplex(pset *p0, double startlen, double tol, const bool noisy)
         status(p0, "Sout", " ");
 }
 
-/* Find minimum of 1-D function, from NETLIB */
+/** \brief Find minimum of 1-D function, from NETLI
+ *
+ * \param a double
+ * \param b double
+ * \param (double x) double(*f) Pointer to a double function taking one argument.
+ * \param tol double Tolerance before return.
+ * \return x double
+ *
+ */
 double fminbr(double a, double b, double(*f)(double x), double tol)
 {
     double x, v, w, /* abscissas */
            fx,      /* f(x) */
            fv,      /* f(v) */
            fw;      /* f(w) */
-    const double r = (3. - sqrt(5.)) / 2; /* gold section ratio */
+    const double r = (3. - sqrt(5.)) / 2; /* golden ratio */
     assert(tol > 0. && b > a);
     v = a + r * (b - a);
     fv = (*f)(v); /* first step - always gold section */
@@ -492,26 +515,25 @@ double fminbr(double a, double b, double(*f)(double x), double tol)
         if(fabs(x - w) >= tol_act)  /*if x and w are distinct */
         {
             /* interpolation may be tried */
-            double p, /* Interpolation step is calcula- */
-                   q, /* ted as p/q; division operation is delayed until last moment */
+            double p, /* Interpolation step is calculated */
+                   q, /* as p/q; division operation is delayed until last moment */
                    t;
             t = (x - w) * (fx - fv);
             q = (x - v) * (fx - fw);
             p = (x - v) * q - (x - w) * t;
             q = 2 * (q - t);
-            if(q > 0.) /* q was calculated with the op- */
-                p = -p; /* positive sign; make q positive */
-            else /* and assign possible minus to */
-                q = -q; /* p */
-            if(fabs(p) < fabs(new_step * q) && /* if x+p/q falls in [a,b] */
+            if(q > 0.) /* q was calculated with the opposite ... */
+                p = -p; /* ... sign; make q positive ... */
+            else /* ... and assign possible minus to ... */
+                q = -q; /* ... p */
+            if(fabs(p) < fabs(new_step * q) && /* If x+p/q falls in [a,b] */
                p > q * (a - x + 2 * tol_act) && /* not too close to a and */
-               p < q * (b - x - 2 * tol_act)) /* b, and isn't too large */
+               p < q * (b - x - 2 * tol_act)) /* b, and isn't too large. */
                 new_step = p / q; /* it is accepted*/
-            /*
-             * if p/q is too large then the
+            /* If p/q is too large then the
              * gold section procedure can
              * reduce [a,b] range to more
-             * extent */
+             * extent. */
         }
         if(fabs(new_step) < tol_act)
         {
@@ -521,27 +543,27 @@ double fminbr(double a, double b, double(*f)(double x), double tol)
             else
                 new_step = -tol_act;
         }
-        /* obtain the next approximation to min */
-        { /**> and reduce the enveloping range */
-            double t = x + new_step, /* tentative point for the min */
+        /* Obtain the next approximation to min and reduce the enveloping range. */
+        {
+            double t = x + new_step, /* Tentative point for the min. */
                    ft = (*f)(t);
             if(ft <= fx)
             {
                 /* t is a better approximation */
-                if(t < x) /* reduce the range so that */
+                if(t < x)  /* Reduce the range so that */
                     b = x; /* t would fall within it */
                 else
                     a = x;
                 v = w;
                 w = x;
-                x = t; /* assign the best approx to x  */
+                x = t; /* Assign the best approximation to x. */
                 fv = fw;
                 fw = fx;
                 fx = ft;
             }
-            else /* x remains the better approx  */
+            else /* x remains the better approximation. */
             {
-                if(t < x) /* reduce the range enclosing x */
+                if(t < x) /* Reduce the range enclosing x */
                     a = t;
                 else
                     b = t;
@@ -559,10 +581,15 @@ double fminbr(double a, double b, double(*f)(double x), double tol)
                 }
             }
         } /**< end of block */
-    } /* end of loop */
+    } /* End of loop */
 }
 
-/* ssq for mar */
+/** \brief Sum of squares for Levenberg-Marquardt algorithm.
+ *
+ * \param loglam const double Logarithmic lambda value.
+ * \return double Function value at the given point.
+ *
+ */
 double fmarq(const double loglam)
 {
     double alam[MAXPARAM * MAXPARAM],
@@ -594,14 +621,14 @@ void marq(pset *p, const bool noisy)
 {
     const double ssq0 = hessian(p);
     /* double lambest = */ fminbr(MAR_LAMMIN, MAR_LAMMAX, fmarq, MAR_BRENTTOL);
-    if(lmar_c.ptry.eval < ssq0) /* improvement */
+    if(lmar_c.ptry.eval < ssq0) /* Improvement */
     {
         memcpy(p, &lmar_c.ptry, sizeof(pset));
         if(noisy)
             status(p, "marq", " ");
     }
     else
-        memcpy(p, &lmar_c.p0, sizeof(pset)); /* restore starting point */
+        memcpy(p, &lmar_c.p0, sizeof(pset)); /* Restore starting point */
 }
 
 void manymarquardt(pset *ptp, const bool noisy)
@@ -617,10 +644,10 @@ void manymarquardt(pset *ptp, const bool noisy)
     }
 }
 
-/** \brief Computes thee Hessian matrix
+/** \brief Computes the Hessian matrix of the parameter set.
  *
- * \param p pset*
- * \return double
+ * \param p pset* Pointer to pset class.
+ * \return double Sum of squares at the given point.
  *
  */
 double hessian(pset *p)
@@ -636,8 +663,8 @@ double hessian(pset *p)
         p->parm[i] = p_i - h;
         const double sq2 = ssq(p) - sq0;
         p->parm[i] = p_i;
-        lmar_c.a[i * min_s.nparm + i] = (sq1 + sq2) / (2. * h * h); /* alpha = deriv/2 */
-        lmar_c.b[i] = (sq1 - sq2) / (-4. * h); /* beta = deriv/(-2) */
+        lmar_c.a[i * min_s.nparm + i] = (sq1 + sq2) / (2. * h * h); /* alpha = deriv / 2 */
+        lmar_c.b[i] = (sq1 - sq2) / (-4. * h); /* beta = deriv / (-2) */
     }
     /* off-diagonal elements */
     for(uint i = 0; i < min_s.nparm; ++i)
@@ -665,9 +692,13 @@ double hessian(pset *p)
     return sq0;
 }
 
-double minimizer(void (*f)(double *, double *), const uint np, parameter *ppa,
-                const uint f_nout, const bool noisy, const bool tofile,
-                const uint dat_pnts)
+double minimizer(void (*f)(double *, double *),
+                 const uint np,
+                 parameter *ppa,
+                 const uint f_nout,
+                 const bool noisy,
+                 const bool tofile,
+                 const uint dat_pnts)
 {
     pset p;
     min_s.pa_io = ppa;
@@ -689,17 +720,16 @@ double minimizer(void (*f)(double *, double *), const uint np, parameter *ppa,
                 if(exp(min_s.pa_io[i].maxv) / exp(min_s.pa_io[i].minv) > 2.)
                     min_s.paralpha[min_s.nparm] = 1.57 / PUNISH_BETA;
                 else
-                    min_s.paralpha[min_s.nparm] =
-                        1.57 / (PUNISH_BETA *
-                        (exp(min_s.pa_io[i].maxv) / exp(min_s.pa_io[i].minv) - 1.));
+                    min_s.paralpha[min_s.nparm] = 1.57 /
+                                                  (PUNISH_BETA * (exp(min_s.pa_io[i].maxv) / exp(min_s.pa_io[i].minv) - 1.));
                 p.parm[min_s.nparm] = log(min_s.pa_io[i].init);
                 min_s.logmin[min_s.nparm] = log(min_s.pa_io[i].minv);
                 min_s.logmax[min_s.nparm] = log(min_s.pa_io[i].maxv);
             }
             else
             {
-                min_s.paralpha[min_s.nparm] =
-                    1.57 / ((min_s.pa_io[i].maxv - min_s.pa_io[i].minv) * PUNISH_BETA);
+                min_s.paralpha[min_s.nparm] = 1.57 /
+                                              ((min_s.pa_io[i].maxv - min_s.pa_io[i].minv) * PUNISH_BETA);
                 p.parm[min_s.nparm] = min_s.pa_io[i].init;
                 min_s.logmin[min_s.nparm] = min_s.pa_io[i].minv;
                 min_s.logmax[min_s.nparm] = min_s.pa_io[i].maxv;
@@ -752,11 +782,12 @@ double minimizer(void (*f)(double *, double *), const uint np, parameter *ppa,
         status(&p, "final", "");
 
         for(uint i = 0; i < np; i++)
-            iprint(stdout, "%s = %.8g %s %s\n",
-                    min_s.pa_io[i].name.c_str(),
-                    min_s.pa_io[i].val,
-                    min_s.pa_io[i].unit.c_str(),
-                    (min_s.pa_io[i].fit) ? " fitted" : "");
+            iprint(stdout,
+                   "%s = %.8g %s %s\n",
+                   min_s.pa_io[i].name.c_str(),
+                   min_s.pa_io[i].val,
+                   min_s.pa_io[i].unit.c_str(),
+                   (min_s.pa_io[i].fit) ? " fitted" : "");
     }
     if(tofile)
     {
@@ -768,7 +799,8 @@ double minimizer(void (*f)(double *, double *), const uint np, parameter *ppa,
             perror("error opening file");
         fprintf(min_s.fp, "\n%s\n", timebuf.c_str());
         for(uint i = 0; i < np; i++)
-            fprintf(min_s.fp, "{'%s', '%s', value %g, " \
+            fprintf(min_s.fp,
+                    "{'%s', '%s', value %g, " \
                     "min %g, max %g, " \
                     "log mode %d, fitted %d}\n",
                     min_s.pa_io[i].name.c_str(),
@@ -791,7 +823,7 @@ void v_banane(double *res_pt x, double *res_pt y)
     y[1] = -1.; /**< Just a test. */
 }
 
-/** \brief
+/** \brief Calculates the covariance of the parameter set.
  *
  * \param p pset*
  * \param extra void*

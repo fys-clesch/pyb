@@ -151,23 +151,12 @@ class minime_profile : protected minime
                                     double *res_pt rad_x,
                                     double *res_pt rad_y,
                                     double *res_pt corr);
-        void get_CentroidBeamCovariance(double *res_pt cen_x,
-                                        double *res_pt cen_y,
-                                        double *res_pt wxx,
-                                        double *res_pt wyy,
-                                        double *res_pt wxy);
         void get_GaussBeamMultinormal(const double wxz,
                                       const double wyz,
                                       const double corr,
                                       const double x_off,
                                       const double y_off,
                                       double *out);
-        void get_GaussBeamMultinormalCovar(const double sxx,
-                                           const double syy,
-                                           const double sxy,
-                                           const double x_off,
-                                           const double y_off,
-                                           double *out);
         void store_UseGnuplot(const bool b);
         bool load_UseBad(void);
         void store_UseBad(const bool b);
@@ -181,7 +170,8 @@ class minime_profile : protected minime
         void set_Wavelength(const double wlen);
         void set_PixelToUm(const double pix2um);
         void set_Plotting(const bool do_it);
-        void alloc_DataFromMemory(const uint nrows, const uint ncols,
+        void alloc_DataFromMemory(const uint nrows,
+                                  const uint ncols,
                                   const uchar *const bad_in = nullptr);
         void fill_DataFromMemory(const double *res_pt data_in,
                                  const uchar *res_pt const bad_in = nullptr);
@@ -205,7 +195,7 @@ class minime_propagation : protected minime
 
         parameter fit_par_p[4];
 
-        static void fit_BeamPropagation(double *res_pt set, double *res_pt ssq);
+        static void fit_BeamPropSSQ(double *res_pt set, double *res_pt ssq);
 
         double get_BeamWidth(const uint n, const double z0, const double w0);
 

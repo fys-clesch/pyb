@@ -34,7 +34,7 @@ ids_cam::ids_cam(void)
     supp_fine_inc_exp_time =
     err_break = false; /* 3 */
     /* uint16_t */
-    pixel_format = IS_CM_MONO8;
+    pixel_format = IS_CM_MONO8; /**< Important for USB 2.0 cameras -- other settings don't work. */
     color_mod_init =
     bits_p_pix =
     pix_size = 0; /* 4 */
@@ -71,6 +71,7 @@ ids_cam::ids_cam(void)
     infotbar_win_mat = cv::Mat::zeros(150, 350, CV_8UC3);
 
     /* Set the bits per pixel variable */
+    /* @todo This should be done in a stand-alone colour mode setter: */
     if(pixel_format == IS_CM_MONO8 ||
        pixel_format == IS_CM_SENSOR_RAW8)
         bits_p_pix = 8;

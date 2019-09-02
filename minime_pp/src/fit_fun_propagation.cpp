@@ -2,11 +2,13 @@
 #include "funcs.h"
 #include "minimizer_s.h"
 
-static minime_propagation *d2m_global;
+static minime_propagation *d2m_global; /**< Pointer to the local minime_propagation
+                                            class. This way, the SSQ function has
+                                            direct access to the data. */
 static double *sim;
 
-void minime_propagation::fit_BeamPropagation(double *res_pt set,
-                                            double *res_pt ssq)
+void minime_propagation::fit_BeamPropSSQ(double *res_pt set,
+                                         double *res_pt ssq)
 {
     *ssq = 0.;
     for(uint i = 0; i < (*d2m_global).mnm_ntot; ++i)
@@ -19,8 +21,8 @@ void minime_propagation::fit_BeamPropagation(double *res_pt set,
 }
 
 void minime_propagation::fit_BeamProp(const double z0_init,
-                                    const double z0_min,
-                                    const double z0_max)
+                                      const double z0_min,
+                                      const double z0_max)
 {
     fit_par_p[0].name = "z_{0, x}";
     fit_par_p[0].unit = "mm";
@@ -66,10 +68,10 @@ void minime_propagation::fit_BeamProp(const double z0_init,
 
     for(uint i = 0; i < mnm_ntot; ++i)
         data[i] = wz_x[i];
-    minimizer(fit_BeamPropagation, 2, &fit_par_p[0], 1, true, true, mnm_ntot);
+    minimizer(fit_BeamPropSSQ, 2, &fit_par_p[0], 1, true, true, mnm_ntot);
     for(uint i = 0; i < mnm_ntot; ++i)
         data[i] = wz_y[i];
-    minimizer(fit_BeamPropagation, 2, &fit_par_p[2], 1, true, true, mnm_ntot);
+    minimizer(fit_BeamPropSSQ, 2, &fit_par_p[2], 1, true, true, mnm_ntot);
 
     iprint(stdout, "\n  <*** exit fit parameters ***>\n");
     for(parameter &p : fit_par_p)

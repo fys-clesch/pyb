@@ -11,9 +11,14 @@ void minime_profile::print_Parameter(const parameter *pp)
                 "val: %g\n" \
                 "log: %u\n" \
                 "fit: %u\n",
-                (*pp).name.c_str(), (*pp).unit.c_str(),
-                (*pp).init, (*pp).minv, (*pp).maxv, (*pp).val,
-                (*pp).log, (*pp).fit);
+                (*pp).name.c_str(),
+                (*pp).unit.c_str(),
+                (*pp).init,
+                (*pp).minv,
+                (*pp).maxv,
+                (*pp).val,
+                (*pp).log,
+                (*pp).fit);
     else
         iprint(stdout,
                 "> parameter name: %s / %s\n" \
@@ -23,10 +28,14 @@ void minime_profile::print_Parameter(const parameter *pp)
                 "val: %g\n" \
                 "log: %u\n" \
                 "fit: %u\n",
-                (*pp).name.c_str(), "um",
+                (*pp).name.c_str(),
+                "um",
                 (*pp).init * scl,
-                (*pp).minv * scl, (*pp).maxv * scl, (*pp).val * scl,
-                (*pp).log, (*pp).fit);
+                (*pp).minv * scl,
+                (*pp).maxv * scl,
+                (*pp).val * scl,
+                (*pp).log,
+                (*pp).fit);
 }
 
 minime_profile::minime_profile(void)
@@ -117,7 +126,7 @@ void minime_profile::fill_DataFromFile(const std::string &fname,
             if(tx != mnm_rows || ty != mnm_cols)
             {
                 error_msg("wrong size of the bad pixel file. good bye.",
-                            ERR_ARG);
+                          ERR_ARG);
                 exit(EXIT_FAILURE);
             }
             store_UseBad(true);
@@ -147,8 +156,9 @@ void minime_profile::fill_DataFromFile(const std::string &fname,
     }
 }
 
-void minime_profile::alloc_DataFromMemory(const uint nrows, const uint ncols,
-                                const uchar *const bad_in)
+void minime_profile::alloc_DataFromMemory(const uint nrows,
+                                          const uint ncols,
+                                          const uchar *const bad_in)
 {
     if(!load_AllocatedMemory())
     {
@@ -161,8 +171,7 @@ void minime_profile::alloc_DataFromMemory(const uint nrows, const uint ncols,
         {
             for(uint i = 0; i < mnm_ntot; ++i)
                 if(bad_in[i] > 1)
-                    error_msg("the bad pixel matrix is ill conditioned",
-                                ERR_ARG);
+                    error_msg("the bad pixel matrix is ill conditioned", ERR_ARG);
             store_UseBad(true);
         }
         else
@@ -185,7 +194,7 @@ void minime_profile::alloc_DataFromMemory(const uint nrows, const uint ncols,
             for(uint i = 0; i < mnm_ntot; ++i)
                 if(bad_in[i] > 1)
                     error_msg("the bad pixel matrix is ill conditioned",
-                                ERR_ARG);
+                              ERR_ARG);
             store_UseBad(true);
         }
         else
@@ -290,70 +299,6 @@ void minime_profile::get_CentroidBeamRadius(double *res_pt cen_x,
     free(work);
 }
 
-void minime_profile::get_CentroidBeamCovariance(double *res_pt cen_x,
-                                                double *res_pt cen_y,
-                                                double *res_pt wxx,
-                                                double *res_pt wyy,
-                                                double *res_pt wxy)
-{
-    double cx = 0., cy = 0., msum = 0.,
-           *work = alloc_mat(mnm_rows, mnm_cols);
-    memcpy(work, data, mnm_rows * mnm_cols * sizeof(double));
-    /** this section might be executed in parallel:
-     *
-     * #pragma omp parallel
-     * {
-     *  #pragma omp for schedule(static) nowait
-     *  for_1
-     *  #pragma omp for schedule(static) nowait
-     *  for_2
-     * }
-     *
-     * question is whether it's useful here - probably
-     */
-    for(uint i = 0; i < mnm_ntot; ++i)
-        work[i] *= (1. - bad[i]);
-    for(uint i = 0; i < mnm_rows; ++i)
-        for(uint j = 0; j < mnm_cols; ++j)
-        {
-            const double f = work[i * mnm_cols + j];
-            cx += f * i;
-            cy += f * j;
-            msum += f;
-        }
-    cx /= msum;
-    cy /= msum;
-    double rxx = 0., ryy = 0., rxy = 0.;
-    for(uint i = 0; i < mnm_rows; ++i)
-        for(uint j = 0; j < mnm_cols; ++j)
-        {
-            const double f = work[i * mnm_cols + j],
-                         x = i - cx,
-                         y = j - cy;
-            rxx += f * x * x;
-            ryy += f * y * y;
-            rxy += f * x * y;
-        }
-    free(work);
-    rxx /= msum;
-    ryy /= msum;
-    rxy /= msum;
-    if(rxx <= 0.)
-        error_msg("can't compute the radius, rxx is negative", ERR_ARG);
-    if(ryy <= 0.)
-        error_msg("can't compute the radius, ryy is negative", ERR_ARG);
-
-    rxx *= 4.;
-    ryy *= 4.;
-    rxy *= 4.;
-
-    *cen_x = cx;
-    *cen_y = cy;
-    *wxx = rxx;
-    *wyy = ryy;
-    *wxy = rxy;
-}
-
 /** \brief Computes a Gaussian beam intensity according to the global beam
  * radii and the correlation between them.
  *
@@ -365,10 +310,13 @@ void minime_profile::get_CentroidBeamCovariance(double *res_pt cen_x,
  * \param out double* The output array.
  * \return void
  *
+ * Parallelised via OpenMP.
  */
-void minime_profile::get_GaussBeamMultinormal(const double wxz, const double wyz,
+void minime_profile::get_GaussBeamMultinormal(const double wxz,
+                                              const double wyz,
                                               const double corr,
-                                              const double x_off, const double y_off,
+                                              const double x_off,
+                                              const double y_off,
                                               double *out)
 {
     const double sx = wxz,
@@ -396,52 +344,6 @@ void minime_profile::get_GaussBeamMultinormal(const double wxz, const double wyz
                                  oxy_xy = 2. * ox * oy * sxy,
                                  e = (oxx_yy + oyy_xx - oxy_xy) / t_n;
                     out[xcols + y] = norm * exp(-2. * e);
-                }
-            }
-        }
-    }
-    else
-        for(uint i = 0; i < mnm_ntot; ++i)
-            out[i] = 0.;
-}
-
-void minime_profile::get_GaussBeamMultinormalCovar(const double sxx,
-                                                   const double syy,
-                                                   const double sxy,
-                                                   const double x_off,
-                                                   const double y_off,
-                                                   double *out)
-{
-    const double t_n = sxx * syy - sxy * sxy,
-                 t_oy_xy = y_off * sxy,
-                 t_oy_xx = y_off * sxx,
-                 t_ox_xy = x_off * sxy,
-                 t_ox_yy = x_off * syy;
-    if(t_n <= 0.)
-    {
-        const double norm = 2. / (M_PI * sqrt(t_n));
-        #pragma omp parallel num_threads(2) \
-        firstprivate(norm, sxx, syy, sxy, \
-                     t_n, t_oy_xy, t_oy_xx, t_ox_xy, t_ox_yy) \
-        shared(out)
-        {
-            #pragma omp for schedule(static)
-            for(uint x = 0; x < mnm_rows; ++x)
-            {
-                const double ox = x - x_off,
-                             syy_x = syy * x,
-                             sxy_x = sxy * x;
-                for(uint y = 0; y < mnm_cols; ++y)
-                {
-                    const double oy = y - y_off,
-                                 sxx_y = sxx * y,
-                                 sxy_y = sxy * y,
-                                 expy = oy *
-                                        (t_oy_xx - t_ox_xy + sxy_x - sxx_y),
-                                 expx = -ox *
-                                        (t_oy_xy - t_ox_yy + syy_x - sxy_y),
-                                 e_tot = 2. * (expx + expy) / t_n;
-                    out[x * mnm_cols + y] = norm * exp(e_tot);
                 }
             }
         }
