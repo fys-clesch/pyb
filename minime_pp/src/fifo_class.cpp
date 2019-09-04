@@ -695,15 +695,14 @@ void fifo::write_MatToFile(const cv::Mat &mat,
             else \
                 temp[i * (mat_cols + 1) + j] = mat.at<__MAT_TYPE__>(i, j)
 
-    #define TRIPPLE_CHANNEL_VAR(__MAT_TYPE__) \
+    #define TRIPLE_CHANNEL_VAR(__MAT_TYPE__) \
     const cv::Vec<__MAT_TYPE__, 3> rgb = \
     mat.at<cv::Vec<__MAT_TYPE__, 3>>(i, j);
 
-    #define TRIPPLE_CHANNEL_ARG \
+    #define TRIPLE_CHANNEL_ARG \
     rgb[0], rgb[1], rgb[2], i, j, \
     j < mat_cols - 1 ? "\n" : "\n\n"
 
-    /** @todo Add a binary output option. */
     if(use_bin)
     {
         if(chn == 1)
@@ -713,7 +712,7 @@ void fifo::write_MatToFile(const cv::Mat &mat,
                 int32_t *temp = alloc_mat_int32(mat_rows + 1, mat_cols + 1);
                 SINGLE_CHANNEL_BIT_ARG(int32_t);
                 write_Bin_int32(fname_n.c_str(), temp,
-                                    (mat_rows + 1) * (mat_cols + 1));
+                                (mat_rows + 1) * (mat_cols + 1));
                 free(temp);
             }
             else if(bits_d == CV_32F)
@@ -721,7 +720,7 @@ void fifo::write_MatToFile(const cv::Mat &mat,
                 float *temp = alloc_mat_float(mat_rows + 1, mat_cols + 1);
                 SINGLE_CHANNEL_BIT_ARG(float);
                 write_Bin_float(fname_n.c_str(), temp,
-                                    (mat_rows + 1) * (mat_cols + 1));
+                                (mat_rows + 1) * (mat_cols + 1));
                 free(temp);
             }
             else if(bits_d == CV_64F)
@@ -729,7 +728,7 @@ void fifo::write_MatToFile(const cv::Mat &mat,
                 double *temp = alloc_mat(mat_rows + 1, mat_cols + 1);
                 SINGLE_CHANNEL_BIT_ARG(double);
                 write_Bin_double(fname_n.c_str(), temp,
-                                    (mat_rows + 1) * (mat_cols + 1));
+                                 (mat_rows + 1) * (mat_cols + 1));
                 free(temp);
             }
         }
@@ -782,56 +781,56 @@ void fifo::write_MatToFile(const cv::Mat &mat,
             {
                 IJ_FOR_LOOP
                 {
-                    TRIPPLE_CHANNEL_VAR(uint8_t)
-                    fprintf(wfile, "%hhu %hhu %hhu %u %u%s", TRIPPLE_CHANNEL_ARG);
+                    TRIPLE_CHANNEL_VAR(uint8_t)
+                    fprintf(wfile, "%hhu %hhu %hhu %u %u%s", TRIPLE_CHANNEL_ARG);
                 }
             }
             else if(bits_d == CV_8S)
             {
                 IJ_FOR_LOOP
                 {
-                    TRIPPLE_CHANNEL_VAR(int8_t)
-                    fprintf(wfile, "%hhi %hhi %hhi %u %u%s", TRIPPLE_CHANNEL_ARG);
+                    TRIPLE_CHANNEL_VAR(int8_t)
+                    fprintf(wfile, "%hhi %hhi %hhi %u %u%s", TRIPLE_CHANNEL_ARG);
                 }
             }
             else if(bits_d == CV_16U)
             {
                 IJ_FOR_LOOP
                 {
-                    TRIPPLE_CHANNEL_VAR(uint16_t)
-                    fprintf(wfile, "%hu %hu %hu %u %u%s", TRIPPLE_CHANNEL_ARG);
+                    TRIPLE_CHANNEL_VAR(uint16_t)
+                    fprintf(wfile, "%hu %hu %hu %u %u%s", TRIPLE_CHANNEL_ARG);
                 }
             }
             else if(bits_d == CV_16S)
             {
                 IJ_FOR_LOOP
                 {
-                    TRIPPLE_CHANNEL_VAR(int16_t)
-                    fprintf(wfile, "%hi %hi %hi %u %u%s", TRIPPLE_CHANNEL_ARG);
+                    TRIPLE_CHANNEL_VAR(int16_t)
+                    fprintf(wfile, "%hi %hi %hi %u %u%s", TRIPLE_CHANNEL_ARG);
                 }
             }
             else if(bits_d == CV_32S)
             {
                 IJ_FOR_LOOP
                 {
-                    TRIPPLE_CHANNEL_VAR(int32_t)
-                    fprintf(wfile, "%i %i %i %u %u%s", TRIPPLE_CHANNEL_ARG);
+                    TRIPLE_CHANNEL_VAR(int32_t)
+                    fprintf(wfile, "%i %i %i %u %u%s", TRIPLE_CHANNEL_ARG);
                 }
             }
             else if(bits_d == CV_32F)
             {
                 IJ_FOR_LOOP
                 {
-                    TRIPPLE_CHANNEL_VAR(float)
-                    fprintf(wfile, "%g %g %g %u %u%s", TRIPPLE_CHANNEL_ARG);
+                    TRIPLE_CHANNEL_VAR(float)
+                    fprintf(wfile, "%g %g %g %u %u%s", TRIPLE_CHANNEL_ARG);
                 }
             }
             else if(bits_d == CV_64F)
             {
                 IJ_FOR_LOOP
                 {
-                    TRIPPLE_CHANNEL_VAR(double)
-                    fprintf(wfile, "%g %g %g %u %u%s", TRIPPLE_CHANNEL_ARG);
+                    TRIPLE_CHANNEL_VAR(double)
+                    fprintf(wfile, "%g %g %g %u %u%s", TRIPLE_CHANNEL_ARG);
                 }
             }
             else
@@ -843,8 +842,8 @@ void fifo::write_MatToFile(const cv::Mat &mat,
 
     #undef IJ_FOR_LOOP
     #undef SINGLE_CHANNEL_ARG
-    #undef TRIPPLE_CHANNEL_VAR
-    #undef TRIPPLE_CHANNEL_ARG
+    #undef TRIPLE_CHANNEL_VAR
+    #undef TRIPLE_CHANNEL_ARG
 
     fclose(wfile);
 }

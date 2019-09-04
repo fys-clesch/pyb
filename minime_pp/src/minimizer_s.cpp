@@ -180,16 +180,19 @@ void rndperm(int *p, const uint n)
     free(left);
 }
 
-/**
- * Erzeugen von (n+1) Einheitsvektoren des n-dim. Raumes, die Eckpunkte
- * eines gleichmaessigen Simplex darstellen (mit dem Nullpunkt im
- * Zentrum). x[i][j] ist die j-te Komponente des i-ten Vektors. Alle
- * Vektoren haben die Laenge 1, das Skalarprodukt zwischen je 2
- * verschiedenen Vektoren hat den Wert -1/n, und der Abstand zwischen je
- * 2 Vektoren betraegt sqrt(2 + 2 / n). Falls irandom == 1,
- * werden die Koordinaten mit einer Zufallspermutation vertauscht, und
- * mit 50 % Wahrscheinlichkeit der ganze Simplex invertiert, um im statistischen
- * Mittel wirklich alle Raumrichtungen gleich zu behandeln.
+/** \brief Creates n + 1 unit vectors of the n-dimensional simplex-space.
+ *
+ * \param n const uint
+ * \param x pset [MAXPARAM+1]
+ * \param irandom const uint
+ * \return void
+ *
+ * The simplex created has a uniform sidelength, its centre is at the origin.
+ * x[i][j] is the jth component of the ith vector. All vectors have unit length,
+ * the scalar product between two vectors has the value of -1 / n. The distance
+ * between two vectors is sqrt(2 + 2 / n). If irandom == 1, all coordinates are
+ * mixed via permutations. In addition, there will be a 50 % change that the
+ * simplex is inverted to cover all of space equally.
  */
 void startvectors(const uint n, pset x[MAXPARAM + 1], const uint irandom)
 {
@@ -364,7 +367,7 @@ double amotry(pset p[MAXPARAM], pset *psump, const uint ihi, const double fac)
 void amoeba(pset p[MAXPARAM], const double ftol, const bool noisy)
 {
     uint nsame = 0;
-    pset psum; /* Holds only coordinates, no ssq */
+    pset psum; /* Holds only coordinates, no ssq. */
     double ymin, oldlow, oldsum, span = 1.;
 
     for(uint j = 0; j < MAXPARAM; j++)
@@ -383,7 +386,7 @@ void amoeba(pset p[MAXPARAM], const double ftol, const bool noisy)
             sum += p[i].eval;
         if(check_equal(p[0].eval, oldlow) && check_equal(sum, oldsum))
         {
-            /* No progress */
+            /* No progress. */
             ++nsame;
             if(nsame >= min_s.nparm)
                 break;
@@ -410,7 +413,7 @@ void amoeba(pset p[MAXPARAM], const double ftol, const bool noisy)
         span = get_span(p);
         if(p[ilo].eval < ymin)
         {
-            /* Only print improvements */
+            /* Only print improvements. */
             ymin = .9 * p[ilo].eval;
             if(noisy)
                 status(&(p[0]), "splx", "");
@@ -446,12 +449,12 @@ void amoeba(pset p[MAXPARAM], const double ftol, const bool noisy)
     }
 }
 
-/** \brief Final simplex evaluation of the parameter set.
+/** \brief Simplex evaluation of the parameter set.
  *
- * \param p0 pset*
- * \param startlen double
- * \param tol double
- * \param noisy const bool
+ * \param p0 pset* Set of parameters.
+ * \param startlen double Sidelength of the simplex.
+ * \param tol double Minimum tolerance before returning.
+ * \param noisy const bool Print out more information if true.
  * \return void
  *
  */
@@ -475,48 +478,48 @@ void simplex(pset *p0, double startlen, double tol, const bool noisy)
         status(p0, "Sout", " ");
 }
 
-/** \brief Find minimum of 1-D function, from NETLI
+/** \brief Find minimum of 1-D function, from NETLIB.
  *
- * \param a double
- * \param b double
+ * \param a double Minimum parameter over which to minimise.
+ * \param b double Maximum parameter over which to minimise.
  * \param (double x) double(*f) Pointer to a double function taking one argument.
  * \param tol double Tolerance before return.
- * \return x double
+ * \return x double Solution to the problem.
  *
  */
 double fminbr(double a, double b, double(*f)(double x), double tol)
 {
-    double x, v, w, /* abscissas */
+    double x, v, w, /* Abscissas */
            fx,      /* f(x) */
            fv,      /* f(v) */
            fw;      /* f(w) */
-    const double r = (3. - sqrt(5.)) / 2; /* golden ratio */
+    const double r = (3. - sqrt(5.)) / 2; /* Golden ratio */
     assert(tol > 0. && b > a);
     v = a + r * (b - a);
-    fv = (*f)(v); /* first step - always gold section */
+    fv = (*f)(v); /* First step - always gold section */
     x = v;
     w = v;
     fx = fv;
     fw = fv;
-    for(;;) /* main iteration loop */
+    for(;;) /* Main iteration loop */
     {
-        double range = b - a, /* range over which the minimum */
-                              /* is searched for */
+        double range = b - a, /* Range over which the minimum */
+                              /* is searched for. */
                middle_range = (a + b) / 2.,
-               tol_act = /* actual tolerance */
+               tol_act = /* Actual tolerance */
                SQRT_EPSILON * fabs(x) + tol / 3.,
-               new_step; /* step at this iteration */
+               new_step; /* Step at this iteration */
 
         if(fabs(x - middle_range) + range / 2 <= 2 * tol_act)
-            return x; /* acceptable approx. is found */
-        /* obtain the gold section step */
+            return x; /* Acceptable approx. is found */
+        /* Obtain the gold section step */
         new_step = r * (x < middle_range ? b - x : a - x);
-        /* decide if the interpolation can be tried */
-        if(fabs(x - w) >= tol_act)  /*if x and w are distinct */
+        /* Decide if the interpolation can be tried. */
+        if(fabs(x - w) >= tol_act)  /* if x and w are distinct... */
         {
-            /* interpolation may be tried */
+            /* ... interpolation may be tried. */
             double p, /* Interpolation step is calculated */
-                   q, /* as p/q; division operation is delayed until last moment */
+                   q, /* as p/q; division operation is delayed until last moment. */
                    t;
             t = (x - w) * (fx - fv);
             q = (x - v) * (fx - fw);
@@ -580,7 +583,7 @@ double fminbr(double a, double b, double(*f)(double x), double tol)
                     fv = ft;
                 }
             }
-        } /**< end of block */
+        }
     } /* End of loop */
 }
 
@@ -620,7 +623,7 @@ double fmarq(const double loglam)
 void marq(pset *p, const bool noisy)
 {
     const double ssq0 = hessian(p);
-    /* double lambest = */ fminbr(MAR_LAMMIN, MAR_LAMMAX, fmarq, MAR_BRENTTOL);
+    fminbr(MAR_LAMMIN, MAR_LAMMAX, fmarq, MAR_BRENTTOL);
     if(lmar_c.ptry.eval < ssq0) /* Improvement */
     {
         memcpy(p, &lmar_c.ptry, sizeof(pset));
@@ -666,7 +669,7 @@ double hessian(pset *p)
         lmar_c.a[i * min_s.nparm + i] = (sq1 + sq2) / (2. * h * h); /* alpha = deriv / 2 */
         lmar_c.b[i] = (sq1 - sq2) / (-4. * h); /* beta = deriv / (-2) */
     }
-    /* off-diagonal elements */
+    /* Off-diagonal elements */
     for(uint i = 0; i < min_s.nparm; ++i)
         for(uint j = 0; j < i; ++j)
         {
@@ -893,7 +896,7 @@ void covar(pset *p, const bool tofile)
         var_dat = p->eval / (fitd.dat_pnts - fitd.nparm);
     else
     {
-        var_dat = 1.; /** @todo Is this sane? */
+        var_dat = 1.;
         fprintf(stream, "ATTENTION: estimation not verified\n");
     }
     fprintf(stream, "\nbest parameter estimates:\n");

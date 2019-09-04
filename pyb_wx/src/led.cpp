@@ -2,7 +2,7 @@
  * Purpose:     wxLed implementation
  * Author:      Thomas Monjalon
  * Created:     09/06/2005
- * Revision:    2019-08-20 Clemens Schäfermeier
+ * Revision:    2019-08-20 Clemens Schaefermeier
  * Licence:     wxWidgets
  */
 

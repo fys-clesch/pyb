@@ -59,8 +59,8 @@ const std::string PROJECT_NAME = "pyb";
 const std::string PROJECT_MAJ_VERSION = "1";
 const std::string PROJECT_MIN_VERSION = "0";
 const std::string PROJECT_YEAR = "2019";
-const std::string PROJECT_MONTH = "08";
-const std::string PROJECT_DAY = "29";
+const std::string PROJECT_MONTH = "09";
+const std::string PROJECT_DAY = "04";
 
 /* Type definitions. */
 typedef unsigned int uint;
