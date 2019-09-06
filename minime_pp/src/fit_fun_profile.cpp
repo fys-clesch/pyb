@@ -211,7 +211,7 @@ void minime_profile::fit_GaussEllip(void)
                                  sim);
         const double temp = covar_fin[0] - covar_fin[3],
                      ell_theta = .5 * atan2(2. * covar_fin[1], temp) *
-                     180. / M_PI;
+                                 180. / M_PI;
         smul_Matrix(linregpar.bmul, sim, mnm_rows, mnm_cols);
         add_Matrix(sim, linregpar.aoff, mnm_rows, mnm_cols);
         ffc.set_PlotTitle("Fit: " \

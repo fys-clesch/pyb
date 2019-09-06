@@ -29,7 +29,7 @@ struct pset
            eval;
 };
 
-/* Internal header */
+/* Internal header: */
 
 static double punish(const double x);
 static void swap_pset(pset *p1, pset *p2);
@@ -60,8 +60,8 @@ void covar(pset *p, const bool tofile);
 
 struct lmar
 {
-    double a[MAXPARAM * MAXPARAM], /* Hessian for mar */
-           b[MAXPARAM]; /* Right hand side for mar */
+    double a[MAXPARAM * MAXPARAM], /* Hessian for mar. */
+           b[MAXPARAM]; /* Right hand side for mar. */
     pset p0,
          ptry;
 };
@@ -428,7 +428,7 @@ void amoeba(pset p[MAXPARAM], const double ftol, const bool noisy)
             ytry = amotry(p, &psum, ihi, .5);
             if(ytry >= ysave)
             {
-                /* Shrinking */
+                /* Shrinking: */
                 for(uint i = 0; i < min_s.nparm + 1; i++)
                     if(i != ilo)
                     {

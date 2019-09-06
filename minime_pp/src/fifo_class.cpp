@@ -140,9 +140,11 @@ void fifo::load_BeamProfileFilesToDoubleMemory(const std::string &inif,
     free(fname);
 }
 
-void fifo::write_Data_g(const std::string &fname, const uchar format,
+void fifo::write_Data_g(const std::string &fname,
+                        const uchar format,
                         const double *res_pt data,
-                        const uint x_co, const uint y_co)
+                        const uint x_co,
+                        const uint y_co)
 {
     create_dir(fname.c_str());
 
@@ -255,8 +257,9 @@ void fifo::write_Data_g(const std::string &fname, const uchar format,
     fclose(wfile);
 }
 
-void fifo::write_Bin_float(const std::string &fname, const float *res_pt data,
-                        const uint nrowscols)
+void fifo::write_Bin_float(const std::string &fname,
+                           const float *res_pt data,
+                           const uint nrowscols)
 {
     uint nn;
     if(nrowscols == 0)
@@ -538,9 +541,9 @@ void fifo::plot_Histogram(const std::string &fname, const uint steps)
 }
 
 void fifo::plot_Data(const cv::Mat &mdata,
-                    const bool auto_range,
-                    const double lo,
-                    const double hi)
+                     const bool auto_range,
+                     const double lo,
+                     const double hi)
 {
     if(mdata.channels() != 1 && mdata.channels() != 3)
     {
@@ -619,7 +622,7 @@ void fifo::plot_Data(const cv::Mat &mdata,
         fprintf(gnufile, "splot '%s' matrix u 1:2:3 w l ls 7 t ''\n",
                 tmpdat.c_str());
     else if(mdata.channels() == 3)
-        fprintf(gnufile, /**! (x,y,z,r,g,b) */
+        fprintf(gnufile, /**! (x, y, z, r, g, b) */
                 "splot '%s' using 3:4:(0):0:1:2 w rgbimage t ''\n",
                 tmpdat.c_str());
 

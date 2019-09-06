@@ -255,10 +255,14 @@ void sincos_sqrt(double alpha, double *res_pt cosd, double *res_pt sind)
 }
 
 void find_minmax(const double *res_pt const m,
-                uint *res_pt pxmin, uint *res_pt pymin,
-                uint *res_pt pxmax, uint *res_pt pymax,
-                const uint row, const uint col,
-                double *res_pt vmin, double *res_pt vmax)
+                 uint *res_pt pxmin,
+                 uint *res_pt pymin,
+                 uint *res_pt pxmax,
+                 uint *res_pt pymax,
+                 const uint row,
+                 const uint col,
+                 double *res_pt vmin,
+                 double *res_pt vmax)
 {
     double tmax = -DBL_MAX, tmin = DBL_MAX;
     if(pxmin != nullptr)
@@ -545,8 +549,11 @@ uint intfile2double(const char *res_pt target, double *res_pt m, const uint row,
     return s;
 }
 
-uint fpfile2double(const char *res_pt target, double *res_pt out,
-                const uint row, const uint col, const bool check_cmmnts)
+uint fpfile2double(const char *res_pt target,
+                   double *res_pt out,
+                   const uint row,
+                   const uint col,
+                   const bool check_cmmnts)
 {
     FILE *readfile = fopen(target, "r");
     if(readfile == NULL)

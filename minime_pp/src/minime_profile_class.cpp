@@ -4,38 +4,38 @@ void minime_profile::print_Parameter(const parameter *pp)
 {
     if((*pp).unit.length() != 5 && (*pp).unit.compare("pixel"))
         iprint(stdout,
-                "> parameter name: %s / %s\n" \
-                "init: %g\n" \
-                "min: %g\n" \
-                "max: %g\n" \
-                "val: %g\n" \
-                "log: %u\n" \
-                "fit: %u\n",
-                (*pp).name.c_str(),
-                (*pp).unit.c_str(),
-                (*pp).init,
-                (*pp).minv,
-                (*pp).maxv,
-                (*pp).val,
-                (*pp).log,
-                (*pp).fit);
+               "> parameter name: %s / %s\n" \
+               "init: %g\n" \
+               "min: %g\n" \
+               "max: %g\n" \
+               "val: %g\n" \
+               "log: %u\n" \
+               "fit: %u\n",
+               (*pp).name.c_str(),
+               (*pp).unit.c_str(),
+               (*pp).init,
+               (*pp).minv,
+               (*pp).maxv,
+               (*pp).val,
+               (*pp).log,
+               (*pp).fit);
     else
         iprint(stdout,
-                "> parameter name: %s / %s\n" \
-                "init: %g\n" \
-                "min: %g\n" \
-                "max: %g\n" \
-                "val: %g\n" \
-                "log: %u\n" \
-                "fit: %u\n",
-                (*pp).name.c_str(),
-                "um",
-                (*pp).init * scl,
-                (*pp).minv * scl,
-                (*pp).maxv * scl,
-                (*pp).val * scl,
-                (*pp).log,
-                (*pp).fit);
+               "> parameter name: %s / %s\n" \
+               "init: %g\n" \
+               "min: %g\n" \
+               "max: %g\n" \
+               "val: %g\n" \
+               "log: %u\n" \
+               "fit: %u\n",
+               (*pp).name.c_str(),
+               "um",
+               (*pp).init * scl,
+               (*pp).minv * scl,
+               (*pp).maxv * scl,
+               (*pp).val * scl,
+               (*pp).log,
+               (*pp).fit);
 }
 
 minime_profile::minime_profile(void)
@@ -105,7 +105,7 @@ double minime_profile::get_PixelToUm(void)
 }
 
 void minime_profile::fill_DataFromFile(const std::string &fname,
-                            const std::string &bad_fname)
+                                       const std::string &bad_fname)
 {
     if(!load_AllocatedMemory())
     {
