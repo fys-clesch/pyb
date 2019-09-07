@@ -83,7 +83,6 @@ class ids_cam : public grabber
 
         void handle_IDS_Error(const uchar err);
         cv::Mat get_Mat(void);
-        void show_Image(const char *win_name);
         void get_UsedBandwidth(void);
         void get_PixelClock(void);
         void get_PixelClockRange(void);

@@ -3,6 +3,13 @@
 
 static grabber *g1ptr = nullptr;
 
+/** \brief Constructor of grabber class.
+ *
+ * \param void
+ *
+ * The grabber class stores the image data and processes it. It also displays
+ * the recorded image and decorates it with an approximation of the beam shape.
+ */
 grabber::grabber(void)
 {
     g1ptr = static_cast<grabber *>(this);
@@ -68,8 +75,7 @@ grabber::grabber(void)
     start_roi =
     end_roi = cv::Point_<int>(0, 0);  /* 2 */
     /* string */
-    main_win_name = "pyb - main window";
-    tbar_win_name = "pyb - trackbar window"; /* 2 */
+    main_win_name = "pyb - main window"; /* 1 */
     /* uint */
     gaussblur_sze_min = 1;
     gaussblur_sze_max = 61; /* 2 */
@@ -81,6 +87,11 @@ grabber::grabber(void)
     gaussblur_sze_max_atm.store(gaussblur_sze_max, std::memory_order_relaxed); /* 3 */
 }
 
+/** \brief Destructor of grabber class.
+ *
+ * \param void
+ *
+ */
 grabber::~grabber(void)
 {
     in.release();
@@ -122,6 +133,12 @@ grabber::~grabber(void)
     #endif
 }
 
+/** \brief Allocates and initialises the matrices used to store images.
+ *
+ * \param void
+ * \return void
+ *
+ */
 void grabber::init_Mats(void)
 {
     assert(in.data != NULL);
@@ -191,11 +208,24 @@ void grabber::init_Mats(void)
                                0xDEADBEAF);
 }
 
+/** \brief Sets the scale to convert pixel to micrometer.
+ *
+ * \param scl const double Scaling factor.
+ * \return void
+ *
+ */
 void grabber::set_Pix2UmScale(const double scl)
 {
     pix2um_scale = scl;
 }
 
+/** \brief Stores the current image into a "background" matrix. The matrix will
+ * be subtracted from future images to correct for background light etc.
+ *
+ * \param void
+ * \return void
+ *
+ */
 void grabber::set_Background(void)
 {
     if(in_chn == 1)
@@ -215,6 +245,12 @@ void grabber::set_Background(void)
         bground_in = true;
 }
 
+/** \brief Releases the background matrix.
+ *
+ * \param void
+ * \return void
+ *
+ */
 void grabber::unset_Background(void)
 {
     if(bground_in)
@@ -222,6 +258,12 @@ void grabber::unset_Background(void)
     bground_in = false;
 }
 
+/** \brief Updates all matrices and convert them into a coherent format.
+ *
+ * \param void
+ * \return void
+ *
+ */
 void grabber::update_Mats_RgbAndFp(void)
 {
     if(!detct_settings)
@@ -269,6 +311,13 @@ void grabber::update_Mats_RgbAndFp(void)
     produce_Mat_Work();
 }
 
+/** \brief Produces the so called working matrix which is used to calculate the
+ * beam parameters. It is subtracted by a background and filtered, if set.
+ *
+ * \param void
+ * \return void
+ *
+ */
 void grabber::produce_Mat_Work(void)
 {
     if(bground_in)
@@ -378,113 +427,6 @@ void grabber::produce_Mat_Work(void)
 //  }
 }
 
-/** \brief Calculates the first and second moments of the working matrix with
- * a specified ROI.
- *
- * \param void
- * \return void
- *
- * The code doesn't account for interleaving pixels. Also, the code is merely
- * used for testing or debugging, as it is a naive implementation of second
- * moment calculation.
- */
-void grabber::get_Moments_own(void)
-{
-    double cen[2] = {0., 0.},
-           norm = 0.;
-    const uint imax = load_WorkRoiRows(),
-               jmax = load_WorkRoiCols();
-    for(uint i = 0; i < imax; i++)
-    {
-        const float *const m = work_roi.ptr<float>(i);
-        for(uint j = 0; j < jmax; j++)
-        {
-            const double f = m[j];
-            cen[0] += f * i;
-            cen[1] += f * j;
-            norm += f;
-        }
-    }
-    if(fabs(norm) <= DBL_EPSILON)
-    {
-        warn_msg("norm is 0.", ERR_ARG);
-        const double fscl = 1.5;
-        cv::putText(rgb,
-                    "norm is 0., no output",
-                    cv::Point2d(.5 * in_cols, .5 * in_rows),
-                    cv::FONT_HERSHEY_SIMPLEX,
-                    fscl,
-                    cv::Scalar_<double>(255., 0., 0.),
-                    1,
-                    cv::LINE_AA);
-    }
-    else
-    {
-        cen[0] /= norm;
-        cen[1] /= norm;
-        double rxx = 0., ryy = 0., rxy = 0.;
-        for(uint i = 0; i < imax; i++)
-        {
-            const float *const m = work_roi.ptr<float>(i);
-            for(uint j = 0; j < jmax; j++)
-            {
-                const double f = m[j],
-                             x = i - cen[0],
-                             y = j - cen[1];
-                rxx += f * x * x;
-                ryy += f * y * y;
-                rxy += f * x * y;
-            }
-        }
-        rxx /= norm;
-        ryy /= norm;
-        rxy /= norm;
-        const double corr = rxy / (rxx * ryy);
-        if(fabs(corr) > 1.)
-        {
-            iprint(stderr, "corr: %g\n", corr);
-            warn_msg("the correlation is > 1.!", ERR_ARG);
-        }
-        /* xy is swapped: */
-        {
-            double temp = cen[1];
-            cen[1] = cen[0];
-            cen[0] = temp;
-            temp = rxx;
-            rxx = ryy;
-            ryy = temp;
-        }
-        centroid = cv::Point2d(cen[0], cen[1]);
-        covar = (cv::Mat_<double>(2, 2) << rxx, rxy, rxy, ryy);
-        double eig[2],
-               temp = covar.at<double>(0, 0) - covar.at<double>(1, 1);
-        if(fabs(temp) >= DBL_EPSILON)
-            ell_theta = .5 * atan2(2. * rxy, temp) * 180. / M_PI;
-        /* The eigenvalues of the covariance matrix give the variance along
-         * the main axis.
-         */
-        eig[0] = eig[1] =
-        .5 * (covar.at<double>(0, 0) + covar.at<double>(1, 1));
-        temp = .5 * sqrt(4. * POW2(covar.at<double>(0, 1)) + POW2(temp));
-        eig[0] += temp;
-        eig[1] -= temp;
-        eigenv.at<double>(0) = eig[0];
-        eigenv.at<double>(1) = eig[1];
-
-        eig[0] = sqrt(eig[0]);
-        eig[1] = sqrt(eig[1]);
-        if(eig[0] != 0. && eig[1] != 0.)
-        {
-            temp = eig[1] / eig[0];
-            if(temp > 1.)
-                ell_ecc = sqrt(1. - eig[0] / eig[1]);
-            else
-                ell_ecc = sqrt(1. - temp);
-        }
-        calculate_BeamRadius();
-    }
-}
-
 /** \brief Calculates the first and second moment of the working matrix with
  * a specified ROI.
  *
@@ -500,16 +442,16 @@ void grabber::get_Moments(void)
     centroid.x = mom.m10 / mom.m00;
     centroid.y = mom.m01 / mom.m00;
     double temp = mom.m11 / mom.m00 - centroid.x * centroid.y;
-    covar = (cv::Mat_<double>(2, 2) <<
-            mom.m20 / mom.m00 - POW2(centroid.x),
-            temp, temp,
-            mom.m02 / mom.m00 - POW2(centroid.y));
+    covar = (cv::Mat_<double>(2, 2) << mom.m20 / mom.m00 - POW2(centroid.x),
+                                       temp,
+                                       temp,
+                                       mom.m02 / mom.m00 - POW2(centroid.y));
 
     temp = covar.at<double>(0, 0) - covar.at<double>(1, 1);
 
     if(!std::isfinite(temp) ||
-        !std::isfinite(centroid.x) ||
-        !std::isfinite(centroid.y))
+       !std::isfinite(centroid.x) ||
+       !std::isfinite(centroid.y))
         finite_moments = false;
     else
         finite_moments = true;
@@ -533,6 +475,13 @@ void grabber::get_Moments(void)
     calculate_BeamRadius();
 }
 
+/** \brief Draws an ellipse and information about the approximated beam parameters
+ * into the rgb matrix which is shown to the user.
+ *
+ * \param chatty const bool Set true for full information.
+ * \return void
+ *
+ */
 void grabber::draw_Moments(const bool chatty)
 {
     if(chatty)
@@ -695,7 +644,7 @@ void grabber::draw_Moments(const bool chatty)
     #undef putText_ARGS
 }
 
-/** \brief Draws information into the 'rgb' matrix.
+/** \brief Draws information into the rgb and tbar_win_mat matrix.
  *
  * \param void
  * \return void
@@ -852,6 +801,12 @@ void grabber::draw_InfoWxVersion(void)
     #undef putText_ARGS
 }
 
+/** \brief Draws a rectangle around the selected ROI.
+ *
+ * \param void
+ * \return void
+ *
+ */
 void grabber::draw_RoiRectangle(void)
 {
     if(mouse_drag)
@@ -860,10 +815,16 @@ void grabber::draw_RoiRectangle(void)
         rectangle(rgb, roi_rect, cv::Scalar(150., 100., 50.), 2);
 }
 
-void grabber::set_MouseEvent(const int event,
-                             const int x,
-                             const int y,
-                             const int flags)
+/** \brief Sets the events done when a mouse or keyboard action is registered.
+ *
+ * \param event const int Flags that specify mouse event.
+ * \param x const int X coordinate of the mouse.
+ * \param y const int Y coordinate of the mouse.
+ * \param flags const int Flags that specify a keyboard event.
+ * \return void
+ *
+ */
+void grabber::set_MouseEvent(const int event, const int x, const int y, const int flags)
 {
     if(flags & cv::EVENT_FLAG_SHIFTKEY)
     {
@@ -943,14 +904,15 @@ void grabber::cast_static_set_MouseEvent(const int event,
     (*ptr).set_MouseEvent(event, x, y, flags);
 }
 
+/** \brief Displays the rgb matrix.
+ *
+ * \param void
+ * \return void
+ *
+ */
 void grabber::show_Im_RGB(void)
 {
     imshow(main_win_name, rgb);
-}
-
-void grabber::show_Trackbars(void)
-{
-    imshow(tbar_win_name, tbar_win_mat);
 }
 
 cv::Mat grabber::get_Mat_private(const save_Im_type mtype)
@@ -1198,21 +1160,6 @@ void grabber::set_MainWindowName(const std::string &name)
     main_win_name = name;
 }
 
-void grabber::set_TrackbarWindowName(const std::string &name)
-{
-    tbar_win_name = name;
-}
-
-cv::Mat grabber::get_TrackbarWindowMat(void)
-{
-    return tbar_win_mat;
-}
-
-cv::Mat &grabber::get_TrackbarWindowMatPtr(void)
-{
-    return tbar_win_mat;
-}
-
 void grabber::get_MainWindowName(std::string &name)
 {
     name = main_win_name;
@@ -1221,16 +1168,6 @@ void grabber::get_MainWindowName(std::string &name)
 std::string grabber::get_MainWindowName(void)
 {
     return main_win_name;
-}
-
-void grabber::get_TrackbarWindowName(std::string &name)
-{
-    name = tbar_win_name;
-}
-
-std::string grabber::get_TrackbarWindowName(void)
-{
-    return tbar_win_name;
 }
 
 uint32_t grabber::get_nRows(void)
@@ -1398,40 +1335,6 @@ void grabber::set_KernelSizeAtomic(const uint i)
 void grabber::set_GroundliftAtomic(const double val)
 {
     groundlift_sub_atm.store(val, std::memory_order_relaxed);
-}
-
-void grabber::TrackbarHandlerGroundlift(int i)
-{
-    const double out_min = 0., out_max = 50.;
-    double res = map_Linear((double)i, out_min, out_max, 0., groundlift_max);
-    groundlift_sub = res;
-}
-
-void grabber::cast_static_SetTrackbarHandlerGroundlift(int i, void *ptr)
-{
-    grabber *bptr = static_cast<grabber *>(ptr);
-    (*bptr).TrackbarHandlerGroundlift(i);
-}
-
-void grabber::create_TrackbarGroundlift(void)
-{
-    const std::string trck_name = "Groundlift";
-    const double out_min = 0., out_max = 50.;
-
-    double res = map_Linear(groundlift_sub,
-                            0.,
-                            groundlift_max,
-                            out_min,
-                            out_max);
-    static int setting = res;
-    assert(setting <= 50);
-
-    cv::createTrackbar(trck_name,
-                       tbar_win_name,
-                       &setting,
-                       out_max,
-                       grabber::cast_static_SetTrackbarHandlerGroundlift,
-                       this);
 }
 
 void grabber::get_GroundliftRangeAtomic(double *res_pt gl_current,
@@ -1683,9 +1586,8 @@ void grabber::calculate_BeamRadius(void)
     /* Don't forget the factor of 2. for the Gaussian beam formalism. */
     beam_parameter.at<double>(0) = 2. * sqrt(covar.at<double>(0, 0));
     beam_parameter.at<double>(1) = 2. * sqrt(covar.at<double>(1, 1));
-    beam_parameter.at<double>(2) =
-    4. * covar.at<double>(0, 1) /
-    (beam_parameter.at<double>(0) * beam_parameter.at<double>(1));
+    beam_parameter.at<double>(2) = 4. * covar.at<double>(0, 1) /
+                                   (beam_parameter.at<double>(0) * beam_parameter.at<double>(1));
 
     beam_parameter.at<double>(0) *= pix2um_scale;
     beam_parameter.at<double>(1) *= pix2um_scale;

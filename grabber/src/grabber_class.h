@@ -47,10 +47,7 @@ class grabber
         void toggle_Smoothing(void);
         void get_MainWindowName(std::string &name);
         void set_MainWindowName(const std::string &name);
-        std::string get_TrackbarWindowName(void);
-        void show_Trackbars(void);
         std::string get_MainWindowName(void);
-        void create_TrackbarGroundlift(void);
         void show_Im_RGB(void);
         static void schedule_Viewer(int argc, char **argv);
         static void copy_DataToViewer(void);
@@ -188,8 +185,7 @@ class grabber
 
         cv::Rect_<int> roi_rect;
 
-        std::string main_win_name,
-                    tbar_win_name;
+        std::string main_win_name;
 
         uint gaussblur_sze_min,
              gaussblur_sze_max;
@@ -209,7 +205,6 @@ class grabber
         void init_Mats(void);
         void fill_DataForViewer(const uint nrows, const uint ncols);
         void produce_Mat_Work(void);
-        void get_Moments_own(void);
         void set_MouseEvent(const int event,
                             const int x,
                             const int y,
@@ -219,14 +214,10 @@ class grabber
         void apply_RemoveBase(const double thresh = 0.);
         void set_TrackbarWindowName(const std::string &name);
         void get_TrackbarWindowName(std::string &name);
-        cv::Mat get_TrackbarWindowMat(void);
-        cv::Mat &get_TrackbarWindowMatPtr(void);
         uint32_t get_nRowsROI(void);
         uint32_t get_nColsROI(void);
         void calculate_BeamRadius(void);
         void launch_Minime(const double wavelengthUm, const double pix2um);
-        static void cast_static_SetTrackbarHandlerGroundlift(int i, void *ptr);
-        void TrackbarHandlerGroundlift(int i);
         double get_PixelValue(void);
         void store_WorkRoiRows(const uint n);
         uint load_WorkRoiRows(void);

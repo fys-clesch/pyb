@@ -506,11 +506,6 @@ bool ids_cam::caught_Error(void)
         return false;
 }
 
-void ids_cam::show_Image(const char *win_name)
-{
-    cv::imshow(win_name, im_p);
-}
-
 /** \brief Retrieves the approximate bandwidth in MByte per second.
  *
  * \param void
