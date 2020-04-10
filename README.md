@@ -1,4 +1,4 @@
-# pyb
+# pyb -- Profile Your Beam
 
 Copyright 2015--2020 Clemens Schäfermeier, clemens ( at ) fh-muenster.de
 
