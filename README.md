@@ -1,8 +1,8 @@
 # igyba
 
-Copyright 2015 Clemens Schäfermeier, clemens ( at ) fh-muenster.de
+Copyright 2015 - 2020 Clemens Schäfermeier, clemens ( at ) fh-muenster.de
 
-    This file is part of igyba.
+    This file is part of pyb.
 
     igyba is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
