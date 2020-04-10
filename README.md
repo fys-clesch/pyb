@@ -1,6 +1,6 @@
 # pyb
 
-Copyright 2015--2019 Clemens Schäfermeier, clemens ( at ) fh-muenster.de
+Copyright 2015--2020 Clemens Schäfermeier, clemens ( at ) fh-muenster.de
 
     This file is part of pyb.
 
