@@ -55,7 +55,8 @@ void minime_propagation::set_Plotting(const bool do_it)
     do_gnuplot = do_it;
 }
 
-double minime_propagation::get_BeamWidth(const uint n, const double z0,
+double minime_propagation::get_BeamWidth(const uint n,
+                                         const double z0,
                                          const double w0)
 {
     constexpr double pisq = M_PI * M_PI;

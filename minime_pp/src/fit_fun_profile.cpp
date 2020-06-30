@@ -228,7 +228,9 @@ void minime_profile::fit_GaussEllip(void)
         sub_Matrices(data, sim, mnm_rows, mnm_cols);
         ffc.set_PlotTitle("Residuum: Fit_{ij} - Data_{ij}");
         ffc.set_FileNameSuffix("_sub");
+        ffc.set_UseContours(false);
         ffc.plot_Data(sim);
+        ffc.set_UseContours(true);
     }
     sums_initialized = false;
     free(sim);

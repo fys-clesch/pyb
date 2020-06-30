@@ -3092,3 +3092,251 @@
 	"led.h"
 	<string.h>
 
+1593510743 source:c:\users\schaecl\documents\github\pyb\grabber\src\grabber_class.cpp
+	"grabber_class.h"
+	<assert.h>
+
+1593510743 c:\users\schaecl\documents\github\pyb\grabber\src\grabber_class.h
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
+	<opencv2/imgproc/imgproc.hpp>
+	<opencv2/imgcodecs/imgcodecs.hpp>
+	"../../src/header.hpp"
+	"../../viewer_pp/src/viewer_class.h"
+	"../../minime_pp/src/minime_class.h"
+	"../../src/threadhand_class.h"
+
+1593512041 c:\users\schaecl\documents\github\pyb\src\header.hpp
+	<stdio.h>
+	<stdarg.h>
+	<string>
+	<sys/time.h>
+	<iomanip>
+	<sstream>
+
+1593510743 c:\users\schaecl\documents\github\pyb\viewer_pp\src\viewer_class.h
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
+	<stdlib.h>
+	<cmath>
+	<string.h>
+	<float.h>
+	<ctype.h>
+	<chrono>
+	<thread>
+	<atomic>
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/freeglut.h>
+	<GL/glext.h>
+	"../../src/header.hpp"
+	"../../src/threadhand_class.h"
+
+1066740114 c:\libraries\freeglut\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1453322919 c:\libraries\freeglut\include\gl\freeglut_std.h
+	<windows.h>
+	<EGL/egl.h>
+	<GLES/gl.h>
+	<GLES2/gl2.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1522642610 c:\libraries\freeglut\include\gl\freeglut_ext.h
+	<stdarg.h>
+	"freeglut_ucall.h"
+
+1522099951 c:\libraries\freeglut\include\gl\freeglut_ucall.h
+	<stdarg.h>
+	<stdlib.h>
+
+1593510743 c:\users\schaecl\documents\github\pyb\src\threadhand_class.h
+	<thread>
+	<condition_variable>
+	<mutex>
+	<atomic>
+	"header.hpp"
+	"mingw.thread.h"
+	"mingw.mutex.h"
+	"mingw.condition_variable.h"
+
+1593510743 c:\users\schaecl\documents\github\pyb\src\mingw.thread.h
+	<windows.h>
+	<functional>
+	<memory>
+	<chrono>
+	<system_error>
+	<process.h>
+
+1593510743 c:\users\schaecl\documents\github\pyb\src\mingw.mutex.h
+
+1593510743 c:\users\schaecl\documents\github\pyb\src\mingw.condition_variable.h
+	<atomic>
+	<assert.h>
+	<condition_variable>
+
+1593510743 c:\users\schaecl\documents\github\pyb\minime_pp\src\minime_class.h
+	<stdlib.h>
+	<math.h>
+	<float.h>
+	<math.h>
+	<string.h>
+	<atomic>
+	"../../src/header.hpp"
+	"fifo_class.h"
+
+1593510743 c:\users\schaecl\documents\github\pyb\minime_pp\src\fifo_class.h
+	<string.h>
+	<stdlib.h>
+	<cstdio>
+	<chrono>
+	<thread>
+	<algorithm>
+	<opencv2/core/core.hpp>
+	"../../src/header.hpp"
+	"../../src/mingw.thread.h"
+	<sys/stat.h>
+	<dir.h>
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\grabber\src\test.cpp
+	"grabber_class.h"
+	"test.h"
+
+1593510743 c:\users\schaecl\documents\github\pyb\grabber\src\test.h
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\ids_cam\ids_cam.cpp
+	"ids_cam.h"
+	<assert.h>
+
+1593511846 c:\users\schaecl\documents\github\pyb\ids_cam\ids_cam.h
+	<opencv2/core/core.hpp>
+	<opencv2/highgui/highgui.hpp>
+	<opencv2/highgui/highgui_c.h>
+	"../src/header.hpp"
+	"../grabber/src/grabber_class.h"
+	"ueye.h"
+
+1593511778 c:\users\schaecl\documents\github\pyb\ids_cam\ueye.h
+	<unistd.h>
+	<wchar.h>
+	<stdint.h>
+	<windows.h>
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\minime_pp\src\fifo_class.cpp
+	"fifo_class.h"
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\minime_pp\src\fit_fun_profile.cpp
+	"minime_class.h"
+	"funcs.h"
+	"minimizer_s.h"
+
+1593510743 c:\users\schaecl\documents\github\pyb\minime_pp\src\funcs.h
+
+1593510743 c:\users\schaecl\documents\github\pyb\minime_pp\src\minimizer_s.h
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\minime_pp\src\funcs.cpp
+	"minime_class.h"
+	"funcs.h"
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\minime_pp\src\gabe_class.cpp
+	"gabe_class.h"
+	"funcs.h"
+
+1593512399 c:\users\schaecl\documents\github\pyb\minime_pp\src\gabe_class.h
+	"../../src/header.hpp"
+	<math.h>
+	<float.h>
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\minime_pp\src\minime_profile_class.cpp
+	"minime_class.h"
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\minime_pp\src\minime_propagation_class.cpp
+	"minime_class.h"
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\minime_pp\src\minimizer_s.cpp
+	"minime_class.h"
+	"minimizer_s.h"
+	"random.h"
+	<assert.h>
+
+1593510743 c:\users\schaecl\documents\github\pyb\minime_pp\src\random.h
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\minime_pp\src\random.cpp
+	<time.h>
+	"random.h"
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\src\auxf.cpp
+	<math.h>
+	<float.h>
+	<assert.h>
+	<fenv.h>
+	<errno.h>
+	<stdlib.h>
+	<string.h>
+	<sys/stat.h>
+	"header.hpp"
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\src\threadhand_class.cpp
+	"threadhand_class.h"
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\viewer_pp\src\draw.cpp
+	"viewer_class.h"
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\viewer_pp\src\viewer_class.cpp
+	"viewer_class.h"
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\pyb_wx\pyb_wxapp.cpp
+	"pyb_wxApp.h"
+	"pyb_wxMain.h"
+	<wx/image.h>
+
+1593510743 c:\users\schaecl\documents\github\pyb\pyb_wx\pyb_wxapp.h
+	<wx/app.h>
+
+1593510743 c:\users\schaecl\documents\github\pyb\pyb_wx\pyb_wxmain.h
+	<wx/button.h>
+	<wx/frame.h>
+	<wx/gbsizer.h>
+	<wx/menu.h>
+	<wx/notebook.h>
+	<wx/panel.h>
+	<wx/sizer.h>
+	<wx/slider.h>
+	<wx/statline.h>
+	<wx/stattext.h>
+	<wx/statusbr.h>
+	<wx/textctrl.h>
+	<wx/tglbtn.h>
+	"src/led.h"
+	"../ids_cam/ids_cam.h"
+
+1593510743 c:\users\schaecl\documents\github\pyb\pyb_wx\src\led.h
+	<wx/window.h>
+	<wx/bitmap.h>
+	<wx/dcclient.h>
+	<wx/thread.h>
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\pyb_wx\pyb_wxmain.cpp
+	"pyb_wxMain.h"
+	<wx/msgdlg.h>
+	<wx/filedlg.h>
+	<wx/aboutdlg.h>
+	<wx/bitmap.h>
+	<wx/icon.h>
+	<wx/image.h>
+	<wx/intl.h>
+	<wx/settings.h>
+	<wx/string.h>
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\pyb_wx\resource.rc
+	"wx/msw/wx.rc"
+
+1593510743 source:c:\users\schaecl\documents\github\pyb\pyb_wx\src\led.cpp
+	"led.h"
+	<string.h>
+

@@ -18,14 +18,17 @@ class gabe
         gabe(void);
         ~gabe(void);
 
-        void get_Waist_z(const double z, double *res_pt wz);
+        void get_Waist_z(const double z,
+                         double *res_pt wz);
         void set_RayleighRange(double *res_pt zr_out);
         void get_RayleighRange_Elliptic(const double wx0,
                                         const double wy0,
                                         double *res_pt zxr,
                                         double *res_pt zyr);
-        double get_Waist_z(const double z, const double z0);
-        void get_Offset_z(const double wz, double *z);
+        double get_Waist_z(const double z,
+                           const double z0);
+        void get_Offset_z(const double wz,
+                          double *z);
         double get_WavefrontRadius_z(const double z);
         void get_Waist_z_Elliptic(const double wx0,
                                   const double wy0,
