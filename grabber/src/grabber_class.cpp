@@ -21,13 +21,15 @@ grabber::grabber(void)
     blur_appl =
     finite_moments =
     roi_on =
+    roi_auto =
     mouse_drag =
-    saturated = false; /* 9 */
+    saturated = false; /* 10 */
     /* atomic<bool> */
     close_copy_thread.store(false, std::memory_order_relaxed);
     close_viewer_thread.store(false, std::memory_order_relaxed);
     wait_camera_thread.store(false, std::memory_order_relaxed);
-    close_minime_thread.store(false, std::memory_order_relaxed); /* 4 */
+    close_minime_thread.store(false, std::memory_order_relaxed);
+    roi_auto_atm.store(false, std::memory_order_relaxed); /* 5 */
     /* int */
     in_chn =
     in_depth = 0xDEADDEAD;
@@ -1611,6 +1613,11 @@ bool grabber::get_RoiActive(void)
 void grabber::set_RoiActive(const bool val)
 {
     roi_on = val;
+}
+
+void grabber::set_RoiAuto(const bool val)
+{
+    roi_auto = val;
 }
 
 void grabber::copy_MousePosition(const int px, const int py)

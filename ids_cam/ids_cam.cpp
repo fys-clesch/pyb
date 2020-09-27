@@ -32,12 +32,15 @@ ids_cam::ids_cam(void)
     /* bool */
     cntrl_exp_time =
     supp_fine_inc_exp_time =
-    err_break = false; /* 3 */
+    aoi_auto =
+    err_break = false; /* 4 */
     /* uint16_t */
     pixel_format = IS_CM_MONO8; /**< Important for USB 2.0 cameras -- other settings don't work. */
     color_mod_init =
     bits_p_pix =
     pix_size = 0; /* 4 */
+    /* atomic<bool> */
+    aoi_auto_atm.store(false, std::memory_order_relaxed);
     /* atomic<double> */
     fps_atm.store(0., std::memory_order_relaxed);
     dpix_size_atm.store(0., std::memory_order_relaxed);
@@ -1113,6 +1116,7 @@ void ids_cam::set_MouseEvent(const int event,
         {
             /* AOI selection begins. */
             set_RoiActive(false);
+            set_RoiAuto(false);
             set_EndRoi(cv::Point_<int>(x, y));
             set_StartRoi(cv::Point_<int>(x, y));
             set_MouseDrag(true);

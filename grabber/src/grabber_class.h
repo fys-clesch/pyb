@@ -28,6 +28,7 @@ class grabber
 
         bool get_MouseDrag(void);
         void set_RoiActive(const bool val);
+        void set_RoiAuto(const bool val);
         void set_StartRoi(const cv::Point_<int> &val);
         void set_EndRoi(const cv::Point_<int> &val);
         void set_MouseDrag(const bool val);
@@ -112,13 +113,15 @@ class grabber
              finite_moments,
              grab_frames,
              roi_on,
+             roi_auto,
              mouse_drag,
              saturated;
 
         std::atomic<bool> close_copy_thread,
                           close_viewer_thread,
                           close_minime_thread,
-                          wait_camera_thread;
+                          wait_camera_thread,
+                          roi_auto_atm;
 
         std::atomic<uint32_t> work_roi_rows,
                               work_roi_cols;
