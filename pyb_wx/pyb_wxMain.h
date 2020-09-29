@@ -112,6 +112,7 @@ class pyb_wxFrame : public wxFrame
         void OnButtonViewerScreenshotClick(wxCommandEvent& event);
         void OnTextCtrlCamInfoText(wxCommandEvent& event);
         void OnToggleButtonAOIAutoToggle(wxCommandEvent& event);
+        void OnSpinButtonAutoAOIChange(wxSpinEvent& event);
         //*)
 
         //(*Identifiers(pyb_wxFrame)

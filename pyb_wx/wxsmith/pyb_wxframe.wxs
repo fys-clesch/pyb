@@ -275,7 +275,7 @@
 															</object>
 															<object class="sizeritem">
 																<object class="wxStaticText" name="ID_STATICTEXT_AUTO_AOI_SIZE" variable="StaticTextAutoAOISize" member="yes">
-																	<label>Label</label>
+																	<label>5 x</label>
 																</object>
 																<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																<border>5</border>
@@ -284,8 +284,10 @@
 															<object class="sizeritem">
 																<object class="wxSpinButton" name="ID_SPINBUTTON_AUTO_ROI" variable="SpinButtonAutoAOI" member="yes">
 																	<value>1</value>
-																	<min>4</min>
-																	<max>6</max>
+																	<min>5</min>
+																	<max>7</max>
+																	<tooltip>Changes the multiplaction to the estimated beam radius to fix the auto AOI</tooltip>
+																	<handler function="OnSpinButtonAutoAOIChange" entry="EVT_SPIN" />
 																</object>
 																<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																<border>5</border>

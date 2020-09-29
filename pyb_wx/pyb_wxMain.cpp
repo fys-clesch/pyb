@@ -260,11 +260,12 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     ToggleButtonAOIAuto = new wxToggleButton(PanelAOIWin, ID_TOGGLEBUTTON_AOI_AUTO, _("Auto AOI"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_AOI_AUTO"));
     ToggleButtonAOIAuto->SetToolTip(_("If enabled, the AOI will be drawn according to X times the estimated beam width"));
     BoxSizerAutoAOI->Add(ToggleButtonAOIAuto, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    StaticTextAutoAOISize = new wxStaticText(PanelAOIWin, ID_STATICTEXT_AUTO_AOI_SIZE, _("Label"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_AUTO_AOI_SIZE"));
+    StaticTextAutoAOISize = new wxStaticText(PanelAOIWin, ID_STATICTEXT_AUTO_AOI_SIZE, _("5 x"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_AUTO_AOI_SIZE"));
     BoxSizerAutoAOI->Add(StaticTextAutoAOISize, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     SpinButtonAutoAOI = new wxSpinButton(PanelAOIWin, ID_SPINBUTTON_AUTO_ROI, wxDefaultPosition, wxDefaultSize, wxSP_VERTICAL|wxSP_ARROW_KEYS, _T("ID_SPINBUTTON_AUTO_ROI"));
     SpinButtonAutoAOI->SetValue(1);
-    SpinButtonAutoAOI->SetRange(4, 6);
+    SpinButtonAutoAOI->SetRange(5, 7);
+    SpinButtonAutoAOI->SetToolTip(_("Changes the multiplaction to the estimated beam radius to fix the auto AOI"));
     BoxSizerAutoAOI->Add(SpinButtonAutoAOI, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerAOI->Add(BoxSizerAutoAOI, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerAOIWin->Add(StaticBoxSizerAOI, 0, wxALL|wxEXPAND, 5);
@@ -422,6 +423,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     Connect(ID_BUTTON_RESIZE_CAM_WIN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonResizeCamWinClick);
     Connect(ID_TOGGLEBUTTON_AOI,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonAOIToggle);
     Connect(ID_TOGGLEBUTTON_AOI_AUTO,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonAOIAutoToggle);
+    Connect(ID_SPINBUTTON_AUTO_ROI,wxEVT_SCROLL_THUMBTRACK,(wxObjectEventFunction)&pyb_wxFrame::OnSpinButtonAutoAOIChange);
     Connect(ID_TOGGLEBUTTON_FRAMEGRAB,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonFrameGrabToggle);
     Connect(ID_BUTTON_START,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonStartClick);
     Connect(ID_BUTTON_QUIT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonQuitClick);
@@ -1650,5 +1652,17 @@ void pyb_wxFrame::OnTextCtrlCamInfoText(wxCommandEvent& event)
 
 void pyb_wxFrame::OnToggleButtonAOIAutoToggle(wxCommandEvent& event)
 {
+    bool val = ToggleButtonAOIAuto->GetValue();
+    if(val)
+        ToggleButtonAOIAuto->SetLabel("Auto AOI");
+    else
+        ToggleButtonAOIAuto->SetLabel("Remove AOI");
 
+    auto_roi.store(!val, std::memory_order_relaxed);
+}
+
+void pyb_wxFrame::OnSpinButtonAutoAOIChange(wxSpinEvent& event)
+{
+    int curval = SpinButtonAutoAOI->GetValue();
+//        t_cam.set_AutoAOIMult(curval);
 }
