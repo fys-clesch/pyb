@@ -45,6 +45,8 @@ const long pyb_wxFrame::ID_BUTTON_RESIZE_CAM_WIN = wxNewId();
 const long pyb_wxFrame::ID_TEXTCTRL_AOI = wxNewId();
 const long pyb_wxFrame::ID_TOGGLEBUTTON_AOI = wxNewId();
 const long pyb_wxFrame::ID_TOGGLEBUTTON_AOI_AUTO = wxNewId();
+const long pyb_wxFrame::ID_STATICTEXT_AUTO_AOI_SIZE = wxNewId();
+const long pyb_wxFrame::ID_SPINBUTTON_AUTO_ROI = wxNewId();
 const long pyb_wxFrame::ID_PANEL_AOI_WIN = wxNewId();
 const long pyb_wxFrame::ID_NOTEBOOK_MAIN = wxNewId();
 const long pyb_wxFrame::ID_TOGGLEBUTTON_FRAMEGRAB = wxNewId();
@@ -118,6 +120,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     btn_state.store(NONE_BTN, std::memory_order_relaxed); /* 1 */
 
     //(*Initialize(pyb_wxFrame)
+    wxBoxSizer* BoxSizerAutoAOI;
     wxBoxSizer* BoxSizerInnerMain;
     wxBoxSizer* BoxSizerMain;
     wxBoxSizer* BoxSizerThreads;
@@ -253,9 +256,17 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     ToggleButtonAOI = new wxToggleButton(PanelAOIWin, ID_TOGGLEBUTTON_AOI, _("Draw rectangle"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_AOI"));
     ToggleButtonAOI->SetToolTip(_("Click and draw a rectangle in the camera window"));
     StaticBoxSizerAOI->Add(ToggleButtonAOI, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizerAutoAOI = new wxBoxSizer(wxHORIZONTAL);
     ToggleButtonAOIAuto = new wxToggleButton(PanelAOIWin, ID_TOGGLEBUTTON_AOI_AUTO, _("Auto AOI"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_AOI_AUTO"));
     ToggleButtonAOIAuto->SetToolTip(_("If enabled, the AOI will be drawn according to X times the estimated beam width"));
-    StaticBoxSizerAOI->Add(ToggleButtonAOIAuto, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizerAutoAOI->Add(ToggleButtonAOIAuto, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticTextAutoAOISize = new wxStaticText(PanelAOIWin, ID_STATICTEXT_AUTO_AOI_SIZE, _("Label"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_AUTO_AOI_SIZE"));
+    BoxSizerAutoAOI->Add(StaticTextAutoAOISize, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SpinButtonAutoAOI = new wxSpinButton(PanelAOIWin, ID_SPINBUTTON_AUTO_ROI, wxDefaultPosition, wxDefaultSize, wxSP_VERTICAL|wxSP_ARROW_KEYS, _T("ID_SPINBUTTON_AUTO_ROI"));
+    SpinButtonAutoAOI->SetValue(1);
+    SpinButtonAutoAOI->SetRange(4, 6);
+    BoxSizerAutoAOI->Add(SpinButtonAutoAOI, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticBoxSizerAOI->Add(BoxSizerAutoAOI, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerAOIWin->Add(StaticBoxSizerAOI, 0, wxALL|wxEXPAND, 5);
     PanelAOIWin->SetSizer(StaticBoxSizerAOIWin);
     StaticBoxSizerAOIWin->Fit(PanelAOIWin);

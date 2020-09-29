@@ -20,6 +20,7 @@
 #include <wx/panel.h>
 #include <wx/sizer.h>
 #include <wx/slider.h>
+#include <wx/spinbutt.h>
 #include <wx/statline.h>
 #include <wx/stattext.h>
 #include <wx/statusbr.h>
@@ -137,6 +138,8 @@ class pyb_wxFrame : public wxFrame
         static const long ID_TEXTCTRL_AOI;
         static const long ID_TOGGLEBUTTON_AOI;
         static const long ID_TOGGLEBUTTON_AOI_AUTO;
+        static const long ID_STATICTEXT_AUTO_AOI_SIZE;
+        static const long ID_SPINBUTTON_AUTO_ROI;
         static const long ID_PANEL_AOI_WIN;
         static const long ID_NOTEBOOK_MAIN;
         static const long ID_TOGGLEBUTTON_FRAMEGRAB;
@@ -209,7 +212,9 @@ class pyb_wxFrame : public wxFrame
         wxSlider* SliderGroundlift;
         wxSlider* SliderKernelSize;
         wxSlider* SliderStdDev;
+        wxSpinButton* SpinButtonAutoAOI;
         wxStaticLine* StaticLine2;
+        wxStaticText* StaticTextAutoAOISize;
         wxStaticText* StaticTextExpTimeDisp;
         wxStaticText* StaticTextGroundlift;
         wxStaticText* StaticTextKernelSize;

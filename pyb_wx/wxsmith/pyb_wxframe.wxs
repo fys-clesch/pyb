@@ -263,13 +263,38 @@
 														<border>5</border>
 													</object>
 													<object class="sizeritem">
-														<object class="wxToggleButton" name="ID_TOGGLEBUTTON_AOI_AUTO" variable="ToggleButtonAOIAuto" member="yes">
-															<label>Auto AOI</label>
-															<tooltip>If enabled, the AOI will be drawn according to X times the estimated beam width</tooltip>
-															<handler function="OnToggleButtonAOIAutoToggle" entry="EVT_TOGGLEBUTTON" />
+														<object class="wxBoxSizer" variable="BoxSizerAutoAOI" member="no">
+															<object class="sizeritem">
+																<object class="wxToggleButton" name="ID_TOGGLEBUTTON_AOI_AUTO" variable="ToggleButtonAOIAuto" member="yes">
+																	<label>Auto AOI</label>
+																	<tooltip>If enabled, the AOI will be drawn according to X times the estimated beam width</tooltip>
+																	<handler function="OnToggleButtonAOIAutoToggle" entry="EVT_TOGGLEBUTTON" />
+																</object>
+																<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																<border>5</border>
+															</object>
+															<object class="sizeritem">
+																<object class="wxStaticText" name="ID_STATICTEXT_AUTO_AOI_SIZE" variable="StaticTextAutoAOISize" member="yes">
+																	<label>Label</label>
+																</object>
+																<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																<border>5</border>
+																<option>1</option>
+															</object>
+															<object class="sizeritem">
+																<object class="wxSpinButton" name="ID_SPINBUTTON_AUTO_ROI" variable="SpinButtonAutoAOI" member="yes">
+																	<value>1</value>
+																	<min>4</min>
+																	<max>6</max>
+																</object>
+																<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																<border>5</border>
+																<option>1</option>
+															</object>
 														</object>
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
+														<option>1</option>
 													</object>
 												</object>
 												<flag>wxALL|wxEXPAND</flag>
