@@ -44,6 +44,7 @@ const long pyb_wxFrame::ID_PANEL_THREADS = wxNewId();
 const long pyb_wxFrame::ID_BUTTON_RESIZE_CAM_WIN = wxNewId();
 const long pyb_wxFrame::ID_TEXTCTRL_AOI = wxNewId();
 const long pyb_wxFrame::ID_TOGGLEBUTTON_AOI = wxNewId();
+const long pyb_wxFrame::ID_TOGGLEBUTTON_AOI_AUTO = wxNewId();
 const long pyb_wxFrame::ID_PANEL_AOI_WIN = wxNewId();
 const long pyb_wxFrame::ID_NOTEBOOK_MAIN = wxNewId();
 const long pyb_wxFrame::ID_TOGGLEBUTTON_FRAMEGRAB = wxNewId();
@@ -111,7 +112,8 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     /* atomic<bool> */
     select_roi.store(false, std::memory_order_relaxed);
     force_quit.store(false, std::memory_order_relaxed);
-    close_cam_thread.store(false, std::memory_order_relaxed); /* 3 */
+    close_cam_thread.store(false, std::memory_order_relaxed);
+    auto_roi.store(false, std::memory_order_relaxed); /* 4 */
     /* atomic<uint32_t> */
     btn_state.store(NONE_BTN, std::memory_order_relaxed); /* 1 */
 
@@ -186,7 +188,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     ButtonGnuplot->SetToolTip(_("Plot current processed image data"));
     StaticBoxSizerOutput->Add(ButtonGnuplot, 0, wxALL|wxEXPAND, 5);
     StaticBoxSizerOutputInfo = new wxStaticBoxSizer(wxHORIZONTAL, PanelOutput, _("Output"));
-    TextCtrlOutputInfo = new wxTextCtrl(PanelOutput, ID_TEXTCTRL_OUTPUT_INFO, _("Displays last saved data"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_OUTPUT_INFO"));
+    TextCtrlOutputInfo = new wxTextCtrl(PanelOutput, ID_TEXTCTRL_OUTPUT_INFO, _("Displays last saved data"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxBORDER_STATIC, wxDefaultValidator, _T("ID_TEXTCTRL_OUTPUT_INFO"));
     TextCtrlOutputInfo->SetMaxLength(512);
     TextCtrlOutputInfo->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
     StaticBoxSizerOutputInfo->Add(TextCtrlOutputInfo, 1, wxALL|wxEXPAND, 5);
@@ -244,13 +246,16 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     ButtonResizeCamWin->SetToolTip(_("Resizes the camera display window"));
     StaticBoxSizerAOIWin->Add(ButtonResizeCamWin, 0, wxALL|wxEXPAND, 5);
     StaticBoxSizerAOI = new wxStaticBoxSizer(wxVERTICAL, PanelAOIWin, _("Area of interest"));
-    TextCtrlAOI = new wxTextCtrl(PanelAOIWin, ID_TEXTCTRL_AOI, _("No AOI selected"), wxDefaultPosition, wxSize(-1,35), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxTE_CENTRE|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_AOI"));
+    TextCtrlAOI = new wxTextCtrl(PanelAOIWin, ID_TEXTCTRL_AOI, _("No AOI selected"), wxDefaultPosition, wxSize(-1,35), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxTE_CENTRE|wxBORDER_STATIC, wxDefaultValidator, _T("ID_TEXTCTRL_AOI"));
     TextCtrlAOI->SetMaxLength(256);
     TextCtrlAOI->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
     StaticBoxSizerAOI->Add(TextCtrlAOI, 1, wxALL|wxEXPAND, 5);
     ToggleButtonAOI = new wxToggleButton(PanelAOIWin, ID_TOGGLEBUTTON_AOI, _("Draw rectangle"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_AOI"));
     ToggleButtonAOI->SetToolTip(_("Click and draw a rectangle in the camera window"));
     StaticBoxSizerAOI->Add(ToggleButtonAOI, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    ToggleButtonAOIAuto = new wxToggleButton(PanelAOIWin, ID_TOGGLEBUTTON_AOI_AUTO, _("Auto AOI"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_AOI_AUTO"));
+    ToggleButtonAOIAuto->SetToolTip(_("If enabled, the AOI will be drawn according to X times the estimated beam width"));
+    StaticBoxSizerAOI->Add(ToggleButtonAOIAuto, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerAOIWin->Add(StaticBoxSizerAOI, 0, wxALL|wxEXPAND, 5);
     PanelAOIWin->SetSizer(StaticBoxSizerAOIWin);
     StaticBoxSizerAOIWin->Fit(PanelAOIWin);
@@ -303,7 +308,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     StaticBoxSizerExpTime->Add(GridBagSizerExpTime, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerCamera->Add(StaticBoxSizerExpTime, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
     StaticBoxSizerCamInfo = new wxStaticBoxSizer(wxHORIZONTAL, PanelCamera, _("Information"));
-    TextCtrlCamInfo = new wxTextCtrl(PanelCamera, ID_TEXTCTRL_CAM_INFO, _("Loading..."), wxDefaultPosition, wxSize(-1,80), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_CAM_INFO"));
+    TextCtrlCamInfo = new wxTextCtrl(PanelCamera, ID_TEXTCTRL_CAM_INFO, _("Loading..."), wxDefaultPosition, wxSize(-1,80), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxBORDER_STATIC, wxDefaultValidator, _T("ID_TEXTCTRL_CAM_INFO"));
     TextCtrlCamInfo->SetMaxLength(512);
     TextCtrlCamInfo->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
     StaticBoxSizerCamInfo->Add(TextCtrlCamInfo, 1, wxALL|wxEXPAND, 5);
@@ -405,6 +410,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     Connect(ID_BUTTON_MINIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonMinimeClick);
     Connect(ID_BUTTON_RESIZE_CAM_WIN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonResizeCamWinClick);
     Connect(ID_TOGGLEBUTTON_AOI,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonAOIToggle);
+    Connect(ID_TOGGLEBUTTON_AOI_AUTO,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonAOIAutoToggle);
     Connect(ID_TOGGLEBUTTON_FRAMEGRAB,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonFrameGrabToggle);
     Connect(ID_BUTTON_START,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonStartClick);
     Connect(ID_BUTTON_QUIT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonQuitClick);
@@ -1627,6 +1633,11 @@ bool pyb_wxFrame::load_SelectRoi(void)
 }
 
 void pyb_wxFrame::OnTextCtrlCamInfoText(wxCommandEvent& event)
+{
+
+}
+
+void pyb_wxFrame::OnToggleButtonAOIAutoToggle(wxCommandEvent& event)
 {
 
 }

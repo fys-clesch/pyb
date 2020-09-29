@@ -69,9 +69,9 @@ class ids_cam : public grabber
         bool err_break,
              cntrl_exp_time,
              supp_fine_inc_exp_time,
-             aoi_auto;
+             roi_auto;
 
-        std::atomic<bool> aoi_auto_atm;
+        std::atomic<bool> roi_auto_atm;
 
         cv::Mat im_p,
                 infotbar_win_mat;

@@ -46,6 +46,7 @@ class pyb_wxFrame : public wxFrame
 
         std::atomic<bool> close_cam_thread,
                           select_roi,
+                          auto_roi,
                           force_quit;
 
         std::atomic<uint32_t> btn_state;
@@ -68,7 +69,8 @@ class pyb_wxFrame : public wxFrame
             START_MINIME,
             RESIZE_CAM_WINDOW,
             CLOSE_CAM_WINDOW,
-            REMOVE_AOI
+            REMOVE_AOI,
+            TOGGLE_AUTO_AOI
         };
 
         //(*Handlers(pyb_wxFrame)
@@ -108,6 +110,7 @@ class pyb_wxFrame : public wxFrame
         void OnToggleButtonViewerRotationToggle(wxCommandEvent& event);
         void OnButtonViewerScreenshotClick(wxCommandEvent& event);
         void OnTextCtrlCamInfoText(wxCommandEvent& event);
+        void OnToggleButtonAOIAutoToggle(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(pyb_wxFrame)
@@ -133,6 +136,7 @@ class pyb_wxFrame : public wxFrame
         static const long ID_BUTTON_RESIZE_CAM_WIN;
         static const long ID_TEXTCTRL_AOI;
         static const long ID_TOGGLEBUTTON_AOI;
+        static const long ID_TOGGLEBUTTON_AOI_AUTO;
         static const long ID_PANEL_AOI_WIN;
         static const long ID_NOTEBOOK_MAIN;
         static const long ID_TOGGLEBUTTON_FRAMEGRAB;
@@ -215,6 +219,7 @@ class pyb_wxFrame : public wxFrame
         wxTextCtrl* TextCtrlCamInfo;
         wxTextCtrl* TextCtrlOutputInfo;
         wxToggleButton* ToggleButtonAOI;
+        wxToggleButton* ToggleButtonAOIAuto;
         wxToggleButton* ToggleButtonBackground;
         wxToggleButton* ToggleButtonFrameGrab;
         wxToggleButton* ToggleButtonMapViewer;

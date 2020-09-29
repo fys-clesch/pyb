@@ -25,7 +25,7 @@
 					<Add option="-DUSE_DEPRECATED_FUNCTIONS" />
 					<Add directory="C:/Libraries/wxWidgets/lib/gcc_x64_dll/mswu" />
 					<Add directory="C:/Libraries/wxWidgets/include" />
-					<Add directory="C:/Libraries/freeglut/include" />
+					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/include" />
 					<Add directory="C:/Libraries/OpenCV/include" />
 				</Compiler>
 				<ResourceCompiler>
@@ -275,9 +275,6 @@
 		<Unit filename="src/led.cpp" />
 		<Unit filename="wxsmith/pyb_wxframe.wxs" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<wxsmith version="1">
 				<gui name="wxWidgets" src="pyb_wxApp.cpp" main="pyb_wxFrame" init_handlers="necessary" language="CPP" />
 				<resources>

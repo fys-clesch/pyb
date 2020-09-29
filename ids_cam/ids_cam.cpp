@@ -32,7 +32,7 @@ ids_cam::ids_cam(void)
     /* bool */
     cntrl_exp_time =
     supp_fine_inc_exp_time =
-    aoi_auto =
+    roi_auto =
     err_break = false; /* 4 */
     /* uint16_t */
     pixel_format = IS_CM_MONO8; /**< Important for USB 2.0 cameras -- other settings don't work. */
@@ -40,7 +40,7 @@ ids_cam::ids_cam(void)
     bits_p_pix =
     pix_size = 0; /* 4 */
     /* atomic<bool> */
-    aoi_auto_atm.store(false, std::memory_order_relaxed);
+    roi_auto_atm.store(false, std::memory_order_relaxed); /* 1 */
     /* atomic<double> */
     fps_atm.store(0., std::memory_order_relaxed);
     dpix_size_atm.store(0., std::memory_order_relaxed);

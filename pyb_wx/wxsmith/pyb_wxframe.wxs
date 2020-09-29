@@ -102,7 +102,7 @@
 															<value>Displays last saved data</value>
 															<maxlength>512</maxlength>
 															<bg>wxSYS_COLOUR_MENU</bg>
-															<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER</style>
+															<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxBORDER_STATIC</style>
 														</object>
 														<flag>wxALL|wxEXPAND</flag>
 														<border>5</border>
@@ -247,7 +247,7 @@
 															<maxlength>256</maxlength>
 															<size>-1,35</size>
 															<bg>wxSYS_COLOUR_MENU</bg>
-															<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxTE_CENTRE|wxSTATIC_BORDER</style>
+															<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxTE_CENTRE|wxBORDER_STATIC</style>
 														</object>
 														<flag>wxALL|wxEXPAND</flag>
 														<border>5</border>
@@ -258,6 +258,15 @@
 															<label>Draw rectangle</label>
 															<tooltip>Click and draw a rectangle in the camera window</tooltip>
 															<handler function="OnToggleButtonAOIToggle" entry="EVT_TOGGLEBUTTON" />
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxToggleButton" name="ID_TOGGLEBUTTON_AOI_AUTO" variable="ToggleButtonAOIAuto" member="yes">
+															<label>Auto AOI</label>
+															<tooltip>If enabled, the AOI will be drawn according to X times the estimated beam width</tooltip>
+															<handler function="OnToggleButtonAOIAutoToggle" entry="EVT_TOGGLEBUTTON" />
 														</object>
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
@@ -423,7 +432,7 @@
 												<maxlength>512</maxlength>
 												<size>-1,80</size>
 												<bg>wxSYS_COLOUR_MENU</bg>
-												<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxSTATIC_BORDER</style>
+												<style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxBORDER_STATIC</style>
 											</object>
 											<flag>wxALL|wxEXPAND</flag>
 											<border>5</border>
