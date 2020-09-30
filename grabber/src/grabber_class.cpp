@@ -86,7 +86,8 @@ grabber::grabber(void)
     /* atomic<uint> */
     gaussblur_sze_atm.store(gaussblur_sze.width, std::memory_order_relaxed);
     gaussblur_sze_min_atm.store(gaussblur_sze_min, std::memory_order_relaxed);
-    gaussblur_sze_max_atm.store(gaussblur_sze_max, std::memory_order_relaxed); /* 3 */
+    gaussblur_sze_max_atm.store(gaussblur_sze_max, std::memory_order_relaxed);
+    auto_roi_mult.store(5, std::memory_order_relaxed); /* 4 */
 }
 
 /** \brief Destructor of grabber class.
@@ -1344,6 +1345,11 @@ void grabber::get_GroundliftRangeAtomic(double *res_pt gl_current,
 {
     *gl_current = groundlift_sub_atm.load(std::memory_order_relaxed);
     *gl_max = groundlift_max_atm.load(std::memory_order_relaxed);
+}
+
+void grabber::set_AutoAOIMultiplierAtomic(const uint i)
+{
+    auto_roi_mult.store(i, std::memory_order_relaxed);
 }
 
 /** \brief This is the thread function for the minime class member.

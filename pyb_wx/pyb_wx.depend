@@ -3340,11 +3340,11 @@
 	"led.h"
 	<string.h>
 
-1601235736 source:c:\github\igyba\grabber\src\grabber_class.cpp
+1601452692 source:c:\github\igyba\grabber\src\grabber_class.cpp
 	"grabber_class.h"
 	<assert.h>
 
-1601235760 c:\github\igyba\grabber\src\grabber_class.h
+1601452748 c:\github\igyba\grabber\src\grabber_class.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/imgproc/imgproc.hpp>
@@ -3505,15 +3505,17 @@
 1567705841 c:\github\igyba\pyb_wx\pyb_wxapp.h
 	<wx/app.h>
 
-1601370336 c:\github\igyba\pyb_wx\pyb_wxmain.h
+1601453109 c:\github\igyba\pyb_wx\pyb_wxmain.h
 	<wx/button.h>
 	<wx/frame.h>
 	<wx/gbsizer.h>
+	<wx/led.h>
 	<wx/menu.h>
 	<wx/notebook.h>
 	<wx/panel.h>
 	<wx/sizer.h>
 	<wx/slider.h>
+	<wx/spinbutt.h>
 	<wx/statline.h>
 	<wx/stattext.h>
 	<wx/statusbr.h>
@@ -3528,7 +3530,7 @@
 	<wx/dcclient.h>
 	<wx/thread.h>
 
-1601235569 c:\github\igyba\ids_cam\ids_cam.h
+1601371921 c:\github\igyba\ids_cam\ids_cam.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/highgui/highgui_c.h>
@@ -3548,4 +3550,46 @@
 1567705841 source:c:\github\igyba\pyb_wx\src\led.cpp
 	"led.h"
 	<string.h>
+
+1601371865 source:c:\github\igyba\ids_cam\ids_cam.cpp
+	"ids_cam.h"
+	<assert.h>
+
+1544373608 c:\libraries\wxwidgets\include\wx\spinbutt.h
+	"wx/defs.h"
+	"wx/control.h"
+	"wx/event.h"
+	"wx/range.h"
+	"wx/univ/spinbutt.h"
+	"wx/msw/spinbutt.h"
+	"wx/motif/spinbutt.h"
+	"wx/gtk/spinbutt.h"
+	"wx/gtk1/spinbutt.h"
+	"wx/osx/spinbutt.h"
+	"wx/qt/spinbutt.h"
+
+1544373608 c:\libraries\wxwidgets\include\wx\range.h
+	"wx/defs.h"
+
+1544373608 c:\libraries\wxwidgets\include\wx\univ\spinbutt.h
+	"wx/univ/scrarrow.h"
+
+1544373608 c:\libraries\wxwidgets\include\wx\univ\scrarrow.h
+
+1544373608 c:\libraries\wxwidgets\include\wx\msw\spinbutt.h
+	"wx/control.h"
+	"wx/event.h"
+
+1544373608 c:\libraries\wxwidgets\include\wx\motif\spinbutt.h
+
+1544373608 c:\libraries\wxwidgets\include\wx\gtk\spinbutt.h
+
+1544373608 c:\libraries\wxwidgets\include\wx\gtk1\spinbutt.h
+
+1544373608 c:\libraries\wxwidgets\include\wx\osx\spinbutt.h
+	"wx/control.h"
+	"wx/event.h"
+
+1544373608 c:\libraries\wxwidgets\include\wx\qt\spinbutt.h
+	"wx/spinbutt.h"
 

@@ -94,6 +94,7 @@ class grabber
                                        double *res_pt gl_max);
         double get_GaussBlurRangeAtomic(double *res_pt gb_min,
                                         double *res_pt gb_max);
+        void set_AutoAOIMultiplierAtomic(const uint i);
         void exchange_Atomics(void);
         void draw_RoiRectangle(void);
         void set_GroundliftAtomic(const double val);
@@ -124,7 +125,8 @@ class grabber
                           roi_auto_atm;
 
         std::atomic<uint32_t> work_roi_rows,
-                              work_roi_cols;
+                              work_roi_cols,
+                              auto_roi_mult;
 
         std::atomic<double> gaussblur_sigma_x_atm,
                             groundlift_sub_atm,

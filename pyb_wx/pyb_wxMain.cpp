@@ -1188,7 +1188,7 @@ void pyb_wxFrame::OnAbout(wxCommandEvent &event)
     version = "pyb " + PROJECT_MAJ_VERSION + "." + PROJECT_MIN_VERSION;
     info.SetName(version);
     info.SetDescription("This program does something great.");
-    info.SetCopyright("(C) 2019," + author + "<clemens@fh-muenster.de>");
+    info.SetCopyright("(C) 2020," + author + "<clemens@fh-muenster.de>");
 }
 
 void pyb_wxFrame::OnButtonIncExpTimeClick(wxCommandEvent& event)
@@ -1664,5 +1664,8 @@ void pyb_wxFrame::OnToggleButtonAOIAutoToggle(wxCommandEvent& event)
 void pyb_wxFrame::OnSpinButtonAutoAOIChange(wxSpinEvent& event)
 {
     int curval = SpinButtonAutoAOI->GetValue();
-//        t_cam.set_AutoAOIMult(curval);
+    t_cam.set_AutoAOIMultiplierAtomic(curval);
+    std::string str;
+    str = curval + " x";
+    StaticTextAutoAOISize->SetLabel(str);
 }
