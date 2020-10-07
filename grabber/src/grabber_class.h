@@ -36,6 +36,7 @@ class grabber
         uint32_t get_nRows(void);
         uint32_t get_nCols(void);
         void set_RectRoi(const cv::Rect_<int> &val);
+        void set_AutoRectRoi(void);
         void set_PixelValue(const double val);
         double get_PixelValueWork(const int x, const int y);
         void copy_MousePosition(const int px, const int py);
@@ -114,7 +115,6 @@ class grabber
              finite_moments,
              grab_frames,
              roi_on,
-             roi_auto,
              mouse_drag,
              saturated;
 
@@ -122,7 +122,7 @@ class grabber
                           close_viewer_thread,
                           close_minime_thread,
                           wait_camera_thread,
-                          roi_auto_atm;
+                          auto_roi;
 
         std::atomic<uint32_t> work_roi_rows,
                               work_roi_cols,
@@ -230,6 +230,10 @@ class grabber
         uint load_WorkRoiCols(void);
         void store_WaitCameraThread(const bool b);
         bool load_WaitCameraThread(void);
+        bool load_AutoRoi(void);
+        void store_AutoRoi(const bool b);
+        uint load_AutoRoiMult(void);
+        void store_AutoRoiMult(const uint n);
 };
 
 #endif

@@ -21,15 +21,14 @@ grabber::grabber(void)
     blur_appl =
     finite_moments =
     roi_on =
-    roi_auto =
     mouse_drag =
-    saturated = false; /* 10 */
+    saturated = false; /* 9 */
     /* atomic<bool> */
     close_copy_thread.store(false, std::memory_order_relaxed);
     close_viewer_thread.store(false, std::memory_order_relaxed);
     wait_camera_thread.store(false, std::memory_order_relaxed);
     close_minime_thread.store(false, std::memory_order_relaxed);
-    roi_auto_atm.store(false, std::memory_order_relaxed); /* 5 */
+    auto_roi.store(false, std::memory_order_relaxed); /* 5 */
     /* int */
     in_chn =
     in_depth = 0xDEADDEAD;
@@ -818,95 +817,6 @@ void grabber::draw_RoiRectangle(void)
         rectangle(rgb, roi_rect, cv::Scalar(150., 100., 50.), 2);
 }
 
-///** \brief Sets the events done when a mouse or keyboard action is registered.
-// *
-// * \param event const int Flags that specify mouse event.
-// * \param x const int X coordinate of the mouse.
-// * \param y const int Y coordinate of the mouse.
-// * \param flags const int Flags that specify a keyboard event.
-// * \return void
-// *
-// */
-//void grabber::set_MouseEvent(const int event, const int x, const int y, const int flags)
-//{
-//    if(flags & cv::EVENT_FLAG_SHIFTKEY)
-//    {
-//        if(event == cv::EVENT_LBUTTONDOWN && !mouse_drag)
-//        {
-//            /* AOI selection begins. */
-//            roi_on = false;
-//            end_roi = start_roi = cv::Point_<int>(x, y);
-//            mouse_drag = true;
-//        }
-//        else if(event == cv::EVENT_MOUSEMOVE && mouse_drag)
-//        {
-//            /* AOI being selected. */
-//            end_roi = cv::Point_<int>(x, y);
-//        }
-//        else if(event == cv::EVENT_LBUTTONUP && mouse_drag)
-//        {
-//            end_roi = cv::Point_<int>(x, y);
-//            roi_rect = cv::Rect_<int>(start_roi.x,
-//                                      start_roi.y,
-//                                      x - start_roi.x,
-//                                      y - start_roi.y);
-//            mouse_drag = false;
-//            if(roi_rect.width <= 25 || roi_rect.height <= 25 ||
-//               roi_rect.x + abs(roi_rect.width) >= (int)in_cols ||
-//               roi_rect.y + abs(roi_rect.height) >= (int)in_rows)
-//               roi_on = false;
-//            else
-//                roi_on = true;
-//        }
-//    }
-//    else if(event == cv::EVENT_MOUSEMOVE || event == cv::EVENT_LBUTTONDOWN)
-//    {
-//        mouse_drag = false;
-//        px_mouse = x;
-//        py_mouse = y;
-//        pval = (double)work.at<float>(py_mouse, px_mouse);
-//        #if SHOW_MOUSE_CB
-//        iprint(stdout, "val: %g, pos: (%i, %i)\n", pval, px_mouse, py_mouse);
-//        #endif
-//    }
-//    else if(event == cv::EVENT_RBUTTONDOWN)
-//    {
-//        #if SHOW_MOUSE_CB
-//        iprint(stdout, "r but: (%i, %i)\n", x, y);
-//        #endif
-//        pval = 0xDEADDEAD;
-//    }
-//    else if(event == cv::EVENT_MBUTTONDOWN)
-//    {
-//        #if SHOW_MOUSE_CB
-//        iprint(stdout, "m but: (%i, %i)\n", x, y);
-//        #endif
-//        pval = 0xDEADDEAD;
-//    }
-//    else if(event == cv::EVENT_MOUSEMOVE)
-//    {
-//        #if SHOW_MOUSE_CB
-//        iprint(stdout, "pos: (%i, %i)\n", x, y);
-//        #endif
-//        pval = 0xDEADDEAD;
-//    }
-//    else
-//    {
-//        px_mouse = py_mouse = 0;
-//        pval = 0xDEADDEAD;
-//    }
-//}
-
-//void grabber::cast_static_set_MouseEvent(const int event,
-//                                         const int x,
-//                                         const int y,
-//                                         const int flags,
-//                                         void *udata)
-//{
-//    grabber *ptr = static_cast<grabber *>(udata);
-//    (*ptr).set_MouseEvent(event, x, y, flags);
-//}
-
 /** \brief Displays the rgb matrix.
  *
  * \param void
@@ -1623,7 +1533,7 @@ void grabber::set_RoiActive(const bool val)
 
 void grabber::set_RoiAuto(const bool val)
 {
-    roi_auto = val;
+    store_AutoRoi(val);
 }
 
 void grabber::copy_MousePosition(const int px, const int py)
@@ -1645,6 +1555,31 @@ void grabber::set_EndRoi(const cv::Point_<int> &val)
 void grabber::set_RectRoi(const cv::Rect_<int> &val)
 {
     roi_rect = val;
+}
+
+void grabber::set_AutoRectRoi(void)
+{
+    const int mult = load_AutoRoiMult();
+    int cx, cy, sx, sy,
+        left, right, top, bottom;
+    cx = centroid.x;
+    cy = centroid.y;
+    sx = mult * (int)round(covar.at<double>(0, 0));
+    sy = mult * (int)round(covar.at<double>(1, 1));
+
+    left = sx - cx;
+    right = sx + cx;
+    top = sy - cy;
+    bottom = sy + cy;
+
+    if(left < 0)
+        left = 0;
+    if(top < 0)
+        top = 0;
+    if(right >= in_rows) // @todo is this the full range of pixels?
+        left = in_rows - 1;
+    if(bottom >= in_cols)
+        top = in_cols - 1;
 }
 
 void grabber::get_RectRoi(int *res_pt sx, int *res_pt sy,
@@ -1723,4 +1658,24 @@ void grabber::store_WaitCameraThread(const bool b)
 bool grabber::load_WaitCameraThread(void)
 {
     return wait_camera_thread.load(std::memory_order_relaxed);
+}
+
+void grabber::store_AutoRoi(const bool b)
+{
+    auto_roi.store(b, std::memory_order_relaxed);
+}
+
+bool grabber::load_AutoRoi(void)
+{
+    return auto_roi.load(std::memory_order_relaxed);
+}
+
+void grabber::store_AutoRoiMult(const uint n)
+{
+    auto_roi_mult.store(n, std::memory_order_relaxed);
+}
+
+uint grabber::load_AutoRoiMult(void)
+{
+    return auto_roi_mult.load(std::memory_order_relaxed);
 }

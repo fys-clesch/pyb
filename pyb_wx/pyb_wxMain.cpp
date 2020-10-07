@@ -1668,22 +1668,7 @@ void pyb_wxFrame::OnToggleButtonAOIAutoToggle(wxCommandEvent& event)
     store_AutoRoi(!val);
 
     if(val)
-    {
-        int cx, cy, sx, sy;
-        t_cam.set_RectRoi(cv::Rect_<int>(cx - sx, cy - sy, cx + sx, cy + sy));
-        const int sw = 2 * sx,
-                  sh = 2 * sy;
-        if(sw <= 25 || sh <= 25 ||
-            sx + abs(sw) >= (int)t_cam.get_nCols() ||
-            sy + abs(sh) >= (int)t_cam.get_nRows())
-        {
-            t_cam.set_RoiActive(false);
-            ToggleButtonAOI->SetValue(false);
-            store_SelectRoi(false);
-        }
-        else
-            t_cam.set_RoiActive(true);
-    }
+        t_cam.set_AutoRectRoi();
 }
 
 void pyb_wxFrame::OnSpinButtonAutoAOIChange(wxSpinEvent& event)

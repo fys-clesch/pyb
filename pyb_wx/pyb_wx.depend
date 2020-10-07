@@ -3340,11 +3340,11 @@
 	"led.h"
 	<string.h>
 
-1601452692 source:c:\github\igyba\grabber\src\grabber_class.cpp
+1602075213 source:c:\github\igyba\grabber\src\grabber_class.cpp
 	"grabber_class.h"
 	<assert.h>
 
-1601452748 c:\github\igyba\grabber\src\grabber_class.h
+1602076194 c:\github\igyba\grabber\src\grabber_class.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/imgproc/imgproc.hpp>
@@ -3529,7 +3529,7 @@
 	<wx/dcclient.h>
 	<wx/thread.h>
 
-1601371921 c:\github\igyba\ids_cam\ids_cam.h
+1602075167 c:\github\igyba\ids_cam\ids_cam.h
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/highgui/highgui_c.h>
@@ -3550,7 +3550,7 @@
 	"led.h"
 	<string.h>
 
-1601371865 source:c:\github\igyba\ids_cam\ids_cam.cpp
+1602075288 source:c:\github\igyba\ids_cam\ids_cam.cpp
 	"ids_cam.h"
 	<assert.h>
 
@@ -3591,4 +3591,16 @@
 
 1544373608 c:\libraries\wxwidgets\include\wx\qt\spinbutt.h
 	"wx/spinbutt.h"
+
+1602075342 source:c:\github\igyba\pyb_wx\pyb_wxmain.cpp
+	"pyb_wxMain.h"
+	<wx/msgdlg.h>
+	<wx/filedlg.h>
+	<wx/aboutdlg.h>
+	<wx/bitmap.h>
+	<wx/icon.h>
+	<wx/image.h>
+	<wx/intl.h>
+	<wx/settings.h>
+	<wx/string.h>
 
