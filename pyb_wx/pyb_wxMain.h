@@ -272,6 +272,7 @@ class pyb_wxFrame : public wxFrame
         bool load_SelectRoi(void);
         void store_ForceQuit(const bool b);
         bool load_ForceQuit(void);
+        void store_AutoRoi(const bool b);
 
     public:
 
