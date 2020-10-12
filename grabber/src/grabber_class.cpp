@@ -1257,11 +1257,6 @@ void grabber::get_GroundliftRangeAtomic(double *res_pt gl_current,
     *gl_max = groundlift_max_atm.load(std::memory_order_relaxed);
 }
 
-void grabber::set_AutoAOIMultiplierAtomic(const uint i)
-{
-    auto_roi_mult.store(i, std::memory_order_relaxed);
-}
-
 /** \brief This is the thread function for the minime class member.
  *
  * \param wavelengthUm const double The wavelength in micro meter.
@@ -1560,26 +1555,30 @@ void grabber::set_RectRoi(const cv::Rect_<int> &val)
 void grabber::set_AutoRectRoi(void)
 {
     const int mult = load_AutoRoiMult();
-    int cx, cy, sx, sy,
-        left, right, top, bottom;
+    int left = 0, top = 0;
+    uint cx, cy, sx, sy,
+         right, bottom;
     cx = centroid.x;
     cy = centroid.y;
     sx = mult * (int)round(covar.at<double>(0, 0));
     sy = mult * (int)round(covar.at<double>(1, 1));
 
-    left = sx - cx;
     right = sx + cx;
-    top = sy - cy;
     bottom = sy + cy;
 
-    if(left < 0)
-        left = 0;
-    if(top < 0)
-        top = 0;
-    if(right >= in_rows) // @todo is this the full range of pixels?
-        left = in_rows - 1;
+    /* Make sure that the ROI is smaller than the camera pixel size. */
+    if(sx < cx)
+        left = sx - cx;
+    if(cy < sy)
+        top = sy - cy;
+    if(right >= in_rows)
+        right = in_rows - 1;
     if(bottom >= in_cols)
-        top = in_cols - 1;
+        bottom = in_cols - 1;
+
+    /* Assuming upper left is (0, 0) */
+    set_RectRoi(cv::Rect_<int>(left, top, right - left, bottom - top));
+    set_RoiActive(true);
 }
 
 void grabber::get_RectRoi(int *res_pt sx, int *res_pt sy,

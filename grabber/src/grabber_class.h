@@ -95,7 +95,7 @@ class grabber
                                        double *res_pt gl_max);
         double get_GaussBlurRangeAtomic(double *res_pt gb_min,
                                         double *res_pt gb_max);
-        void set_AutoAOIMultiplierAtomic(const uint i);
+        void store_AutoRoiMult(const uint n);
         void exchange_Atomics(void);
         void draw_RoiRectangle(void);
         void set_GroundliftAtomic(const double val);
@@ -186,7 +186,7 @@ class grabber
         cv::Point2d centroid;
 
         cv::Point_<int> start_roi,
-                    end_roi;
+                        end_roi;
 
         cv::Rect_<int> roi_rect;
 
@@ -222,7 +222,8 @@ class grabber
         uint32_t get_nRowsROI(void);
         uint32_t get_nColsROI(void);
         void calculate_BeamRadius(void);
-        void launch_Minime(const double wavelengthUm, const double pix2um);
+        void launch_Minime(const double wavelengthUm,
+                           const double pix2um);
         double get_PixelValue(void);
         void store_WorkRoiRows(const uint n);
         uint load_WorkRoiRows(void);
@@ -233,7 +234,6 @@ class grabber
         bool load_AutoRoi(void);
         void store_AutoRoi(const bool b);
         uint load_AutoRoiMult(void);
-        void store_AutoRoiMult(const uint n);
 };
 
 #endif

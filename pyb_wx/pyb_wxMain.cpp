@@ -1557,7 +1557,7 @@ void pyb_wxFrame::OnToggleButtonAOIToggle(wxCommandEvent& event)
             store_SelectRoi(true);
         else
         {
-            store_ButtonState(REMOVE_AOI);
+            store_ButtonState(REMOVE_AOI); /**< This will remove the AOI in the next acquisition. */
             ToggleButtonAOI->SetLabel("Draw rectangle");
             ToggleButtonAOI->SetValue(false);
             TextCtrlAOI->SetLabel("No AOI selected");
@@ -1660,22 +1660,26 @@ void pyb_wxFrame::OnTextCtrlCamInfoText(wxCommandEvent& event)
 void pyb_wxFrame::OnToggleButtonAOIAutoToggle(wxCommandEvent& event)
 {
     bool val = ToggleButtonAOIAuto->GetValue();
-    if(!val)
-        ToggleButtonAOIAuto->SetLabel("Auto AOI");
-    else
-        ToggleButtonAOIAuto->SetLabel("Disable Auto AOI");
-
-    store_AutoRoi(!val);
 
     if(val)
+    {
         t_cam.set_AutoRectRoi();
+        TextCtrlAOI->SetLabel("Automatic AOI");
+        ToggleButtonAOIAuto->SetLabel("Disable Auto AOI");
+    }
+    else
+    {
+        store_ButtonState(REMOVE_AOI); /**< This will remove the AOI in the next acquisition. */
+        ToggleButtonAOIAuto->SetLabel("Auto AOI");
+    }
+    update_TextAOI();
+    store_AutoRoi(!val);
 }
 
 void pyb_wxFrame::OnSpinButtonAutoAOIChange(wxSpinEvent& event)
 {
     int curval = SpinButtonAutoAOI->GetValue();
-    t_cam.set_AutoAOIMultiplierAtomic(curval);
-    std::string str;
-    str = curval + " x";
+    t_cam.store_AutoRoiMult(curval);
+    std::string str = curval + " x";
     StaticTextAutoAOISize->SetLabel(str);
 }
