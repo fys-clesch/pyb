@@ -1526,11 +1526,6 @@ void grabber::set_RoiActive(const bool val)
     roi_on = val;
 }
 
-void grabber::set_RoiAuto(const bool val)
-{
-    store_AutoRoi(val);
-}
-
 void grabber::copy_MousePosition(const int px, const int py)
 {
     px_mouse = px;
@@ -1552,7 +1547,7 @@ void grabber::set_RectRoi(const cv::Rect_<int> &val)
     roi_rect = val;
 }
 
-void grabber::set_AutoRectRoi(void)
+void grabber::activate_AutoRectRoi(void)
 {
     const int mult = load_AutoRoiMult();
     int left = 0, top = 0;

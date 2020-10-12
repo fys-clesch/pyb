@@ -47,7 +47,6 @@ class pyb_wxFrame : public wxFrame
 
         std::atomic<bool> close_cam_thread,
                           select_roi,
-                          auto_roi,
                           force_quit;
 
         std::atomic<uint32_t> btn_state;

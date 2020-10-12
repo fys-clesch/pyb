@@ -28,7 +28,6 @@ class grabber
 
         bool get_MouseDrag(void);
         void set_RoiActive(const bool val);
-        void set_RoiAuto(const bool val);
         void set_StartRoi(const cv::Point_<int> &val);
         void set_EndRoi(const cv::Point_<int> &val);
         void set_MouseDrag(const bool val);
@@ -36,7 +35,7 @@ class grabber
         uint32_t get_nRows(void);
         uint32_t get_nCols(void);
         void set_RectRoi(const cv::Rect_<int> &val);
-        void set_AutoRectRoi(void);
+        void activate_AutoRectRoi(void);
         void set_PixelValue(const double val);
         double get_PixelValueWork(const int x, const int y);
         void copy_MousePosition(const int px, const int py);
@@ -95,6 +94,7 @@ class grabber
                                        double *res_pt gl_max);
         double get_GaussBlurRangeAtomic(double *res_pt gb_min,
                                         double *res_pt gb_max);
+        void store_AutoRoi(const bool b);
         void store_AutoRoiMult(const uint n);
         void exchange_Atomics(void);
         void draw_RoiRectangle(void);
@@ -232,7 +232,6 @@ class grabber
         void store_WaitCameraThread(const bool b);
         bool load_WaitCameraThread(void);
         bool load_AutoRoi(void);
-        void store_AutoRoi(const bool b);
         uint load_AutoRoiMult(void);
 };
 

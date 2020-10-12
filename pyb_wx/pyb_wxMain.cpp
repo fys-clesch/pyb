@@ -114,8 +114,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     /* atomic<bool> */
     select_roi.store(false, std::memory_order_relaxed);
     force_quit.store(false, std::memory_order_relaxed);
-    close_cam_thread.store(false, std::memory_order_relaxed);
-    auto_roi.store(false, std::memory_order_relaxed); /* 4 */
+    close_cam_thread.store(false, std::memory_order_relaxed); /* 3 */
     /* atomic<uint32_t> */
     btn_state.store(NONE_BTN, std::memory_order_relaxed); /* 1 */
 
@@ -867,6 +866,7 @@ void pyb_wxFrame::set_MouseEvent(const int event,
         {
             /* AOI selection begins. Mouse down, no movement. */
             t_cam.set_RoiActive(false);
+            t_cam.store_AutoRoi(false);
             t_cam.set_EndRoi(cv::Point_<int>(x, y));
             t_cam.set_StartRoi(cv::Point_<int>(x, y));
             t_cam.set_MouseDrag(true);
@@ -893,6 +893,7 @@ void pyb_wxFrame::set_MouseEvent(const int event,
                 t_cam.set_RoiActive(false);
                 ToggleButtonAOI->SetValue(false);
                 store_SelectRoi(false);
+                t_cam.store_AutoRoi(false);
             }
             else
             {
@@ -901,7 +902,7 @@ void pyb_wxFrame::set_MouseEvent(const int event,
                 ToggleButtonAOI->SetLabel("Remove AOI");
                 ToggleButtonAOI->SetToolTip("Click to remove AOI");
                 store_SelectRoi(false);
-                store_AutoRoi(false);
+                t_cam.store_AutoRoi(false);
             }
         }
     }
@@ -1620,11 +1621,6 @@ void pyb_wxFrame::store_SelectRoi(const bool b)
     select_roi.store(b, std::memory_order_release);
 }
 
-void pyb_wxFrame::store_AutoRoi(const bool b)
-{
-    auto_roi.store(b, std::memory_order_release);
-}
-
 /** \brief The operation is ordered to happen once all accesses to memory in the releasing
  * thread (that have visible side effects on the loading thread) have happened.
  *
@@ -1663,7 +1659,7 @@ void pyb_wxFrame::OnToggleButtonAOIAutoToggle(wxCommandEvent& event)
 
     if(val)
     {
-        t_cam.set_AutoRectRoi();
+        t_cam.activate_AutoRectRoi();
         TextCtrlAOI->SetLabel("Automatic AOI");
         ToggleButtonAOIAuto->SetLabel("Disable Auto AOI");
     }
@@ -1671,9 +1667,10 @@ void pyb_wxFrame::OnToggleButtonAOIAutoToggle(wxCommandEvent& event)
     {
         store_ButtonState(REMOVE_AOI); /**< This will remove the AOI in the next acquisition. */
         ToggleButtonAOIAuto->SetLabel("Auto AOI");
+        t_cam.set_RoiActive(true);
+        t_cam.store_AutoRoi(false);
     }
     update_TextAOI();
-    store_AutoRoi(!val);
 }
 
 void pyb_wxFrame::OnSpinButtonAutoAOIChange(wxSpinEvent& event)
