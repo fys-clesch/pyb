@@ -81,7 +81,7 @@
 					<Add option="-DNDEBUG" />
 					<Add directory="C:/Libraries/wxWidgets/lib/gcc_x64_dll/mswu" />
 					<Add directory="C:/Libraries/wxWidgets/include" />
-					<Add directory="C:/Libraries/freeglut/include" />
+					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/include" />
 					<Add directory="C:/Libraries/OpenCV/include" />
 				</Compiler>
 				<ResourceCompiler>
@@ -138,7 +138,7 @@
 					<Add option="-DFREEGLUT_STATIC" />
 					<Add directory="C:/Libraries/wxWidgets_static/lib/gcc_x64_lib/mswu" />
 					<Add directory="C:/Libraries/wxWidgets_static/include" />
-					<Add directory="C:/Libraries/freeglut/include" />
+					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/include" />
 					<Add directory="C:/Libraries/OpenCV_static/include" />
 				</Compiler>
 				<ResourceCompiler>
