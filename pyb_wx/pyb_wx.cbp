@@ -56,7 +56,7 @@
 					<Add library="opengl32" />
 					<Add library="C:/Program Files/IDS/uEye/Develop/Lib/uEye_api_64.lib" />
 					<Add directory="C:/Libraries/wxWidgets/lib/gcc_x64_dll" />
-					<Add directory="C:/Libraries/freeglut/lib" />
+					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/lib" />
 					<Add directory="C:/Libraries/freeglut/bin" />
 					<Add directory="C:/Libraries/OpenCV/x64/mingw/lib" />
 					<Add directory="C:/Libraries/OpenCV/x64/mingw/bin" />
@@ -112,7 +112,7 @@
 					<Add library="opengl32" />
 					<Add library="C:/Program Files/IDS/uEye/Develop/Lib/uEye_api_64.lib" />
 					<Add directory="C:/Libraries/wxWidgets/lib/gcc_x64_dll" />
-					<Add directory="C:/Libraries/freeglut/lib" />
+					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/lib" />
 					<Add directory="C:/Libraries/freeglut/bin" />
 					<Add directory="C:/Libraries/OpenCV/x64/mingw/lib" />
 					<Add directory="C:/Libraries/OpenCV/x64/mingw/bin" />
@@ -192,7 +192,7 @@
 					<Add library="version" />
 					<Add library="winspool" />
 					<Add directory="C:/Libraries/wxWidgets_static/lib/gcc_x64_lib" />
-					<Add directory="C:/Libraries/freeglut/lib" />
+					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/lib" />
 					<Add directory="C:/Libraries/OpenCV_static/x64/mingw/staticlib" />
 				</Linker>
 			</Target>
