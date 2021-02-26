@@ -1677,6 +1677,6 @@ void pyb_wxFrame::OnSpinButtonAutoAOIChange(wxSpinEvent& event)
 {
     int curval = SpinButtonAutoAOI->GetValue();
     t_cam.store_AutoRoiMult(curval);
-    std::string str = curval + " x";
+    wxString str = curval + " x";
     StaticTextAutoAOISize->SetLabel(str);
 }
