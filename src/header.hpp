@@ -2,6 +2,7 @@
 #define __PYB_HEADER_HPP__
 
 #include <stdio.h>
+#include <cstdint>
 #include <stdarg.h>
 #include <string>
 #include <sys/time.h>

@@ -32,34 +32,34 @@ ifdef windir
     CAMLIB = "C:\Program Files\IDS\uEye\Develop\Lib\uEye_api_64.lib"
     WXFLAGS := -D__WXMSW__ -DWXUSINGDLL -DwxUSE_UNICODE # Whitespace
     CFLAGS := $(CFLAGS)$(WXFLAGS)
-    RESFLAGS = -IC:\Libraries\wxWidgets\lib\gcc_x64_dll\mswu -IC:\Libraries\wxWidgets\include
+    RESFLAGS = -IC:\Libraries\wxwidgets\lib\gcc_x64_dll\mswud -IC:\Libraries\wxwidgets\include
     ifeq ($(STATIC), 1)
         STATIC_FLAGS := -DFREEGLUT_STATIC # Whitespace
         CFLAGS := $(CFLAGS)$(STATIC_FLAGS)
         CDIR = -IC:\Libraries\OpenCV_static\include \
-               -IC:\Libraries\freeglut\x86_64-w64-mingw32\include \
-               -IC:\Libraries\wxWidgets\include \
-               -IC:\Libraries\wxWidgets\lib\gcc_x64_dll\mswu
+               -IC:\Libraries\freeglut\include \
+               -IC:\Libraries\wxwidgets\include \
+               -IC:\Libraries\wxwidgets\lib\gcc_x64_dll\mswud
         LDIR = -LC:\Libraries\OpenCV_static\x64\mingw\staticlib \
-               -LC:\Libraries\freeglut\x86_64-w64-mingw32\lib \
-               -LC:\Libraries\wxWidgets\lib\gcc_x64_dll
+               -LC:\Libraries\freeglut\lib \
+               -LC:\Libraries\wxwidgets\lib\gcc_x64_dll
         LFLAGS = -s -lm -fopenmp -mthreads -static-libgcc -static-libstdc++ -L libgcc_s.a \
-                 -lopencv_highgui411 -lopencv_imgcodecs411 -lopencv_imgproc411 -lopencv_videoio411 -lopencv_core411 \
+                 -lopencv_highgui4120 -lopencv_imgcodecs4120 -lopencv_imgproc4120 -lopencv_videoio4120 -lopencv_core4120 \
                  -lIlmImf -llibpng -llibjasper -llibjpeg-turbo -llibtiff -lzlib -llibwebp \
                  -lfreeglut_static -lglu32 -lopengl32 \
-                 -lwxmsw31u_richtext -lwxmsw31u_xrc -lwxmsw31u_aui -lwxmsw31u_media -lwxbase31u_net -lwxmsw31u_gl -lwxbase31u_xml -lwxmsw31u_adv -lwxmsw31u_html -lwxmsw31u_core -lwxbase31u \
+                 -lwxmsw33ud_richtext -lwxmsw33ud_xrc -lwxmsw33ud_aui -lwxmsw33ud_media -lwxbase33ud_net -lwxmsw33ud_gl -lwxbase33ud_xml -lwxmsw33ud_adv -lwxmsw33ud_html -lwxmsw33ud_core -lwxbase33ud \
                  -lcomdlg32  -lgdi32 -lwinmm
     else
-        CDIR = -IC:\Libraries\OpenCV\include \
-               -IC:\Libraries\freeglut\x86_64-w64-mingw32\include \
-               -IC:\Libraries\wxWidgets\include \
-               -IC:\Libraries\wxWidgets\lib\gcc_x64_dll\mswu
-        LDIR = -LC:\Libraries\OpenCV\x64\mingw\lib \
-               -LC:\Libraries\freeglut\x86_64-w64-mingw32\lib \
-               -LC:\Libraries\wxWidgets\lib\gcc_x64_dll
+        CDIR = -IC:\Libraries\opencv\include \
+               -IC:\Libraries\freeglut\include \
+               -IC:\Libraries\wxwidgets\include \
+               -IC:\Libraries\wxwidgets\lib\gcc_x64_dll\mswud
+        LDIR = -LC:\Libraries\opencv\x64\mingw\lib \
+               -LC:\Libraries\freeglut\lib \
+               -LC:\Libraries\wxwidgets\lib\gcc_x64_dll
         LFLAGS = -lm -fopenmp -mthreads \
-                 -lopencv_highgui411 -lopencv_imgcodecs411 -lopencv_imgproc411 -lopencv_videoio411 -lopencv_core411 \
-                 -lwxmsw31u_richtext -lwxmsw31u_xrc -lwxmsw31u_aui -lwxmsw31u_media -lwxbase31u_net -lwxmsw31u_gl -lwxbase31u_xml -lwxmsw31u_adv -lwxmsw31u_html -lwxmsw31u_core -lwxbase31u \
+                 -lopencv_highgui4120 -lopencv_imgcodecs4120 -lopencv_imgproc4120 -lopencv_videoio4120 -lopencv_core4120 \
+                 -lwxmsw33ud_richtext -lwxmsw33ud_xrc -lwxmsw33ud_aui -lwxmsw33ud_media -lwxbase33ud_net -lwxmsw33ud_gl -lwxbase33ud_xml -lwxmsw33ud_adv -lwxmsw33ud_html -lwxmsw33ud_core -lwxbase33ud \
                  -lfreeglut -lglu32 -lopengl32
     endif
 else

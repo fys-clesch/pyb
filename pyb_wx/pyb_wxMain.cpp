@@ -21,7 +21,7 @@ static pyb_wxFrame *itw1ptr = nullptr; /**< Only used in schedule_CamThread
                                               passing it. Declared static to prevent
                                               from external use. */
 
-//(*IdInit(pyb_wxFrame)
+// dInit(pyb_wxFrame)
 const long pyb_wxFrame::ID_BUTTON_SAVE_IMG_RGB = wxNewId();
 const long pyb_wxFrame::ID_BUTTON_SAVE_IMG_WORK = wxNewId();
 const long pyb_wxFrame::ID_BUTTON_SAVE_IMG_FP = wxNewId();
@@ -80,7 +80,7 @@ const long pyb_wxFrame::ID_NOTEBOOK_CAM_IMG = wxNewId();
 const long pyb_wxFrame::idMenuQuit = wxNewId();
 const long pyb_wxFrame::idMenuAbout = wxNewId();
 const long pyb_wxFrame::ID_STATUSBAR_MAIN = wxNewId();
-//*)
+//
 
 BEGIN_EVENT_TABLE(pyb_wxFrame, wxFrame)
     //(*EventTable(pyb_wxFrame)
@@ -118,7 +118,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     /* atomic<uint32_t> */
     btn_state.store(NONE_BTN, std::memory_order_relaxed); /* 1 */
 
-    //(*Initialize(pyb_wxFrame)
+    // Initialize(pyb_wxFrame)
     wxBoxSizer* BoxSizerAutoAOI;
     wxBoxSizer* BoxSizerInnerMain;
     wxBoxSizer* BoxSizerMain;
@@ -264,7 +264,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     SpinButtonAutoAOI = new wxSpinButton(PanelAOIWin, ID_SPINBUTTON_AUTO_ROI, wxDefaultPosition, wxDefaultSize, wxSP_VERTICAL|wxSP_ARROW_KEYS, _T("ID_SPINBUTTON_AUTO_ROI"));
     SpinButtonAutoAOI->SetValue(1);
     SpinButtonAutoAOI->SetRange(5, 7);
-    SpinButtonAutoAOI->SetToolTip(_("Changes the multiplaction to the estimated beam radius to fix the auto AOI"));
+    SpinButtonAutoAOI->SetToolTip(_("Changes the multiplication to the estimated beam radius to fix the auto AOI"));
     BoxSizerAutoAOI->Add(SpinButtonAutoAOI, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerAOI->Add(BoxSizerAutoAOI, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerAOIWin->Add(StaticBoxSizerAOI, 0, wxALL|wxEXPAND, 5);
@@ -406,7 +406,8 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     BoxSizerMain->Fit(this);
     BoxSizerMain->SetSizeHints(this);
 
-    Connect(ID_BUTTON_SAVE_IMG_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgRGBClick);
+    //Connect(ID_BUTTON_SAVE_IMG_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgRGBClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveImgRGBClick, this, ID_BUTTON_SAVE_IMG_RGB);
     Connect(ID_BUTTON_SAVE_IMG_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgWorkClick);
     Connect(ID_BUTTON_SAVE_IMG_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgFPClick);
     Connect(ID_BUTTON_SAVE_DATA_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataRGBClick);
@@ -439,7 +440,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&pyb_wxFrame::OnQuit);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&pyb_wxFrame::OnAbout);
     Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&pyb_wxFrame::OnCloseMainFrame);
-    //*)
+    //
     /* Proper way to cast: wxCommandEventHandler(pyb_wxFrame::OnAbout) */
 
     thread_Cam = std::thread(pyb_wxFrame::schedule_CamThread,
