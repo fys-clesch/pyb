@@ -406,40 +406,83 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     BoxSizerMain->Fit(this);
     BoxSizerMain->SetSizeHints(this);
 
-    //Connect(ID_BUTTON_SAVE_IMG_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgRGBClick);
+//    Connect(ID_BUTTON_SAVE_IMG_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgRGBClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveImgRGBClick, this, ID_BUTTON_SAVE_IMG_RGB);
-    Connect(ID_BUTTON_SAVE_IMG_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgWorkClick);
-    Connect(ID_BUTTON_SAVE_IMG_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgFPClick);
-    Connect(ID_BUTTON_SAVE_DATA_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataRGBClick);
-    Connect(ID_BUTTON_SAVE_DATA_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataWorkClick);
-    Connect(ID_BUTTON_SAVE_DATA_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataFPClick);
-    Connect(ID_BUTTON_GNUPLOT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonGnuplotClick);
-    Connect(ID_TOGGLEBUTTON_VIEWER,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonViewerToggle);
-    Connect(ID_TOGGLEBUTTON_VIEWER_ANIMATION,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonViewerAnimationToggle);
-    Connect(ID_TOGGLEBUTTON_MAP_VIEWER,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonMapViewerToggle);
-    Connect(ID_TOGGLEBUTTON_VIEWER_ROTATION,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonViewerRotationToggle);
-    Connect(ID_BUTTON_VIEWER_SCREENSHOT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonViewerScreenshotClick);
-    Connect(ID_BUTTON_MINIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonMinimeClick);
-    Connect(ID_BUTTON_RESIZE_CAM_WIN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonResizeCamWinClick);
-    Connect(ID_TOGGLEBUTTON_AOI,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonAOIToggle);
-    Connect(ID_TOGGLEBUTTON_AOI_AUTO,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonAOIAutoToggle);
-    Connect(ID_SPINBUTTON_AUTO_ROI,wxEVT_SCROLL_THUMBTRACK,(wxObjectEventFunction)&pyb_wxFrame::OnSpinButtonAutoAOIChange);
-    Connect(ID_TOGGLEBUTTON_FRAMEGRAB,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonFrameGrabToggle);
-    Connect(ID_BUTTON_START,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonStartClick);
-    Connect(ID_BUTTON_QUIT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonQuitClick);
-    Connect(ID_TOGGLEBUTTON_BACKGROUND,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonBackgroundToggle);
-    Connect(ID_BUTTON_DEC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecExpTimeClick);
-    Connect(ID_BUTTON_INC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncExpTimeClick);
-    Connect(ID_TOGGLEBUTTON_SMOOTHING,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonSmoothingToggle);
-    Connect(ID_BUTTON_DEC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecKernelSizeClick);
-    Connect(ID_BUTTON_INC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncKernelSizeClick);
-    Connect(ID_BUTTON_DEC_STD_DEV,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecStdDevClick);
-    Connect(ID_BUTTON_INC_STD_DEV,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncStdDevClick);
-    Connect(ID_BUTTON_DEC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecGroundliftClick);
-    Connect(ID_BUTTON_INC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncGroundliftClick);
-    Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&pyb_wxFrame::OnQuit);
-    Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&pyb_wxFrame::OnAbout);
-    Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&pyb_wxFrame::OnCloseMainFrame);
+//    Connect(ID_BUTTON_SAVE_IMG_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgWorkClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveImgWorkClick, this, ID_BUTTON_SAVE_IMG_WORK);
+//    Connect(ID_BUTTON_SAVE_IMG_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgFPClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveImgFPClick, this, ID_BUTTON_SAVE_IMG_FP);
+//    Connect(ID_BUTTON_SAVE_DATA_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataRGBClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveDataRGBClick, this, ID_BUTTON_SAVE_DATA_RGB);
+//    Connect(ID_BUTTON_SAVE_DATA_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataWorkClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveDataWorkClick, this, ID_BUTTON_SAVE_DATA_WORK);
+//    Connect(ID_BUTTON_SAVE_DATA_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataFPClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveDataFPClick, this, ID_BUTTON_SAVE_DATA_FP);
+//    Connect(ID_BUTTON_GNUPLOT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonGnuplotClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonGnuplotClick, this, ID_BUTTON_GNUPLOT);
+
+//    Connect(ID_TOGGLEBUTTON_VIEWER,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonViewerToggle);
+    Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonViewerToggle, this, ID_TOGGLEBUTTON_VIEWER);
+//    Connect(ID_TOGGLEBUTTON_VIEWER_ANIMATION,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonViewerAnimationToggle);
+    Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonViewerAnimationToggle, this, ID_TOGGLEBUTTON_VIEWER_ANIMATION);
+//    Connect(ID_TOGGLEBUTTON_MAP_VIEWER,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonMapViewerToggle);
+    Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonMapViewerToggle, this, ID_TOGGLEBUTTON_MAP_VIEWER);
+//    Connect(ID_TOGGLEBUTTON_VIEWER_ROTATION,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonViewerRotationToggle);
+    Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonViewerRotationToggle, this, ID_TOGGLEBUTTON_VIEWER_ROTATION);
+
+//    Connect(ID_BUTTON_VIEWER_SCREENSHOT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonViewerScreenshotClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonViewerScreenshotClick, this, ID_BUTTON_VIEWER_SCREENSHOT);
+//    Connect(ID_BUTTON_MINIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonMinimeClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonMinimeClick, this, ID_BUTTON_MINIME);
+//    Connect(ID_BUTTON_RESIZE_CAM_WIN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonResizeCamWinClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonResizeCamWinClick, this, ID_BUTTON_RESIZE_CAM_WIN);
+
+//    Connect(ID_TOGGLEBUTTON_AOI,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonAOIToggle);
+    Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonAOIToggle, this, ID_TOGGLEBUTTON_AOI);
+//    Connect(ID_TOGGLEBUTTON_AOI_AUTO,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonAOIAutoToggle);
+    Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonAOIAutoToggle, this, ID_TOGGLEBUTTON_AOI_AUTO);
+
+//    Connect(ID_SPINBUTTON_AUTO_ROI,wxEVT_SCROLL_THUMBTRACK,(wxObjectEventFunction)&pyb_wxFrame::OnSpinButtonAutoAOIChange);
+    Bind(wxEVT_SPIN, &pyb_wxFrame::OnSpinButtonAutoAOIChange, this, ID_SPINBUTTON_AUTO_ROI);
+
+//    Connect(ID_TOGGLEBUTTON_FRAMEGRAB,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonFrameGrabToggle);
+    Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonFrameGrabToggle, this, ID_TOGGLEBUTTON_FRAMEGRAB);
+
+//    Connect(ID_BUTTON_START,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonStartClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonStartClick, this, ID_BUTTON_START);
+//    Connect(ID_BUTTON_QUIT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonQuitClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonQuitClick, this, ID_BUTTON_QUIT);
+
+//    Connect(ID_TOGGLEBUTTON_BACKGROUND,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonBackgroundToggle);
+    Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonBackgroundToggle, this, ID_TOGGLEBUTTON_BACKGROUND);
+
+//    Connect(ID_BUTTON_DEC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecExpTimeClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonDecExpTimeClick, this, ID_BUTTON_DEC_EXP_TIME);
+//    Connect(ID_BUTTON_INC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncExpTimeClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonIncExpTimeClick, this, ID_BUTTON_INC_EXP_TIME);
+
+//    Connect(ID_TOGGLEBUTTON_SMOOTHING,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonSmoothingToggle);
+    Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonSmoothingToggle, this, ID_TOGGLEBUTTON_SMOOTHING);
+
+//    Connect(ID_BUTTON_DEC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecKernelSizeClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonDecKernelSizeClick, this, ID_BUTTON_DEC_KERNEL_SIZE);
+//    Connect(ID_BUTTON_INC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncKernelSizeClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonIncKernelSizeClick, this, ID_BUTTON_INC_KERNEL_SIZE);
+//    Connect(ID_BUTTON_DEC_STD_DEV,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecStdDevClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonDecStdDevClick, this, ID_BUTTON_DEC_STD_DEV);
+//    Connect(ID_BUTTON_INC_STD_DEV,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncStdDevClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonIncStdDevClick, this, ID_BUTTON_INC_STD_DEV);
+//    Connect(ID_BUTTON_DEC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecGroundliftClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonDecGroundliftClick, this, ID_BUTTON_DEC_GROUNDLIFT);
+//    Connect(ID_BUTTON_INC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncGroundliftClick);
+    Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonIncGroundliftClick, this, ID_BUTTON_INC_GROUNDLIFT);
+
+//    Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&pyb_wxFrame::OnQuit);
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &pyb_wxFrame::OnQuit, this, idMenuQuit);
+//    Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&pyb_wxFrame::OnAbout);
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &pyb_wxFrame::OnAbout, this, idMenuAbout);
+//    Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&pyb_wxFrame::OnCloseMainFrame);
+    Bind(wxEVT_CLOSE_WINDOW, &pyb_wxFrame::OnCloseMainFrame, this, wxID_ANY);
     //
     /* Proper way to cast: wxCommandEventHandler(pyb_wxFrame::OnAbout) */
 

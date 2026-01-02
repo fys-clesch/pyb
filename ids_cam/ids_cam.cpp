@@ -1058,6 +1058,18 @@ void ids_cam::identify_CameraAOISettings(void)
         if(!pix_size)
             pix_size = 520;
     }
+    else if(!sensorname.compare("UI164xLE-C"))
+    {
+        /* Sensor is ON Semiconductor MT9M131STC. */
+        im_min_width = 32;
+        im_inc_width = 4;
+        im_min_height = 4;
+        im_inc_height = 2;
+        sensor_aa_width = 1280;
+        sensor_aa_height = 1024;
+        if(!pix_size)
+            pix_size = 360;
+    }
     else
     {
         std::string outs = "error identifying the sensor name (" +

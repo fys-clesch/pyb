@@ -11,7 +11,7 @@
 #ifndef PYB_WXMAIN_H
 #define PYB_WXMAIN_H
 
-//(*Headers(pyb_wxFrame)
+// Headers(pyb_wxFrame)
 #include <wx/button.h>
 #include <wx/frame.h>
 #include <wx/gbsizer.h>
@@ -26,7 +26,7 @@
 #include <wx/statusbr.h>
 #include <wx/textctrl.h>
 #include <wx/tglbtn.h>
-//*)
+//
 #include "src/led.h"
 
 #include "../ids_cam/ids_cam.h"
@@ -73,7 +73,7 @@ class pyb_wxFrame : public wxFrame
             TOGGLE_AUTO_AOI
         };
 
-        //(*Handlers(pyb_wxFrame)
+        // Handlers(pyb_wxFrame)
         void OnQuit(wxCommandEvent &event);
         void OnAbout(wxCommandEvent &event);
         void OnButtonSaveImgRGBClick(wxCommandEvent& event);
@@ -112,9 +112,9 @@ class pyb_wxFrame : public wxFrame
         void OnTextCtrlCamInfoText(wxCommandEvent& event);
         void OnToggleButtonAOIAutoToggle(wxCommandEvent& event);
         void OnSpinButtonAutoAOIChange(wxSpinEvent& event);
-        //*)
+        //
 
-        //(*Identifiers(pyb_wxFrame)
+        // Identifiers(pyb_wxFrame)
         static const long ID_BUTTON_SAVE_IMG_RGB;
         static const long ID_BUTTON_SAVE_IMG_WORK;
         static const long ID_BUTTON_SAVE_IMG_FP;
@@ -173,9 +173,9 @@ class pyb_wxFrame : public wxFrame
         static const long idMenuQuit;
         static const long idMenuAbout;
         static const long ID_STATUSBAR_MAIN;
-        //*)
+        //
 
-        //(*Declarations(pyb_wxFrame)
+        // Declarations(pyb_wxFrame)
         wxButton* ButtonDecExpTime;
         wxButton* ButtonDecGroundlift;
         wxButton* ButtonDecKernelSize;
@@ -232,7 +232,7 @@ class pyb_wxFrame : public wxFrame
         wxToggleButton* ToggleButtonViewer;
         wxToggleButton* ToggleButtonViewerAnimation;
         wxToggleButton* ToggleButtonViewerRotation;
-        //*)
+        //
 
         DECLARE_EVENT_TABLE()
 
