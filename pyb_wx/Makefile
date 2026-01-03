@@ -9,9 +9,9 @@ ifndef STATIC
 endif
 
 ifeq ($(DEBUG), 1)
-    CFLAGS := -O0 -g -Wall -Wextra -pedantic -std=c++11 -fopenmp -DUSE_DEPRECATED_FUNCTIONS # Whitespace
+    CFLAGS := -O0 -g -Wall -Wextra -pedantic -std=c++23 -fopenmp -DUSE_DEPRECATED_FUNCTIONS # Whitespace
 else
-    CFLAGS := -O3 -Wall -Wextra -pedantic -std=c++11 -fopenmp -DPYB_NDEBUG -DNDEBUG -DUSE_DEPRECATED_FUNCTIONS # Whitespace
+    CFLAGS := -O3 -Wall -Wextra -pedantic -std=c++23 -fopenmp -DPYB_NDEBUG -DNDEBUG -DUSE_DEPRECATED_FUNCTIONS # Whitespace
 endif
 
 FILES_MAIN = pyb_wxApp.cpp pyb_wxMain.cpp src/led.cpp

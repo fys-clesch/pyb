@@ -1269,7 +1269,7 @@ void viewer::ArrowKeysHandler(const int a_keys, const int x, const int y)
 }
 
 void viewer::TrackballHandler(const int mode, const int button,
-                            const int state, const int x, const int y)
+                              const int state, const int x, const int y)
 {
     static double startMX = .0, startMY = .0;
     switch(mode)
@@ -1320,6 +1320,7 @@ void viewer::TrackballHandler(const int mode, const int button,
                     (*dv1p).rmb_down = false;
                 break;
             }
+            [[fallthrough]];
         case VIEWER_MOUSEMOTION:
             if(!(*dv1p).map_mode)
             {

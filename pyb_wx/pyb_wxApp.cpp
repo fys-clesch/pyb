@@ -1,25 +1,25 @@
 #include "pyb_wxApp.h"
 
-//(*AppHeaders
+// AppHeaders
 #include "pyb_wxMain.h"
 #include <wx/image.h>
-//*)
+//
 
 IMPLEMENT_APP(pyb_wxApp)
 
 bool pyb_wxApp::OnInit(void)
 {
-    //(*AppInitialize
+    // AppInitialize
     bool wxsOK = true;
     wxInitAllImageHandlers();
     if ( wxsOK )
     {
         pyb_wxFrame* Frame = new pyb_wxFrame(wxApp::argc,
-                                                 wxApp::argv,
-                                                 0);
+                                             wxApp::argv,
+                                             0);
         Frame->Show();
         SetTopWindow(Frame);
     }
-    //*)
+    //
     return wxsOK;
 }

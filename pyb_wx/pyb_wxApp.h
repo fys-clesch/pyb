@@ -1,7 +1,7 @@
 /***************************************************************
  * Name:      pyb_wxApp.h
  * Purpose:   Defines Application Class
- * Author:    Clemens Schaefermeier (clemens@fh-muenster.de)
+ * Author:    Clemens Schaefermeier
  * Created:   2015-04-03
  * Copyright: Clemens Schaefermeier
  * License:

@@ -3683,7 +3683,7 @@
 	"../grabber/src/grabber_class.h"
 	"ueye.h"
 
-1760293104 c:\github\pyb\ids_cam\ueye.h
+1767455930 c:\github\pyb\ids_cam\ueye.h
 	<unistd.h>
 	<wchar.h>
 	<stdint.h>
@@ -3749,7 +3749,7 @@
 1760293104 source:c:\github\pyb\viewer_pp\src\draw.cpp
 	"viewer_class.h"
 
-1760293104 source:c:\github\pyb\viewer_pp\src\viewer_class.cpp
+1767455607 source:c:\github\pyb\viewer_pp\src\viewer_class.cpp
 	"viewer_class.h"
 
 1760293104 source:c:\github\pyb\pyb_wx\pyb_wxapp.cpp
@@ -3757,7 +3757,7 @@
 	"pyb_wxMain.h"
 	<wx/image.h>
 
-1760293104 c:\github\pyb\pyb_wx\pyb_wxapp.h
+1767456201 c:\github\pyb\pyb_wx\pyb_wxapp.h
 	<wx/app.h>
 
 1767293431 c:\libraries\wxwidgets\lib\gcc_x64_dll\mswud\wx\setup.h
@@ -3771,7 +3771,7 @@
 
 1753049580 c:\libraries\wxwidgets\include\wx\itemid.h
 
-1767373542 c:\github\pyb\pyb_wx\pyb_wxmain.h
+1767456194 c:\github\pyb\pyb_wx\pyb_wxmain.h
 	<wx/button.h>
 	<wx/frame.h>
 	<wx/gbsizer.h>
@@ -3810,7 +3810,7 @@
 	<wx/dcclient.h>
 	<wx/thread.h>
 
-1767296703 source:c:\github\pyb\pyb_wx\pyb_wxmain.cpp
+1767456163 source:c:\github\pyb\pyb_wx\pyb_wxmain.cpp
 	"pyb_wxMain.h"
 	<wx/msgdlg.h>
 	<wx/filedlg.h>

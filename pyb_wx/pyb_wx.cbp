@@ -79,43 +79,42 @@
 					<Add option="-DUSE_DEPRECATED_FUNCTIONS" />
 					<Add option="-DIGYBA_NDEBUG" />
 					<Add option="-DNDEBUG" />
-					<Add directory="C:/Libraries/wxWidgets/lib/gcc_x64_dll/mswu" />
-					<Add directory="C:/Libraries/wxWidgets/include" />
-					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/include" />
-					<Add directory="C:/Libraries/OpenCV/include" />
+					<Add directory="C:/Libraries/wxwidgets/lib/gcc_x64_dll/mswud" />
+					<Add directory="C:/Libraries/wxwidgets/include" />
+					<Add directory="C:/Libraries/freeglut/include" />
+					<Add directory="C:/Libraries/opencv/include" />
 				</Compiler>
 				<ResourceCompiler>
-					<Add directory="C:/Libraries/wxWidgets/lib/gcc_x64_dll/mswu" />
-					<Add directory="C:/Libraries/wxWidgets/include" />
+					<Add directory="C:/Libraries/wxwidgets/lib/gcc_x64_dll/mswud" />
+					<Add directory="C:/Libraries/wxwidgets/include" />
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
 					<Add option="-mthreads" />
-					<Add library="wxmsw31u_richtext" />
-					<Add library="wxmsw31u_xrc" />
-					<Add library="wxmsw31u_aui" />
-					<Add library="wxmsw31u_media" />
-					<Add library="wxbase31u_net" />
-					<Add library="wxmsw31u_gl" />
-					<Add library="wxbase31u_xml" />
-					<Add library="wxmsw31u_adv" />
-					<Add library="wxmsw31u_html" />
-					<Add library="wxmsw31u_core" />
-					<Add library="wxbase31u" />
-					<Add library="opencv_highgui411" />
-					<Add library="opencv_imgproc411" />
-					<Add library="opencv_videoio411" />
-					<Add library="opencv_imgcodecs411" />
-					<Add library="opencv_core411" />
+					<Add library="wxmsw33ud_richtext" />
+					<Add library="wxmsw33ud_xrc" />
+					<Add library="wxmsw33ud_aui" />
+					<Add library="wxmsw33ud_media" />
+					<Add library="wxbase33ud_net" />
+					<Add library="wxmsw33ud_gl" />
+					<Add library="wxbase33ud_xml" />
+					<Add library="wxmsw33ud_adv" />
+					<Add library="wxmsw33ud_html" />
+					<Add library="wxmsw33ud_core" />
+					<Add library="wxbase33ud" />
+					<Add library="opencv_highgui4120" />
+					<Add library="opencv_imgproc4120" />
+					<Add library="opencv_videoio4120" />
+					<Add library="opencv_imgcodecs4120" />
+					<Add library="opencv_core4120" />
 					<Add library="freeglut" />
 					<Add library="glu32" />
 					<Add library="opengl32" />
-					<Add library="C:/Program Files/IDS/uEye/Develop/Lib/uEye_api_64.lib" />
-					<Add directory="C:/Libraries/wxWidgets/lib/gcc_x64_dll" />
-					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/lib" />
+					<Add directory="C:/Libraries/wxwidgets/lib/gcc_x64_dll" />
+					<Add directory="C:/Libraries/freeglut/lib" />
 					<Add directory="C:/Libraries/freeglut/bin" />
-					<Add directory="C:/Libraries/OpenCV/x64/mingw/lib" />
-					<Add directory="C:/Libraries/OpenCV/x64/mingw/bin" />
+					<Add directory="C:/Libraries/opencv/x64/mingw/lib" />
+					<Add directory="C:/Libraries/opencv/x64/mingw/bin" />
 				</Linker>
 			</Target>
 			<Target title="Release_Windows_Static">

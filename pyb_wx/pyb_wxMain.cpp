@@ -4,14 +4,14 @@
 #include <wx/filedlg.h>
 #include <wx/aboutdlg.h>
 
-//(*InternalHeaders(pyb_wxFrame)
+// InternalHeaders(pyb_wxFrame)
 #include <wx/bitmap.h>
 #include <wx/icon.h>
 #include <wx/image.h>
 #include <wx/intl.h>
 #include <wx/settings.h>
 #include <wx/string.h>
-//*)
+//
 
 /** @todo Add a mode matching call. */
 
@@ -83,8 +83,8 @@ const long pyb_wxFrame::ID_STATUSBAR_MAIN = wxNewId();
 //
 
 BEGIN_EVENT_TABLE(pyb_wxFrame, wxFrame)
-    //(*EventTable(pyb_wxFrame)
-    //*)
+    // EventTable(pyb_wxFrame)
+    //
     EVT_COMMAND_SCROLL(ID_SLIDER_EXP_TIME, pyb_wxFrame::OnSliderExpTimeCmdScroll)
     EVT_COMMAND_SCROLL(ID_SLIDER_GROUNDLIFT, pyb_wxFrame::OnSliderGroundliftCmdScroll)
     EVT_COMMAND_SCROLL(ID_SLIDER_KERNEL_SIZE, pyb_wxFrame::OnSliderKernelSizeCmdScroll)
@@ -495,8 +495,8 @@ pyb_wxFrame::pyb_wxFrame(int argc,
 
 pyb_wxFrame::~pyb_wxFrame(void)
 {
-    //(*Destroy(pyb_wxFrame)
-    //*)
+    // Destroy(pyb_wxFrame)
+    //
     for(int i = 0; i < m_argc; i++)
         free(mb_argv[i]);
     free(mb_argv);
@@ -1227,15 +1227,15 @@ void pyb_wxFrame::OnAbout(wxCommandEvent &event)
            __GNUC_MINOR__ << "." <<
            __GNUC_PATCHLEVEL__ <<
            "\n- " + get_wxBuildInfo() +
-           "\n(C) " + author + ", " + PROJECT_YEAR + ", clemens@fh-muenster.de";
+           "\n(C) " + author + ", " + PROJECT_YEAR + ", c.schaefermeier@t-online.de";
     wxMessageBox(msg, "Nice to see you here!");
 
     wxAboutDialogInfo info;
     wxString version;
     version = "pyb " + PROJECT_MAJ_VERSION + "." + PROJECT_MIN_VERSION;
     info.SetName(version);
-    info.SetDescription("This program does something great.");
-    info.SetCopyright("(C) 2020," + author + "<clemens@fh-muenster.de>");
+    info.SetDescription("This program acquires a videostream from a camera and fits a Gaussian for beam profiling.");
+    info.SetCopyright("(C) 2025," + author + "<c.schaefermeier@t-online.de>");
 }
 
 void pyb_wxFrame::OnButtonIncExpTimeClick(wxCommandEvent& event)

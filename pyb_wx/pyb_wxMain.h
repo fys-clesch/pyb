@@ -1,9 +1,9 @@
 /***************************************************************
  * Name:      pyb_wxMain.h
  * Purpose:   Defines Application Frame
- * Author:    Clemens Sch\"afermeier (clemens@fh-muenster.de)
+ * Author:    Clemens Sch\"afermeier
  * Created:   2015-04-03
- * Copyright: Clemens Sch\"afermeier (clemens@fh-muenster.de)
+ * Copyright: Clemens Sch\"afermeier
  * License:
  *
  **************************************************************/
