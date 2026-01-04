@@ -3752,7 +3752,7 @@
 1767455607 source:c:\github\pyb\viewer_pp\src\viewer_class.cpp
 	"viewer_class.h"
 
-1760293104 source:c:\github\pyb\pyb_wx\pyb_wxapp.cpp
+1767457250 source:c:\github\pyb\pyb_wx\pyb_wxapp.cpp
 	"pyb_wxApp.h"
 	"pyb_wxMain.h"
 	<wx/image.h>
@@ -3810,7 +3810,7 @@
 	<wx/dcclient.h>
 	<wx/thread.h>
 
-1767456163 source:c:\github\pyb\pyb_wx\pyb_wxmain.cpp
+1767518472 source:c:\github\pyb\pyb_wx\pyb_wxmain.cpp
 	"pyb_wxMain.h"
 	<wx/msgdlg.h>
 	<wx/filedlg.h>

@@ -158,6 +158,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("icon.ico"))));
     	SetIcon(FrameIcon);
     }
+    // @TODO: Element wxButton of wxStaticBoxSizer should be created as child of its wxStaticBox and not of wxPanel.
     BoxSizerMain = new wxBoxSizer(wxHORIZONTAL);
     PanelMain = new wxPanel(this, ID_PANEL_MAIN, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_MAIN"));
     BoxSizerInnerMain = new wxBoxSizer(wxVERTICAL);
