@@ -1,6 +1,6 @@
 # pyb -- Profile Your Beam
 
-Copyright 2015--2020 Clemens Schäfermeier, clemens ( at ) fh-muenster.de
+Copyright 2015--2025 Clemens Schäfermeier, c.schaefermeier ( at ) t-online.de
 
     This file is part of pyb.
 
@@ -36,3 +36,5 @@ Projects and libraries used:
   - gnuplot (if available on the machine) for plotting image captures
 
 At the moment, only the Windows part has been extensively tested.
+
+If you need help compiling the software, feel free to reach out to me.

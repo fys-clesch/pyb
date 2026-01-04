@@ -36,11 +36,11 @@ ifdef windir
     ifeq ($(STATIC), 1)
         STATIC_FLAGS := -DFREEGLUT_STATIC # Whitespace
         CFLAGS := $(CFLAGS)$(STATIC_FLAGS)
-        CDIR = -IC:\Libraries\OpenCV_static\include \
+        CDIR = -IC:\Libraries\opencv_static\include \
                -IC:\Libraries\freeglut\include \
                -IC:\Libraries\wxwidgets\include \
                -IC:\Libraries\wxwidgets\lib\gcc_x64_dll\mswud
-        LDIR = -LC:\Libraries\OpenCV_static\x64\mingw\staticlib \
+        LDIR = -LC:\Libraries\opencv_static\x64\mingw\staticlib \
                -LC:\Libraries\freeglut\lib \
                -LC:\Libraries\wxwidgets\lib\gcc_x64_dll
         LFLAGS = -s -lm -fopenmp -mthreads -static-libgcc -static-libstdc++ -L libgcc_s.a \

@@ -1220,7 +1220,7 @@ void pyb_wxFrame::OnAbout(wxCommandEvent &event)
            CV_MINOR_VERSION << "." <<
            CV_SUBMINOR_VERSION <<
            "\n- freeglut " \
-           "2.0." << FREEGLUT_VERSION_2_0 <<
+           "3.8.0" <<
            "\n- OpenMP" \
            "\n- gcc " <<
            __GNUC__ << "." <<
