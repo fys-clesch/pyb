@@ -1,17 +1,9 @@
 #include "pyb_wxMain.h"
 
+#include <wx/wx.h>
 #include <wx/msgdlg.h>
 #include <wx/filedlg.h>
 #include <wx/aboutdlg.h>
-
-// InternalHeaders(pyb_wxFrame)
-#include <wx/bitmap.h>
-#include <wx/icon.h>
-#include <wx/image.h>
-#include <wx/intl.h>
-#include <wx/settings.h>
-#include <wx/string.h>
-//
 
 /** @todo Add a mode matching call. */
 
@@ -151,45 +143,52 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     wxStaticBoxSizer* StaticBoxSizerViewer;
     wxStaticBoxSizer* StaticBoxSizerViewerDispSet;
     wxStaticBoxSizer* StaticBoxSizerViewerOutput;
+    wxStaticBox *boxOutput;
 
     Create(parent, wxID_ANY, _("pyb 4 fingers"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     {
-    	wxIcon FrameIcon;
-    	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("icon.ico"))));
-    	SetIcon(FrameIcon);
+        wxIcon FrameIcon;
+        FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("icon.ico"))));
+        SetIcon(FrameIcon);
     }
     // @TODO: Element wxButton of wxStaticBoxSizer should be created as child of its wxStaticBox and not of wxPanel.
     BoxSizerMain = new wxBoxSizer(wxHORIZONTAL);
     PanelMain = new wxPanel(this, ID_PANEL_MAIN, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_MAIN"));
     BoxSizerInnerMain = new wxBoxSizer(wxVERTICAL);
     NotebookMain = new wxNotebook(PanelMain, ID_NOTEBOOK_MAIN, wxDefaultPosition, wxDefaultSize, 0, _T("ID_NOTEBOOK_MAIN"));
+
     PanelOutput = new wxPanel(NotebookMain, ID_PANEL_OUTPUT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_OUTPUT"));
     StaticBoxSizerOutput = new wxStaticBoxSizer(wxVERTICAL, PanelOutput, _("Controls"));
     StaticBoxSizerSaveImg = new wxStaticBoxSizer(wxHORIZONTAL, PanelOutput, _("Save image"));
-    ButtonSaveImgRGB = new wxButton(PanelOutput, ID_BUTTON_SAVE_IMG_RGB, _("Display"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_IMG_RGB"));
+    StaticBoxSizerSaveData = new wxStaticBoxSizer(wxHORIZONTAL, PanelOutput, _("Save data"));
+    boxOutput = new wxStaticBox(PanelOutput, ID_PANEL_OUTPUT, "Output Group");
+
+    ButtonSaveImgRGB = new wxButton(StaticBoxSizerSaveImg->GetStaticBox(), ID_BUTTON_SAVE_IMG_RGB, _("Display"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_IMG_RGB"));
     ButtonSaveImgRGB->SetToolTip(_("Save the displayed image"));
     StaticBoxSizerSaveImg->Add(ButtonSaveImgRGB, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    ButtonSaveImgWork = new wxButton(PanelOutput, ID_BUTTON_SAVE_IMG_WORK, _("Work"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_IMG_WORK"));
+    ButtonSaveImgWork = new wxButton(StaticBoxSizerSaveImg->GetStaticBox(), ID_BUTTON_SAVE_IMG_WORK, _("Work"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_IMG_WORK"));
     ButtonSaveImgWork->SetToolTip(_("Save the working image"));
     StaticBoxSizerSaveImg->Add(ButtonSaveImgWork, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    ButtonSaveImgFP = new wxButton(PanelOutput, ID_BUTTON_SAVE_IMG_FP, _("Raw FP"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_IMG_FP"));
+    ButtonSaveImgFP = new wxButton(StaticBoxSizerSaveImg->GetStaticBox(), ID_BUTTON_SAVE_IMG_FP, _("Raw FP"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_IMG_FP"));
     ButtonSaveImgFP->SetToolTip(_("Save the raw, floating point, single channel image"));
     StaticBoxSizerSaveImg->Add(ButtonSaveImgFP, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerOutput->Add(StaticBoxSizerSaveImg, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    StaticBoxSizerSaveData = new wxStaticBoxSizer(wxHORIZONTAL, PanelOutput, _("Save data"));
-    ButtonSaveDataRGB = new wxButton(PanelOutput, ID_BUTTON_SAVE_DATA_RGB, _("Raw 3C"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_DATA_RGB"));
+
+    ButtonSaveDataRGB = new wxButton(StaticBoxSizerSaveData->GetStaticBox(), ID_BUTTON_SAVE_DATA_RGB, _("Raw 3C"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_DATA_RGB"));
     ButtonSaveDataRGB->SetToolTip(_("Save the raw 3 channel image data"));
     StaticBoxSizerSaveData->Add(ButtonSaveDataRGB, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    ButtonSaveDataWork = new wxButton(PanelOutput, ID_BUTTON_SAVE_DATA_WORK, _("Work"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_DATA_WORK"));
+    ButtonSaveDataWork = new wxButton(StaticBoxSizerSaveData->GetStaticBox(), ID_BUTTON_SAVE_DATA_WORK, _("Work"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_DATA_WORK"));
     ButtonSaveDataWork->SetToolTip(_("Save the working image data"));
     StaticBoxSizerSaveData->Add(ButtonSaveDataWork, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    ButtonSaveDataFP = new wxButton(PanelOutput, ID_BUTTON_SAVE_DATA_FP, _("Raw 1C"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_DATA_FP"));
+    ButtonSaveDataFP = new wxButton(StaticBoxSizerSaveData->GetStaticBox(), ID_BUTTON_SAVE_DATA_FP, _("Raw 1C"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_DATA_FP"));
     ButtonSaveDataFP->SetToolTip(_("Save the raw 1 channel image data"));
     StaticBoxSizerSaveData->Add(ButtonSaveDataFP, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerOutput->Add(StaticBoxSizerSaveData, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    ButtonGnuplot = new wxButton(PanelOutput, ID_BUTTON_GNUPLOT, _("Make gnuplot"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_GNUPLOT"));
+
+    ButtonGnuplot = new wxButton(StaticBoxSizerOutput->GetStaticBox(), ID_BUTTON_GNUPLOT, _("Make gnuplot"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_GNUPLOT"));
     ButtonGnuplot->SetToolTip(_("Plot current processed image data"));
     StaticBoxSizerOutput->Add(ButtonGnuplot, 0, wxALL|wxEXPAND, 5);
+
     StaticBoxSizerOutputInfo = new wxStaticBoxSizer(wxHORIZONTAL, PanelOutput, _("Output"));
     TextCtrlOutputInfo = new wxTextCtrl(PanelOutput, ID_TEXTCTRL_OUTPUT_INFO, _("Displays last saved data"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxBORDER_STATIC, wxDefaultValidator, _T("ID_TEXTCTRL_OUTPUT_INFO"));
     TextCtrlOutputInfo->SetMaxLength(512);
@@ -199,9 +198,11 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     PanelOutput->SetSizer(StaticBoxSizerOutput);
     StaticBoxSizerOutput->Fit(PanelOutput);
     StaticBoxSizerOutput->SetSizeHints(PanelOutput);
+
     PanelThreads = new wxPanel(NotebookMain, ID_PANEL_THREADS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_THREADS"));
     BoxSizerThreads = new wxBoxSizer(wxVERTICAL);
     NotebookThreads = new wxNotebook(PanelThreads, ID_NOTEBOOK_THREADS, wxDefaultPosition, wxDefaultSize, 0, _T("ID_NOTEBOOK_THREADS"));
+
     PanelViewer = new wxPanel(NotebookThreads, ID_PANEL_VIEWER, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_VIEWER"));
     StaticBoxSizerViewer = new wxStaticBoxSizer(wxVERTICAL, PanelViewer, _("Controls"));
     ToggleButtonViewer = new wxToggleButton(PanelViewer, ID_TOGGLEBUTTON_VIEWER, _("Launch viewer"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_VIEWER"));
@@ -229,6 +230,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     PanelViewer->SetSizer(StaticBoxSizerViewer);
     StaticBoxSizerViewer->Fit(PanelViewer);
     StaticBoxSizerViewer->SetSizeHints(PanelViewer);
+
     PanelMinime = new wxPanel(NotebookThreads, ID_PANEL_MINIME, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_MINIME"));
     StaticBoxSizerMinime = new wxStaticBoxSizer(wxVERTICAL, PanelMinime, _("Controls"));
     ButtonMinime = new wxButton(PanelMinime, ID_BUTTON_MINIME, _("Launch minime"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_MINIME"));
@@ -243,6 +245,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     PanelThreads->SetSizer(BoxSizerThreads);
     BoxSizerThreads->Fit(PanelThreads);
     BoxSizerThreads->SetSizeHints(PanelThreads);
+
     PanelAOIWin = new wxPanel(NotebookMain, ID_PANEL_AOI_WIN, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_AOI_WIN"));
     StaticBoxSizerAOIWin = new wxStaticBoxSizer(wxVERTICAL, PanelAOIWin, _("Controls"));
     ButtonResizeCamWin = new wxButton(PanelAOIWin, ID_BUTTON_RESIZE_CAM_WIN, _("Resize window"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_RESIZE_CAM_WIN"));
@@ -301,6 +304,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     BoxSizerInnerMain->SetSizeHints(PanelMain);
     BoxSizerMain->Add(PanelMain, 0, wxALL|wxEXPAND, 0);
     NotebookCamImg = new wxNotebook(this, ID_NOTEBOOK_CAM_IMG, wxDefaultPosition, wxDefaultSize, 0, _T("ID_NOTEBOOK_CAM_IMG"));
+
     PanelCamera = new wxPanel(NotebookCamImg, ID_PANEL_CAMERA, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_CAMERA"));
     StaticBoxSizerCamera = new wxStaticBoxSizer(wxVERTICAL, PanelCamera, _("Controls"));
     ToggleButtonBackground = new wxToggleButton(PanelCamera, ID_TOGGLEBUTTON_BACKGROUND, _("Acquire background"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_BACKGROUND"));
@@ -328,6 +332,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     PanelCamera->SetSizer(StaticBoxSizerCamera);
     StaticBoxSizerCamera->Fit(PanelCamera);
     StaticBoxSizerCamera->SetSizeHints(PanelCamera);
+
     PanelImgManip = new wxPanel(NotebookCamImg, ID_PANEL_IMG_MANIP, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_IMG_MANIP"));
     StaticBoxSizerImgManip = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Controls"));
     ToggleButtonSmoothing = new wxToggleButton(PanelImgManip, ID_TOGGLEBUTTON_SMOOTHING, _("Enable manipulation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_SMOOTHING"));
