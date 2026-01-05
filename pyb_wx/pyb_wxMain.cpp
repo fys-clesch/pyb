@@ -143,7 +143,6 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     wxStaticBoxSizer* StaticBoxSizerViewer;
     wxStaticBoxSizer* StaticBoxSizerViewerDispSet;
     wxStaticBoxSizer* StaticBoxSizerViewerOutput;
-    wxStaticBox *boxOutput;
 
     Create(parent, wxID_ANY, _("pyb 4 fingers"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     {
@@ -151,7 +150,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
         FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("icon.ico"))));
         SetIcon(FrameIcon);
     }
-    // @TODO: Element wxButton of wxStaticBoxSizer should be created as child of its wxStaticBox and not of wxPanel.
+    // Elements as wxButton of wxStaticBoxSizer must be created as child of its wxStaticBox.
     BoxSizerMain = new wxBoxSizer(wxHORIZONTAL);
     PanelMain = new wxPanel(this, ID_PANEL_MAIN, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_MAIN"));
     BoxSizerInnerMain = new wxBoxSizer(wxVERTICAL);
@@ -159,9 +158,9 @@ pyb_wxFrame::pyb_wxFrame(int argc,
 
     PanelOutput = new wxPanel(NotebookMain, ID_PANEL_OUTPUT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_OUTPUT"));
     StaticBoxSizerOutput = new wxStaticBoxSizer(wxVERTICAL, PanelOutput, _("Controls"));
-    StaticBoxSizerSaveImg = new wxStaticBoxSizer(wxHORIZONTAL, PanelOutput, _("Save image"));
-    StaticBoxSizerSaveData = new wxStaticBoxSizer(wxHORIZONTAL, PanelOutput, _("Save data"));
-    boxOutput = new wxStaticBox(PanelOutput, ID_PANEL_OUTPUT, "Output Group");
+    // Nested sizers
+    StaticBoxSizerSaveImg = new wxStaticBoxSizer(wxHORIZONTAL, StaticBoxSizerOutput->GetStaticBox(), _("Save image"));
+    StaticBoxSizerSaveData = new wxStaticBoxSizer(wxHORIZONTAL, StaticBoxSizerOutput->GetStaticBox(), _("Save data"));
 
     ButtonSaveImgRGB = new wxButton(StaticBoxSizerSaveImg->GetStaticBox(), ID_BUTTON_SAVE_IMG_RGB, _("Display"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_SAVE_IMG_RGB"));
     ButtonSaveImgRGB->SetToolTip(_("Save the displayed image"));
@@ -189,12 +188,13 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     ButtonGnuplot->SetToolTip(_("Plot current processed image data"));
     StaticBoxSizerOutput->Add(ButtonGnuplot, 0, wxALL|wxEXPAND, 5);
 
-    StaticBoxSizerOutputInfo = new wxStaticBoxSizer(wxHORIZONTAL, PanelOutput, _("Output"));
-    TextCtrlOutputInfo = new wxTextCtrl(PanelOutput, ID_TEXTCTRL_OUTPUT_INFO, _("Displays last saved data"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxBORDER_STATIC, wxDefaultValidator, _T("ID_TEXTCTRL_OUTPUT_INFO"));
+    StaticBoxSizerOutputInfo = new wxStaticBoxSizer(wxHORIZONTAL, StaticBoxSizerOutput->GetStaticBox(), _("Output"));
+    TextCtrlOutputInfo = new wxTextCtrl(StaticBoxSizerOutputInfo->GetStaticBox(), ID_TEXTCTRL_OUTPUT_INFO, _("Displays last saved data"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxBORDER_STATIC, wxDefaultValidator, _T("ID_TEXTCTRL_OUTPUT_INFO"));
     TextCtrlOutputInfo->SetMaxLength(512);
     TextCtrlOutputInfo->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
     StaticBoxSizerOutputInfo->Add(TextCtrlOutputInfo, 1, wxALL|wxEXPAND, 5);
     StaticBoxSizerOutput->Add(StaticBoxSizerOutputInfo, 0, wxALL|wxEXPAND, 5);
+
     PanelOutput->SetSizer(StaticBoxSizerOutput);
     StaticBoxSizerOutput->Fit(PanelOutput);
     StaticBoxSizerOutput->SetSizeHints(PanelOutput);
@@ -205,35 +205,37 @@ pyb_wxFrame::pyb_wxFrame(int argc,
 
     PanelViewer = new wxPanel(NotebookThreads, ID_PANEL_VIEWER, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_VIEWER"));
     StaticBoxSizerViewer = new wxStaticBoxSizer(wxVERTICAL, PanelViewer, _("Controls"));
-    ToggleButtonViewer = new wxToggleButton(PanelViewer, ID_TOGGLEBUTTON_VIEWER, _("Launch viewer"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_VIEWER"));
+    ToggleButtonViewer = new wxToggleButton(StaticBoxSizerViewer->GetStaticBox(), ID_TOGGLEBUTTON_VIEWER, _("Launch viewer"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_VIEWER"));
     ToggleButtonViewer->SetToolTip(_("Toggle 3D live plot for the current AOI"));
     StaticBoxSizerViewer->Add(ToggleButtonViewer, 0, wxALL|wxEXPAND, 5);
-    StaticBoxSizerViewerDispSet = new wxStaticBoxSizer(wxVERTICAL, PanelViewer, _("Display settings"));
-    ToggleButtonViewerAnimation = new wxToggleButton(PanelViewer, ID_TOGGLEBUTTON_VIEWER_ANIMATION, _("Stop animation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_VIEWER_ANIMATION"));
+    // Nested StaticBoxSizer
+    StaticBoxSizerViewerDispSet = new wxStaticBoxSizer(wxVERTICAL, StaticBoxSizerViewer->GetStaticBox(), _("Display settings"));
+    ToggleButtonViewerAnimation = new wxToggleButton(StaticBoxSizerViewerDispSet->GetStaticBox(), ID_TOGGLEBUTTON_VIEWER_ANIMATION, _("Stop animation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_VIEWER_ANIMATION"));
     ToggleButtonViewerAnimation->Disable();
     ToggleButtonViewerAnimation->SetToolTip(_("Toggle animation on/off"));
     StaticBoxSizerViewerDispSet->Add(ToggleButtonViewerAnimation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    ToggleButtonMapViewer = new wxToggleButton(PanelViewer, ID_TOGGLEBUTTON_MAP_VIEWER, _("Show 2D map"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_MAP_VIEWER"));
+    ToggleButtonMapViewer = new wxToggleButton(StaticBoxSizerViewerDispSet->GetStaticBox(), ID_TOGGLEBUTTON_MAP_VIEWER, _("Show 2D map"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_MAP_VIEWER"));
     ToggleButtonMapViewer->Disable();
     ToggleButtonMapViewer->SetToolTip(_("Toggle 3D/2D mode"));
     StaticBoxSizerViewerDispSet->Add(ToggleButtonMapViewer, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    ToggleButtonViewerRotation = new wxToggleButton(PanelViewer, ID_TOGGLEBUTTON_VIEWER_ROTATION, _("Start rotation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_VIEWER_ROTATION"));
+    ToggleButtonViewerRotation = new wxToggleButton(StaticBoxSizerViewerDispSet->GetStaticBox(), ID_TOGGLEBUTTON_VIEWER_ROTATION, _("Start rotation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_VIEWER_ROTATION"));
     ToggleButtonViewerRotation->Disable();
     ToggleButtonViewerRotation->SetToolTip(_("Toggle rotation in 3D mode"));
     StaticBoxSizerViewerDispSet->Add(ToggleButtonViewerRotation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerViewer->Add(StaticBoxSizerViewerDispSet, 0, wxALL|wxEXPAND, 5);
-    StaticBoxSizerViewerOutput = new wxStaticBoxSizer(wxVERTICAL, PanelViewer, _("Output"));
-    ButtonViewerScreenshot = new wxButton(PanelViewer, ID_BUTTON_VIEWER_SCREENSHOT, _("Save screenshot"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_VIEWER_SCREENSHOT"));
+    StaticBoxSizerViewerOutput = new wxStaticBoxSizer(wxVERTICAL, StaticBoxSizerViewer->GetStaticBox(), _("Output"));
+    ButtonViewerScreenshot = new wxButton(StaticBoxSizerViewerOutput->GetStaticBox(), ID_BUTTON_VIEWER_SCREENSHOT, _("Save screenshot"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_VIEWER_SCREENSHOT"));
     ButtonViewerScreenshot->Disable();
     StaticBoxSizerViewerOutput->Add(ButtonViewerScreenshot, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerViewer->Add(StaticBoxSizerViewerOutput, 0, wxALL|wxEXPAND, 5);
+
     PanelViewer->SetSizer(StaticBoxSizerViewer);
     StaticBoxSizerViewer->Fit(PanelViewer);
     StaticBoxSizerViewer->SetSizeHints(PanelViewer);
 
     PanelMinime = new wxPanel(NotebookThreads, ID_PANEL_MINIME, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_MINIME"));
     StaticBoxSizerMinime = new wxStaticBoxSizer(wxVERTICAL, PanelMinime, _("Controls"));
-    ButtonMinime = new wxButton(PanelMinime, ID_BUTTON_MINIME, _("Launch minime"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_MINIME"));
+    ButtonMinime = new wxButton(StaticBoxSizerMinime->GetStaticBox(), ID_BUTTON_MINIME, _("Launch minime"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_MINIME"));
     ButtonMinime->SetToolTip(_("Start a fitting routine for the current AOI"));
     StaticBoxSizerMinime->Add(ButtonMinime, 0, wxALL|wxEXPAND, 5);
     PanelMinime->SetSizer(StaticBoxSizerMinime);
@@ -248,52 +250,56 @@ pyb_wxFrame::pyb_wxFrame(int argc,
 
     PanelAOIWin = new wxPanel(NotebookMain, ID_PANEL_AOI_WIN, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_AOI_WIN"));
     StaticBoxSizerAOIWin = new wxStaticBoxSizer(wxVERTICAL, PanelAOIWin, _("Controls"));
-    ButtonResizeCamWin = new wxButton(PanelAOIWin, ID_BUTTON_RESIZE_CAM_WIN, _("Resize window"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_RESIZE_CAM_WIN"));
+    ButtonResizeCamWin = new wxButton(StaticBoxSizerAOIWin->GetStaticBox(), ID_BUTTON_RESIZE_CAM_WIN, _("Resize window"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_RESIZE_CAM_WIN"));
     ButtonResizeCamWin->SetToolTip(_("Resizes the camera display window"));
     StaticBoxSizerAOIWin->Add(ButtonResizeCamWin, 0, wxALL|wxEXPAND, 5);
-    StaticBoxSizerAOI = new wxStaticBoxSizer(wxVERTICAL, PanelAOIWin, _("Area of interest"));
-    TextCtrlAOI = new wxTextCtrl(PanelAOIWin, ID_TEXTCTRL_AOI, _("No AOI selected"), wxDefaultPosition, wxSize(-1,35), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxTE_CENTRE|wxBORDER_STATIC, wxDefaultValidator, _T("ID_TEXTCTRL_AOI"));
+    // Nested StaticBoxSizer
+    StaticBoxSizerAOI = new wxStaticBoxSizer(wxVERTICAL, StaticBoxSizerAOIWin->GetStaticBox(), _("Area of interest"));
+    TextCtrlAOI = new wxTextCtrl(StaticBoxSizerAOI->GetStaticBox(), ID_TEXTCTRL_AOI, _("No AOI selected"), wxDefaultPosition, wxSize(-1,35), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxTE_CENTRE|wxBORDER_STATIC, wxDefaultValidator, _T("ID_TEXTCTRL_AOI"));
     TextCtrlAOI->SetMaxLength(256);
     TextCtrlAOI->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
     StaticBoxSizerAOI->Add(TextCtrlAOI, 1, wxALL|wxEXPAND, 5);
-    ToggleButtonAOI = new wxToggleButton(PanelAOIWin, ID_TOGGLEBUTTON_AOI, _("Draw rectangle"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_AOI"));
+    ToggleButtonAOI = new wxToggleButton(StaticBoxSizerAOI->GetStaticBox(), ID_TOGGLEBUTTON_AOI, _("Draw rectangle"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_AOI"));
     ToggleButtonAOI->SetToolTip(_("Click and draw a rectangle in the camera window"));
     StaticBoxSizerAOI->Add(ToggleButtonAOI, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizerAutoAOI = new wxBoxSizer(wxHORIZONTAL);
-    ToggleButtonAOIAuto = new wxToggleButton(PanelAOIWin, ID_TOGGLEBUTTON_AOI_AUTO, _("Auto AOI"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_AOI_AUTO"));
+    ToggleButtonAOIAuto = new wxToggleButton(StaticBoxSizerAOI->GetStaticBox(), ID_TOGGLEBUTTON_AOI_AUTO, _("Auto AOI"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_AOI_AUTO"));
     ToggleButtonAOIAuto->SetToolTip(_("If enabled, the AOI will be drawn according to X times the estimated beam width"));
     BoxSizerAutoAOI->Add(ToggleButtonAOIAuto, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    StaticTextAutoAOISize = new wxStaticText(PanelAOIWin, ID_STATICTEXT_AUTO_AOI_SIZE, _("5 x"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_AUTO_AOI_SIZE"));
+    StaticTextAutoAOISize = new wxStaticText(StaticBoxSizerAOI->GetStaticBox(), ID_STATICTEXT_AUTO_AOI_SIZE, _("5 x"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_AUTO_AOI_SIZE"));
     BoxSizerAutoAOI->Add(StaticTextAutoAOISize, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    SpinButtonAutoAOI = new wxSpinButton(PanelAOIWin, ID_SPINBUTTON_AUTO_ROI, wxDefaultPosition, wxDefaultSize, wxSP_VERTICAL|wxSP_ARROW_KEYS, _T("ID_SPINBUTTON_AUTO_ROI"));
+    SpinButtonAutoAOI = new wxSpinButton(StaticBoxSizerAOI->GetStaticBox(), ID_SPINBUTTON_AUTO_ROI, wxDefaultPosition, wxDefaultSize, wxSP_VERTICAL|wxSP_ARROW_KEYS, _T("ID_SPINBUTTON_AUTO_ROI"));
     SpinButtonAutoAOI->SetValue(1);
     SpinButtonAutoAOI->SetRange(5, 7);
     SpinButtonAutoAOI->SetToolTip(_("Changes the multiplication to the estimated beam radius to fix the auto AOI"));
     BoxSizerAutoAOI->Add(SpinButtonAutoAOI, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerAOI->Add(BoxSizerAutoAOI, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerAOIWin->Add(StaticBoxSizerAOI, 0, wxALL|wxEXPAND, 5);
+
     PanelAOIWin->SetSizer(StaticBoxSizerAOIWin);
     StaticBoxSizerAOIWin->Fit(PanelAOIWin);
     StaticBoxSizerAOIWin->SetSizeHints(PanelAOIWin);
+
     NotebookMain->AddPage(PanelOutput, _("Output"), true);
     NotebookMain->AddPage(PanelThreads, _("Threads"), false);
     NotebookMain->AddPage(PanelAOIWin, _("AOI && Window"), false);
     BoxSizerInnerMain->Add(NotebookMain, 1, wxALL|wxEXPAND, 0);
+
     StaticBoxSizerControlsMain = new wxStaticBoxSizer(wxVERTICAL, PanelMain, _("Main controls"));
-    ToggleButtonFrameGrab = new wxToggleButton(PanelMain, ID_TOGGLEBUTTON_FRAMEGRAB, _("Idle frame grab"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_FRAMEGRAB"));
+    ToggleButtonFrameGrab = new wxToggleButton(StaticBoxSizerControlsMain->GetStaticBox(), ID_TOGGLEBUTTON_FRAMEGRAB, _("Idle frame grab"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_FRAMEGRAB"));
     ToggleButtonFrameGrab->SetToolTip(_("Toggle frame grabbing"));
     StaticBoxSizerControlsMain->Add(ToggleButtonFrameGrab, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
-    StaticLine2 = new wxStaticLine(PanelMain, ID_STATICLINE2, wxDefaultPosition, wxSize(10,-1), wxLI_HORIZONTAL, _T("ID_STATICLINE2"));
+    StaticLine2 = new wxStaticLine(StaticBoxSizerControlsMain->GetStaticBox(), ID_STATICLINE2, wxDefaultPosition, wxSize(10,-1), wxLI_HORIZONTAL, _T("ID_STATICLINE2"));
     StaticBoxSizerControlsMain->Add(StaticLine2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
     FlexGridSizerStart = new wxFlexGridSizer(1, 3, 0, 0);
-    ButtonStart = new wxButton(PanelMain, ID_BUTTON_START, _("Start"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_START"));
+    ButtonStart = new wxButton(StaticBoxSizerControlsMain->GetStaticBox(), ID_BUTTON_START, _("Start"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_START"));
     ButtonStart->Disable();
     FlexGridSizerStart->Add(ButtonStart, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    LedMain = new wxLed(PanelMain,ID_LED_MAIN,wxColour(128,128,128),wxColour(0,255,0),wxColour(255,0,0),wxDefaultPosition,wxDefaultSize);
+    LedMain = new wxLed(StaticBoxSizerControlsMain->GetStaticBox(), ID_LED_MAIN,wxColour(128,128,128),wxColour(0,255,0),wxColour(255,0,0),wxDefaultPosition,wxDefaultSize);
     LedMain->Disable();
     LedMain->SwitchOff();
     FlexGridSizerStart->Add(LedMain, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED|wxFIXED_MINSIZE, 5);
-    ButtonQuit = new wxButton(PanelMain, ID_BUTTON_QUIT, _("Quit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_QUIT"));
+    ButtonQuit = new wxButton(StaticBoxSizerControlsMain->GetStaticBox(), ID_BUTTON_QUIT, _("Quit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_QUIT"));
     ButtonQuit->Disable();
     ButtonQuit->SetToolTip(_("Quit the application"));
     FlexGridSizerStart->Add(ButtonQuit, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -307,24 +313,26 @@ pyb_wxFrame::pyb_wxFrame(int argc,
 
     PanelCamera = new wxPanel(NotebookCamImg, ID_PANEL_CAMERA, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_CAMERA"));
     StaticBoxSizerCamera = new wxStaticBoxSizer(wxVERTICAL, PanelCamera, _("Controls"));
-    ToggleButtonBackground = new wxToggleButton(PanelCamera, ID_TOGGLEBUTTON_BACKGROUND, _("Acquire background"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_BACKGROUND"));
+    ToggleButtonBackground = new wxToggleButton(StaticBoxSizerCamera->GetStaticBox(), ID_TOGGLEBUTTON_BACKGROUND, _("Acquire background"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_BACKGROUND"));
     ToggleButtonBackground->SetToolTip(_("Toggle background subtraction"));
     StaticBoxSizerCamera->Add(ToggleButtonBackground, 0, wxALL|wxEXPAND, 5);
-    StaticBoxSizerExpTime = new wxStaticBoxSizer(wxVERTICAL, PanelCamera, _("Exposure time"));
-    StaticTextExpTimeDisp = new wxStaticText(PanelCamera, ID_STATICTEXT_EXP_TIME_DISP, _("Time / ms"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_EXP_TIME_DISP"));
+    // Nested StaticBoxSizer
+    StaticBoxSizerExpTime = new wxStaticBoxSizer(wxVERTICAL, StaticBoxSizerCamera->GetStaticBox(), _("Exposure time"));
+    StaticTextExpTimeDisp = new wxStaticText(StaticBoxSizerExpTime->GetStaticBox(), ID_STATICTEXT_EXP_TIME_DISP, _("Time / ms"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_EXP_TIME_DISP"));
     StaticBoxSizerExpTime->Add(StaticTextExpTimeDisp, 1, wxALL|wxEXPAND, 5);
     GridBagSizerExpTime = new wxGridBagSizer(0, 0);
-    ButtonDecExpTime = new wxButton(PanelCamera, ID_BUTTON_DEC_EXP_TIME, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_EXP_TIME"));
+    ButtonDecExpTime = new wxButton(StaticBoxSizerExpTime->GetStaticBox(), ID_BUTTON_DEC_EXP_TIME, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_EXP_TIME"));
     GridBagSizerExpTime->Add(ButtonDecExpTime, wxGBPosition(0, 0), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    SliderExpTime = new wxSlider(PanelCamera, ID_SLIDER_EXP_TIME, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_EXP_TIME"));
+    SliderExpTime = new wxSlider(StaticBoxSizerExpTime->GetStaticBox(), ID_SLIDER_EXP_TIME, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_EXP_TIME"));
     SliderExpTime->SetToolTip(_("Changes the exposure time of the camera"));
     GridBagSizerExpTime->Add(SliderExpTime, wxGBPosition(0, 1), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    ButtonIncExpTime = new wxButton(PanelCamera, ID_BUTTON_INC_EXP_TIME, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_EXP_TIME"));
+    ButtonIncExpTime = new wxButton(StaticBoxSizerExpTime->GetStaticBox(), ID_BUTTON_INC_EXP_TIME, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_EXP_TIME"));
     GridBagSizerExpTime->Add(ButtonIncExpTime, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerExpTime->Add(GridBagSizerExpTime, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerCamera->Add(StaticBoxSizerExpTime, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
-    StaticBoxSizerCamInfo = new wxStaticBoxSizer(wxHORIZONTAL, PanelCamera, _("Information"));
-    TextCtrlCamInfo = new wxTextCtrl(PanelCamera, ID_TEXTCTRL_CAM_INFO, _("Loading..."), wxDefaultPosition, wxSize(-1,80), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxBORDER_STATIC, wxDefaultValidator, _T("ID_TEXTCTRL_CAM_INFO"));
+
+    StaticBoxSizerCamInfo = new wxStaticBoxSizer(wxHORIZONTAL, StaticBoxSizerCamera->GetStaticBox(), _("Information"));
+    TextCtrlCamInfo = new wxTextCtrl(StaticBoxSizerCamInfo->GetStaticBox(), ID_TEXTCTRL_CAM_INFO, _("Loading..."), wxDefaultPosition, wxSize(-1,80), wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH|wxBORDER_STATIC, wxDefaultValidator, _T("ID_TEXTCTRL_CAM_INFO"));
     TextCtrlCamInfo->SetMaxLength(512);
     TextCtrlCamInfo->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_MENU));
     StaticBoxSizerCamInfo->Add(TextCtrlCamInfo, 1, wxALL|wxEXPAND, 5);
@@ -335,57 +343,62 @@ pyb_wxFrame::pyb_wxFrame(int argc,
 
     PanelImgManip = new wxPanel(NotebookCamImg, ID_PANEL_IMG_MANIP, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_IMG_MANIP"));
     StaticBoxSizerImgManip = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Controls"));
-    ToggleButtonSmoothing = new wxToggleButton(PanelImgManip, ID_TOGGLEBUTTON_SMOOTHING, _("Enable manipulation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_SMOOTHING"));
+    ToggleButtonSmoothing = new wxToggleButton(StaticBoxSizerImgManip->GetStaticBox(), ID_TOGGLEBUTTON_SMOOTHING, _("Enable manipulation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON_SMOOTHING"));
     ToggleButtonSmoothing->SetToolTip(_("Toggle smoothing and groundlift"));
     StaticBoxSizerImgManip->Add(ToggleButtonSmoothing, 0, wxALL|wxEXPAND, 5);
-    StaticBoxSizerKernelSize = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Kernel size"));
-    StaticTextKernelSize = new wxStaticText(PanelImgManip, ID_STATICTEXT_KERNEL_SIZE, _("Size / pixel"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_KERNEL_SIZE"));
+
+    // Nested StaticBoxSizer
+    StaticBoxSizerKernelSize = new wxStaticBoxSizer(wxVERTICAL, StaticBoxSizerImgManip->GetStaticBox(), _("Kernel size"));
+    StaticTextKernelSize = new wxStaticText(StaticBoxSizerKernelSize->GetStaticBox(), ID_STATICTEXT_KERNEL_SIZE, _("Size / pixel"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_KERNEL_SIZE"));
     StaticBoxSizerKernelSize->Add(StaticTextKernelSize, 1, wxALL|wxEXPAND, 5);
     GridBagSizerKernelSize = new wxGridBagSizer(0, 0);
-    ButtonDecKernelSize = new wxButton(PanelImgManip, ID_BUTTON_DEC_KERNEL_SIZE, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_KERNEL_SIZE"));
+    ButtonDecKernelSize = new wxButton(StaticBoxSizerKernelSize->GetStaticBox(), ID_BUTTON_DEC_KERNEL_SIZE, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_KERNEL_SIZE"));
     ButtonDecKernelSize->Disable();
     GridBagSizerKernelSize->Add(ButtonDecKernelSize, wxGBPosition(0, 0), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    SliderKernelSize = new wxSlider(PanelImgManip, ID_SLIDER_KERNEL_SIZE, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_KERNEL_SIZE"));
+    SliderKernelSize = new wxSlider(StaticBoxSizerKernelSize->GetStaticBox(), ID_SLIDER_KERNEL_SIZE, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_KERNEL_SIZE"));
     SliderKernelSize->Disable();
     SliderKernelSize->SetToolTip(_("Changes the kernel size of a Gaussian filter"));
     GridBagSizerKernelSize->Add(SliderKernelSize, wxGBPosition(0, 1), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    ButtonIncKernelSize = new wxButton(PanelImgManip, ID_BUTTON_INC_KERNEL_SIZE, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_KERNEL_SIZE"));
+    ButtonIncKernelSize = new wxButton(StaticBoxSizerKernelSize->GetStaticBox(), ID_BUTTON_INC_KERNEL_SIZE, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_KERNEL_SIZE"));
     ButtonIncKernelSize->Disable();
     GridBagSizerKernelSize->Add(ButtonIncKernelSize, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerKernelSize->Add(GridBagSizerKernelSize, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerImgManip->Add(StaticBoxSizerKernelSize, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
-    StaticBoxSizerStdDev = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Standard deviation"));
-    StaticTextStdDev = new wxStaticText(PanelImgManip, ID_STATICTEXT_STD_DEV, _("Width / pixel"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_STD_DEV"));
+
+    StaticBoxSizerStdDev = new wxStaticBoxSizer(wxVERTICAL, StaticBoxSizerImgManip->GetStaticBox(), _("Standard deviation"));
+    StaticTextStdDev = new wxStaticText(StaticBoxSizerStdDev->GetStaticBox(), ID_STATICTEXT_STD_DEV, _("Width / pixel"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_STD_DEV"));
     StaticBoxSizerStdDev->Add(StaticTextStdDev, 1, wxALL|wxEXPAND, 5);
     GridBagSizerStdDev = new wxGridBagSizer(0, 0);
-    ButtonDecStdDev = new wxButton(PanelImgManip, ID_BUTTON_DEC_STD_DEV, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_STD_DEV"));
+    ButtonDecStdDev = new wxButton(StaticBoxSizerStdDev->GetStaticBox(), ID_BUTTON_DEC_STD_DEV, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_STD_DEV"));
     ButtonDecStdDev->Disable();
     GridBagSizerStdDev->Add(ButtonDecStdDev, wxGBPosition(0, 0), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    SliderStdDev = new wxSlider(PanelImgManip, ID_SLIDER_STD_DEV, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_STD_DEV"));
+    SliderStdDev = new wxSlider(StaticBoxSizerStdDev->GetStaticBox(), ID_SLIDER_STD_DEV, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_STD_DEV"));
     SliderStdDev->Disable();
     SliderStdDev->SetToolTip(_("Changes the standard deviation of a Gaussian filter"));
     GridBagSizerStdDev->Add(SliderStdDev, wxGBPosition(0, 1), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    ButtonIncStdDev = new wxButton(PanelImgManip, ID_BUTTON_INC_STD_DEV, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_STD_DEV"));
+    ButtonIncStdDev = new wxButton(StaticBoxSizerStdDev->GetStaticBox(), ID_BUTTON_INC_STD_DEV, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_STD_DEV"));
     ButtonIncStdDev->Disable();
     GridBagSizerStdDev->Add(ButtonIncStdDev, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerStdDev->Add(GridBagSizerStdDev, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerImgManip->Add(StaticBoxSizerStdDev, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
-    StaticBoxSizerGroundlift = new wxStaticBoxSizer(wxVERTICAL, PanelImgManip, _("Groundlift"));
-    StaticTextGroundlift = new wxStaticText(PanelImgManip, ID_STATICTEXT_GROUNDLIFT, _("Lift / counts"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_GROUNDLIFT"));
+
+    StaticBoxSizerGroundlift = new wxStaticBoxSizer(wxVERTICAL, StaticBoxSizerImgManip->GetStaticBox(), _("Groundlift"));
+    StaticTextGroundlift = new wxStaticText(StaticBoxSizerGroundlift->GetStaticBox(), ID_STATICTEXT_GROUNDLIFT, _("Lift / counts"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_GROUNDLIFT"));
     StaticBoxSizerGroundlift->Add(StaticTextGroundlift, 1, wxALL|wxEXPAND, 5);
     GridBagSizerGroundlift = new wxGridBagSizer(0, 0);
-    ButtonDecGroundlift = new wxButton(PanelImgManip, ID_BUTTON_DEC_GROUNDLIFT, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_GROUNDLIFT"));
+    ButtonDecGroundlift = new wxButton(StaticBoxSizerGroundlift->GetStaticBox(), ID_BUTTON_DEC_GROUNDLIFT, _("-"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_DEC_GROUNDLIFT"));
     ButtonDecGroundlift->Disable();
     GridBagSizerGroundlift->Add(ButtonDecGroundlift, wxGBPosition(0, 0), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    SliderGroundlift = new wxSlider(PanelImgManip, ID_SLIDER_GROUNDLIFT, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_GROUNDLIFT"));
+    SliderGroundlift = new wxSlider(StaticBoxSizerGroundlift->GetStaticBox(), ID_SLIDER_GROUNDLIFT, 0, 0, 100, wxDefaultPosition, wxSize(150,-1), 0, wxDefaultValidator, _T("ID_SLIDER_GROUNDLIFT"));
     SliderGroundlift->Disable();
     SliderGroundlift->SetToolTip(_("All pixel below this value are set to 0"));
     GridBagSizerGroundlift->Add(SliderGroundlift, wxGBPosition(0, 1), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    ButtonIncGroundlift = new wxButton(PanelImgManip, ID_BUTTON_INC_GROUNDLIFT, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_GROUNDLIFT"));
+    ButtonIncGroundlift = new wxButton(StaticBoxSizerGroundlift->GetStaticBox(), ID_BUTTON_INC_GROUNDLIFT, _("+"), wxDefaultPosition, wxSize(20,-1), 0, wxDefaultValidator, _T("ID_BUTTON_INC_GROUNDLIFT"));
     ButtonIncGroundlift->Disable();
     GridBagSizerGroundlift->Add(ButtonIncGroundlift, wxGBPosition(0, 2), wxDefaultSpan, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerGroundlift->Add(GridBagSizerGroundlift, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticBoxSizerImgManip->Add(StaticBoxSizerGroundlift, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxSHAPED, 5);
+
     PanelImgManip->SetSizer(StaticBoxSizerImgManip);
     StaticBoxSizerImgManip->Fit(PanelImgManip);
     StaticBoxSizerImgManip->SetSizeHints(PanelImgManip);
@@ -393,6 +406,7 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     NotebookCamImg->AddPage(PanelImgManip, _("Image manipulation"), false);
     BoxSizerMain->Add(NotebookCamImg, 1, wxALL|wxEXPAND, 0);
     SetSizer(BoxSizerMain);
+
     MenuBarMain = new wxMenuBar();
     Menu1 = new wxMenu();
     MenuItemQuit = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
@@ -412,82 +426,49 @@ pyb_wxFrame::pyb_wxFrame(int argc,
     BoxSizerMain->Fit(this);
     BoxSizerMain->SetSizeHints(this);
 
-//    Connect(ID_BUTTON_SAVE_IMG_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgRGBClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveImgRGBClick, this, ID_BUTTON_SAVE_IMG_RGB);
-//    Connect(ID_BUTTON_SAVE_IMG_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgWorkClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveImgWorkClick, this, ID_BUTTON_SAVE_IMG_WORK);
-//    Connect(ID_BUTTON_SAVE_IMG_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveImgFPClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveImgFPClick, this, ID_BUTTON_SAVE_IMG_FP);
-//    Connect(ID_BUTTON_SAVE_DATA_RGB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataRGBClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveDataRGBClick, this, ID_BUTTON_SAVE_DATA_RGB);
-//    Connect(ID_BUTTON_SAVE_DATA_WORK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataWorkClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveDataWorkClick, this, ID_BUTTON_SAVE_DATA_WORK);
-//    Connect(ID_BUTTON_SAVE_DATA_FP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonSaveDataFPClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonSaveDataFPClick, this, ID_BUTTON_SAVE_DATA_FP);
-//    Connect(ID_BUTTON_GNUPLOT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonGnuplotClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonGnuplotClick, this, ID_BUTTON_GNUPLOT);
 
-//    Connect(ID_TOGGLEBUTTON_VIEWER,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonViewerToggle);
     Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonViewerToggle, this, ID_TOGGLEBUTTON_VIEWER);
-//    Connect(ID_TOGGLEBUTTON_VIEWER_ANIMATION,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonViewerAnimationToggle);
     Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonViewerAnimationToggle, this, ID_TOGGLEBUTTON_VIEWER_ANIMATION);
-//    Connect(ID_TOGGLEBUTTON_MAP_VIEWER,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonMapViewerToggle);
     Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonMapViewerToggle, this, ID_TOGGLEBUTTON_MAP_VIEWER);
-//    Connect(ID_TOGGLEBUTTON_VIEWER_ROTATION,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonViewerRotationToggle);
     Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonViewerRotationToggle, this, ID_TOGGLEBUTTON_VIEWER_ROTATION);
 
-//    Connect(ID_BUTTON_VIEWER_SCREENSHOT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonViewerScreenshotClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonViewerScreenshotClick, this, ID_BUTTON_VIEWER_SCREENSHOT);
-//    Connect(ID_BUTTON_MINIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonMinimeClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonMinimeClick, this, ID_BUTTON_MINIME);
-//    Connect(ID_BUTTON_RESIZE_CAM_WIN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonResizeCamWinClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonResizeCamWinClick, this, ID_BUTTON_RESIZE_CAM_WIN);
 
-//    Connect(ID_TOGGLEBUTTON_AOI,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonAOIToggle);
     Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonAOIToggle, this, ID_TOGGLEBUTTON_AOI);
-//    Connect(ID_TOGGLEBUTTON_AOI_AUTO,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonAOIAutoToggle);
     Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonAOIAutoToggle, this, ID_TOGGLEBUTTON_AOI_AUTO);
 
-//    Connect(ID_SPINBUTTON_AUTO_ROI,wxEVT_SCROLL_THUMBTRACK,(wxObjectEventFunction)&pyb_wxFrame::OnSpinButtonAutoAOIChange);
     Bind(wxEVT_SPIN, &pyb_wxFrame::OnSpinButtonAutoAOIChange, this, ID_SPINBUTTON_AUTO_ROI);
 
-//    Connect(ID_TOGGLEBUTTON_FRAMEGRAB,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonFrameGrabToggle);
     Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonFrameGrabToggle, this, ID_TOGGLEBUTTON_FRAMEGRAB);
 
-//    Connect(ID_BUTTON_START,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonStartClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonStartClick, this, ID_BUTTON_START);
-//    Connect(ID_BUTTON_QUIT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonQuitClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonQuitClick, this, ID_BUTTON_QUIT);
 
-//    Connect(ID_TOGGLEBUTTON_BACKGROUND,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonBackgroundToggle);
     Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonBackgroundToggle, this, ID_TOGGLEBUTTON_BACKGROUND);
 
-//    Connect(ID_BUTTON_DEC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecExpTimeClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonDecExpTimeClick, this, ID_BUTTON_DEC_EXP_TIME);
-//    Connect(ID_BUTTON_INC_EXP_TIME,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncExpTimeClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonIncExpTimeClick, this, ID_BUTTON_INC_EXP_TIME);
 
-//    Connect(ID_TOGGLEBUTTON_SMOOTHING,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnToggleButtonSmoothingToggle);
     Bind(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, &pyb_wxFrame::OnToggleButtonSmoothingToggle, this, ID_TOGGLEBUTTON_SMOOTHING);
 
-//    Connect(ID_BUTTON_DEC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecKernelSizeClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonDecKernelSizeClick, this, ID_BUTTON_DEC_KERNEL_SIZE);
-//    Connect(ID_BUTTON_INC_KERNEL_SIZE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncKernelSizeClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonIncKernelSizeClick, this, ID_BUTTON_INC_KERNEL_SIZE);
-//    Connect(ID_BUTTON_DEC_STD_DEV,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecStdDevClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonDecStdDevClick, this, ID_BUTTON_DEC_STD_DEV);
-//    Connect(ID_BUTTON_INC_STD_DEV,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncStdDevClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonIncStdDevClick, this, ID_BUTTON_INC_STD_DEV);
-//    Connect(ID_BUTTON_DEC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonDecGroundliftClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonDecGroundliftClick, this, ID_BUTTON_DEC_GROUNDLIFT);
-//    Connect(ID_BUTTON_INC_GROUNDLIFT,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&pyb_wxFrame::OnButtonIncGroundliftClick);
     Bind(wxEVT_COMMAND_BUTTON_CLICKED, &pyb_wxFrame::OnButtonIncGroundliftClick, this, ID_BUTTON_INC_GROUNDLIFT);
 
-//    Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&pyb_wxFrame::OnQuit);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &pyb_wxFrame::OnQuit, this, idMenuQuit);
-//    Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&pyb_wxFrame::OnAbout);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &pyb_wxFrame::OnAbout, this, idMenuAbout);
-//    Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&pyb_wxFrame::OnCloseMainFrame);
     Bind(wxEVT_CLOSE_WINDOW, &pyb_wxFrame::OnCloseMainFrame, this, wxID_ANY);
     //
     /* Proper way to cast: wxCommandEventHandler(pyb_wxFrame::OnAbout) */
