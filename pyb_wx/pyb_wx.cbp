@@ -77,7 +77,7 @@
 					<Add option="-DWXUSINGDLL" />
 					<Add option="-DwxUSE_UNICODE" />
 					<Add option="-DUSE_DEPRECATED_FUNCTIONS" />
-					<Add option="-DIGYBA_NDEBUG" />
+					<Add option="-DPYB_NDEBUG" />
 					<Add option="-DNDEBUG" />
 					<Add directory="C:/Libraries/wxwidgets/lib/gcc_x64_dll/mswud" />
 					<Add directory="C:/Libraries/wxwidgets/include" />
@@ -110,6 +110,7 @@
 					<Add library="freeglut" />
 					<Add library="glu32" />
 					<Add library="opengl32" />
+					<Add library="C:/Program Files/IDS/uEye/Develop/Lib/uEye_api_64.lib" />
 					<Add directory="C:/Libraries/wxwidgets/lib/gcc_x64_dll" />
 					<Add directory="C:/Libraries/freeglut/lib" />
 					<Add directory="C:/Libraries/freeglut/bin" />
@@ -132,48 +133,47 @@
 					<Add option="-DWXUSINGDLL" />
 					<Add option="-DwxUSE_UNICODE" />
 					<Add option="-DUSE_DEPRECATED_FUNCTIONS" />
-					<Add option="-DIGYBA_NDEBUG" />
+					<Add option="-DPYB_NDEBUG" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DFREEGLUT_STATIC" />
-					<Add directory="C:/Libraries/wxWidgets_static/lib/gcc_x64_lib/mswu" />
-					<Add directory="C:/Libraries/wxWidgets_static/include" />
-					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/include" />
-					<Add directory="C:/Libraries/OpenCV_static/include" />
+					<Add directory="C:/Libraries/wxwidgets_static/lib/gcc_x64_lib/mswu" />
+					<Add directory="C:/Libraries/wxwidgets_static/include" />
+					<Add directory="C:/Libraries/freeglut/include" />
+					<Add directory="C:/Libraries/opencv_static/include" />
 				</Compiler>
 				<ResourceCompiler>
-					<Add directory="C:/Libraries/wxWidgets_static/lib/gcc_x64_lib/mswu" />
-					<Add directory="C:/Libraries/wxWidgets_static/include" />
+					<Add directory="C:/Libraries/wxwidgets_static/lib/gcc_x64_lib/mswu" />
+					<Add directory="C:/Libraries/wxwidgets_static/include" />
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
 					<Add option="-static-libstdc++" />
 					<Add option="-static-libgcc" />
 					<Add option="-Wl,-Bstatic -lpthread -Wl,-Bstatic -lgomp -Wl,-Bstatic -lwinpthread" />
-					<Add library="wxmsw31u_richtext" />
-					<Add library="wxmsw31u_xrc" />
-					<Add library="wxmsw31u_aui" />
-					<Add library="wxmsw31u_media" />
-					<Add library="wxbase31u_net" />
-					<Add library="wxmsw31u_gl" />
-					<Add library="wxbase31u_xml" />
-					<Add library="wxmsw31u_adv" />
-					<Add library="wxmsw31u_html" />
-					<Add library="wxmsw31u_core" />
-					<Add library="wxbase31u" />
+					<Add library="wxmsw33u_richtext" />
+					<Add library="wxmsw33u_xrc" />
+					<Add library="wxmsw33u_aui" />
+					<Add library="wxmsw33u_media" />
+					<Add library="wxbase33u_net" />
+					<Add library="wxmsw33u_gl" />
+					<Add library="wxbase33u_xml" />
+					<Add library="wxmsw33u_adv" />
+					<Add library="wxmsw33u_html" />
+					<Add library="wxmsw33u_core" />
+					<Add library="wxbase33u" />
 					<Add library="wxpng" />
 					<Add library="wxzlib" />
-					<Add library="opencv_highgui411" />
-					<Add library="opencv_imgcodecs411" />
-					<Add library="opencv_imgproc411" />
-					<Add library="opencv_videoio411" />
-					<Add library="opencv_core411" />
+					<Add library="opencv_highgui4120" />
+					<Add library="opencv_imgproc4120" />
+					<Add library="opencv_videoio4120" />
+					<Add library="opencv_imgcodecs4120" />
+					<Add library="opencv_core4120" />
 					<Add library="freeglut_static" />
 					<Add library="glu32" />
 					<Add library="opengl32" />
 					<Add library="C:/Program Files/IDS/uEye/Develop/Lib/uEye_api_64.lib" />
 					<Add library="libIlmImf" />
 					<Add library="liblibpng" />
-					<Add library="liblibjasper" />
 					<Add library="liblibjpeg-turbo" />
 					<Add library="liblibtiff" />
 					<Add library="zlib" />
@@ -190,9 +190,9 @@
 					<Add library="uxtheme" />
 					<Add library="version" />
 					<Add library="winspool" />
-					<Add directory="C:/Libraries/wxWidgets_static/lib/gcc_x64_lib" />
-					<Add directory="C:/Libraries/freeglut/x86_64-w64-mingw32/lib" />
-					<Add directory="C:/Libraries/OpenCV_static/x64/mingw/staticlib" />
+					<Add directory="C:/Libraries/wxwidgets_static/lib/gcc_x64_lib" />
+					<Add directory="C:/Libraries/freeglut/lib" />
+					<Add directory="C:/Libraries/opencv_static/x64/mingw/staticlib" />
 				</Linker>
 			</Target>
 			<Target title="Debug_Linux">
