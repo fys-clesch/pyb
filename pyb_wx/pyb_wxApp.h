@@ -4,7 +4,7 @@
  * Author:    Clemens Schaefermeier
  * Created:   2015-04-03
  * Copyright: Clemens Schaefermeier
- * License:
+ * License:   GPL
  **************************************************************/
 
 #ifndef PYB_WXAPP_H

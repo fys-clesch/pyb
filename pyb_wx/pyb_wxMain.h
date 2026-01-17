@@ -4,7 +4,7 @@
  * Author:    Clemens Sch\"afermeier
  * Created:   2015-04-03
  * Copyright: Clemens Sch\"afermeier
- * License:
+ * License:   GPL
  *
  **************************************************************/
 
