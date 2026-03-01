@@ -55,9 +55,7 @@
 					<Add library="C:/Program Files/IDS/uEye/Develop/Lib/uEye_api_64.lib" />
 					<Add directory="C:/Libraries/wxwidgets/lib/gcc_x64_dll" />
 					<Add directory="C:/Libraries/freeglut/lib" />
-					<Add directory="C:/Libraries/freeglut/bin" />
 					<Add directory="C:/Libraries/opencv/x64/mingw/lib" />
-					<Add directory="C:/Libraries/opencv/x64/mingw/bin" />
 				</Linker>
 			</Target>
 			<Target title="Release_Windows">
@@ -109,9 +107,7 @@
 					<Add library="C:/Program Files/IDS/uEye/Develop/Lib/uEye_api_64.lib" />
 					<Add directory="C:/Libraries/wxwidgets/lib/gcc_x64_dll" />
 					<Add directory="C:/Libraries/freeglut/lib" />
-					<Add directory="C:/Libraries/freeglut/bin" />
 					<Add directory="C:/Libraries/opencv/x64/mingw/lib" />
-					<Add directory="C:/Libraries/opencv/x64/mingw/bin" />
 				</Linker>
 			</Target>
 			<Target title="Release_Windows_Static">
