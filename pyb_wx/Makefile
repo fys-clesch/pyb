@@ -45,10 +45,13 @@ ifdef windir
                -LC:\Libraries\wxwidgets_static\lib\gcc_x64_dll
         LFLAGS = -s -lm -fopenmp -mthreads -static-libgcc -static-libstdc++ -L libgcc_s.a \
                  -lopencv_highgui4120 -lopencv_imgcodecs4120 -lopencv_imgproc4120 -lopencv_videoio4120 -lopencv_core4120 \
-                 -lIlmImf -llibpng -llibjpeg-turbo -llibtiff -lzlib -llibwebp \
+                 -lIlmImf -llibpng -llibjpeg-turbo -llibtiff -lzlib -lcomdlg32  -lgdi32 -lwinmm \
+                 -llibwebp -llibopenjp2 -lade -lcomctl32 -luuid \
+                 -ole32 -loleacc -loleaut32 -lshlwapi -uxtheme \
+                 -lversion -lwinspool -lmsimg32 -lkernel32 -luser32 \
+                 -lshell32 -ladvapi32 -llimm32 -lrpcrt4 -lwininet -lws2_32 -ldl \
                  -lfreeglut_static -lglu32 -lopengl32 \
-                 -lwxmsw33u_richtext -lwxmsw33u_xrc -lwxmsw33u_aui -lwxmsw33u_media -lwxbase33u_net -lwxmsw33u_gl -lwxbase33u_xml -lwxmsw33u_adv -lwxmsw33u_html -lwxmsw33u_core -lwxbase33u \
-                 -lcomdlg32  -lgdi32 -lwinmm
+                 -lwxmsw33u_richtext -lwxmsw33u_xrc -lwxmsw33u_aui -lwxmsw33u_media -lwxbase33u_net -lwxmsw33u_gl -lwxbase33u_xml -lwxmsw33u_adv -lwxmsw33u_html -lwxmsw33u_core -lwxbase33u
     else
         CDIR = -IC:\Libraries\opencv\include \
                -IC:\Libraries\freeglut\include \
