@@ -466,6 +466,7 @@ void uintfile2double(const char *res_pt target, double *res_pt m, const uint row
         i++;
     }
     assert(x == row && i == row * col);
+    (void)row;
     fclose(readfile);
     iprint(stdout, "copied %s to memory - %u data points\n", target, i);
 }
@@ -492,6 +493,7 @@ void uintfile2uint(const char *res_pt target, uint *res_pt m, const uint row, co
         i++;
     }
     assert(x == row && i == row * col);
+    (void)row;
     fclose(readfile);
     iprint(stdout, "copied %s to memory - %u data points\n", target, i);
 }
@@ -518,6 +520,7 @@ void uintfile2uchar(const char *res_pt target, uchar *res_pt m, const uint row, 
         i++;
     }
     assert(x == row && i == row * col);
+    (void)row;
     fclose(readfile);
     iprint(stdout, "copied %s to memory - %u data points\n", target, i);
 }
@@ -546,6 +549,7 @@ uint intfile2double(const char *res_pt target, double *res_pt m, const uint row,
     }
     fclose(readfile);
     assert(i == row && s == row * col);
+    (void)row;
     return s;
 }
 
@@ -616,6 +620,7 @@ uint fpfile2double(const char *res_pt target,
 
     fclose(readfile);
     assert(i == row && s == row * col);
+    (void)row;
     return s;
 }
 

@@ -140,13 +140,13 @@
 					<Add option="-static-libgcc" />
 					<Add option="-Wl,-Bstatic -lpthread -Wl,-Bstatic -lgomp -Wl,-Bstatic -lwinpthread" />
 					<Add library="libwxexpat.a" />
-					<Add library="libwxjpeg.a" />
 					<Add library="libwxlexilla.a" />
 					<Add library="libwxmsw33u.a" />
 					<Add library="libwxpng.a" />
 					<Add library="libwxregexu.a" />
 					<Add library="libwxscintilla.a" />
 					<Add library="libwxtiff.a" />
+					<Add library="libwxjpeg.a" />
 					<Add library="libwxzlib.a" />
 					<Add library=":wxsharpyuv.a" />
 					<Add library=":wxwebp.a" />

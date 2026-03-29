@@ -9,9 +9,9 @@ ifndef STATIC
 endif
 
 ifeq ($(DEBUG), 1)
-    CFLAGS := -O0 -g -Wall -Wextra -pedantic -std=c++23 -fopenmp -DUSE_DEPRECATED_FUNCTIONS # Whitespace
+    CFLAGS := -O0 -g -Wall -Wextra -pedantic -std=c++23 -fopenmp # Whitespace
 else
-    CFLAGS := -O3 -Wall -Wextra -pedantic -std=c++23 -fopenmp -DPYB_NDEBUG -DNDEBUG -DUSE_DEPRECATED_FUNCTIONS # Whitespace
+    CFLAGS := -O3 -Wall -Wextra -pedantic -std=c++23 -fopenmp -DPYB_NDEBUG -DNDEBUG # Whitespace
 endif
 
 FILES_MAIN = pyb_wxApp.cpp pyb_wxMain.cpp src/led.cpp
@@ -30,7 +30,7 @@ ifdef windir
     pathfix = $(subst /,\,$1)
     OSID = 1
     CAMLIB = "C:\Program Files\IDS\uEye\Develop\Lib\uEye_api_64.lib"
-    WXFLAGS := -D__WXMSW__ -DWXUSINGDLL -DwxUSE_UNICODE # Whitespace
+    WXFLAGS := -D__WXMSW__ -DwxUSE_UNICODE # Whitespace
     CFLAGS := $(CFLAGS)$(WXFLAGS)
     RESFLAGS = -IC:\Libraries\wxwidgets\include
     ifeq ($(STATIC), 1)
@@ -38,21 +38,25 @@ ifdef windir
         CFLAGS := $(CFLAGS)$(STATIC_FLAGS)
         CDIR = -IC:\Libraries\opencv_static\include \
                -IC:\Libraries\freeglut\include \
-               -IC:\Libraries\wxwidgets_static\include \
-               -IC:\Libraries\wxwidgets_static\lib\gcc_x64_dll\mswu
+               -IC:\Libraries\wxwidgets_static\lib\gcc_x64_lib\mswu \
+               -IC:\Libraries\wxwidgets_static\include
         LDIR = -LC:\Libraries\opencv_static\x64\mingw\staticlib \
                -LC:\Libraries\freeglut\lib \
-               -LC:\Libraries\wxwidgets_static\lib\gcc_x64_dll
+               -LC:\Libraries\wxwidgets_static\lib\gcc_x64_lib
         LFLAGS = -s -lm -fopenmp -mthreads -static-libgcc -static-libstdc++ -L libgcc_s.a \
+                 -L libwxexpat.a -L libwxlexilla.a -L libwxmsw33u.a -L libwxpng.a -L libwxregexu.a -L libwxscintilla.a -L libwxtiff.a -L libwxjpeg.a -L libwxzlib.a -L wxsharpyuv.a -L wxwebp.a -L wxwebpdemux.a \
+                 -lgdiplus \
                  -lopencv_highgui4120 -lopencv_imgcodecs4120 -lopencv_imgproc4120 -lopencv_videoio4120 -lopencv_core4120 \
-                 -lIlmImf -llibpng -llibjpeg-turbo -llibtiff -lzlib -lcomdlg32  -lgdi32 -lwinmm \
-                 -llibwebp -llibopenjp2 -lade -lcomctl32 -luuid \
-                 -ole32 -loleacc -loleaut32 -lshlwapi -uxtheme \
-                 -lversion -lwinspool -lmsimg32 -lkernel32 -luser32 \
-                 -lshell32 -ladvapi32 -llimm32 -lrpcrt4 -lwininet -lws2_32 -ldl \
                  -lfreeglut_static -lglu32 -lopengl32 \
-                 -lwxmsw33u_richtext -lwxmsw33u_xrc -lwxmsw33u_aui -lwxmsw33u_media -lwxbase33u_net -lwxmsw33u_gl -lwxbase33u_xml -lwxmsw33u_adv -lwxmsw33u_html -lwxmsw33u_core -lwxbase33u
+                 -lIlmImf -llibpng -llibjpeg-turbo -llibtiff -lzlib -lcomdlg32 -lgdi32 -lwinmm \
+                 -llibwebp -llibopenjp2 -lade -lcomctl32 -luuid \
+                 -lole32 -loleacc -loleaut32 -lshlwapi -luxtheme \
+                 -lversion -lwinspool -lmsimg32 -lkernel32 -luser32 \
+                 -lshell32 -ladvapi32 -limm32 -lrpcrt4 -lwininet -lws2_32 -ldl
+                 # -Wl,-Bstatic -lpthread -Wl,-Bstatic -lgomp -Wl,-Bstatic -lwinpthread
     else
+        DLL_FLAGS := -DWXUSINGDLL # Whitespace
+        CFLAGS := $(CFLAGS)$(DLL_FLAGS)
         CDIR = -IC:\Libraries\opencv\include \
                -IC:\Libraries\freeglut\include \
                -IC:\Libraries\wxwidgets\include \
