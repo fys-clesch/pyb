@@ -43,8 +43,9 @@ ifdef windir
         LDIR = -LC:\Libraries\opencv_static\x64\mingw\staticlib \
                -LC:\Libraries\freeglut\lib \
                -LC:\Libraries\wxwidgets_static\lib\gcc_x64_lib
-        LFLAGS = -s -lm -fopenmp -mthreads -static-libgcc -static-libstdc++ -L libgcc_s.a \
-                 -L libwxexpat.a -L libwxlexilla.a -L libwxmsw33u.a -L libwxpng.a -L libwxregexu.a -L libwxscintilla.a -L libwxtiff.a -L libwxjpeg.a -L libwxzlib.a -L wxsharpyuv.a -L wxwebp.a -L wxwebpdemux.a \
+        LFLAGS = -s -fopenmp -mthreads -static-libgcc -static-libstdc++ \
+                 -Wl,-Bstatic -lgomp -Wl,-Bstatic -lwinpthread \
+                 -lwxexpat -lwxlexilla -lwxmsw33u -lwxpng -lwxregexu -lwxscintilla -lwxtiff -lwxjpeg -lwxzlib -L wxsharpyuv.a -L wxwebp.a -L wxwebpdemux.a \
                  -lgdiplus \
                  -lopencv_highgui4120 -lopencv_imgcodecs4120 -lopencv_imgproc4120 -lopencv_videoio4120 -lopencv_core4120 \
                  -lfreeglut_static -lglu32 -lopengl32 \
@@ -53,7 +54,7 @@ ifdef windir
                  -lole32 -loleacc -loleaut32 -lshlwapi -luxtheme \
                  -lversion -lwinspool -lmsimg32 -lkernel32 -luser32 \
                  -lshell32 -ladvapi32 -limm32 -lrpcrt4 -lwininet -lws2_32 -ldl
-                 # -Wl,-Bstatic -lpthread -Wl,-Bstatic -lgomp -Wl,-Bstatic -lwinpthread
+                 # -Wl,-Bstatic -lpthread
     else
         DLL_FLAGS := -DWXUSINGDLL # Whitespace
         CFLAGS := $(CFLAGS)$(DLL_FLAGS)
@@ -124,12 +125,12 @@ OBJECTS_GRABBER = $(addprefix $(GRABBER_ODIR)/, $(_OBJECTS_GRABBER))
 OBJECTS_IC = $(addprefix $(IC_ODIR)/, $(_OBJECTS_IC))
 
 # Add the objects all up
-OBJECTS_ALL = $(OBJECTS_MAIN) \
-              $(OBJECTS_IC) \
+OBJECTS_ALL = $(OBJECTS_IC) \
               $(OBJECTS_GRABBER) \
               $(OBJECTS_VIEWER) \
               $(OBJECTS_MINIME) \
-              $(OBJECTS_EXT)
+              $(OBJECTS_EXT) \
+              $(OBJECTS_MAIN)
 
 # Define the resources
 RES = $(patsubst %.rc, %.res, $(RESOURCES))
