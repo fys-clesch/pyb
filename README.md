@@ -1,6 +1,6 @@
 # pyb -- Profile Your Beam
 
-Copyright 2015--2025 Clemens Schäfermeier, c.schaefermeier ( at ) t-online.de
+Copyright 2015--2026 Clemens Schäfermeier, c.schaefermeier ( at ) t-online.de
 
     This file is part of pyb.
 
@@ -36,5 +36,10 @@ Projects and libraries used:
   - gnuplot (if available on the machine) for plotting image captures
 
 At the moment, only the Windows part has been extensively tested.
+
+You can compile the software using Code::Blocks or the Makefile.
+Make sure to check directories when using the Makefile or Code::Blocks.
+In case of static compilation, the libwinpthread-1.dll is required to be in the system path or in the folder of the binary.
+You may find it in the mingw64 distribution.
 
 If you need help compiling the software, feel free to reach out to me.
